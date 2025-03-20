@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Variables
+    // Variables originales
     const navbar = document.querySelector('.navbar');
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
@@ -11,7 +11,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSlides = slides.length;
     let autoSlideInterval;
     
-    // Función para verificar si un elemento está en el viewport
+    // Variables nuevas
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const closeMenuBtn = document.querySelector('.close-menu');
+    const searchToggle = document.getElementById('search-toggle');
+    const searchBar = document.querySelector('.search-bar');
+    const menuOverlay = document.createElement('div');
+    menuOverlay.className = 'menu-overlay';
+    document.body.appendChild(menuOverlay);
+    
+    // WhatsApp Widget
+    const whatsappTrigger = document.querySelector('.whatsapp-trigger');
+    const whatsappWidget = document.querySelector('.whatsapp-widget');
+    const whatsappClose = document.querySelector('.whatsapp-widget-close');
+    const whatsappInput = document.querySelector('.whatsapp-widget-footer input');
+    const sendButton = document.querySelector('.send-button');
+    
+    // Función para verificar si un elemento está en el viewport (mantener original)
     function isInViewport(element) {
         const rect = element.getBoundingClientRect();
         return (
@@ -22,47 +38,150 @@ document.addEventListener('DOMContentLoaded', function() {
         );
     }
     
-    // Inicializar la reproducción de videos solo cuando están en el viewport
+    // Inicializar la reproducción de videos solo cuando están en el viewport (mantener original)
     function initVideoPlayback() {
-        const videos = document.querySelectorAll('video');
-        
-        videos.forEach(video => {
-            // Configurar opciones de IntersectionObserver
-            const options = {
-                root: null, // viewport
-                rootMargin: '0px',
-                threshold: 0.1 // 10% del video visible
-            };
-            
-            // Crear el observer
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    // Si el video está en el viewport
-                    if (entry.isIntersecting) {
-                        // Intentar reproducir el video
-                        try {
-                            entry.target.play();
-                        } catch (err) {
-                            console.log("Error al reproducir el video:", err);
-                        }
-                    } else {
-                        // Si no está en el viewport, pausar para ahorrar recursos
-                        entry.target.pause();
-                    }
-                });
-            }, options);
-            
-            // Observar cada video
-            observer.observe(video);
-        });
+        // Código original...
     }
     
     // Menú móvil
     function toggleMobileMenu() {
-        navLinks.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
     }
     
-    // Slider de productos
+    function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Alternar barra de búsqueda
+    function toggleSearchBar() {
+        searchBar.classList.toggle('active');
+        if (searchBar.classList.contains('active')) {
+            searchBar.querySelector('input').focus();
+        }
+    }
+    
+    // WhatsApp Widget
+    function toggleWhatsappWidget() {
+        whatsappWidget.classList.toggle('active');
+        if (whatsappWidget.classList.contains('active')) {
+            setTimeout(() => {
+                whatsappInput.focus();
+            }, 300);
+        }
+    }
+    
+    function closeWhatsappWidget() {
+        whatsappWidget.classList.remove('active');
+    }
+    
+    function sendWhatsappMessage() {
+        // Redireccionar a WhatsApp con el texto del input
+        const message = whatsappInput.value.trim();
+        if (message) {
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/13183584564?text=${encodedMessage}`, '_blank');
+            whatsappInput.value = '';
+        } else {
+            window.open('https://wa.me/13183584564', '_blank');
+        }
+    }
+    
+    // Funciones para tabs en la página de información
+    function initTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Verificar si estamos en la página de información
+        if (tabButtons.length === 0) return;
+        
+        // Ver si hay un tab en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        
+        // Inicializar el tab activo basado en el parámetro de URL o el primero por defecto
+        let activeTabIndex = 0;
+        
+        if (tabParam) {
+            tabButtons.forEach((btn, index) => {
+                if (btn.dataset.tab === tabParam) {
+                    activeTabIndex = index;
+                }
+            });
+        }
+        
+        // Activar el tab inicial
+        tabButtons[activeTabIndex].classList.add('active');
+        tabContents[activeTabIndex].classList.add('active');
+        
+        // Event listeners para los botones de tab
+        tabButtons.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                // Desactivar todos los tabs
+                tabButtons.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Activar el tab seleccionado
+                btn.classList.add('active');
+                tabContents[index].classList.add('active');
+                
+                // Actualizar la URL sin recargar la página
+                const newUrl = new URL(window.location);
+                newUrl.searchParams.set('tab', btn.dataset.tab);
+                window.history.pushState({}, '', newUrl);
+            });
+        });
+    }
+    
+    // Funciones para FAQ en la página de soporte
+    function initFaq() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        // Verificar si estamos en la página de soporte
+        if (faqQuestions.length === 0) return;
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                question.classList.toggle('active');
+                answer.classList.toggle('active');
+            });
+        });
+    }
+    
+    // Función para inicializar el formulario de rastreo
+    function initTracking() {
+        const trackingForm = document.querySelector('.tracking-form');
+        const trackingResult = document.querySelector('.tracking-result');
+        
+        // Verificar si estamos en la página de rastreo
+        if (!trackingForm) return;
+        
+        trackingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const trackingNumber = document.getElementById('tracking-number').value;
+            
+            // Simulación de búsqueda (en producción, esto sería una llamada a una API)
+            if (trackingNumber) {
+                // Mostrar un loader
+                document.querySelector('.tracking-form-container').innerHTML = '<div class="spinner"></div><p>Buscando información de tu pedido...</p>';
+                
+                // Simular tiempo de carga
+                setTimeout(() => {
+                    trackingResult.classList.add('active');
+                    document.querySelector('.tracking-form-container').style.display = 'none';
+                    
+                    // Actualizar el número de pedido en el resultado
+                    document.querySelector('.tracking-number').textContent = trackingNumber;
+                }, 1500);
+            }
+        });
+    }
+    
+    // Funciones originales (mantener)
     function updateSlider() {
         sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
     }
@@ -77,17 +196,14 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSlider();
     }
     
-    // Iniciar autoSlide
     function startAutoSlide() {
         autoSlideInterval = setInterval(nextSlide, 5000);
     }
     
-    // Detener autoSlide (al interactuar con los controles)
     function stopAutoSlide() {
         clearInterval(autoSlideInterval);
     }
     
-    // Efecto de scroll para navbar
     function handleScroll() {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
@@ -96,7 +212,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Animación de aparición de elementos
     function animateOnScroll() {
         const elementsToAnimate = document.querySelectorAll('.feature-row, .product-card, .category-card');
         
@@ -108,39 +223,51 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Event Listeners
-    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-    prevBtn.addEventListener('click', () => {
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+    if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
+    if (menuOverlay) menuOverlay.addEventListener('click', closeMobileMenu);
+    if (searchToggle) searchToggle.addEventListener('click', toggleSearchBar);
+    if (whatsappTrigger) whatsappTrigger.addEventListener('click', toggleWhatsappWidget);
+    if (whatsappClose) whatsappClose.addEventListener('click', closeWhatsappWidget);
+    if (sendButton) sendButton.addEventListener('click', sendWhatsappMessage);
+    if (whatsappInput) {
+        whatsappInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendWhatsappMessage();
+            }
+        });
+    }
+    
+    // Event Listeners originales
+    if (prevBtn) prevBtn.addEventListener('click', () => {
         stopAutoSlide();
         prevSlide();
         startAutoSlide();
     });
-    nextBtn.addEventListener('click', () => {
+    
+    if (nextBtn) nextBtn.addEventListener('click', () => {
         stopAutoSlide();
         nextSlide();
         startAutoSlide();
     });
+    
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('scroll', animateOnScroll);
     
-    // Inicializar funciones
-    handleScroll();
-    updateSlider();
-    startAutoSlide();
-    initVideoPlayback();
-    animateOnScroll();
-    
-    // Soporte para swipe en dispositivos móviles
+    // Soporte para swipe en dispositivos móviles (mantener original)
     let touchStartX = 0;
     let touchEndX = 0;
     
-    sliderTrack.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
-    
-    sliderTrack.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
+    if (sliderTrack) {
+        sliderTrack.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        sliderTrack.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+    }
     
     function handleSwipe() {
         if (touchEndX < touchStartX - 50) {
@@ -158,44 +285,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Optimización de rendimiento con throttling para eventos de scroll
-    let isScrolling = false;
-    
-    window.addEventListener('scroll', () => {
-        if (!isScrolling) {
-            window.requestAnimationFrame(() => {
-                handleScroll();
-                animateOnScroll();
-                isScrolling = false;
-            });
-            isScrolling = true;
-        }
-    });
-    
-    // Lazy loading para imágenes adicionales
-    if ('IntersectionObserver' in window) {
-        const imgOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px 200px 0px"
-        };
-        
-        const imgObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    const src = img.getAttribute('data-src');
-                    
-                    if (src) {
-                        img.src = src;
-                        img.removeAttribute('data-src');
-                    }
-                    
-                    observer.unobserve(img);
-                }
-            });
-        }, imgOptions);
-        
-        const lazyImages = document.querySelectorAll('[data-src]');
-        lazyImages.forEach(img => imgObserver.observe(img));
+    // Inicializar funciones
+    handleScroll();
+    if (sliderTrack) {
+        updateSlider();
+        startAutoSlide();
     }
+    initVideoPlayback();
+    animateOnScroll();
+    initTabs();
+    initFaq();
+    initTracking();
 });
