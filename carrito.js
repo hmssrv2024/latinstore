@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Intl.NumberFormat('es-VE').format(amount.toFixed(2)) + " Bs";
     }
     
-    // Navegar a checkout - SOLUCIÓN CORREGIDA
+    // Navegar a checkout - SOLUCIÓN MEJORADA
     function goToCheckout(e) {
         e.preventDefault();
         
@@ -207,16 +207,25 @@ document.addEventListener('DOMContentLoaded', function() {
             total: orderTotal + taxAmount + 70
         };
         
-        // Guardar carrito y totales en localStorage
-        localStorage.setItem('latinphone_cart', JSON.stringify(cart));
-        localStorage.setItem('latinphone_cart_totals', JSON.stringify(totals));
-        
-        console.log('Carrito guardado:', JSON.stringify(cart));
-        console.log('Totales guardados:', JSON.stringify(totals));
-        
-        // Redirigir a la página de pago - SOLUCIÓN CORREGIDA
-        // En lugar de usar window.location.href, usamos location.assign
-        location.assign('pago.html');
+        try {
+            // Guardar carrito y totales en localStorage
+            localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+            localStorage.setItem('latinphone_cart_totals', JSON.stringify(totals));
+            
+            console.log('Carrito guardado:', JSON.stringify(cart));
+            console.log('Totales guardados:', JSON.stringify(totals));
+            
+            // Usar ambos métodos de redirección para mayor compatibilidad
+            setTimeout(function() {
+                window.location.href = 'pago.html';
+            }, 100);
+        } catch (err) {
+            console.error("Error al procesar el checkout:", err);
+            
+            // Método alternativo de redirección como fallback
+            alert("Redirigiendo a la página de pago...");
+            window.open('pago.html', '_self');
+        }
     }
     
     // Agregar event listener al botón de proceder al pago
