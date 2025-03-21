@@ -2371,17 +2371,22 @@
             line-height: 1.3;
         }
 
-        .delivery-iframe-container {
-            height: 70rem;
-            width: 100%;
-            position: relative;
+        .delivery-form {
+            padding: 3rem;
             background-color: var(--white);
         }
 
-        .delivery-iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
+        .delivery-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .delivery-form-grid .form-group:nth-child(1),
+        .delivery-form-grid .form-group:nth-child(2),
+        .delivery-form-grid .form-group:nth-child(7),
+        .delivery-form-grid .form-group:nth-child(8) {
+            grid-column: span 2;
         }
 
         .support-link {
@@ -2524,7 +2529,7 @@
         /* Media Queries para Responsive */
         @media (max-width: 1200px) {
             .checkout-grid {
-                grid-template-columns: 1fr 35rem;
+                grid-template-columns: 1fr 38rem;
                 gap: 2.5rem;
             }
         }
@@ -2558,8 +2563,12 @@
                 gap: 1.5rem;
             }
 
-            .delivery-iframe-container {
-                height: 60rem;
+            .delivery-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .delivery-form-grid .form-group:nth-child(n) {
+                grid-column: span 1;
             }
 
             .category-grid,
@@ -2807,8 +2816,8 @@
                 padding: 2rem 1.5rem;
             }
 
-            .delivery-iframe-container {
-                height: 45rem;
+            .delivery-form {
+                padding: 2rem 1.5rem;
             }
 
             .success-icon {
@@ -3544,43 +3553,48 @@
                                     <i class="fas fa-address-card"></i> Formulario de entrega LatinPhone
                                 </div>
                             </div>
-                            <div class="delivery-iframe-container">
-                                <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; background-color: var(--light-gray);">
-                                    <div style="font-size: 2rem; font-weight: 600; margin-bottom: 2rem; color: var(--secondary-color);">Formulario de Entrega</div>
-                                    <div style="display: grid; width: 100%; max-width: 60rem; gap: 2rem;">
-                                        <div class="form-group">
-                                            <label class="form-label required">Nombre completo</label>
-                                            <input type="text" class="form-input" placeholder="Nombre y apellido" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Correo electrónico</label>
-                                            <input type="email" class="form-input" placeholder="ejemplo@correo.com" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Teléfono</label>
-                                            <input type="tel" class="form-input" placeholder="Incluye código de país" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Dirección completa</label>
-                                            <textarea class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Ciudad</label>
-                                            <input type="text" class="form-input" placeholder="Ciudad" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Estado/Provincia</label>
-                                            <input type="text" class="form-input" placeholder="Estado o provincia" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label required">Código postal</label>
-                                            <input type="text" class="form-input" placeholder="Código postal" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Instrucciones adicionales</label>
-                                            <textarea class="form-input" rows="2" placeholder="Indicaciones especiales para la entrega (opcional)"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary" style="margin-top: 1rem;">
+                            
+                            <!-- Formulario de entrega mejorado -->
+                            <div class="delivery-form">
+                                <div class="delivery-form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label required">Nombre completo</label>
+                                        <input type="text" class="form-input" placeholder="Nombre y apellido" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Correo electrónico</label>
+                                        <input type="email" class="form-input" placeholder="ejemplo@correo.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Teléfono</label>
+                                        <input type="tel" class="form-input" placeholder="Incluye código de país" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Número de identificación</label>
+                                        <input type="text" class="form-input" placeholder="Cédula, DNI, Pasaporte, etc." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Ciudad</label>
+                                        <input type="text" class="form-input" placeholder="Ciudad" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Estado/Provincia</label>
+                                        <input type="text" class="form-input" placeholder="Estado o provincia" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Código postal</label>
+                                        <input type="text" class="form-input" placeholder="Código postal" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Dirección completa</label>
+                                        <textarea class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Instrucciones adicionales</label>
+                                        <textarea class="form-input" rows="2" placeholder="Indicaciones especiales para la entrega (opcional)"></textarea>
+                                    </div>
+                                    <div class="form-group" style="grid-column: span 2; text-align: center; margin-top: 1rem;">
+                                        <button class="btn btn-primary" style="min-width: 20rem;">
                                             <i class="fas fa-paper-plane btn-icon"></i>Enviar información
                                         </button>
                                     </div>
@@ -3752,6 +3766,8 @@
             let orderNumber = '';
             const exchangeRate = 90; // 1 USD = 90 Bs
             const taxRate = 0.16; // 16% IVA
+            const MIN_NATIONALIZATION_AMOUNT_BS = 1800; // Monto mínimo de tasa de nacionalización en Bs
+            const MIN_NATIONALIZATION_THRESHOLD_USD = 1000; // Umbral en USD para aplicar lógica especial
 
             // Generar número de orden aleatorio
             function generateOrderNumber() {
@@ -4421,6 +4437,20 @@
                 updateOrderSummary();
             }
 
+            // Función para calcular la tasa de nacionalización con la lógica requerida
+            function calculateNationalizationFee(totalUSD) {
+                // Calcular primero el 2% estándar en Bs
+                let standardFee = totalUSD * 0.02 * exchangeRate;
+                
+                // Si el monto es inferior al umbral y la tasa estándar es menor que el mínimo
+                if (totalUSD < MIN_NATIONALIZATION_THRESHOLD_USD && standardFee < MIN_NATIONALIZATION_AMOUNT_BS) {
+                    return MIN_NATIONALIZATION_AMOUNT_BS;
+                }
+                
+                // En otros casos, usar la tasa estándar del 2%
+                return standardFee;
+            }
+
             // Función para actualizar el resumen del pedido
             function updateOrderSummary() {
                 // Calcular subtotal
@@ -4454,8 +4484,8 @@
                 paymentTotal.textContent = `$${total.toFixed(2)}`;
                 paymentTotalBs.textContent = `${(total * exchangeRate).toFixed(2)} Bs`;
                 
-                // Calcular tasa de nacionalización (2%)
-                const nationalizationFeeValue = total * 0.02 * exchangeRate;
+                // Calcular tasa de nacionalización con la lógica especial
+                const nationalizationFeeValue = calculateNationalizationFee(total);
                 nationalizationFee.textContent = nationalizationFeeValue.toFixed(2);
                 nationalizationModalFee.textContent = nationalizationFeeValue.toFixed(2) + " Bs";
                 
@@ -4694,8 +4724,8 @@
                 whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
                 
                 // Añadir info de nacionalización
-                const nationalizationFeeValue = total * 0.02 * exchangeRate;
-                whatsappMessage += `*Tasa de nacionalización (2%): ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
+                const nationalizationFeeValue = calculateNationalizationFee(total);
+                whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
                 
                 whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n`;
                 whatsappMessage += `Empresa de transporte: ${selectedShippingCompany.toUpperCase()}\n\n`;
