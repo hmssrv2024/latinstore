@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Elementos DOM
     const cartItemsContainer = document.querySelector('.cart-items');
-    const subtotalEl = document.querySelector('.subtotal span:last-child');
     const cartEmptyEl = document.querySelector('.cart-empty');
     const cartSummaryEl = document.querySelector('.cart-summary');
     const cartCount = document.querySelector('.cart-count');
@@ -27,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Validar los items del carrito
                 cart = cart.map(item => ({
                     ...item,
-                    price: typeof item.price === 'number' ? item.price : 0,
-                    quantity: typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1
+                    price: typeof item.price === 'number' && !isNaN(item.price) ? item.price : 0,
+                    quantity: typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0 ? item.quantity : 1
                 }));
             } else {
                 // Carrito de ejemplo
@@ -57,6 +56,113 @@ document.addEventListener('DOMContentLoaded', function() {
                 color: 'Negro'
             }
         ];
+    }
+    
+    // Agregar al carrito - Nueva función robusta
+    function addToCart(product) {
+        if (!product || !product.id) {
+            console.error("Producto inválido", product);
+            return false;
+        }
+        
+        // Validar precio
+        const price = typeof product.price === 'number' && !isNaN(product.price) ? product.price : 0;
+        
+        // Buscar si ya existe en el carrito
+        const existingItemIndex = cart.findIndex(document.addEventListener('DOMContentLoaded', function() {
+    // Constantes globales
+    const EXCHANGE_RATE = 88; // Tasa de cambio (Bs por USD)
+    const TAX_RATE = 0.16; // IVA 16%
+    
+    // Elementos DOM
+    const cartItemsContainer = document.querySelector('.cart-items');
+    const cartEmptyEl = document.querySelector('.cart-empty');
+    const cartSummaryEl = document.querySelector('.cart-summary');
+    const cartCount = document.querySelector('.cart-count');
+    const proceedCheckoutBtn = document.getElementById('proceed-checkout');
+    const summaryTotalBs = document.getElementById('summary-total-bs');
+    
+    // Variables de estado
+    let cart = [];
+    let orderTotal = 0;
+    let taxAmount = 0;
+    
+    // Cargar carrito desde localStorage o crear uno de ejemplo
+    function loadCart() {
+        const savedCart = localStorage.getItem('latinphone_cart');
+        
+        try {
+            if (savedCart && JSON.parse(savedCart).length > 0) {
+                cart = JSON.parse(savedCart);
+                // Validar los items del carrito
+                cart = cart.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'number' && !isNaN(item.price) ? item.price : 0,
+                    quantity: typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0 ? item.quantity : 1
+                }));
+            } else {
+                // Carrito de ejemplo
+                cart = getDefaultCart();
+                // Guardar carrito de ejemplo en localStorage
+                localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+            }
+        } catch (e) {
+            console.error("Error al cargar el carrito:", e);
+            cart = getDefaultCart();
+            localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+        }
+        
+        updateCartDisplay();
+    }
+    
+    // Obtener carrito de ejemplo
+    function getDefaultCart() {
+        return [
+            {
+                id: 's25ultra',
+                name: 'Samsung Galaxy S25 Ultra',
+                price: 1299.99,
+                quantity: 1,
+                image: 'https://th.bing.com/th?id=OPEC.Gy18E1jCjibBhg474C474&w=592&h=550&o=5&pid=21.1',
+                color: 'Negro'
+            }
+        ];
+    }
+    
+    // Agregar al carrito - Nueva función robusta
+    function addToCart(product) {
+        if (!product || !product.id) {
+            console.error("Producto inválido", product);
+            return false;
+        }
+        
+        // Validar precio
+        const price = typeof product.price === 'number' && !isNaN(product.price) ? product.price : 0;
+        
+        // Buscar si ya existe en el carrito
+        const existingItemIndex = cart.findIndex(item => item.id === product.id);
+        
+        if (existingItemIndex !== -1) {
+            // Si ya existe, aumentar la cantidad
+            cart[existingItemIndex].quantity = (parseInt(cart[existingItemIndex].quantity) || 0) + 1;
+        } else {
+            // Si no existe, agregar al carrito
+            cart.push({
+                id: product.id,
+                name: product.name || 'Producto',
+                price: price,
+                quantity: 1,
+                image: product.image || 'img/product-placeholder.png',
+                color: product.color || 'Estándar'
+            });
+        }
+        
+        // Guardar carrito en localStorage
+        localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+        
+        // Actualizar visualización
+        updateCartDisplay();
+        return true;
     }
     
     // Actualizar visualización del carrito
@@ -90,8 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Generar HTML para cada producto
         cart.forEach(item => {
             // Asegurar precio y cantidad válidos
-            const itemPrice = typeof item.price === 'number' ? item.price : 0;
-            const itemQuantity = typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1;
+            const itemPrice = typeof item.price === 'number' && !isNaN(item.price) ? item.price : 0;
+            const itemQuantity = typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0 ? item.quantity : 1;
             
             const itemTotal = itemPrice * itemQuantity;
             subtotal += itemTotal;
@@ -120,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Actualizar subtotal y contador
+        const subtotalEl = document.querySelector('.subtotal span:last-child');
         if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)} USD`;
         if (cartCount) cartCount.textContent = totalItems.toString();
         
@@ -165,7 +272,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const itemIndex = cart.findIndex(item => item.id === itemId);
         
         if (itemIndex !== -1) {
-            const newQuantity = cart[itemIndex].quantity + change;
+            // Asegurar que la cantidad actual sea un número válido
+            const currentQuantity = parseInt(cart[itemIndex].quantity) || 0;
+            const newQuantity = currentQuantity + change;
             
             if (newQuantity <= 0) {
                 // Si la cantidad llega a 0, eliminar el producto
@@ -206,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const shipping = 70; // Costo fijo de envío
         const total = orderTotal + taxAmount + shipping;
         
-        // Actualizar elementos
+        // Actualizar elementos si existen
         if (summarySubtotal) summarySubtotal.textContent = `$${orderTotal.toFixed(2)}`;
         if (summaryTax) summaryTax.textContent = `$${taxAmount.toFixed(2)}`;
         if (summaryTotal) summaryTotal.textContent = `$${total.toFixed(2)}`;
@@ -237,8 +346,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Verificar datos del carrito antes de proceder
         const validCart = cart.every(item => 
-            typeof item.price === 'number' && 
-            typeof item.quantity === 'number' && 
+            typeof item.price === 'number' && !isNaN(item.price) && 
+            typeof item.quantity === 'number' && !isNaN(item.quantity) && 
             item.quantity > 0
         );
         
@@ -277,6 +386,47 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Función para manejar eventos de "Agregar al carrito" desde la página de productos
+    function handleProductPageAddToCart() {
+        // Seleccionar todos los botones "Agregar al carrito" de la página de productos
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        
+        if (addToCartButtons.length > 0) {
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Obtener datos del producto desde los atributos data-*
+                    const productId = this.getAttribute('data-id');
+                    const productName = this.getAttribute('data-name');
+                    const productPrice = parseFloat(this.getAttribute('data-price'));
+                    const productImage = this.getAttribute('data-image');
+                    const productColor = this.getAttribute('data-color') || 'Negro';
+                    
+                    if (!productId || !productName || isNaN(productPrice)) {
+                        console.error('Datos del producto incompletos');
+                        return;
+                    }
+                    
+                    // Crear objeto del producto
+                    const product = {
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        image: productImage,
+                        color: productColor
+                    };
+                    
+                    // Agregar al carrito
+                    if (addToCart(product)) {
+                        // Mostrar mensaje de éxito
+                        alert(`${productName} agregado al carrito.`);
+                    }
+                });
+            });
+        }
+    }
+    
     // Agregar event listener al botón de proceder al pago
     if (proceedCheckoutBtn) {
         proceedCheckoutBtn.addEventListener('click', goToCheckout);
@@ -284,5 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar carrito
     loadCart();
-});
+    
+    // Verificar si estamos en la página de productos y configurar botones
+    handleProductPageAddToCart();
 });
