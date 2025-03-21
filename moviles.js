@@ -471,21 +471,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Proceder al checkout
+    // Proceder al checkout - FUNCIÓN CORREGIDA
     function checkout() {
         if (cart.length === 0) {
             showNotification('Tu carrito está vacío');
             return;
         }
         
-        // Aquí iría la lógica para procesar el pago
-        alert('¡Gracias por tu compra! Serás redirigido a la página de pago.');
+        // Calcular totales antes de guardar
+        const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const tax = subtotal * 0.16;
+        const shipping = 70;
+        const total = subtotal + tax + shipping;
         
-        // Limpiar carrito después de la compra
-        cart = [];
-        updateCart();
-        saveCart();
-        closeCartSidebar();
+        const totals = {
+            subtotal: subtotal,
+            tax: tax,
+            shipping: shipping,
+            total: total
+        };
+        
+        try {
+            // Guardar carrito y totales en localStorage antes de redirigir
+            localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+            localStorage.setItem('latinphone_cart_totals', JSON.stringify(totals));
+            
+            // Mostrar mensaje
+            alert('¡Gracias por tu compra! Serás redirigido a la página de pago.');
+            
+            // Redirigir a la página de pago después de un breve retraso
+            setTimeout(function() {
+                window.location.href = 'pago.html';
+            }, 300);
+        } catch (err) {
+            console.error("Error al procesar el checkout:", err);
+            
+            // Método alternativo de redirección como fallback
+            alert("Redirigiendo a la página de pago...");
+            window.open('pago.html', '_self');
+        }
     }
     
     // Event Listeners
