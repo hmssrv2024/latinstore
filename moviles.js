@@ -1,4 +1,64 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Cargar datos de manera segura
+function loadRecommendations() {
+    const recommendedSlider = document.querySelector('.recommended-slider .slider-track');
+    if (!recommendedSlider) return;
+    
+    // Array de productos recomendados
+    const recommendations = [
+        {
+            id: 'zflip6',
+            name: 'Samsung Galaxy Z Flip 6',
+            price: 1299.99,
+            image: 'https://images.samsung.com/es/smartphones/galaxy-z-flip6/accessories/images/galaxy-z-flip6-accessories-kv.jpg?imbypass=true',
+            category: 'foldable'
+        },
+        {
+            id: 'airpodsmax',
+            name: 'AirPods Max',
+            price: 549.99,
+            image: 'https://via.placeholder.com/300',
+            category: 'accessories'
+        },
+        {
+            id: 'pixel10pro',
+            name: 'Google Pixel 10 Pro',
+            price: 1099.99,
+            image: 'https://via.placeholder.com/300',
+            category: 'smartphone'
+        },
+        {
+            id: 'galaxybook5',
+            name: 'Samsung Galaxy Book5 Pro',
+            price: 1499.99,
+            image: 'https://images.samsung.com/is/image/samsung/assets/es/home/Galaxy-Book5-Pro_Home-Latest-Deals-Large_684x684_UK_PC.jpg?$684_684_JPG$',
+            category: 'computers'
+        },
+        {
+            id: 'mixflip',
+            name: 'Xiaomi Mix Flip',
+            price: 1199.99,
+            image: 'https://via.placeholder.com/300',
+            category: 'foldable'
+        }
+    ];
+    
+    // Generar HTML para cada recomendación
+    recommendations.forEach(product => {
+        if (!product.image || !product.name || typeof product.price !== 'number') {
+            console.error("Datos inválidos en producto recomendado:", product);
+            return;
+        }
+        
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+        productCard.innerHTML = `
+            <div class="product-media">
+                <img src="${product.image}" alt="${product.name}">
+            </div>
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <div class="product-price">
+                    <span class="price">$${product.price.toFixed(2)}document.addEventListener('DOMContentLoaded', function() {
     // Elementos del DOM
     const searchToggle = document.getElementById('search-toggle');
     const searchBar = document.querySelector('.search-bar');
