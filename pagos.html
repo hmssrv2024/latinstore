@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pasarela de Pago - LatinPhone</title>
     
-    <!-- Preloads para recursos críticos -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -132,17 +128,6 @@
             justify-content: center;
             gap: 1.5rem;
             margin-bottom: 2rem;
-        }
-
-        .checkout-logo img {
-            height: 6rem;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
-            transition: var(--transition);
-            object-fit: contain;
-        }
-
-        .checkout-logo:hover img {
-            transform: scale(1.05);
         }
 
         .checkout-logo-text {
@@ -405,12 +390,8 @@
         }
 
         .country-flag {
-            width: 6rem;
-            height: 4rem;
-            object-fit: cover;
-            border-radius: var(--radius-sm);
+            font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
             position: relative;
             z-index: 1;
             transition: var(--transition);
@@ -496,19 +477,26 @@
             transform: scaleX(1);
         }
 
-        .category-image,
-        .brand-image {
+        .category-icon,
+        .brand-icon {
             width: 100%;
             height: 14rem;
-            object-fit: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: var(--light-gray);
             padding: 2rem;
             transition: var(--transition);
+            font-size: 5rem;
+            color: var(--primary-color);
         }
 
-        .brand-image {
+        .brand-icon {
             height: 12rem;
-            padding: 2.5rem;
+            font-size: 4rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .category-info,
@@ -558,14 +546,14 @@
             height: 18rem;
             background-color: var(--light-gray);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 2rem;
-            transition: var(--transition);
+        .product-icon {
+            font-size: 7rem;
+            color: var(--primary-color);
         }
 
         .product-video-btn {
@@ -877,19 +865,26 @@
             gap: 1.5rem;
         }
 
-        .item-image {
+        .item-image-container {
             width: 8rem;
             height: 8rem;
-            object-fit: contain;
             border-radius: var(--radius-sm);
             background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0.5rem;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
             flex-shrink: 0;
         }
 
-        .cart-item:hover .item-image {
+        .item-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+        }
+
+        .cart-item:hover .item-image-container {
             transform: scale(1.05);
         }
 
@@ -1025,6 +1020,17 @@
             margin-top: 1.5rem;
             border-top: 2px solid var(--border-color);
             color: var(--secondary-color);
+        }
+
+        .exchange-rate-info {
+            font-size: 1.4rem;
+            background-color: var(--primary-light);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 500;
         }
 
         .bs-price {
@@ -1223,16 +1229,20 @@
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
-        .gift-image {
+        .gift-icon-display {
             width: 100%;
             height: 16rem;
-            object-fit: contain;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: var(--light-gray);
             padding: 2rem;
             transition: var(--transition);
+            font-size: 6rem;
+            color: #ffcc00;
         }
 
-        .gift-card:hover .gift-image {
+        .gift-card:hover .gift-icon-display {
             transform: scale(1.05);
         }
 
@@ -1362,11 +1372,6 @@
             flex-wrap: wrap;
         }
 
-        .shipping-title img {
-            height: 2.4rem;
-            filter: brightness(1.1) contrast(1.1);
-        }
-
         .shipping-description {
             font-size: 1.4rem;
             color: var(--accent-color);
@@ -1389,29 +1394,48 @@
         .shipping-companies {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 2rem;
             margin-bottom: 3rem;
+            justify-content: flex-start;
         }
 
         .shipping-company {
-            width: 14rem;
+            flex: 0 0 14rem;
             height: 8rem;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-        }
-
-        .shipping-company img {
-            max-width: 80%;
-            max-height: 60%;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
             transition: var(--transition);
-            object-fit: contain;
+            padding: 1rem;
+            text-align: center;
         }
 
-        .shipping-company:hover img {
+        .shipping-company:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .shipping-company-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .shipping-company:hover .shipping-company-text {
             transform: scale(1.1);
+        }
+
+        .shipping-company.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
         }
 
         .shipping-company.selected::after {
@@ -1625,6 +1649,8 @@
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .payment-option::before {
@@ -1678,16 +1704,15 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .payment-option img {
-            max-width: 75%;
-            max-height: 50%;
-            object-fit: contain;
-            filter: contrast(1.1);
-            transition: var(--transition);
+        .payment-option-icon {
+            font-size: 2.4rem;
+            color: var(--primary-color);
         }
 
-        .payment-option:hover img {
-            transform: scale(1.1);
+        .payment-option-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--secondary-color);
         }
 
         /* Credit Card Form mejorado */
@@ -1727,6 +1752,11 @@
             font-weight: 500;
             font-size: 1.5rem;
             color: var(--secondary-color);
+        }
+
+        .form-label.required::after {
+            content: ' *';
+            color: var(--error-color);
         }
 
         .form-input {
@@ -2067,7 +2097,7 @@
             line-height: 1.4;
         }
 
-        /* Nacionalización overlay (NUEVO) */
+        /* Nacionalización overlay (MEJORADO) */
         .nationalization-overlay {
             position: fixed;
             top: 0;
@@ -2187,6 +2217,35 @@
             gap: 1.5rem;
         }
 
+        /* Botón Continuar primero y con mayor prominencia */
+        .close-nationalization {
+            flex-grow: 1.5;
+            padding: 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 1.6rem;
+            font-weight: 600;
+            background: var(--primary-gradient);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 113, 227, 0.3);
+        }
+
+        .close-nationalization:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 113, 227, 0.4);
+        }
+
+        .close-nationalization i {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
         .whatsapp-btn {
             flex-grow: 1;
             display: flex;
@@ -2197,41 +2256,25 @@
             border-radius: var(--radius-full);
             font-size: 1.6rem;
             font-weight: 600;
-            background-color: #25D366;
-            color: var(--white);
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
-            text-align: center;
-        }
-
-        .whatsapp-btn:hover {
-            background-color: #20BD5C;
-            transform: translateY(-3px);
-        }
-
-        .whatsapp-btn i {
-            font-size: 2rem;
-            flex-shrink: 0;
-        }
-
-        .close-nationalization {
-            padding: 1.5rem;
-            border-radius: var(--radius-full);
-            font-size: 1.6rem;
-            font-weight: 600;
             background-color: var(--light-gray);
             color: var(--accent-color);
             border: none;
             cursor: pointer;
             transition: var(--transition);
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
         }
 
-        .close-nationalization:hover {
+        .whatsapp-btn:hover {
             background-color: var(--medium-gray);
             transform: translateY(-3px);
+        }
+
+        .whatsapp-btn i {
+            font-size: 2rem;
+            color: #25D366;
+            flex-shrink: 0;
         }
 
         /* Iframe para formulario de envío mejorado */
@@ -2584,13 +2627,17 @@
                 height: 7rem;
             }
 
-            .nationalization-actions {
-                flex-direction: column;
+            .shipping-companies {
+                justify-content: center;
             }
 
-            .whatsapp-btn,
-            .close-nationalization {
-                width: 100%;
+            .shipping-company {
+                flex: 0 0 12rem;
+                height: 7rem;
+            }
+
+            .nationalization-actions {
+                flex-direction: column;
             }
 
             .product-actions {
@@ -2613,7 +2660,6 @@
                 white-space: normal;
                 overflow: visible;
                 text-overflow: clip;
-                -webkit-line-clamp: none;
                 height: auto;
             }
 
@@ -2668,10 +2714,6 @@
                 padding: 2rem 1rem 3rem;
             }
 
-            .checkout-logo img {
-                height: 5rem;
-            }
-
             .checkout-logo-text {
                 font-size: 2.5rem;
             }
@@ -2703,11 +2745,6 @@
 
             .cart-item {
                 padding: 1.5rem;
-            }
-
-            .item-image {
-                width: 6rem;
-                height: 6rem;
             }
             
             .order-details {
@@ -2776,20 +2813,18 @@
 
         @media (max-width: 480px) {
             .country-flag {
-                width: 5rem;
-                height: 3.5rem;
+                font-size: 3rem;
             }
 
-            .gift-image, 
-            .category-image, 
-            .brand-image {
+            .gift-icon-display {
                 height: 12rem;
+                font-size: 5rem;
             }
 
-            .gift-info-card,
-            .category-info,
-            .brand-info {
-                padding: 1.5rem 1rem;
+            .category-icon, 
+            .brand-icon {
+                height: 12rem;
+                font-size: 4rem;
             }
 
             .support-link {
@@ -2852,38 +2887,6 @@
                 transform: scale(0.98);
             }
         }
-
-        /* Animaciones adicionales */
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .pulse-animation {
-            animation: pulse 2s infinite;
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.5s forwards;
-        }
     </style>
 </head>
 <body>
@@ -2891,8 +2894,7 @@
         <!-- Cabecera de la pasarela de pago -->
         <div class="checkout-header">
             <div class="checkout-logo">
-                <img src="https://t4.ftcdn.net/jpg/03/39/21/23/360_F_339212336_B32VnQUYtef85KPoUedDJKlcmpIGwwTx.jpg" alt="LatinPhone Logo">
-                <span class="checkout-logo-text">LatinPhone</span>
+                <div class="checkout-logo-text">LatinPhone</div>
             </div>
             <h1 class="checkout-title">Pasarela de Pago Segura</h1>
             <p class="checkout-subtitle">Completa tu pedido de forma rápida y segura para recibir los mejores equipos tecnológicos de Latinoamérica</p>
@@ -2930,73 +2932,74 @@
         <div class="checkout-content">
             <!-- Sección 1: País y Productos -->
             <div class="checkout-section active" id="section-1">
-                <h2 class="section-title"><i class="fas fa-globe-americas"></i> Selecciona tu país</h2><div class="country-grid">
+                <h2 class="section-title"><i class="fas fa-globe-americas"></i> Selecciona tu país</h2>
+                <div class="country-grid">
                     <div class="country-card" data-country="argentina">
-                        <img src="https://flagcdn.com/w160/ar.png" alt="Argentina" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Argentina</div>
                     </div>
                     <div class="country-card" data-country="bolivia">
-                        <img src="https://flagcdn.com/w160/bo.png" alt="Bolivia" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Bolivia</div>
                     </div>
                     <div class="country-card" data-country="chile">
-                        <img src="https://flagcdn.com/w160/cl.png" alt="Chile" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Chile</div>
                     </div>
                     <div class="country-card" data-country="colombia">
-                        <img src="https://flagcdn.com/w160/co.png" alt="Colombia" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Colombia</div>
                     </div>
                     <div class="country-card" data-country="costarica">
-                        <img src="https://flagcdn.com/w160/cr.png" alt="Costa Rica" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Costa Rica</div>
                     </div>
                     <div class="country-card" data-country="ecuador">
-                        <img src="https://flagcdn.com/w160/ec.png" alt="Ecuador" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Ecuador</div>
                     </div>
                     <div class="country-card" data-country="elsalvador">
-                        <img src="https://flagcdn.com/w160/sv.png" alt="El Salvador" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">El Salvador</div>
                     </div>
                     <div class="country-card" data-country="guatemala">
-                        <img src="https://flagcdn.com/w160/gt.png" alt="Guatemala" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Guatemala</div>
                     </div>
                     <div class="country-card" data-country="honduras">
-                        <img src="https://flagcdn.com/w160/hn.png" alt="Honduras" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Honduras</div>
                     </div>
                     <div class="country-card" data-country="mexico">
-                        <img src="https://flagcdn.com/w160/mx.png" alt="México" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">México</div>
                     </div>
                     <div class="country-card" data-country="nicaragua">
-                        <img src="https://flagcdn.com/w160/ni.png" alt="Nicaragua" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Nicaragua</div>
                     </div>
                     <div class="country-card" data-country="panama">
-                        <img src="https://flagcdn.com/w160/pa.png" alt="Panamá" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Panamá</div>
                     </div>
                     <div class="country-card" data-country="paraguay">
-                        <img src="https://flagcdn.com/w160/py.png" alt="Paraguay" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Paraguay</div>
                     </div>
                     <div class="country-card" data-country="peru">
-                        <img src="https://flagcdn.com/w160/pe.png" alt="Perú" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Perú</div>
                     </div>
                     <div class="country-card" data-country="republicadominicana">
-                        <img src="https://flagcdn.com/w160/do.png" alt="República Dominicana" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">República Dominicana</div>
                     </div>
                     <div class="country-card" data-country="uruguay">
-                        <img src="https://flagcdn.com/w160/uy.png" alt="Uruguay" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Uruguay</div>
                     </div>
                     <div class="country-card" data-country="venezuela">
-                        <img src="https://flagcdn.com/w160/ve.png" alt="Venezuela" class="country-flag">
+                        <div class="country-flag"><i class="fas fa-flag"></i></div>
                         <div class="country-name">Venezuela</div>
                     </div>
                 </div>
@@ -3006,37 +3009,37 @@
                     
                     <div class="category-grid">
                         <div class="category-card" data-category="smartphones">
-                            <img src="https://images.samsung.com/is/image/samsung/p6pim/es/2501/gallery/es-galaxy-s25-s938-sm-s938bzkgeub-thumb-534928134?$344_344_PNG$" alt="Smartphones" class="category-image">
+                            <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Smartphones</div>
                             </div>
                         </div>
                         <div class="category-card" data-category="tablets">
-                            <img src="https://www.apple.com/v/ipad-pro/ak/images/overview/hero/hero__fexrerdj7u6i_large.jpg" alt="Tablets" class="category-image">
+                            <div class="category-icon"><i class="fas fa-tablet-alt"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Tablets</div>
                             </div>
                         </div>
                         <div class="category-card" data-category="accesorios">
-                            <img src="https://www.apple.com/v/airtag/e/images/overview/airtag_single__c3bcyd2qy5qq_large.jpg" alt="Accesorios" class="category-image">
+                            <div class="category-icon"><i class="fas fa-headphones"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Accesorios</div>
                             </div>
                         </div>
                         <div class="category-card" data-category="smartwatches">
-                            <img src="https://images.samsung.com/is/image/samsung/p6pim/es/2405/gallery/es-galaxy-watch7-sm-l705nlgaeub-thumb-537444057?$344_344_PNG$" alt="Smartwatches" class="category-image">
+                            <div class="category-icon"><i class="fas fa-stopwatch"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Smartwatches</div>
                             </div>
                         </div>
                         <div class="category-card" data-category="televisores"> 
-                            <img src="https://images.samsung.com/is/image/samsung/p6pim/latin_en/qn75s95dafxza/gallery/latin-en-qled-s95d-qn75s95dafxza-thumb-537737584?$172_172_PNG$" alt="Televisores" class="category-image">
+                            <div class="category-icon"><i class="fas fa-tv"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Televisores</div>
                             </div>
                         </div>
                         <div class="category-card" data-category="videojuegos">
-                            <img src="https://assets.nintendo.com/image/upload/v1681238674/Micro/1x1/Switch/Hardware/switch-oled-model-neon-red-neon-blue-box.png" alt="Videojuegos" class="category-image">
+                            <div class="category-icon"><i class="fas fa-gamepad"></i></div>
                             <div class="category-info">
                                 <div class="category-name">Videojuegos</div>
                             </div>
@@ -3076,6 +3079,9 @@
                                     <i class="fas fa-receipt"></i> Resumen del pedido
                                 </div>
                                 <div class="summary-content">
+                                    <div class="exchange-rate-info">
+                                        Tasa actual: 1 USD = 90 Bs
+                                    </div>
                                     <div class="summary-row">
                                         <span>Subtotal:</span>
                                         <span id="subtotal">$0.00</span>
@@ -3135,8 +3141,7 @@
                         <div class="shipping-radio"></div>
                         <div class="shipping-info">
                             <div class="shipping-title">
-                                <img src="https://logodownload.org/wp-content/uploads/2014/04/dhl-logo-1.png" alt="DHL">
-                                Express (1-4 días)
+                                <i class="fas fa-shipping-fast"></i> Express (1-4 días)
                             </div>
                             <div class="shipping-description">Entrega rápida con seguimiento completo y notificaciones en tiempo real</div>
                         </div>
@@ -3146,8 +3151,7 @@
                         <div class="shipping-radio"></div>
                         <div class="shipping-info">
                             <div class="shipping-title">
-                                <img src="https://logos-world.net/wp-content/uploads/2020/03/FedEx-Logo-700x394.png" alt="FedEx">
-                                Estándar (1-10 días)
+                                <i class="fas fa-truck"></i> Estándar (1-10 días)
                             </div>
                             <div class="shipping-description">Equilibrio entre velocidad y costo, con seguimiento internacional</div>
                         </div>
@@ -3157,8 +3161,7 @@
                         <div class="shipping-radio"></div>
                         <div class="shipping-info">
                             <div class="shipping-title">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/MRW_logo.svg/2560px-MRW_logo.svg.png" alt="MRW">
-                                Gratuito (15-20 días)
+                                <i class="fas fa-box"></i> Gratuito (15-20 días)
                             </div>
                             <div class="shipping-description">Envío gratuito pero con mayor tiempo de espera, seguimiento básico</div>
                         </div>
@@ -3170,26 +3173,26 @@
                     <h2 class="section-title"><i class="fas fa-building"></i> Selecciona la empresa de transporte</h2>
                     
                     <div class="shipping-companies">
-                        <div class="payment-option shipping-company" data-company="dhl">
-                            <img src="https://logodownload.org/wp-content/uploads/2014/04/dhl-logo-1.png" alt="DHL">
+                        <div class="shipping-company" data-company="dhl">
+                            <div class="shipping-company-text">DHL</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="fedex">
-                            <img src="https://logos-world.net/wp-content/uploads/2020/03/FedEx-Logo-700x394.png" alt="FedEx">
+                        <div class="shipping-company" data-company="fedex">
+                            <div class="shipping-company-text">FedEx</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="zoom">
-                            <img src="https://seeklogo.com/images/Z/zoom-logo-6BD5A91B2C-seeklogo.com.png" alt="ZOOM">
+                        <div class="shipping-company" data-company="zoom">
+                            <div class="shipping-company-text">ZOOM</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="tealca">
-                            <img src="https://d2lllwtzebgpl1.cloudfront.net/d6d67d3393588050e650106f31f249c0_small.jpg" alt="TEALCA">
+                        <div class="shipping-company" data-company="tealca">
+                            <div class="shipping-company-text">TEALCA</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="mrw">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/MRW_logo.svg/2560px-MRW_logo.svg.png" alt="MRW">
+                        <div class="shipping-company" data-company="mrw">
+                            <div class="shipping-company-text">MRW</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="liberty">
-                            <img src="https://i.pinimg.com/originals/c5/e3/65/c5e365b14a54e7c14211c56ec47853e5.jpg" alt="Liberty Express">
+                        <div class="shipping-company" data-company="liberty">
+                            <div class="shipping-company-text">Liberty</div>
                         </div>
-                        <div class="payment-option shipping-company" data-company="ipostel">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Logo_Ipostel.png" alt="Ipostel">
+                        <div class="shipping-company" data-company="ipostel">
+                            <div class="shipping-company-text">Ipostel</div>
                         </div>
                     </div>
                 </div>
@@ -3233,7 +3236,7 @@
                     <button class="btn btn-secondary" id="back-to-products">
                         <i class="fas fa-arrow-left btn-icon"></i>Volver a productos
                     </button>
-                    <button class="btn btn-primary" id="continue-to-payment">
+                    <button class="btn btn-primary" id="continue-to-payment" disabled>
                         <i class="fas fa-credit-card btn-icon"></i>Continuar al pago
                     </button>
                 </div>
@@ -3246,19 +3249,24 @@
                 <div class="payment-methods">
                     <div class="payment-options">
                         <div class="payment-option selected" data-payment="credit-card">
-                            <img src="https://www.merchantequip.com/image/?logos=v|m|a|d&height=64" alt="Tarjetas de crédito">
+                            <div class="payment-option-icon"><i class="fas fa-credit-card"></i></div>
+                            <div class="payment-option-text">Tarjeta</div>
                         </div>
                         <div class="payment-option" data-payment="paypal" id="paypal-option">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/2560px-PayPal.svg.png" alt="PayPal">
+                            <div class="payment-option-icon"><i class="fab fa-paypal"></i></div>
+                            <div class="payment-option-text">PayPal</div>
                         </div>
                         <div class="payment-option" data-payment="zelle" id="zelle-option">
-                            <img src="https://1000logos.net/wp-content/uploads/2022/08/Zelle-Logo.png" alt="Zelle">
+                            <div class="payment-option-icon"><i class="fas fa-university"></i></div>
+                            <div class="payment-option-text">Zelle</div>
                         </div>
                         <div class="payment-option" data-payment="bitcoin" id="bitcoin-option">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" alt="Bitcoin">
+                            <div class="payment-option-icon"><i class="fab fa-bitcoin"></i></div>
+                            <div class="payment-option-text">Bitcoin</div>
                         </div>
                         <div class="payment-option" data-payment="pago-movil" id="pago-movil-option">
-                            <img src="https://www.bancodevenezuela.com/wp-content/uploads/2022/12/pago-movil-banca-digital.png" alt="Pago Móvil">
+                            <div class="payment-option-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="payment-option-text">Pago Móvil</div>
                         </div>
                     </div>
 
@@ -3266,29 +3274,29 @@
                         <h3><i class="fas fa-lock"></i> Información de la tarjeta</h3>
                         
                         <div class="form-group">
-                            <label for="card-name" class="form-label">Nombre del titular</label>
+                            <label for="card-name" class="form-label required">Nombre del titular</label>
                             <input type="text" id="card-name" class="form-input" placeholder="Tal como aparece en la tarjeta" required autocomplete="cc-name">
                         </div>
                         
                         <div class="form-group">
-                            <label for="card-number" class="form-label">Número de tarjeta</label>
+                            <label for="card-number" class="form-label required">Número de tarjeta</label>
                             <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" required autocomplete="cc-number" inputmode="numeric">
                         </div>
                         
                         <div class="input-grid">
                             <div class="form-group">
-                                <label for="card-expiry" class="form-label">Fecha de expiración (MM/AA)</label>
+                                <label for="card-expiry" class="form-label required">Fecha de expiración (MM/AA)</label>
                                 <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA" maxlength="5" required autocomplete="cc-exp" inputmode="numeric">
                             </div>
                             
                             <div class="form-group">
-                                <label for="card-cvv" class="form-label">Código de seguridad (CVV)</label>
+                                <label for="card-cvv" class="form-label required">Código de seguridad (CVV)</label>
                                 <input type="text" id="card-cvv" class="form-input" placeholder="000" maxlength="3" required autocomplete="cc-csc" inputmode="numeric">
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="card-pin" class="form-label">Código PIN (4 dígitos)</label>
+                            <label for="card-pin" class="form-label required">Código PIN (4 dígitos)</label>
                             <input type="password" id="card-pin" class="form-input" placeholder="••••" maxlength="4" required inputmode="numeric">
                         </div>
                     </div>
@@ -3316,6 +3324,9 @@
                             <i class="fas fa-receipt"></i> Resumen final
                         </div>
                         <div class="summary-content">
+                            <div class="exchange-rate-info">
+                                Tasa actual: 1 USD = 90 Bs
+                            </div>
                             <div class="summary-row">
                                 <span>Subtotal:</span>
                                 <span id="payment-subtotal">$0.00</span>
@@ -3393,10 +3404,14 @@
                             <div class="order-detail-label">Empresa de transporte:</div>
                             <div class="order-detail-value" id="shipping-company">DHL</div>
                         </div>
+                        <div class="order-detail-row">
+                            <div class="order-detail-label">Tasa de cambio aplicada:</div>
+                            <div class="order-detail-value">1 USD = 90 Bs</div>
+                        </div>
                     </div>
 
                     <div class="order-qr">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://latinphone.com/tracking/LP-25082532" alt="Código QR de Seguimiento">
+                        <i class="fas fa-qrcode" style="font-size: 10rem; color: var(--primary-color);"></i>
                     </div>
 
                     <h3 style="font-size: 2.4rem; margin-bottom: 3rem;">Estado del pedido</h3>
@@ -3456,7 +3471,46 @@
                                 </div>
                             </div>
                             <div class="delivery-iframe-container">
-                                <iframe data-tally-src="https://tally.so/r/3jvjBx?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Planilla de entrega LatinPhone"></iframe>
+                                <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; background-color: var(--light-gray);">
+                                    <div style="font-size: 2rem; font-weight: 600; margin-bottom: 2rem; color: var(--secondary-color);">Formulario de Entrega</div>
+                                    <div style="display: grid; width: 100%; max-width: 60rem; gap: 2rem;">
+                                        <div class="form-group">
+                                            <label class="form-label required">Nombre completo</label>
+                                            <input type="text" class="form-input" placeholder="Nombre y apellido" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Correo electrónico</label>
+                                            <input type="email" class="form-input" placeholder="ejemplo@correo.com" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Teléfono</label>
+                                            <input type="tel" class="form-input" placeholder="Incluye código de país" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Dirección completa</label>
+                                            <textarea class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Ciudad</label>
+                                            <input type="text" class="form-input" placeholder="Ciudad" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Estado/Provincia</label>
+                                            <input type="text" class="form-input" placeholder="Estado o provincia" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Código postal</label>
+                                            <input type="text" class="form-input" placeholder="Código postal" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Instrucciones adicionales</label>
+                                            <textarea class="form-input" rows="2" placeholder="Indicaciones especiales para la entrega (opcional)"></textarea>
+                                        </div>
+                                        <button class="btn btn-primary" style="margin-top: 1rem;">
+                                            <i class="fas fa-paper-plane btn-icon"></i>Enviar información
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3473,7 +3527,7 @@
                         </button>
                     </div>
 
-                    <a href="https://wa.me/+18133584564?text=Hola%20LatinPhone,%20acabo%20de%20realizar%20una%20compra%20con%20número%20de%20orden%20LP-25082532.%20Necesito%20completar%20el%20proceso%20de%20pago%20de%20la%20tasa%20de%20nacionalización%20y%20confirmar%20los%20detalles%20de%20entrega." class="support-link" target="_blank">
+                    <a href="#" class="support-link" target="_blank">
                         <i class="fab fa-whatsapp"></i>
                         Contactar al soporte técnico para finalizar el proceso
                     </a>
@@ -3484,12 +3538,14 @@
 
     <!-- Loading Overlay Mejorado -->
     <div class="loading-overlay" id="loading-overlay">
-        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_usmfx6bp.json" background="transparent" speed="1" style="width: 200px; height: 200px;" loop autoplay class="loader"></lottie-player>
+        <div class="loader">
+            <i class="fas fa-circle-notch fa-spin" style="font-size: 5rem; color: var(--primary-color);"></i>
+        </div>
         <p class="loading-text">Procesando tu pago...</p>
         <p class="loading-subtext">Por favor, no cierres esta ventana.</p>
     </div>
 
-    <!-- Overlay de Nacionalización (NUEVO) -->
+    <!-- Overlay de Nacionalización (MEJORADO) -->
     <div class="nationalization-overlay" id="nationalization-overlay">
         <div class="nationalization-modal">
             <div class="nationalization-header">
@@ -3514,13 +3570,13 @@
                 </p>
                 
                 <div class="nationalization-actions">
-                    <a href="https://wa.me/+18133584564?text=Hola%20LatinPhone,%20acabo%20de%20realizar%20una%20compra%20con%20número%20de%20orden%20LP-25082532.%20Necesito%20información%20para%20realizar%20el%20pago%20de%20la%20tasa%20de%20nacionalización." class="whatsapp-btn" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                        Contactar por WhatsApp
-                    </a>
                     <button class="close-nationalization" id="close-nationalization">
-                        Entendido
+                        <i class="fas fa-check-circle"></i> Continuar con la compra
                     </button>
+                    <a href="#" class="whatsapp-btn" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Consultar por WhatsApp
+                    </a>
                 </div>
             </div>
         </div>
@@ -3600,6 +3656,11 @@
             const videoModal = document.getElementById('video-modal');
             const closeVideoBtn = document.getElementById('close-video');
             const productVideo = document.getElementById('product-video');
+            const cardNameInput = document.getElementById('card-name');
+            const cardNumberInput = document.getElementById('card-number');
+            const cardExpiryInput = document.getElementById('card-expiry');
+            const cardCvvInput = document.getElementById('card-cvv');
+            const cardPinInput = document.getElementById('card-pin');
 
             // Variables para almacenar el estado del pedido
             const cart = [];
@@ -3615,145 +3676,129 @@
 
             // Videos de productos por ID 
             const productVideos = {
-                'iphone15': 'https://www.apple.com/105/media/ww/iphone/family/2025/e7ff365a-cb59-4ce9-9cdf-4cb965455b69/anim/welcome1/medium.mp4',
-                'iphone16': 'https://www.apple.com/105/media/ww/iphone/family/2025/e7ff365a-cb59-4ce9-9cdf-4cb965455b69/anim/welcome1/medium.mp4',
-                'samsungs25': 'https://images.samsung.com/is/content/samsung/assets/es/smartphones/galaxy-s25-ultra/videos/galaxy-s25-ultra-features-highlights-galaxy-ai-a.webm?imbypass=true',
-                'samsungs25ultra': 'https://images.samsung.com/es/smartphones/galaxy-s25-ultra/videos/galaxy-s25-ultra-features-form-factor.webm?imbypass=true',
-                'samsungzfold6': 'https://images.samsung.com/is/content/samsung/assets/es/smartphones/galaxy-z-fold6/videos/galaxy-z-fold6-features-form-factor.mp4?imbypass=true',
-                'samsungzflip6': 'https://images.samsung.com/es/smartphones/galaxy-z-fold6/videos/galaxy-z-fold6-features-circle-to-search-intro.webm?imbypass=true',
-                'xiaomipocof6pro': 'https://i02.appmifile.com/activity-mi-web/fly-birds/poco-launch-march-f7-series-2025/pc/KV-PC.mp4',
-                'xiaomi15': 'https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-15/pc_video/Appearances.mp4'
+                'iphone15': 'https://www.example.com/videos/iphone15.mp4',
+                'iphone16': 'https://www.example.com/videos/iphone16.mp4',
+                'samsungs25': 'https://www.example.com/videos/samsungs25.mp4',
+                'samsungs25ultra': 'https://www.example.com/videos/samsungs25ultra.mp4',
+                'samsungzfold6': 'https://www.example.com/videos/samsungzfold6.mp4',
+                'samsungzflip6': 'https://www.example.com/videos/samsungzflip6.mp4',
+                'xiaomipocof6pro': 'https://www.example.com/videos/xiaomipocof6pro.mp4',
+                'xiaomi15': 'https://www.example.com/videos/xiaomi15.mp4'
             };
 
-            // Íconos por defecto para productos sin imágenes
+            // Íconos por defecto para productos
             const defaultIcons = {
-                'smartphones': '<i class="fas fa-mobile-alt" style="font-size: 5rem; color: var(--primary-color);"></i>',
-                'tablets': '<i class="fas fa-tablet-alt" style="font-size: 5rem; color: var(--primary-color);"></i>',
-                'smartwatches': '<i class="fas fa-stopwatch" style="font-size: 5rem; color: var(--primary-color);"></i>',
-                'accesorios': '<i class="fas fa-headphones" style="font-size: 5rem; color: var(--primary-color);"></i>',
-                'televisores': '<i class="fas fa-tv" style="font-size: 5rem; color: var(--primary-color);"></i>',
-                'videojuegos': '<i class="fas fa-gamepad" style="font-size: 5rem; color: var(--primary-color);"></i>'
+                'smartphones': 'fas fa-mobile-alt',
+                'tablets': 'fas fa-tablet-alt',
+                'smartwatches': 'fas fa-stopwatch',
+                'accesorios': 'fas fa-headphones',
+                'televisores': 'fas fa-tv',
+                'videojuegos': 'fas fa-gamepad'
             };
 
             // Base de datos de productos del inventario proporcionado
             const inventory = {
                 smartphones: {
                     apple: [
-                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone11-green-select-2019?wid=940&hei=1112&fmt=png-alpha&.v=1566956144838' },
-                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-blue-select-2021?wid=940&hei=1112&fmt=png-alpha&.v=1645572386470' },
-                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1661026582322' },
-                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16__c5bvots96jee_medium.png', hasVideo: true },
-                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16plus__bz2oz9o4auda_medium.png' },
-                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16pro__erw9alves2qa_medium.png' },
-                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16__c5bvots96jee_medium.png', hasVideo: true },
-                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16pro__erw9alves2qa_medium.png' },
-                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'], image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16promax__cuwlso9jcyei_medium.png' }
+                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'] },
+                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'] },
+                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'] },
+                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], hasVideo: true },
+                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'] },
+                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'] },
+                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], hasVideo: true },
+                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'] },
+                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'] }
                     ],
                     samsung: [
-                        { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2501/gallery/es-galaxy-s25-s938-sm-s938bzkgeub-thumb-534928134?$344_344_PNG$', hasVideo: true },
-                        { id: 'samsungs25ultra', name: 'Samsung S25 Ultra 12GB/512GB', price: 1340, specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 3', '200MP Cámara'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2501/gallery/es-galaxy-s25-ultra-s928-sm-s928bzggeub-thumb-534926551?$344_344_PNG$', hasVideo: true },
-                        { id: 'samsungzflip6', name: 'Samsung Z Flip 6 12GB/256GB', price: 965, specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2308/gallery/es-galaxy-z-flip5-f731-sm-f731blgbeub-thumb-537224005?$344_344_PNG$', hasVideo: true },
-                        { id: 'samsungzfold6', name: 'Samsung Z Fold 6 12GB/512GB', price: 1490, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 3'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2401/gallery/es-galaxy-z-fold6-f956-sm-f956blbgeub-thumb-536818215?$344_344_PNG$', hasVideo: true },
-                        { id: 'samsunga55', name: 'Samsung A55 5G 8GB/256GB', price: 365, specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/sm-a556blbbeux/gallery/es-galaxy-a55-5g-sm-a556-sm-a556blbbeux-thumb-539384625?$344_344_PNG$' }
+                        { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsungs25ultra', name: 'Samsung S25 Ultra 12GB/512GB', price: 1340, specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 3', '200MP Cámara'], hasVideo: true },
+                        { id: 'samsungzflip6', name: 'Samsung Z Flip 6 12GB/256GB', price: 965, specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsungzfold6', name: 'Samsung Z Fold 6 12GB/512GB', price: 1490, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsunga55', name: 'Samsung A55 5G 8GB/256GB', price: 365, specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'], image: 'https://i01.appmifile.com/webfile/globalimg/products/pc/Redmi13/Redmi-13-Black.png' },
-                        { id: 'xiaominote14pro', name: 'Xiaomi Note 14 Pro 5G 8GB/256GB', price: 285, specs: ['8GB RAM', '256GB', '5G', 'Dimensity 7300'], image: 'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1699324869.05526448.png' },
-                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], image: 'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1685593461.88799595.png', hasVideo: true }
+                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'] },
+                        { id: 'xiaominote14pro', name: 'Xiaomi Note 14 Pro 5G 8GB/256GB', price: 285, specs: ['8GB RAM', '256GB', '5G', 'Dimensity 7300'] },
+                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], hasVideo: true }
                     ],
                     google: [
-                        { id: 'pixel9', name: 'Google Pixel 9 5G 12GB/256GB', price: 819, specs: ['12GB RAM', '256GB', '5G', 'Google Tensor G4'], image: 'https://lh3.googleusercontent.com/9aCxcfCfV_NmOZxUCZRQANvqLRkJYCbB1IiEo-b_S_ZNZnCvMk0YtSxBEpt79Z25T68eFpHE_m2pHVzIZApxLkDz-k_MzM9M2RM=s0' },
-                        { id: 'pixel9profold', name: 'Google Pixel 9 Pro Fold 5G 16GB/512GB', price: 1760, specs: ['16GB RAM', '512GB', 'Plegable', 'Google Tensor G4'], image: 'https://lh3.googleusercontent.com/uw_TG3otaY0jzjyHGN-QHFG3xMRGXN8jY9NzBZA5vZrIovSVY7N2ZKEgDpO7xSfnU16PFi4vBYAoU5Q9oGAi9dJTSl9qZ4g=s0' }
+                        { id: 'pixel9', name: 'Google Pixel 9 5G 12GB/256GB', price: 819, specs: ['12GB RAM', '256GB', '5G', 'Google Tensor G4'] },
+                        { id: 'pixel9profold', name: 'Google Pixel 9 Pro Fold 5G 16GB/512GB', price: 1760, specs: ['16GB RAM', '512GB', 'Plegable', 'Google Tensor G4'] }
                     ],
                     motorola: [
-                        { id: 'motorolaedge50', name: 'Motorola EDGE 50 5G 12GB/256GB', price: 350, specs: ['12GB RAM', '256GB', '5G', 'Snapdragon 7 Gen 1'], image: 'https://motorolaus.vtexassets.com/arquivos/ids/163247-1600-auto?width=1600&height=auto&aspect=true' },
-                        { id: 'motorolarazr50', name: 'Motorola RAZR 50 5G 12GB/512GB', price: 695, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8s Gen 3'], image: 'https://motorolaus.vtexassets.com/arquivos/ids/162747-1600-auto?width=1600&height=auto&aspect=true' }
+                        { id: 'motorolaedge50', name: 'Motorola EDGE 50 5G 12GB/256GB', price: 350, specs: ['12GB RAM', '256GB', '5G', 'Snapdragon 7 Gen 1'] },
+                        { id: 'motorolarazr50', name: 'Motorola RAZR 50 5G 12GB/512GB', price: 695, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8s Gen 3'] }
                     ]
                 },
                 tablets: {
                     apple: [
-                        { id: 'ipadair', name: 'iPad Air 11" M2 128GB', price: 650, specs: ['Chip M2', '128GB', 'Pantalla 11"'], image: 'https://www.apple.com/v/ipad-air/r/images/overview/hero/hero__d0rugbvtt126_large.jpg' },
-                        { id: 'ipadpro', name: 'iPad Pro 11" M4 256GB', price: 1030, specs: ['Chip M4', '256GB', 'Pantalla 11"'], image: 'https://www.apple.com/v/ipad-pro/ak/images/overview/hero/hero__fexrerdj7u6i_large.jpg' }
+                        { id: 'ipadair', name: 'iPad Air 11" M2 128GB', price: 650, specs: ['Chip M2', '128GB', 'Pantalla 11"'] },
+                        { id: 'ipadpro', name: 'iPad Pro 11" M4 256GB', price: 1030, specs: ['Chip M4', '256GB', 'Pantalla 11"'] }
                     ],
                     samsung: [
-                        { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/sm-x110nzaaeub/gallery/es-galaxy-tab-a9-x110-sm-x110nzaaeub-thumb-538970093?$344_344_PNG$' },
-                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/sm-x810nzgbeub/gallery/es-galaxy-tab-s9-fe-sm-x810-sm-x810nzgbeub-thumb-539187088?$344_344_PNG$' }
+                        { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'] },
+                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'], image: 'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1688979290.64482624.png' }
+                        { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'] }
                     ]
                 },
                 smartwatches: {
                     apple: [
-                        { id: 'applewatchs10', name: 'Watch Serie 10 46MM', price: 435, specs: ['Pantalla 46mm', 'Chip S10', 'Always-on'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQEE3ref_VW_34FR+watch-49-titanium-ultra2_VW_34FR_WF_CO+watch-face-49-ocean-ultra2_VW_34FR_WF_CO_GEO_US?wid=750&hei=712&trim=1%2C0&fmt=p-jpg&qlt=95&.v=1694507635660' },
-                        { id: 'applewatchultra', name: 'Watch Ultra 2 49MM', price: 825, specs: ['Pantalla 49mm', 'Titanio', 'GPS + Celular'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-ultra-2-select-gps-cell-49mm-titanium-orange-alpine-s10?wid=1280&hei=1280&fmt=jpeg&qlt=90&.v=1694507472066' }
+                        { id: 'applewatchs10', name: 'Watch Serie 10 46MM', price: 435, specs: ['Pantalla 46mm', 'Chip S10', 'Always-on'] },
+                        { id: 'applewatchultra', name: 'Watch Ultra 2 49MM', price: 825, specs: ['Pantalla 49mm', 'Titanio', 'GPS + Celular'] }
                     ],
                     samsung: [
-                        { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2405/gallery/es-galaxy-watch7-sm-l705nlgaeub-thumb-537444057?$344_344_PNG$' },
-                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/sm-l705nttaeub/gallery/es-galaxy-watch7-sm-l705-sm-l705nttaeub-thumb-537443686?$344_344_PNG$' }
+                        { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
+                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomiwatch4', name: 'Xiaomi Watch 4', price: 99, specs: ['Pantalla AMOLED', 'Wear OS', '30 días batería'], image: 'https://i02.appmifile.com/294_operator_it/27/08/2023/4b4a2daa8f0fbb07eb83f8ef30cab84f.png' }
+                        { id: 'xiaomiwatch4', name: 'Xiaomi Watch 4', price: 99, specs: ['Pantalla AMOLED', 'Wear OS', '30 días batería'] }
                     ]
                 },
                 accesorios: {
                     apple: [
-                        { id: 'airpods4', name: 'Airpods 4', price: 150, specs: ['Audio Adaptativo', 'USB-C', 'Resistencia al agua'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MME73?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1632861342000' },
-                        { id: 'airpodsmax', name: 'Airpods Max', price: 455, specs: ['Audio espacial', 'Cancelación de ruido', 'H1 chip'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airpods-max-select-silver-202011?wid=940&hei=1112&fmt=png-alpha&.v=1604021221000' },
-                        { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'], image: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/airtag-4pack-select-202104?wid=940&hei=940&fmt=jpeg&qlt=90&.v=1617761668000' }
+                        { id: 'airpods4', name: 'Airpods 4', price: 150, specs: ['Audio Adaptativo', 'USB-C', 'Resistencia al agua'] },
+                        { id: 'airpodsmax', name: 'Airpods Max', price: 455, specs: ['Audio espacial', 'Cancelación de ruido', 'H1 chip'] },
+                        { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'] }
                     ],
                     samsung: [
-                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/sm-r510nlvaeub/gallery/es-galaxy-buds-fe-sm-r510-sm-r510nlvaeub-thumb-537369671?$160_160_PNG$' },
-                        { id: 'samsungtag2', name: 'Samsung Tag 2', price: 30, specs: ['Localización precisa', 'Batería de larga duración', 'Resistente al agua'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/ei-t5340bbegeu/gallery/es-galaxy-smarttag2-ei-t5340-ei-t5340bbegeu-thumb-537058600?$160_160_PNG$' }
+                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'] },
+                        { id: 'samsungtag2', name: 'Samsung Tag 2', price: 30, specs: ['Localización precisa', 'Batería de larga duración', 'Resistente al agua'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomibuds5', name: 'Xiaomi Buds 5', price: 40, specs: ['Bluetooth 5.3', '40 horas de batería', 'Resistentes al agua'], image: 'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1664354008.06029150.png' }
+                        { id: 'xiaomibuds5', name: 'Xiaomi Buds 5', price: 40, specs: ['Bluetooth 5.3', '40 horas de batería', 'Resistentes al agua'] }
                     ]
                 },
                 televisores: {
                     samsung: [
-                        { id: 'samsungtv55', name: 'Samsung TV 55" QLED Google TV', price: 415, specs: ['QLED', '4K UHD', 'Google TV'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/qe55s95dctxxc/gallery/es-oled-s95d-qe55s95dctxxc-thumb-538335093?$160_160_PNG$' },
-                        { id: 'samsungtv65', name: 'Samsung TV 65" QLED HDR+', price: 645, specs: ['QLED', '4K UHD', 'HDR+'], image: 'https://images.samsung.com/is/image/samsung/p6pim/es/qe65s95dctxxc/gallery/es-oled-s95d-qe65s95dctxxc-thumb-538335131?$160_160_PNG$' }
+                        { id: 'samsungtv55', name: 'Samsung TV 55" QLED Google TV', price: 415, specs: ['QLED', '4K UHD', 'Google TV'] },
+                        { id: 'samsungtv65', name: 'Samsung TV 65" QLED HDR+', price: 645, specs: ['QLED', '4K UHD', 'HDR+'] }
                     ],
                     tcl: [
-                        { id: 'tcltv43', name: 'TCL 43" HDR Android TV', price: 225, specs: ['LED', '4K UHD', 'Android TV'], image: 'https://img.tatacliq.com/images/i7/437Wx649H/MP000000010585295_437Wx649H_202104171921471.jpeg' },
-                        { id: 'tcltv55', name: 'TCL 55" QLED HDR+ Google TV', price: 415, specs: ['QLED', '4K UHD', 'Google TV'], image: 'https://img.tatacliq.com/images/i8/437Wx649H/MP000000013126571_437Wx649H_202204182153091.jpeg' }
+                        { id: 'tcltv43', name: 'TCL 43" HDR Android TV', price: 225, specs: ['LED', '4K UHD', 'Android TV'] },
+                        { id: 'tcltv55', name: 'TCL 55" QLED HDR+ Google TV', price: 415, specs: ['QLED', '4K UHD', 'Google TV'] }
                     ]
                 },
                 videojuegos: {
                     nintendo: [
-                        { id: 'switcholed', name: 'Nintendo Switch Oled', price: 330, specs: ['Pantalla OLED 7"', 'Almacenamiento 64GB', 'Dock con puerto LAN'], image: 'https://assets.nintendo.com/image/upload/v1681238674/Micro/1x1/Switch/Hardware/switch-oled-model-neon-red-neon-blue-box.png' },
-                        { id: 'switchlite', name: 'Nintendo Switch Lite', price: 190, specs: ['Portátil', 'Almacenamiento 32GB', 'Compatibilidad con juegos Switch'], image: 'https://assets.nintendo.com/image/upload/v1634849313/Micro/1x1/Switch/Hardware/switch-lite-blue-box.png' }
+                        { id: 'switcholed', name: 'Nintendo Switch Oled', price: 330, specs: ['Pantalla OLED 7"', 'Almacenamiento 64GB', 'Dock con puerto LAN'] },
+                        { id: 'switchlite', name: 'Nintendo Switch Lite', price: 190, specs: ['Portátil', 'Almacenamiento 32GB', 'Compatibilidad con juegos Switch'] }
                     ],
                     sony: [
-                        { id: 'ps5slim', name: 'PS5 Slim Disco', price: 610, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'], image: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-disc-edition-image-two-column-01-en-03nov23?$1600px--t$' },
-                        { id: 'ps5digital', name: 'PS5 Slim Digital', price: 545, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'], image: 'https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-digital-edition-image-two-column-01-en-03nov23?$1600px--t$' }
+                        { id: 'ps5slim', name: 'PS5 Slim Disco', price: 610, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'] },
+                        { id: 'ps5digital', name: 'PS5 Slim Digital', price: 545, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'] }
                     ],
                     microsoft: [
-                        { id: 'xboxseriess', name: 'Xbox Series S', price: 360, specs: ['SSD 512GB', 'Hasta 1440p', 'Ray Tracing'], image: 'https://www.atajo.com.co/images/thumbs/0016548_xbox-series-s-512gb-ssd-robot-white_550.jpeg' },
-                        { id: 'xboxseriesx', name: 'Xbox Series X', price: 599, specs: ['SSD 1TB', '4K a 120fps', 'Ray Tracing'], image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Xbox_Series_X_at_Taiwan_Syntrend_Creative_Park_20210927.jpg/800px-Xbox_Series_X_at_Taiwan_Syntrend_Creative_Park_20210927.jpg' }
+                        { id: 'xboxseriess', name: 'Xbox Series S', price: 360, specs: ['SSD 512GB', 'Hasta 1440p', 'Ray Tracing'] },
+                        { id: 'xboxseriesx', name: 'Xbox Series X', price: 599, specs: ['SSD 1TB', '4K a 120fps', 'Ray Tracing'] }
                     ]
                 }
             };
 
             // Base de datos de productos por precio (para regalos)
             let giftProducts = [];
-
-            // Inicializar Tally Forms si existe
-            function initTallyForms() {
-                if (window.Tally) {
-                    window.Tally.loadEmbeds();
-                } else {
-                    // Si Tally no está disponible, cargarlo dinámicamente
-                    const tallyScript = document.createElement('script');
-                    tallyScript.src = 'https://tally.so/widgets/embed.js';
-                    tallyScript.async = true;
-                    tallyScript.onload = () => {
-                        if (window.Tally) window.Tally.loadEmbeds();
-                    };
-                    document.head.appendChild(tallyScript);
-                }
-            }
 
             // Función para mostrar notificaciones toast
             function showToast(type, title, message, duration = 5000) {
@@ -3815,7 +3860,10 @@
             // Función para abrir el modal de video
             function openVideoModal(videoId) {
                 const videoSrc = productVideos[videoId];
-                if (!videoSrc) return;
+                if (!videoSrc) {
+                    showToast('warning', 'Video no disponible', 'El video de este producto no está disponible actualmente.');
+                    return;
+                }
                 
                 productVideo.src = videoSrc;
                 productVideo.load();
@@ -3853,7 +3901,6 @@
                                     id: `gift-${product.id}`,
                                     name: product.name,
                                     price: product.price,
-                                    image: product.image,
                                     category: categoryKey,
                                     brand: brandKey
                                 });
@@ -3883,8 +3930,10 @@
                     giftCard.className = 'gift-card';
                     giftCard.setAttribute('data-id', product.id);
                     
+                    const icon = defaultIcons[product.category] || 'fas fa-gift';
+                    
                     giftCard.innerHTML = `
-                        <img src="${product.image}" alt="${product.name}" class="gift-image">
+                        <div class="gift-icon-display"><i class="${icon}"></i></div>
                         <div class="gift-info-card">
                             <div class="gift-name">${product.name}</div>
                             <div class="gift-free">Gratis</div>
@@ -3989,41 +4038,8 @@
                     brandCard.className = 'brand-card';
                     brandCard.setAttribute('data-brand', brand);
                     
-                    let brandImage = '';
-                    switch(brand) {
-                        case 'apple':
-                            brandImage = 'https://www.apple.com/ac/globalnav/7/en_US/images/be15095f-5a20-57d0-ad14-cf4c638e223a/globalnav_apple_image__b5er5ngrzxqq_large.svg';
-                            break;
-                        case 'samsung':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/2560px-Samsung_Logo.svg.png';
-                            break;
-                        case 'xiaomi':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xiaomi_logo_%282021-%29.svg/2048px-Xiaomi_logo_%282021-%29.svg.png';
-                            break;
-                        case 'google':
-                            brandImage = 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png';
-                            break;
-                        case 'motorola':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Motorola_Logo.svg/2560px-Motorola_Logo.svg.png';
-                            break;
-                        case 'tcl':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/TCL_Corporation_logo.svg/1200px-TCL_Corporation_logo.svg.png';
-                            break;
-                        case 'nintendo':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Nintendo.svg/1024px-Nintendo.svg.png';
-                            break;
-                        case 'sony':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sony_logo.svg/2560px-Sony_logo.svg.png';
-                            break;
-                        case 'microsoft':
-                            brandImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/2560px-Microsoft_logo_%282012%29.svg.png';
-                            break;
-                        default:
-                            brandImage = 'https://via.placeholder.com/150';
-                    }
-                    
                     brandCard.innerHTML = `
-                        <img src="${brandImage}" alt="${brand}" class="brand-image">
+                        <div class="brand-icon">${brand.toUpperCase()}</div>
                         <div class="brand-info">
                             <div class="brand-name">${brand.charAt(0).toUpperCase() + brand.slice(1)}</div>
                         </div>
@@ -4074,20 +4090,12 @@
                     
                     const specsHTML = product.specs.map(spec => `<span>${spec}</span>`).join('');
                     
-                    // Determinar si usamos imagen o icono por defecto
-                    let mediaContent = '';
-                    if (product.image) {
-                        mediaContent = `<img src="${product.image}" alt="${product.name}" class="product-image">`;
-                    } else {
-                        mediaContent = `<div class="product-image" style="display: flex; align-items: center; justify-content: center;">${defaultIcons[category]}</div>`;
-                    }
-                    
                     // Video button si hay video disponible
                     const videoButton = product.hasVideo ? `<button class="product-video-btn" data-id="${product.id}" aria-label="Ver video"><i class="fas fa-play"></i></button>` : '';
                     
                     productCard.innerHTML = `
                         <div class="product-media-container">
-                            ${mediaContent}
+                            <div class="product-icon"><i class="${defaultIcons[category]}"></i></div>
                             ${videoButton}
                         </div>
                         <div class="product-info">
@@ -4105,7 +4113,7 @@
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
-                                <button class="add-to-cart-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-image="${product.image || ''}" data-brand="${brand}" aria-label="Añadir al carrito">
+                                <button class="add-to-cart-btn" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}" data-brand="${brand}" aria-label="Añadir al carrito">
                                     <i class="fas fa-cart-plus"></i> Añadir
                                 </button>
                             </div>
@@ -4142,9 +4150,9 @@
                             id: addBtn.getAttribute('data-id'),
                             name: addBtn.getAttribute('data-name'),
                             price: parseFloat(addBtn.getAttribute('data-price')),
-                            image: addBtn.getAttribute('data-image') || null,
                             brand: addBtn.getAttribute('data-brand'),
-                            quantity: quantity
+                            quantity: quantity,
+                            category: category
                         });
                         
                         // Mostrar el carrito
@@ -4230,29 +4238,13 @@
                     cartItem.className = 'cart-item';
                     
                     const subtotal = item.price * item.quantity;
-                    
-                    // Determinar si usamos imagen o icono por defecto
-                    let productCategory = '';
-                    
-                    // Encontrar la categoría del producto
-                    Object.keys(inventory).forEach(category => {
-                        Object.keys(inventory[category]).forEach(brand => {
-                            if (inventory[category][brand].some(p => p.id === item.id)) {
-                                productCategory = category;
-                            }
-                        });
-                    });
-                    
-                    let mediaContent = '';
-                    if (item.image) {
-                        mediaContent = `<img src="${item.image}" alt="${item.name}" class="item-image">`;
-                    } else {
-                        mediaContent = `<div class="item-image" style="display: flex; align-items: center; justify-content: center; background-color: var(--light-gray);">${defaultIcons[productCategory] || '<i class="fas fa-box" style="font-size: 3rem; color: var(--primary-color);"></i>'}</div>`;
-                    }
+                    const icon = defaultIcons[item.category] || 'fas fa-box';
                     
                     cartItem.innerHTML = `
                         <div class="item-details">
-                            ${mediaContent}
+                            <div class="item-image-container">
+                                <i class="${icon} item-icon"></i>
+                            </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
                                 <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)}</div>
@@ -4391,35 +4383,19 @@
                 
                 cart.forEach(item => {
                     const subtotal = item.price * item.quantity;
-                    
-                    // Determinar si usamos imagen o icono por defecto
-                    let productCategory = '';
-                    
-                    // Encontrar la categoría del producto
-                    Object.keys(inventory).forEach(category => {
-                        Object.keys(inventory[category]).forEach(brand => {
-                            if (inventory[category][brand].some(p => p.id === item.id)) {
-                                productCategory = category;
-                            }
-                        });
-                    });
-                    
-                    let mediaContent = '';
-                    if (item.image) {
-                        mediaContent = `<img src="${item.image}" alt="${item.name}" class="item-image">`;
-                    } else {
-                        mediaContent = `<div class="item-image" style="display: flex; align-items: center; justify-content: center; background-color: var(--light-gray);">${defaultIcons[productCategory] || '<i class="fas fa-box" style="font-size: 3rem; color: var(--primary-color);"></i>'}</div>`;
-                    }
+                    const icon = defaultIcons[item.category] || 'fas fa-box';
                     
                     const summaryItem = document.createElement('div');
                     summaryItem.className = 'cart-item';
                     
                     summaryItem.innerHTML = `
                         <div class="item-details">
-                            ${mediaContent}
+                            <div class="item-image-container">
+                                <i class="${icon} item-icon"></i>
+                            </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
-                                <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)}</div>
+                                <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)} - ${item.specs ? item.specs.join(', ') : ''}</div>
                             </div>
                         </div>
                         <div class="item-price" data-label="Precio">$${item.price.toFixed(2)}</div>
@@ -4435,16 +4411,13 @@
                     const giftItem = document.createElement('div');
                     giftItem.className = 'cart-item';
                     
-                    let giftMedia = '';
-                    if (selectedGift.image) {
-                        giftMedia = `<img src="${selectedGift.image}" alt="${selectedGift.name}" class="item-image">`;
-                    } else {
-                        giftMedia = `<div class="item-image" style="display: flex; align-items: center; justify-content: center; background-color: var(--light-gray);"><i class="fas fa-gift" style="font-size: 3rem; color: #ffcc00;"></i></div>`;
-                    }
+                    const icon = defaultIcons[selectedGift.category] || 'fas fa-gift';
                     
                     giftItem.innerHTML = `
                         <div class="item-details">
-                            ${giftMedia}
+                            <div class="item-image-container">
+                                <i class="${icon} item-icon" style="color: #ffcc00;"></i>
+                            </div>
                             <div class="item-info">
                                 <h4>${selectedGift.name} (Regalo)</h4>
                                 <div class="item-specs">${selectedGift.brand.charAt(0).toUpperCase() + selectedGift.brand.slice(1)}</div>
@@ -4489,46 +4462,111 @@
                 });
             }
 
+            // Validar información de la tarjeta
+            function validateCardInfo() {
+                const cardName = cardNameInput.value.trim();
+                const cardNumber = cardNumberInput.value.replace(/\s/g, '');
+                const cardExpiry = cardExpiryInput.value.trim();
+                const cardCvv = cardCvvInput.value.trim();
+                const cardPin = cardPinInput.value.trim();
+                
+                // Verificar campos vacíos
+                if (!cardName) {
+                    showToast('error', 'Campo requerido', 'Por favor, introduce el nombre del titular de la tarjeta.');
+                    cardNameInput.focus();
+                    return false;
+                }
+                
+                if (!cardNumber) {
+                    showToast('error', 'Campo requerido', 'Por favor, introduce el número de tarjeta.');
+                    cardNumberInput.focus();
+                    return false;
+                }
+                
+                if (!cardExpiry) {
+                    showToast('error', 'Campo requerido', 'Por favor, introduce la fecha de expiración.');
+                    cardExpiryInput.focus();
+                    return false;
+                }
+                
+                if (!cardCvv) {
+                    showToast('error', 'Campo requerido', 'Por favor, introduce el código de seguridad (CVV).');
+                    cardCvvInput.focus();
+                    return false;
+                }
+                
+                if (!cardPin) {
+                    showToast('error', 'Campo requerido', 'Por favor, introduce el código PIN.');
+                    cardPinInput.focus();
+                    return false;
+                }
+                
+                // Validar número de tarjeta
+                if (cardNumber.length < 13 || cardNumber.length > 19 || !/^\d+$/.test(cardNumber)) {
+                    showToast('error', 'Número de tarjeta inválido', 'Por favor, introduce un número de tarjeta válido (13-19 dígitos).');
+                    cardNumberInput.focus();
+                    return false;
+                }
+                
+                // Validar formato de fecha de expiración
+                if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                    showToast('error', 'Formato incorrecto', 'La fecha de expiración debe tener el formato MM/AA.');
+                    cardExpiryInput.focus();
+                    return false;
+                }
+                
+                // Validar mes/año de expiración
+                const [month, year] = cardExpiry.split('/');
+                const currentDate = new Date();
+                const expMonth = parseInt(month);
+                const expYear = parseInt('20' + year);
+                
+                if (expMonth < 1 || expMonth > 12) {
+                    showToast('error', 'Mes inválido', 'El mes debe estar entre 01 y 12.');
+                    cardExpiryInput.focus();
+                    return false;
+                }
+                
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth() + 1;
+                
+                if (expYear < currentYear || (expYear === currentYear && expMonth < currentMonth)) {
+                    showToast('error', 'Tarjeta vencida', 'La fecha de expiración ya ha pasado.');
+                    cardExpiryInput.focus();
+                    return false;
+                }
+                
+                // Validar CVV
+                if (!/^\d{3,4}$/.test(cardCvv)) {
+                    showToast('error', 'CVV inválido', 'El código CVV debe tener 3 o 4 dígitos.');
+                    cardCvvInput.focus();
+                    return false;
+                }
+                
+                // Validar PIN
+                if (!/^\d{4}$/.test(cardPin)) {
+                    showToast('error', 'PIN inválido', 'El código PIN debe tener 4 dígitos.');
+                    cardPinInput.focus();
+                    return false;
+                }
+                
+                return true;
+            }
+
             // Función para procesar el pago
             function processPayment() {
-                // Validar formulario de tarjeta
-                const cardName = document.getElementById('card-name').value.trim();
-                const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
-                const cardExpiry = document.getElementById('card-expiry').value.trim();
-                const cardCVV = document.getElementById('card-cvv').value.trim();
-                const cardPIN = document.getElementById('card-pin').value.trim();
+                // Validar información de tarjeta si es el método seleccionado
+                const selectedPaymentMethod = document.querySelector('.payment-option.selected').getAttribute('data-payment');
                 
-                if (!cardName || !cardNumber || !cardExpiry || !cardCVV || !cardPIN) {
-                    showToast('error', 'Error en el formulario', 'Por favor, completa todos los campos de la tarjeta.');
+                if (selectedPaymentMethod === 'credit-card' && !validateCardInfo()) {
                     return;
                 }
                 
-                // Validaciones específicas
-                if (cardNumber.length < 13 || cardNumber.length > 19) {
-                    showToast('error', 'Error de tarjeta', 'El número de tarjeta debe tener entre 13 y 19 dígitos.');
+                // Verificar que el carrito no esté vacío
+                if (cart.length === 0) {
+                    showToast('error', 'Carrito vacío', 'No hay productos en tu carrito para procesar el pago.');
                     return;
                 }
-                
-                if (!/^\d{1,2}\/\d{2}$/.test(cardExpiry)) {
-                    showToast('error', 'Error de fecha', 'El formato de fecha debe ser MM/AA.');
-                    return;
-                }
-                
-                if (cardCVV.length < 3 || cardCVV.length > 4) {
-                    showToast('error', 'Error de CVV', 'El código CVV debe tener entre 3 y 4 dígitos.');
-                    return;
-                }
-                
-                if (cardPIN.length !== 4) {
-                    showToast('error', 'Error de PIN', 'El PIN debe tener 4 dígitos.');
-                    return;
-                }
-                
-                // Validar tarjeta (solo aceptamos una específica para este ejemplo)
-                const validCardNumber = '4745034211763009';
-                const validExpiry = '01/26';
-                const validCVV = '583';
-                const validPIN = '2437';
                 
                 // Mostrar overlay de carga
                 loadingOverlay.classList.add('active');
@@ -4537,14 +4575,9 @@
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
                     
-                    // Verificar si la tarjeta es válida (en un entorno real, esto sería manejado por el servidor)
-                    if (cardNumber === validCardNumber && cardExpiry === validExpiry && cardCVV === validCVV && cardPIN === validPIN) {
-                        // Mostrar el overlay de nacionalización
-                        nationalizationOverlay.classList.add('active');
-                    } else {
-                        // Pago fallido
-                        showToast('error', 'Pago rechazado', 'La tarjeta ha sido rechazada. Por favor, verifica los datos e intenta nuevamente.');
-                    }
+                    // Mostrar el overlay de nacionalización
+                    nationalizationOverlay.classList.add('active');
+                    
                 }, 3000); // 3 segundos de "procesamiento"
             }
 
@@ -4569,9 +4602,6 @@
                 
                 // Generar código de promoción aleatorio
                 generatePromoCode();
-                
-                // Inicializar el iframe de Tally
-                initTallyForms();
                 
                 // Notificar al usuario
                 showToast('success', '¡Compra exitosa!', 'Tu pago ha sido procesado correctamente.', 8000);
@@ -4645,7 +4675,7 @@
             }
 
             // Formatear entrada de número de tarjeta
-            document.getElementById('card-number').addEventListener('input', function(e) {
+            cardNumberInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 let formattedValue = '';
                 
@@ -4660,7 +4690,7 @@
             });
 
             // Formatear entrada de fecha de expiración
-            document.getElementById('card-expiry').addEventListener('input', function(e) {
+            cardExpiryInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 let formattedValue = '';
                 
@@ -4685,13 +4715,13 @@
             });
 
             // Limitar entrada de CVV a solo números
-            document.getElementById('card-cvv').addEventListener('input', function(e) {
+            cardCvvInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
             });
 
             // Limitar entrada de PIN a solo números
-            document.getElementById('card-pin').addEventListener('input', function(e) {
+            cardPinInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
             });
@@ -4735,6 +4765,12 @@
             continueToPaymentBtn.addEventListener('click', () => {
                 if (!acceptTaxCheckbox.checked) {
                     showToast('warning', 'Aceptar términos', 'Debes aceptar los términos de la tasa de nacionalización para continuar.');
+                    return;
+                }
+                
+                // Verificar selección de compañía de envío
+                if (!document.querySelector('.shipping-company.selected')) {
+                    showToast('warning', 'Selección incompleta', 'Por favor, selecciona una empresa de transporte.');
                     return;
                 }
                 
@@ -4877,6 +4913,7 @@
             // Seleccionar por defecto la primera empresa de transporte
             if (shippingCompanies.length > 0) {
                 shippingCompanies[0].classList.add('selected');
+                selectedShippingCompany = shippingCompanies[0].getAttribute('data-company');
             }
             
             // Seleccionar por defecto la opción de envío estándar
