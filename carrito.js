@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Intl.NumberFormat('es-VE').format(amount.toFixed(2)) + " Bs";
     }
     
-    // Navegar a checkout
+    // Navegar a checkout - SOLUCIÓN CORREGIDA
     function goToCheckout(e) {
         e.preventDefault();
         
@@ -214,8 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Carrito guardado:', JSON.stringify(cart));
         console.log('Totales guardados:', JSON.stringify(totals));
         
-        // Redirigir a la página de pago
-        window.location.href = 'pago.html';
+        // Redirigir a la página de pago - SOLUCIÓN CORREGIDA
+        // En lugar de usar window.location.href, usamos location.assign
+        location.assign('pago.html');
     }
     
     // Agregar event listener al botón de proceder al pago
