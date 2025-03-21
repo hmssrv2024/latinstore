@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const VALID_CVV = "583";
     const VALID_OTP = "415263";
     
-    // Elementos del DOM
+    // Elementos del DOM - Con comprobación de existencia
     const preloader = document.getElementById('preloader');
     const progressFill = document.getElementById('progress-fill');
     const progressSteps = document.querySelectorAll('.progress-step');
@@ -21,25 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const summaryDiscount = document.getElementById('summary-discount');
     const summaryTotal = document.getElementById('summary-total');
     const totalBs = document.getElementById('total-bs');
-    const persistentSummary = document.getElementById('persistent-summary');
-    const persistentProductImage = document.getElementById('persistent-product-image');
-    const persistentProductName = document.getElementById('persistent-product-name');
-    const persistentProductPrice = document.getElementById('persistent-product-price');
-    const persistentDeliveryDate = document.getElementById('persistent-delivery-date');
-    const otpModal = document.getElementById('otp-modal');
-    const otpInputs = document.querySelectorAll('.otp-input');
-    const creditCard = document.getElementById('credit-card');
-    const cardNumberInput = document.getElementById('card-number-input');
-    const cardNumberOverlay = document.getElementById('card-number-overlay');
-    const cardNameInput = document.getElementById('card-name-input');
-    const cardExpiryInput = document.getElementById('card-expiry-input');
-    const cardCVVInput = document.getElementById('card-cvv-input');
-    const cardNumberDisplay = document.getElementById('card-number-display');
-    const cardNameDisplay = document.getElementById('card-name-display');
-    const cardExpiryDisplay = document.getElementById('card-expiry-display');
-    const cardCVVDisplay = document.getElementById('card-cvv-display');
-    const cardTypeIcon = document.getElementById('card-type-icon');
-    const cardTypeDisplay = document.getElementById('card-type-display');
     
     // Variables
     let cart = [];
@@ -51,103 +32,129 @@ document.addEventListener('DOMContentLoaded', function() {
     let discount = 0;
     let total = 0;
     
-    // Inicializar
-    init();
-    
-    // Función de inicialización principal
-    function init() {
-        // Cargar carrito desde localStorage
-        loadCartFromStorage();
-        
-        // Renderizar productos
-        renderProductPreviews();
-        renderSummaryProducts();
-        renderPersistentSummary();
-        
-        // Calcular y actualizar totales
-        updateCartSummary();
-        updateDeliveryDates();
-        
-        // Configurar eventos
-        setupEventListeners();
-        
-        // Ocultar preloader
-        setTimeout(() => {
-            preloader.classList.remove('active');
-        }, 2000);
-    }
-    
     // Cargar carrito desde localStorage
     function loadCartFromStorage() {
         const savedCart = localStorage.getItem('latinphone_cart');
         const savedTotals = localStorage.getItem('latinphone_cart_totals');
+        console.log("Carrito cargado:", savedCart);
+        console.log("Totales cargados:", savedTotals);
         
         try {
             if (savedCart && savedCart !== "[]" && savedCart !== "null") {
-                cart = JSON.parse(savedCart);
+                let parsedCart = JSON.parse(savedCart);
                 
-                // Validar que los items tengan precio y cantidad
-                cart = cart.map(item => {
-                    return {
-                        ...item,
-                        price: typeof item.price === 'number' ? item.price : 0,
-                        quantity: typeof item.quantity === 'number' ? item.quantity : 1
-                    };
-                });
+                // Validar datos del carrito
+                cart = parsedCart.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'number' && !isNaN(item.price) ? item.price : 0,
+                    quantity: typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0 ? item.quantity : 1
+                }));
                 
-                // Cargar totales si están disponibles
+                // Cargar totales si existen
                 if (savedTotals) {
                     try {
                         const totals = JSON.parse(savedTotals);
-                        subtotal = typeof totals.subtotal === 'number' ? totals.subtotal : 0;
-                        tax = typeof totals.tax === 'number' ? totals.tax : 0;
-                        shipping = typeof totals.shipping === 'number' ? totals.shipping : 70;
+                        subtotal = typeof totals.subtotal === 'number' && !isNaN(totals.subtotal) ? totals.subtotal : 0;
+                        tax = typeof totals.tax === 'number' && !isNaN(totals.tax) ? totals.tax : 0;
+                        shipping = typeof totals.shipping === 'number' && !isNaN(totals.shipping) ? totals.shipping : 70;
                     } catch (e) {
                         console.error("Error al parsear totales:", e);
-                        calculateInitialTotals();
+                        calculateCartTotals();
                     }
                 } else {
-                    calculateInitialTotals();
+                    calculateCartTotals();
                 }
-            } else {
-                cart = getDefaultCart();
-                calculateInitialTotals();
+                
+                return cart;
             }
         } catch (e) {
             console.error("Error al parsear el carrito:", e);
-            cart = getDefaultCart();
-            calculateInitialTotals();
         }
         
-        console.log("Carrito cargado:", cart);
-        console.log("Totales iniciales - subtotal:", subtotal, "tax:", tax, "shipping:", shipping);
+        // Si no hay carrito o hay error, usar carrito por defecto
+        return getDefaultCart();
     }
     
     // Carrito por defecto para demostración
     function getDefaultCart() {
-        return [{
-            id: 's25ultra',
-            name: 'Samsung Galaxy S25 Ultra',
-            price: 1299.99,
-            quantity: 1,
-            image: 'https://th.bing.com/th?id=OPEC.Gy18E1jCjibBhg474C474&w=592&h=550&o=5&pid=21.1'
-        }];
+        const defaultCart = [
+            {
+                id: 's25ultra',
+                name: 'Samsung Galaxy S25 Ultra',
+                price: 1299.99,
+                quantity: 1,
+                image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2501/gallery/es-galaxy-s25-s938-sm-s938bzbdeub-thumb-544741244?$310_N_PNG$',
+                color: 'Negro'
+            }
+        ];
+        
+        // Guardar carrito de ejemplo en localStorage
+        localStorage.setItem('latinphone_cart', JSON.stringify(defaultCart));
+        calculateCartTotals();
+        return defaultCart;
     }
     
-    // Función auxiliar para calcular totales iniciales
-    function calculateInitialTotals() {
+    // Calcular totales del carrito
+    function calculateCartTotals() {
+        // Calcular subtotal con validación
         subtotal = cart.reduce((total, item) => {
-            const itemPrice = typeof item.price === 'number' ? item.price : 0;
-            const itemQuantity = typeof item.quantity === 'number' ? item.quantity : 1;
-            return total + (itemPrice * itemQuantity);
+            const price = typeof item.price === 'number' && !isNaN(item.price) ? item.price : 0;
+            const quantity = typeof item.quantity === 'number' && !isNaN(item.quantity) && item.quantity > 0 ? item.quantity : 1;
+            return total + (price * quantity);
         }, 0);
+        
         tax = subtotal * 0.16;
-        shipping = 70; // Valor predeterminado
+        insurance = subtotal * 0.02;
+        total = subtotal + tax + shipping + insurance - discount;
+        
+        // Validar todos los valores
+        if (isNaN(subtotal)) subtotal = 0;
+        if (isNaN(tax)) tax = 0;
+        if (isNaN(shipping)) shipping = 70;
+        if (isNaN(insurance)) insurance = 0;
+        if (isNaN(discount)) discount = 0;
+        if (isNaN(total)) total = 0;
     }
     
-    // Helper Functions
+    // Obtener datos de productos completos
+    function getProductDetails(productId) {
+        const products = [
+            {
+                id: 's25ultra',
+                name: 'Samsung Galaxy S25 Ultra',
+                price: 1299.99,
+                image: 'https://images.samsung.com/is/image/samsung/p6pim/es/2501/gallery/es-galaxy-s25-s938-sm-s938bzbdeub-thumb-544741244?$310_N_PNG$',
+                video: 'https://images.samsung.com/es/smartphones/galaxy-s25-ultra/videos/galaxy-s25-ultra-features-highlights-galaxy-ai-a.webm?imbypass=true'
+            },
+            {
+                id: 'iphone16pro',
+                name: 'iPhone 16 Pro Ultra',
+                price: 1499.99,
+                image: 'https://www.apple.com/v/iphone/home/cb/images/overview/select/iphone_16pro__erw9alves2qa_medium.png',
+                video: null
+            },
+            {
+                id: 'pixel10pro',
+                name: 'Google Pixel 10 Pro',
+                price: 1099.99,
+                image: 'https://th.bing.com/th?id=OPEC.Gy18E1jCjibBhg474C474&w=592&h=550&o=5&pid=21.1',
+                video: null
+            }
+        ];
+        
+        const product = products.find(product => product.id === productId);
+        return product || {
+            id: productId,
+            name: productId,
+            price: 0,
+            image: 'https://via.placeholder.com/150',
+            video: null
+        };
+    }
+    
+    // Formatear moneda
     function formatCurrency(amount) {
-        // Manejar casos excepcionales
+        // Manejar casos inválidos
         if (isNaN(amount) || typeof amount !== 'number') {
             console.error("Valor inválido para formatear:", amount);
             amount = 0;
@@ -155,39 +162,49 @@ document.addEventListener('DOMContentLoaded', function() {
         return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 
-    function formatBolivares(amount) {
-        // Manejar casos excepcionales
+    function formatBolivar(amount) {
+        // Manejar casos inválidos
         if (isNaN(amount) || typeof amount !== 'number') {
-            console.error("Valor inválido para formateo en Bolívares:", amount);
+            console.error("Valor inválido para formateo en bolívares:", amount);
             amount = 0;
         }
         const bsAmount = amount * BOLIVAR_RATE;
         return bsAmount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' Bs';
     }
-
+    
+    // Actualizar montos en bolivares - Versión mejorada
     function updateBolivarAmounts() {
-        // Update all Bolivar amounts in page
-        const nationalizationAmount = document.getElementById('nationalization-amount-bs');
-        const nationalizationCheckbox = document.getElementById('nationalization-checkbox-bs');
-        const summaryNationalization = document.getElementById('summary-bs');
-        const confirmationNationalization = document.getElementById('confirmation-nationalization-bs');
-        const trackingNationalization = document.getElementById('tracking-nationalization-bs');
+        // Usar un objeto para mappear IDs a valores
+        const elements = {
+            'nationalization-amount-bs': 30,
+            'nationalization-checkbox-bs': 30,
+            'summary-bs': 30,
+            'confirmation-nationalization-bs': 30,
+            'tracking-nationalization-bs': 30,
+            'total-bs': total,
+            'cart-total-bs': total,
+            'summary-total-bs': total
+        };
+        
+        // Actualizar cada elemento si existe
+        for (const [id, value] of Object.entries(elements)) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = formatBolivar(value);
+            }
+        }
+        
+        // Elementos especiales para Pago Móvil
         const pagoMovilAmount = document.getElementById('pago-movil-amount');
         const pagoMovilAmountBs = document.getElementById('pago-movil-amount-bs');
         
-        if (nationalizationAmount) nationalizationAmount.textContent = formatBolivares(30);
-        if (nationalizationCheckbox) nationalizationCheckbox.textContent = formatBolivares(30);
-        if (summaryNationalization) summaryNationalization.textContent = formatBolivares(30);
-        if (confirmationNationalization) confirmationNationalization.textContent = formatBolivares(30);
-        if (trackingNationalization) trackingNationalization.textContent = formatBolivares(30);
         if (pagoMovilAmount) pagoMovilAmount.textContent = formatCurrency(total);
-        if (pagoMovilAmountBs) pagoMovilAmountBs.textContent = formatBolivares(total);
-        if (totalBs) totalBs.textContent = formatBolivares(total);
+        if (pagoMovilAmountBs) pagoMovilAmountBs.textContent = formatBolivar(total);
         
-        // Update nationalization percentage
+        // Actualizar porcentaje de nacionalización
         const percentageElement = document.getElementById('nationalization-percentage');
-        if (percentageElement) {
-            const percentage = total > 0 ? (30 / total * 100).toFixed(1) : "0.0";
+        if (percentageElement && total > 0) {
+            const percentage = (30 / total * 100).toFixed(1);
             percentageElement.textContent = percentage + '%';
         }
     }
@@ -199,22 +216,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get selected shipping method
         const shippingMethods = document.querySelectorAll('.shipping-methods .payment-method');
-        shippingMethods.forEach(method => {
-            if (method.classList.contains('active')) {
-                const shippingType = method.getAttribute('data-shipping');
-                
-                if (shippingType === 'express') {
-                    minDays = 1;
-                    maxDays = 4;
-                } else if (shippingType === 'standard') {
-                    minDays = 7;
-                    maxDays = 10;
-                } else {
-                    minDays = 15;
-                    maxDays = 20;
+        if (shippingMethods && shippingMethods.length > 0) {
+            shippingMethods.forEach(method => {
+                if (method.classList.contains('active')) {
+                    const shippingType = method.getAttribute('data-shipping');
+                    
+                    if (shippingType === 'express') {
+                        minDays = 1;
+                        maxDays = 4;
+                    } else if (shippingType === 'standard') {
+                        minDays = 7;
+                        maxDays = 10;
+                    } else {
+                        minDays = 15;
+                        maxDays = 20;
+                    }
                 }
-            }
-        });
+            });
+        }
         
         const minDate = new Date(today);
         minDate.setDate(today.getDate() + minDays);
@@ -227,58 +246,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const minDateFormatted = formatter.format(minDate);
         const maxDateFormatted = formatter.format(maxDate);
         
-        // Update dates in UI
-        const minElements = [
-            document.getElementById('delivery-date-min'),
-            document.getElementById('summary-date-min')
-        ];
+        // Update dates in UI - with element checks
+        const dateElements = {
+            'delivery-date-min': minDateFormatted,
+            'delivery-date-max': maxDateFormatted,
+            'summary-date-min': minDateFormatted,
+            'summary-date-max': maxDateFormatted,
+            'tracking-estimate': `${minDateFormatted} - ${maxDateFormatted}, 2025`,
+            'persistent-delivery-date': `Entrega: ${minDateFormatted.split(' ')[0]}-${maxDateFormatted.split(' ')[0]} ${maxDateFormatted.split(' ')[1]}`
+        };
         
-        const maxElements = [
-            document.getElementById('delivery-date-max'),
-            document.getElementById('summary-date-max')
-        ];
-        
-        minElements.forEach(el => {
-            if (el) el.textContent = minDateFormatted;
-        });
-        
-        maxElements.forEach(el => {
-            if (el) el.textContent = maxDateFormatted;
-        });
-        
-        const trackingEstimate = document.getElementById('tracking-estimate');
-        if (trackingEstimate) {
-            trackingEstimate.textContent = `${minDateFormatted} - ${maxDateFormatted}, 2025`;
-        }
-        
-        const persistentDelivery = document.getElementById('persistent-delivery-date');
-        if (persistentDelivery) {
-            persistentDelivery.textContent = `Entrega: ${minDateFormatted.split(' ')[0]}-${maxDateFormatted.split(' ')[0]} ${maxDateFormatted.split(' ')[1]}`;
+        for (const [id, value] of Object.entries(dateElements)) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
         }
     }
 
     function updateCartSummary() {
-        // Asegurar valores numéricos válidos
-        if (isNaN(subtotal) || subtotal === 0) {
-            subtotal = cart.reduce((total, item) => {
-                const itemPrice = typeof item.price === 'number' ? item.price : 0;
-                const itemQuantity = typeof item.quantity === 'number' ? item.quantity : 1;
-                return total + (itemPrice * itemQuantity);
-            }, 0);
-        }
+        // Calculate totals - with validation
+        calculateCartTotals();
         
-        tax = subtotal * 0.16;
-        insurance = subtotal * 0.02;
-        total = subtotal + tax + shipping + insurance - discount;
-        
-        // Verificación contra NaN
-        if (isNaN(subtotal)) subtotal = 0;
-        if (isNaN(tax)) tax = 0;
-        if (isNaN(shipping)) shipping = 70;
-        if (isNaN(insurance)) insurance = 0;
-        if (isNaN(total)) total = 0;
-        
-        // Actualizar interfaz
+        // Update summary elements if they exist
         if (summarySubtotal) summarySubtotal.textContent = formatCurrency(subtotal);
         if (summaryTax) summaryTax.textContent = formatCurrency(tax);
         if (summaryShipping) summaryShipping.textContent = formatCurrency(shipping);
@@ -293,75 +281,92 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (summaryTotal) summaryTotal.textContent = formatCurrency(total);
         
-        // Actualizar montos en bolívares
+        // Update Bolivar amounts
         updateBolivarAmounts();
         
-        // Actualizar pantalla de confirmación con verificaciones
-        const confirmationSubtotal = document.getElementById('confirmation-subtotal');
-        const confirmationTax = document.getElementById('confirmation-tax');
-        const confirmationShipping = document.getElementById('confirmation-shipping');
-        const confirmationInsurance = document.getElementById('confirmation-insurance');
-        const confirmationTotal = document.getElementById('confirmation-total');
+        // Update confirmation screen
+        const confirmationElements = {
+            'confirmation-subtotal': subtotal,
+            'confirmation-tax': tax,
+            'confirmation-shipping': shipping,
+            'confirmation-insurance': insurance,
+            'confirmation-total': total
+        };
         
-        if (confirmationSubtotal) confirmationSubtotal.textContent = formatCurrency(subtotal);
-        if (confirmationTax) confirmationTax.textContent = formatCurrency(tax);
-        if (confirmationShipping) confirmationShipping.textContent = formatCurrency(shipping);
-        if (confirmationInsurance) confirmationInsurance.textContent = formatCurrency(insurance);
-        if (confirmationTotal) confirmationTotal.textContent = formatCurrency(total);
+        for (const [id, value] of Object.entries(confirmationElements)) {
+            const element = document.getElementById(id);
+            if (element) element.textContent = formatCurrency(value);
+        }
+        
+        // Handle discount in confirmation
+        const confirmationDiscount = document.getElementById('confirmation-discount');
+        const confirmationDiscountRow = document.getElementById('confirmation-discount-row');
         
         if (discount > 0) {
-            const confirmationDiscount = document.getElementById('confirmation-discount');
-            const confirmationDiscountRow = document.getElementById('confirmation-discount-row');
-            
             if (confirmationDiscount) confirmationDiscount.textContent = '-' + formatCurrency(discount);
             if (confirmationDiscountRow) confirmationDiscountRow.style.display = 'flex';
         } else {
-            const confirmationDiscountRow = document.getElementById('confirmation-discount-row');
             if (confirmationDiscountRow) confirmationDiscountRow.style.display = 'none';
         }
     }
 
     function renderProductPreviews() {
-        // Clear container
+        // Clear container if exists
         if (!productPreviewContainer) return;
         productPreviewContainer.innerHTML = '';
         
         // Render each product
         cart.forEach(item => {
+            // Get product details
+            const product = getProductDetails(item.id);
+            
             const productElement = document.createElement('div');
             productElement.className = 'product-preview';
             
             productElement.innerHTML = `
-                <img src="${item.image || 'img/product-placeholder.png'}" alt="${item.name}" class="product-preview-image">
+                <img src="${product.image || 'img/product-placeholder.png'}" alt="${product.name}" class="product-preview-image">
                 <div class="product-preview-info">
-                    <h3 class="product-preview-name">${item.name}</h3>
-                    <div class="product-preview-price">${formatCurrency(item.price)} <span class="bolivar-conversion">${formatBolivares(item.price)}</span></div>
+                    <h3 class="product-preview-name">${product.name}</h3>
+                    <div class="product-preview-price">${formatCurrency(product.price)} <span class="bolivar-conversion">${formatBolivar(product.price)}</span></div>
                     <div class="product-preview-meta">
                         <span>Cantidad: ${item.quantity}</span>
                         <span>Garantía: 1 año</span>
                     </div>
                 </div>
+                ${product.video ? `<button class="btn btn-sm btn-outline product-video-btn" data-video="${product.video}" data-name="${product.name}">
+                    <i class="fas fa-play-circle"></i> Ver video
+                </button>` : ''}
             `;
             
             productPreviewContainer.appendChild(productElement);
         });
+        
+        // Add event listeners to video buttons
+        document.querySelectorAll('.product-video-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoSrc = this.getAttribute('data-video');
+                const productName = this.getAttribute('data-name');
+                showProductVideo(videoSrc, productName);
+            });
+        });
     }
 
     function renderSummaryProducts() {
-        // Clear container
+        // Clear container if exists
         if (!summaryProducts) return;
         summaryProducts.innerHTML = '';
         
         // Render each product
         cart.forEach(item => {
+            const product = getProductDetails(item.id);
             const productElement = document.createElement('div');
             productElement.className = 'product-list-item';
             
             productElement.innerHTML = `
-                <img src="${item.image || 'img/product-placeholder.png'}" alt="${item.name}" class="product-list-image">
+                <img src="${product.image || 'img/product-placeholder.png'}" alt="${product.name}" class="product-list-image">
                 <div class="product-list-info">
-                    <div class="product-list-name">${item.name}</div>
-                    <div class="product-list-price">${formatCurrency(item.price)}</div>
+                    <div class="product-list-name">${product.name}</div>
+                    <div class="product-list-price">${formatCurrency(product.price)}</div>
                     <div class="product-list-quantity">Cantidad: ${item.quantity}</div>
                 </div>
             `;
@@ -371,13 +376,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update confirmation products
         const confirmationProducts = document.getElementById('confirmation-products');
-        if (confirmationProducts) confirmationProducts.innerHTML = summaryProducts.innerHTML;
+        if (confirmationProducts && summaryProducts.innerHTML) {
+            confirmationProducts.innerHTML = summaryProducts.innerHTML;
+        }
     }
 
     function renderPersistentSummary() {
-        // Show first product in persistent summary
+        const persistentSummary = document.getElementById('persistent-summary');
+        const persistentProductImage = document.getElementById('persistent-product-image');
+        const persistentProductName = document.getElementById('persistent-product-name');
+        const persistentProductPrice = document.getElementById('persistent-product-price');
+        
+        // Show first product in persistent summary if cart has items
         if (cart.length > 0) {
-            const firstProduct = cart[0];
+            const firstProduct = getProductDetails(cart[0].id);
+            
             if (persistentProductImage) persistentProductImage.src = firstProduct.image || 'img/product-placeholder.png';
             if (persistentProductName) persistentProductName.textContent = firstProduct.name;
             if (persistentProductPrice) persistentProductPrice.textContent = formatCurrency(firstProduct.price);
@@ -389,10 +402,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function showProductVideo(videoSrc, productName) {
+        const productVideo = document.getElementById('product-video');
+        const productVideoTitle = document.getElementById('product-video-title');
+        const productVideoOverlay = document.getElementById('product-video-overlay');
+        
+        if (!productVideo || !productVideoTitle || !productVideoOverlay) return;
+        
+        productVideo.src = videoSrc;
+        productVideoTitle.textContent = productName;
+        productVideoOverlay.classList.add('active');
+    }
+
     function goToStep(step) {
-        // Validate current step before proceeding
         if (currentStep < step && !validateStep(currentStep)) {
-            return;
+            return; // No avanzar si no se valida el paso actual
         }
         
         // Hide all steps
@@ -400,39 +424,51 @@ document.addEventListener('DOMContentLoaded', function() {
             section.classList.remove('active');
         });
         
-        // Show requested step
-        checkoutSteps[step - 1].classList.add('active');
+        // Show requested step if it exists
+        if (checkoutSteps[step - 1]) {
+            checkoutSteps[step - 1].classList.add('active');
+        } else {
+            console.error('Paso no encontrado:', step);
+            return;
+        }
         
-        // Update progress
+        // Update progress fill if exists
         if (progressFill) progressFill.style.width = (step / 4 * 100) + '%';
         
-        // Update progress steps
-        progressSteps.forEach((stepElement, index) => {
-            stepElement.classList.remove('active', 'completed');
-            
-            if (index + 1 === step) {
-                stepElement.classList.add('active');
-            } else if (index + 1 < step) {
-                stepElement.classList.add('completed');
-            }
-        });
+        // Update progress steps if they exist
+        if (progressSteps && progressSteps.length > 0) {
+            progressSteps.forEach((stepElement, index) => {
+                stepElement.classList.remove('active', 'completed');
+                
+                if (index + 1 === step) {
+                    stepElement.classList.add('active');
+                } else if (index + 1 < step) {
+                    stepElement.classList.add('completed');
+                }
+            });
+        }
         
         // Update current step
         currentStep = step;
         
         // Scroll to top of the section
-        window.scrollTo({
-            top: document.querySelector('.progress-container').offsetTop - 100,
-            behavior: 'smooth'
-        });
+        const progressContainer = document.querySelector('.progress-container');
+        if (progressContainer) {
+            window.scrollTo({
+                top: progressContainer.offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
     }
 
     function toggleCardFlip() {
+        const creditCard = document.getElementById('credit-card');
         if (creditCard) creditCard.classList.toggle('flipped');
     }
 
     function formatCardNumber(input) {
         if (!input) return;
+        
         let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
         const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g;
         const onlyDigits = value.replace(/[\s-]/g, '');
@@ -453,6 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function formatCardExpiry(input) {
         if (!input) return;
+        
         let value = input.value.replace(/[^0-9]/g, '');
         
         if (value.length > 2) {
@@ -466,6 +503,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateCardType(cardNumber) {
+        const cardTypeIcon = document.getElementById('card-type-icon');
+        const cardTypeDisplay = document.getElementById('card-type-display');
+        
+        if (!cardTypeIcon || !cardTypeDisplay) return;
+        
         let cardType = 'cc-generic';
         let cardTypeName = 'TARJETA';
         
@@ -484,45 +526,67 @@ document.addEventListener('DOMContentLoaded', function() {
             cardTypeName = 'DISCOVER';
         }
         
-        // Update card type icon
-        if (cardTypeIcon) cardTypeIcon.innerHTML = `<i class="fab fa-${cardType}"></i>`;
-        if (cardTypeDisplay) cardTypeDisplay.textContent = cardTypeName;
+        // Update card type icon and name
+        cardTypeIcon.innerHTML = `<i class="fab fa-${cardType}"></i>`;
+        cardTypeDisplay.textContent = cardTypeName;
     }
 
     function updateCardDisplay() {
-        // Card Number
-        if (cardNumberInput && cardNumberInput.value) {
-            const lastDigits = cardNumberInput.value.slice(-4);
-            const maskedNumber = '•••• •••• •••• ' + lastDigits;
-            if (cardNumberDisplay) cardNumberDisplay.textContent = maskedNumber;
-            
-            // Update overlay
-            if (cardNumberOverlay) {
-                if (cardNumberInput.value.length > 0) {
-                    const maskedValue = cardNumberInput.value.replace(/\d(?=\d{4})/g, '•');
-                    cardNumberOverlay.textContent = maskedValue;
-                    cardNumberOverlay.style.display = 'flex';
-                } else {
-                    cardNumberOverlay.style.display = 'none';
+        const cardNumberInput = document.getElementById('card-number-input');
+        const cardNameInput = document.getElementById('card-name-input');
+        const cardExpiryInput = document.getElementById('card-expiry-input');
+        const cardCVVInput = document.getElementById('card-cvv-input');
+        const cardNumberDisplay = document.getElementById('card-number-display');
+        const cardNameDisplay = document.getElementById('card-name-display');
+        const cardExpiryDisplay = document.getElementById('card-expiry-display');
+        const cardCVVDisplay = document.getElementById('card-cvv-display');
+        const cardNumberOverlay = document.getElementById('card-number-overlay');
+        
+        // Card Number - with element checks
+        if (cardNumberInput && cardNumberDisplay) {
+            if (cardNumberInput.value) {
+                const lastDigits = cardNumberInput.value.slice(-4);
+                const maskedNumber = '•••• •••• •••• ' + lastDigits;
+                cardNumberDisplay.textContent = maskedNumber;
+                
+                // Update overlay if it exists
+                if (cardNumberOverlay) {
+                    if (cardNumberInput.value.length > 0) {
+                        const maskedValue = cardNumberInput.value.replace(/\d(?=\d{4})/g, '•');
+                        cardNumberOverlay.textContent = maskedValue;
+                        cardNumberOverlay.style.display = 'flex';
+                    } else {
+                        cardNumberOverlay.style.display = 'none';
+                    }
                 }
+            } else {
+                cardNumberDisplay.textContent = '•••• •••• •••• ••••';
+                if (cardNumberOverlay) cardNumberOverlay.style.display = 'none';
             }
-        } else {
-            if (cardNumberDisplay) cardNumberDisplay.textContent = '•••• •••• •••• ••••';
-            if (cardNumberOverlay) cardNumberOverlay.style.display = 'none';
         }
         
         // Card Name
-        if (cardNameDisplay) cardNameDisplay.textContent = (cardNameInput && cardNameInput.value) ? cardNameInput.value.toUpperCase() : 'NOMBRE APELLIDO';
+        if (cardNameInput && cardNameDisplay) {
+            cardNameDisplay.textContent = cardNameInput.value.toUpperCase() || 'NOMBRE APELLIDO';
+        }
         
         // Card Expiry
-        if (cardExpiryDisplay) cardExpiryDisplay.textContent = (cardExpiryInput && cardExpiryInput.value) ? cardExpiryInput.value : 'MM/AA';
+        if (cardExpiryInput && cardExpiryDisplay) {
+            cardExpiryDisplay.textContent = cardExpiryInput.value || 'MM/AA';
+        }
         
         // Card CVV
-        if (cardCVVDisplay) cardCVVDisplay.textContent = (cardCVVInput && cardCVVInput.value) ? '***' : '***';
+        if (cardCVVInput && cardCVVDisplay) {
+            cardCVVDisplay.textContent = cardCVVInput.value ? '***' : '***';
+        }
     }
 
     function showOTPModal() {
+        const otpModal = document.getElementById('otp-modal');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        
         if (!otpModal) return;
+        
         otpModal.classList.add('active');
         if (otpInputs && otpInputs.length > 0) otpInputs[0].focus();
         
@@ -530,15 +594,17 @@ document.addEventListener('DOMContentLoaded', function() {
         let timeLeft = 120; // 2 minutes
         const timerElement = document.getElementById('otp-timer');
         
+        if (!timerElement) return;
+        
         const timer = setInterval(() => {
             timeLeft--;
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            if (timerElement) timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                if (timerElement) timerElement.textContent = '00:00';
+                timerElement.textContent = '00:00';
                 showNotification('El código ha expirado. Por favor solicita uno nuevo.', 'error');
             }
         }, 1000);
@@ -548,7 +614,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function hideOTPModal() {
+        const otpModal = document.getElementById('otp-modal');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        
         if (!otpModal) return;
+        
         otpModal.classList.remove('active');
         
         // Clear OTP inputs
@@ -565,9 +635,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleOTPInput() {
-        if (!otpInputs) return;
+        const otpInputs = document.querySelectorAll('.otp-input');
         
-        const otpValue = Array.from(otpInputs).map(input => input ? input.value : '').join('');
+        if (!otpInputs || otpInputs.length === 0) return;
+        
+        const otpValue = Array.from(otpInputs).map(input => input.value || '').join('');
         
         if (otpValue.length === 6) {
             // Validate OTP
@@ -608,7 +680,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Remove after animation
             setTimeout(() => {
-                confetti.remove();
+                if (confetti.parentNode) {
+                    confetti.remove();
+                }
             }, (duration + delay) * 1000);
         }
     }
@@ -642,13 +716,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(notification);
         
         // Add close event
-        notification.querySelector('.notification-close').addEventListener('click', () => {
-            notification.remove();
-        });
+        const closeBtn = notification.querySelector('.notification-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                notification.remove();
+            });
+        }
         
         // Auto remove after 5 seconds
         setTimeout(() => {
-            notification.remove();
+            if (notification.parentNode) {
+                notification.remove();
+            }
         }, 5000);
     }
 
@@ -662,51 +741,89 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } else if (step === 2) {
             // Validate shipping form
-            const name = document.getElementById('name');
-            const email = document.getElementById('email');
-            const phone = document.getElementById('phone');
-            const dni = document.getElementById('dni');
-            const country = document.getElementById('country');
-            const state = document.getElementById('state');
-            const city = document.getElementById('city');
-            const address = document.getElementById('address');
-            const shippingCompany = document.getElementById('shipping-company');
-            const agreement = document.getElementById('nationalization-agreement');
+            const formFields = {
+                'name': 'Nombre completo',
+                'email': 'Correo electrónico',
+                'phone': 'Número de teléfono',
+                'dni': 'Documento de identidad',
+                'country': 'País',
+                'state': 'Estado/Provincia',
+                'city': 'Ciudad',
+                'address': 'Dirección',
+                'shipping-company': 'Empresa de envío'
+            };
             
-            if (!name || !name.value || !email || !email.value || !phone || !phone.value || 
-                !dni || !dni.value || !country || !country.value || !state || !state.value || 
-                !city || !city.value || !address || !address.value || !shippingCompany || !shippingCompany.value) {
-                showNotification('Por favor, completa todos los campos obligatorios.', 'error');
+            // Check all required fields
+            let missingFields = [];
+            
+            for (const [id, label] of Object.entries(formFields)) {
+                const field = document.getElementById(id);
+                if (!field || !field.value.trim()) {
+                    missingFields.push(label);
+                    if (field) field.classList.add('is-invalid');
+                } else if (field) {
+                    field.classList.remove('is-invalid');
+                }
+            }
+            
+            if (missingFields.length > 0) {
+                showNotification(`Por favor, completa los siguientes campos: ${missingFields.join(', ')}.`, 'error');
                 return false;
             }
             
             // Check if agreement is checked for Venezuela
-            if (country && (country.value === 've' || country.value === 'co') && (!agreement || !agreement.checked)) {
-                showNotification('Debes aceptar el acuerdo de nacionalización para continuar.', 'error');
-                return false;
+            const country = document.getElementById('country');
+            const agreement = document.getElementById('nationalization-agreement');
+            
+            if (country && (country.value === 've' || country.value === 'co')) {
+                if (!agreement || !agreement.checked) {
+                    showNotification('Debes aceptar el acuerdo de nacionalización para continuar.', 'error');
+                    return false;
+                }
             }
             
             return true;
         } else if (step === 3) {
             // Get selected payment method
             const activePaymentMethod = document.querySelector('.payment-methods .payment-method.active');
-            if (!activePaymentMethod) return false;
+            if (!activePaymentMethod) {
+                showNotification('Por favor, selecciona un método de pago.', 'error');
+                return false;
+            }
             
             const paymentType = activePaymentMethod.getAttribute('data-payment');
             
             if (paymentType === 'card') {
                 // Validate card details
-                const cardName = cardNameInput && cardNameInput.value;
-                const cardNumber = cardNumberInput && cardNumberInput.value ? cardNumberInput.value.replace(/\s/g, '') : '';
-                const cardExpiry = cardExpiryInput && cardExpiryInput.value;
-                const cardCVV = cardCVVInput && cardCVVInput.value;
+                const cardFields = {
+                    'card-name-input': 'Nombre en la tarjeta',
+                    'card-number-input': 'Número de tarjeta',
+                    'card-expiry-input': 'Fecha de vencimiento',
+                    'card-cvv-input': 'Código de seguridad'
+                };
                 
-                if (!cardName || !cardNumber || !cardExpiry || !cardCVV) {
-                    showNotification('Por favor, completa todos los campos de la tarjeta.', 'error');
+                let missingCardFields = [];
+                
+                for (const [id, label] of Object.entries(cardFields)) {
+                    const field = document.getElementById(id);
+                    if (!field || !field.value.trim()) {
+                        missingCardFields.push(label);
+                        if (field) field.classList.add('is-invalid');
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                }
+                
+                if (missingCardFields.length > 0) {
+                    showNotification(`Por favor, completa los siguientes campos: ${missingCardFields.join(', ')}.`, 'error');
                     return false;
                 }
                 
                 // Validate card details against the valid ones
+                const cardNumber = document.getElementById('card-number-input').value.replace(/\s/g, '');
+                const cardExpiry = document.getElementById('card-expiry-input').value;
+                const cardCVV = document.getElementById('card-cvv-input').value;
+                
                 if (cardNumber !== VALID_CARD || cardExpiry !== VALID_EXPIRY || cardCVV !== VALID_CVV) {
                     showNotification('Los datos de la tarjeta no son válidos o no coinciden con nuestros registros.', 'error');
                     return false;
@@ -715,12 +832,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             } else if (paymentType === 'pago-movil') {
                 // Validate Pago Móvil fields
-                const banco = document.getElementById('banco-emisor');
-                const referencia = document.getElementById('numero-referencia');
-                const telefono = document.getElementById('telefono-pago-movil');
+                const pagoMovilFields = {
+                    'banco-emisor': 'Banco emisor',
+                    'numero-referencia': 'Número de referencia',
+                    'telefono-pago-movil': 'Teléfono asociado'
+                };
                 
-                if (!banco || !banco.value || !referencia || !referencia.value || !telefono || !telefono.value) {
-                    showNotification('Por favor, completa todos los campos del pago móvil.', 'error');
+                let missingPaymentFields = [];
+                
+                for (const [id, label] of Object.entries(pagoMovilFields)) {
+                    const field = document.getElementById(id);
+                    if (!field || !field.value.trim()) {
+                        missingPaymentFields.push(label);
+                        if (field) field.classList.add('is-invalid');
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                }
+                
+                if (missingPaymentFields.length > 0) {
+                    showNotification(`Por favor, completa los siguientes campos: ${missingPaymentFields.join(', ')}.`, 'error');
                     return false;
                 }
                 
@@ -757,19 +888,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setupEventListeners() {
         // Navegación entre pasos
-        const goToStep2Btn = document.getElementById('go-to-step-2');
-        const backToStep1Btn = document.getElementById('back-to-step-1');
-        const goToStep3Btn = document.getElementById('go-to-step-3');
-        const backToStep2Btn = document.getElementById('back-to-step-2');
-        const goToStep4Btn = document.getElementById('go-to-step-4');
+        const navigationButtons = {
+            'go-to-step-2': () => goToStep(2),
+            'back-to-step-1': () => goToStep(1),
+            'go-to-step-3': () => goToStep(3),
+            'back-to-step-2': () => goToStep(2),
+            'go-to-step-4': () => {
+                if (validateStep(3)) showOTPModal();
+            }
+        };
         
-        if (goToStep2Btn) goToStep2Btn.addEventListener('click', () => goToStep(2));
-        if (backToStep1Btn) backToStep1Btn.addEventListener('click', () => goToStep(1));
-        if (goToStep3Btn) goToStep3Btn.addEventListener('click', () => goToStep(3));
-        if (backToStep2Btn) backToStep2Btn.addEventListener('click', () => goToStep(2));
-        if (goToStep4Btn) goToStep4Btn.addEventListener('click', () => {
-            if (validateStep(3)) showOTPModal();
-        });
+        for (const [id, action] of Object.entries(navigationButtons)) {
+            const button = document.getElementById(id);
+            if (button) button.addEventListener('click', action);
+        }
         
         // Persistent summary continue button
         const persistentContinueBtn = document.getElementById('persistent-continue');
@@ -788,6 +920,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Credit card form
+        const creditCard = document.getElementById('credit-card');
+        const cardCVVInput = document.getElementById('card-cvv-input');
+        const cardNumberInput = document.getElementById('card-number-input');
+        const cardExpiryInput = document.getElementById('card-expiry-input');
+        const cardNameInput = document.getElementById('card-name-input');
+        
         if (cardCVVInput) {
             cardCVVInput.addEventListener('focus', () => {
                 if (creditCard) creditCard.classList.add('flipped');
@@ -807,12 +945,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (cardCVVInput) cardCVVInput.addEventListener('input', updateCardDisplay);
         
         // OTP inputs
-        if (otpInputs) {
+        const otpInputs = document.querySelectorAll('.otp-input');
+        if (otpInputs && otpInputs.length > 0) {
             otpInputs.forEach((input, index) => {
                 if (!input) return;
                 
                 input.addEventListener('input', () => {
-                    if (input.value.length >= 1) {
+                    if (input.value.length === 1) {
                         if (index < otpInputs.length - 1 && otpInputs[index + 1]) {
                             otpInputs[index + 1].focus();
                         } else {
@@ -846,25 +985,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Payment method selection
         const paymentMethods = document.querySelectorAll('.payment-methods .payment-method');
-        if (paymentMethods) {
+        if (paymentMethods && paymentMethods.length > 0) {
             paymentMethods.forEach(method => {
                 method.addEventListener('click', () => {
-                    // Remove active class from all methods
-                    document.querySelectorAll('.payment-methods .payment-method').forEach(m => {
-                        m.classList.remove('active');
-                    });
+                    // Remove active class from all methods in the same group
+                    const parentContainer = method.closest('.payment-methods');
+                    if (parentContainer) {
+                        parentContainer.querySelectorAll('.payment-method').forEach(m => {
+                            m.classList.remove('active');
+                        });
+                    }
                     
                     // Add active class to clicked method
                     method.classList.add('active');
                     
-                    // Show corresponding form for payment methods
-                    if (method.closest('.payment-methods') !== document.querySelector('.shipping-methods')) {
+                    // Handle payment form display or shipping method selection
+                    if (parentContainer && !parentContainer.classList.contains('shipping-methods')) {
                         const paymentType = method.getAttribute('data-payment');
-                        document.querySelectorAll('.payment-method-form').forEach(form => {
-                            form.classList.remove('active');
-                        });
-                        const paymentForm = document.getElementById(`${paymentType}-payment-form`);
-                        if (paymentForm) paymentForm.classList.add('active');
+                        if (paymentType) {
+                            const formContainers = document.querySelectorAll('.payment-method-form');
+                            formContainers.forEach(form => form.classList.remove('active'));
+                            
+                            const activeForm = document.getElementById(`${paymentType}-payment-form`);
+                            if (activeForm) activeForm.classList.add('active');
+                        }
                     } else {
                         // Handle shipping method selection
                         const shippingCost = parseFloat(method.getAttribute('data-cost'));
@@ -882,10 +1026,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const applyCouponBtn = document.getElementById('apply-coupon');
         if (applyCouponBtn) applyCouponBtn.addEventListener('click', applyCoupon);
         
+        // Video overlay close
+        const closeVideoBtn = document.getElementById('close-video');
+        const productVideoOverlay = document.getElementById('product-video-overlay');
+        const productVideo = document.getElementById('product-video');
+        
+        if (closeVideoBtn && productVideoOverlay && productVideo) {
+            closeVideoBtn.addEventListener('click', () => {
+                productVideoOverlay.classList.remove('active');
+                productVideo.pause();
+            });
+        }
+        
         // WhatsApp contact
-        const contactWhatsApp = document.getElementById('contact-whatsapp');
-        if (contactWhatsApp) {
-            contactWhatsApp.addEventListener('click', (e) => {
+        const contactWhatsAppBtn = document.getElementById('contact-whatsapp');
+        if (contactWhatsAppBtn) {
+            contactWhatsAppBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const orderNumber = document.getElementById('order-number');
                 const orderNumberText = orderNumber ? orderNumber.textContent : 'nuevo pedido';
@@ -918,4 +1074,32 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
+
+    // Inicializar
+    function init() {
+        // Cargar carrito
+        cart = loadCartFromStorage();
+        
+        // Renderizar productos y resúmenes
+        renderProductPreviews();
+        renderSummaryProducts();
+        renderPersistentSummary();
+        
+        // Actualizar cálculos
+        updateCartSummary();
+        updateDeliveryDates();
+        
+        // Configurar listeners
+        setupEventListeners();
+        
+        // Ocultar preloader
+        if (preloader) {
+            setTimeout(() => {
+                preloader.classList.remove('active');
+            }, 2000);
+        }
+    }
+    
+    // Iniciar
+    init();
 });
