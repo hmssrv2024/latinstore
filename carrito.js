@@ -6,10 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elementos DOM
     const cartItemsContainer = document.querySelector('.cart-items');
     const cartEmptyEl = document.querySelector('.cart-empty');
-    const cartSummaryEl = document.querySelector('.cart-summary');
+    const cartContentEl = document.querySelector('.cart-content');
     const cartCount = document.querySelector('.cart-count');
     const proceedCheckoutBtn = document.getElementById('proceed-checkout');
-    const summaryTotalBs = document.getElementById('summary-total-bs');
     
     // Variables de estado
     let cart = [];
@@ -107,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verificar si el carrito está vacío
         if (cart.length === 0) {
             if (cartEmptyEl) cartEmptyEl.style.display = 'block';
-            if (cartSummaryEl) cartSummaryEl.style.display = 'none';
+            if (cartContentEl) cartContentEl.style.display = 'none';
             if (cartCount) cartCount.textContent = '0';
             if (proceedCheckoutBtn) proceedCheckoutBtn.style.display = 'none';
             return;
@@ -115,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Ocultar mensaje de carrito vacío
         if (cartEmptyEl) cartEmptyEl.style.display = 'none';
-        if (cartSummaryEl) cartSummaryEl.style.display = 'block';
+        if (cartContentEl) cartContentEl.style.display = 'block';
         if (proceedCheckoutBtn) proceedCheckoutBtn.style.display = 'inline-flex';
         
         // Calcular subtotal
@@ -155,8 +154,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Actualizar subtotal y contador
-        const subtotalEl = document.querySelector('.subtotal span:last-child');
-        if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)} USD`;
+        const subtotalEl = document.getElementById('cart-subtotal');
+        if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
         if (cartCount) cartCount.textContent = totalItems.toString();
         
         // Actualizar total global
@@ -252,7 +251,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Actualizar conversión a bolívares
         if (bolivarTotal) bolivarTotal.textContent = formatBsAmount(total * EXCHANGE_RATE);
         if (nationalizationBs) nationalizationBs.textContent = formatBsAmount(30 * EXCHANGE_RATE);
-        if (summaryTotalBs) summaryTotalBs.textContent = formatBsAmount(total * EXCHANGE_RATE);
     }
     
     // Formatear montos en bolivares
@@ -302,16 +300,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Carrito guardado:', JSON.stringify(cart));
             console.log('Totales guardados:', JSON.stringify(totals));
             
-            // Usar ambos métodos de redirección para mayor compatibilidad
-            setTimeout(function() {
-                window.location.href = 'pago.html';
-            }, 100);
+            // Redirección con un método más robusto
+            window.location.href = 'pago.html';
         } catch (err) {
             console.error("Error al procesar el checkout:", err);
-            
-            // Método alternativo de redirección como fallback
             alert("Redirigiendo a la página de pago...");
-            window.open('pago.html', '_self');
+            window.location.href = 'pago.html';
         }
     }
     
