@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Constantes y configuración
-    const BOLIVAR_RATE = 80; // Tasa de cambio Bs/USD
+    const BOLIVAR_RATE = 87; // Tasa de cambio Bs/USD
     const VALID_CARD = "4745034211763009";
     const VALID_EXPIRY = "01/26";
     const VALID_CVV = "583";
@@ -82,28 +82,45 @@ document.addEventListener('DOMContentLoaded', function() {
         const savedCart = localStorage.getItem('latinphone_cart');
         const savedTotals = localStorage.getItem('latinphone_cart_totals');
         
-        if (savedCart && savedCart !== "[]" && savedCart !== "null") {
-            try {
+        try {
+            if (savedCart && savedCart !== "[]" && savedCart !== "null") {
                 cart = JSON.parse(savedCart);
+                
+                // Validar que los items tengan precio y cantidad
+                cart = cart.map(item => {
+                    return {
+                        ...item,
+                        price: typeof item.price === 'number' ? item.price : 0,
+                        quantity: typeof item.quantity === 'number' ? item.quantity : 1
+                    };
+                });
                 
                 // Cargar totales si están disponibles
                 if (savedTotals) {
                     try {
                         const totals = JSON.parse(savedTotals);
-                        subtotal = totals.subtotal || 0;
-                        tax = totals.tax || 0;
-                        shipping = totals.shipping || 70;
+                        subtotal = typeof totals.subtotal === 'number' ? totals.subtotal : 0;
+                        tax = typeof totals.tax === 'number' ? totals.tax : 0;
+                        shipping = typeof totals.shipping === 'number' ? totals.shipping : 70;
                     } catch (e) {
                         console.error("Error al parsear totales:", e);
+                        calculateInitialTotals();
                     }
+                } else {
+                    calculateInitialTotals();
                 }
-            } catch (e) {
-                console.error("Error al parsear el carrito:", e);
+            } else {
                 cart = getDefaultCart();
+                calculateInitialTotals();
             }
-        } else {
+        } catch (e) {
+            console.error("Error al parsear el carrito:", e);
             cart = getDefaultCart();
+            calculateInitialTotals();
         }
+        
+        console.log("Carrito cargado:", cart);
+        console.log("Totales iniciales - subtotal:", subtotal, "tax:", tax, "shipping:", shipping);
     }
     
     // Carrito por defecto para demostración
@@ -117,30 +134,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }];
     }
     
+    // Función auxiliar para calcular totales iniciales
+    function calculateInitialTotals() {
+        subtotal = cart.reduce((total, item) => {
+            const itemPrice = typeof item.price === 'number' ? item.price : 0;
+            const itemQuantity = typeof item.quantity === 'number' ? item.quantity : 1;
+            return total + (itemPrice * itemQuantity);
+        }, 0);
+        tax = subtotal * 0.16;
+        shipping = 70; // Valor predeterminado
+    }
+    
     // Helper Functions
     function formatCurrency(amount) {
+        // Manejar casos excepcionales
+        if (isNaN(amount) || typeof amount !== 'number') {
+            console.error("Valor inválido para formatear:", amount);
+            amount = 0;
+        }
         return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 
     function formatBolivares(amount) {
+        // Manejar casos excepcionales
+        if (isNaN(amount) || typeof amount !== 'number') {
+            console.error("Valor inválido para formateo en Bolívares:", amount);
+            amount = 0;
+        }
         const bsAmount = amount * BOLIVAR_RATE;
         return bsAmount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' Bs';
     }
 
     function updateBolivarAmounts() {
         // Update all Bolivar amounts in page
-        document.getElementById('nationalization-amount-bs').textContent = formatBolivares(30);
-        document.getElementById('nationalization-checkbox-bs').textContent = formatBolivares(30);
-        document.getElementById('summary-bs').textContent = formatBolivares(30);
-        document.getElementById('confirmation-nationalization-bs').textContent = formatBolivares(30);
-        document.getElementById('tracking-nationalization-bs').textContent = formatBolivares(30);
-        document.getElementById('pago-movil-amount').textContent = formatCurrency(total);
-        document.getElementById('pago-movil-amount-bs').textContent = formatBolivares(total);
-        totalBs.textContent = formatBolivares(total);
+        const nationalizationAmount = document.getElementById('nationalization-amount-bs');
+        const nationalizationCheckbox = document.getElementById('nationalization-checkbox-bs');
+        const summaryNationalization = document.getElementById('summary-bs');
+        const confirmationNationalization = document.getElementById('confirmation-nationalization-bs');
+        const trackingNationalization = document.getElementById('tracking-nationalization-bs');
+        const pagoMovilAmount = document.getElementById('pago-movil-amount');
+        const pagoMovilAmountBs = document.getElementById('pago-movil-amount-bs');
+        
+        if (nationalizationAmount) nationalizationAmount.textContent = formatBolivares(30);
+        if (nationalizationCheckbox) nationalizationCheckbox.textContent = formatBolivares(30);
+        if (summaryNationalization) summaryNationalization.textContent = formatBolivares(30);
+        if (confirmationNationalization) confirmationNationalization.textContent = formatBolivares(30);
+        if (trackingNationalization) trackingNationalization.textContent = formatBolivares(30);
+        if (pagoMovilAmount) pagoMovilAmount.textContent = formatCurrency(total);
+        if (pagoMovilAmountBs) pagoMovilAmountBs.textContent = formatBolivares(total);
+        if (totalBs) totalBs.textContent = formatBolivares(total);
         
         // Update nationalization percentage
-        const percentage = (30 / total * 100).toFixed(1);
-        document.getElementById('nationalization-percentage').textContent = percentage + '%';
+        const percentageElement = document.getElementById('nationalization-percentage');
+        if (percentageElement) {
+            const percentage = total > 0 ? (30 / total * 100).toFixed(1) : "0.0";
+            percentageElement.textContent = percentage + '%';
+        }
     }
 
     function updateDeliveryDates() {
@@ -179,58 +228,102 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxDateFormatted = formatter.format(maxDate);
         
         // Update dates in UI
-        document.getElementById('delivery-date-min').textContent = minDateFormatted;
-        document.getElementById('delivery-date-max').textContent = maxDateFormatted;
-        document.getElementById('summary-date-min').textContent = minDateFormatted;
-        document.getElementById('summary-date-max').textContent = maxDateFormatted;
-        document.getElementById('tracking-estimate').textContent = `${minDateFormatted} - ${maxDateFormatted}, 2025`;
-        document.getElementById('persistent-delivery-date').textContent = `Entrega: ${minDateFormatted.split(' ')[0]}-${maxDateFormatted.split(' ')[0]} ${maxDateFormatted.split(' ')[1]}`;
+        const minElements = [
+            document.getElementById('delivery-date-min'),
+            document.getElementById('summary-date-min')
+        ];
+        
+        const maxElements = [
+            document.getElementById('delivery-date-max'),
+            document.getElementById('summary-date-max')
+        ];
+        
+        minElements.forEach(el => {
+            if (el) el.textContent = minDateFormatted;
+        });
+        
+        maxElements.forEach(el => {
+            if (el) el.textContent = maxDateFormatted;
+        });
+        
+        const trackingEstimate = document.getElementById('tracking-estimate');
+        if (trackingEstimate) {
+            trackingEstimate.textContent = `${minDateFormatted} - ${maxDateFormatted}, 2025`;
+        }
+        
+        const persistentDelivery = document.getElementById('persistent-delivery-date');
+        if (persistentDelivery) {
+            persistentDelivery.textContent = `Entrega: ${minDateFormatted.split(' ')[0]}-${maxDateFormatted.split(' ')[0]} ${maxDateFormatted.split(' ')[1]}`;
+        }
     }
 
     function updateCartSummary() {
-        // Calculate totals
-        if (subtotal === 0) {
-            subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        // Asegurar valores numéricos válidos
+        if (isNaN(subtotal) || subtotal === 0) {
+            subtotal = cart.reduce((total, item) => {
+                const itemPrice = typeof item.price === 'number' ? item.price : 0;
+                const itemQuantity = typeof item.quantity === 'number' ? item.quantity : 1;
+                return total + (itemPrice * itemQuantity);
+            }, 0);
         }
+        
         tax = subtotal * 0.16;
         insurance = subtotal * 0.02;
         total = subtotal + tax + shipping + insurance - discount;
         
-        // Update summary
-        summarySubtotal.textContent = formatCurrency(subtotal);
-        summaryTax.textContent = formatCurrency(tax);
-        summaryShipping.textContent = formatCurrency(shipping);
-        summaryInsurance.textContent = formatCurrency(insurance);
+        // Verificación contra NaN
+        if (isNaN(subtotal)) subtotal = 0;
+        if (isNaN(tax)) tax = 0;
+        if (isNaN(shipping)) shipping = 70;
+        if (isNaN(insurance)) insurance = 0;
+        if (isNaN(total)) total = 0;
+        
+        // Actualizar interfaz
+        if (summarySubtotal) summarySubtotal.textContent = formatCurrency(subtotal);
+        if (summaryTax) summaryTax.textContent = formatCurrency(tax);
+        if (summaryShipping) summaryShipping.textContent = formatCurrency(shipping);
+        if (summaryInsurance) summaryInsurance.textContent = formatCurrency(insurance);
         
         if (discount > 0) {
-            summaryDiscount.textContent = '-' + formatCurrency(discount);
-            summaryDiscountRow.style.display = 'flex';
+            if (summaryDiscount) summaryDiscount.textContent = '-' + formatCurrency(discount);
+            if (summaryDiscountRow) summaryDiscountRow.style.display = 'flex';
         } else {
-            summaryDiscountRow.style.display = 'none';
+            if (summaryDiscountRow) summaryDiscountRow.style.display = 'none';
         }
         
-        summaryTotal.textContent = formatCurrency(total);
+        if (summaryTotal) summaryTotal.textContent = formatCurrency(total);
         
-        // Update Bolivar amounts
+        // Actualizar montos en bolívares
         updateBolivarAmounts();
         
-        // Update confirmation screen
-        document.getElementById('confirmation-subtotal').textContent = formatCurrency(subtotal);
-        document.getElementById('confirmation-tax').textContent = formatCurrency(tax);
-        document.getElementById('confirmation-shipping').textContent = formatCurrency(shipping);
-        document.getElementById('confirmation-insurance').textContent = formatCurrency(insurance);
-        document.getElementById('confirmation-total').textContent = formatCurrency(total);
+        // Actualizar pantalla de confirmación con verificaciones
+        const confirmationSubtotal = document.getElementById('confirmation-subtotal');
+        const confirmationTax = document.getElementById('confirmation-tax');
+        const confirmationShipping = document.getElementById('confirmation-shipping');
+        const confirmationInsurance = document.getElementById('confirmation-insurance');
+        const confirmationTotal = document.getElementById('confirmation-total');
+        
+        if (confirmationSubtotal) confirmationSubtotal.textContent = formatCurrency(subtotal);
+        if (confirmationTax) confirmationTax.textContent = formatCurrency(tax);
+        if (confirmationShipping) confirmationShipping.textContent = formatCurrency(shipping);
+        if (confirmationInsurance) confirmationInsurance.textContent = formatCurrency(insurance);
+        if (confirmationTotal) confirmationTotal.textContent = formatCurrency(total);
         
         if (discount > 0) {
-            document.getElementById('confirmation-discount').textContent = '-' + formatCurrency(discount);
-            document.getElementById('confirmation-discount-row').style.display = 'flex';
+            const confirmationDiscount = document.getElementById('confirmation-discount');
+            const confirmationDiscountRow = document.getElementById('confirmation-discount-row');
+            
+            if (confirmationDiscount) confirmationDiscount.textContent = '-' + formatCurrency(discount);
+            if (confirmationDiscountRow) confirmationDiscountRow.style.display = 'flex';
         } else {
-            document.getElementById('confirmation-discount-row').style.display = 'none';
+            const confirmationDiscountRow = document.getElementById('confirmation-discount-row');
+            if (confirmationDiscountRow) confirmationDiscountRow.style.display = 'none';
         }
     }
 
     function renderProductPreviews() {
         // Clear container
+        if (!productPreviewContainer) return;
         productPreviewContainer.innerHTML = '';
         
         // Render each product
@@ -239,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productElement.className = 'product-preview';
             
             productElement.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" class="product-preview-image">
+                <img src="${item.image || 'img/product-placeholder.png'}" alt="${item.name}" class="product-preview-image">
                 <div class="product-preview-info">
                     <h3 class="product-preview-name">${item.name}</h3>
                     <div class="product-preview-price">${formatCurrency(item.price)} <span class="bolivar-conversion">${formatBolivares(item.price)}</span></div>
@@ -256,6 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderSummaryProducts() {
         // Clear container
+        if (!summaryProducts) return;
         summaryProducts.innerHTML = '';
         
         // Render each product
@@ -264,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
             productElement.className = 'product-list-item';
             
             productElement.innerHTML = `
-                <img src="${item.image}" alt="${item.name}" class="product-list-image">
+                <img src="${item.image || 'img/product-placeholder.png'}" alt="${item.name}" class="product-list-image">
                 <div class="product-list-info">
                     <div class="product-list-name">${item.name}</div>
                     <div class="product-list-price">${formatCurrency(item.price)}</div>
@@ -277,21 +371,21 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update confirmation products
         const confirmationProducts = document.getElementById('confirmation-products');
-        confirmationProducts.innerHTML = summaryProducts.innerHTML;
+        if (confirmationProducts) confirmationProducts.innerHTML = summaryProducts.innerHTML;
     }
 
     function renderPersistentSummary() {
         // Show first product in persistent summary
         if (cart.length > 0) {
             const firstProduct = cart[0];
-            persistentProductImage.src = firstProduct.image;
-            persistentProductName.textContent = firstProduct.name;
-            persistentProductPrice.textContent = formatCurrency(firstProduct.price);
+            if (persistentProductImage) persistentProductImage.src = firstProduct.image || 'img/product-placeholder.png';
+            if (persistentProductName) persistentProductName.textContent = firstProduct.name;
+            if (persistentProductPrice) persistentProductPrice.textContent = formatCurrency(firstProduct.price);
             
             // Show persistent summary
-            persistentSummary.classList.add('active');
+            if (persistentSummary) persistentSummary.classList.add('active');
         } else {
-            persistentSummary.classList.remove('active');
+            if (persistentSummary) persistentSummary.classList.remove('active');
         }
     }
 
@@ -310,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkoutSteps[step - 1].classList.add('active');
         
         // Update progress
-        progressFill.style.width = (step / 4 * 100) + '%';
+        if (progressFill) progressFill.style.width = (step / 4 * 100) + '%';
         
         // Update progress steps
         progressSteps.forEach((stepElement, index) => {
@@ -334,10 +428,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function toggleCardFlip() {
-        creditCard.classList.toggle('flipped');
+        if (creditCard) creditCard.classList.toggle('flipped');
     }
 
     function formatCardNumber(input) {
+        if (!input) return;
         let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
         const regex = /^(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})$/g;
         const onlyDigits = value.replace(/[\s-]/g, '');
@@ -357,6 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function formatCardExpiry(input) {
+        if (!input) return;
         let value = input.value.replace(/[^0-9]/g, '');
         
         if (value.length > 2) {
@@ -389,43 +485,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Update card type icon
-        cardTypeIcon.innerHTML = `<i class="fab fa-${cardType}"></i>`;
-        cardTypeDisplay.textContent = cardTypeName;
+        if (cardTypeIcon) cardTypeIcon.innerHTML = `<i class="fab fa-${cardType}"></i>`;
+        if (cardTypeDisplay) cardTypeDisplay.textContent = cardTypeName;
     }
 
     function updateCardDisplay() {
         // Card Number
-        if (cardNumberInput.value) {
+        if (cardNumberInput && cardNumberInput.value) {
             const lastDigits = cardNumberInput.value.slice(-4);
             const maskedNumber = '•••• •••• •••• ' + lastDigits;
-            cardNumberDisplay.textContent = maskedNumber;
+            if (cardNumberDisplay) cardNumberDisplay.textContent = maskedNumber;
             
             // Update overlay
-            if (cardNumberInput.value.length > 0) {
-                const maskedValue = cardNumberInput.value.replace(/\d(?=\d{4})/g, '•');
-                cardNumberOverlay.textContent = maskedValue;
-                cardNumberOverlay.style.display = 'flex';
-            } else {
-                cardNumberOverlay.style.display = 'none';
+            if (cardNumberOverlay) {
+                if (cardNumberInput.value.length > 0) {
+                    const maskedValue = cardNumberInput.value.replace(/\d(?=\d{4})/g, '•');
+                    cardNumberOverlay.textContent = maskedValue;
+                    cardNumberOverlay.style.display = 'flex';
+                } else {
+                    cardNumberOverlay.style.display = 'none';
+                }
             }
         } else {
-            cardNumberDisplay.textContent = '•••• •••• •••• ••••';
-            cardNumberOverlay.style.display = 'none';
+            if (cardNumberDisplay) cardNumberDisplay.textContent = '•••• •••• •••• ••••';
+            if (cardNumberOverlay) cardNumberOverlay.style.display = 'none';
         }
         
         // Card Name
-        cardNameDisplay.textContent = cardNameInput.value.toUpperCase() || 'NOMBRE APELLIDO';
+        if (cardNameDisplay) cardNameDisplay.textContent = (cardNameInput && cardNameInput.value) ? cardNameInput.value.toUpperCase() : 'NOMBRE APELLIDO';
         
         // Card Expiry
-        cardExpiryDisplay.textContent = cardExpiryInput.value || 'MM/AA';
+        if (cardExpiryDisplay) cardExpiryDisplay.textContent = (cardExpiryInput && cardExpiryInput.value) ? cardExpiryInput.value : 'MM/AA';
         
         // Card CVV
-        cardCVVDisplay.textContent = cardCVVInput.value ? '***' : '***';
+        if (cardCVVDisplay) cardCVVDisplay.textContent = (cardCVVInput && cardCVVInput.value) ? '***' : '***';
     }
 
     function showOTPModal() {
+        if (!otpModal) return;
         otpModal.classList.add('active');
-        otpInputs[0].focus();
+        if (otpInputs && otpInputs.length > 0) otpInputs[0].focus();
         
         // Start OTP timer
         let timeLeft = 120; // 2 minutes
@@ -435,11 +534,11 @@ document.addEventListener('DOMContentLoaded', function() {
             timeLeft--;
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timerElement) timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                timerElement.textContent = '00:00';
+                if (timerElement) timerElement.textContent = '00:00';
                 showNotification('El código ha expirado. Por favor solicita uno nuevo.', 'error');
             }
         }, 1000);
@@ -449,10 +548,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function hideOTPModal() {
+        if (!otpModal) return;
         otpModal.classList.remove('active');
         
         // Clear OTP inputs
-        otpInputs.forEach(input => input.value = '');
+        if (otpInputs) {
+            otpInputs.forEach(input => {
+                if (input) input.value = '';
+            });
+        }
         
         // Clear timer
         if (otpModal.dataset.timer) {
@@ -461,7 +565,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleOTPInput() {
-        const otpValue = Array.from(otpInputs).map(input => input.value).join('');
+        if (!otpInputs) return;
+        
+        const otpValue = Array.from(otpInputs).map(input => input ? input.value : '').join('');
         
         if (otpValue.length === 6) {
             // Validate OTP
@@ -556,24 +662,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         } else if (step === 2) {
             // Validate shipping form
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const dni = document.getElementById('dni').value;
-            const country = document.getElementById('country').value;
-            const state = document.getElementById('state').value;
-            const city = document.getElementById('city').value;
-            const address = document.getElementById('address').value;
-            const shippingCompany = document.getElementById('shipping-company').value;
-            const agreement = document.getElementById('nationalization-agreement').checked;
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const dni = document.getElementById('dni');
+            const country = document.getElementById('country');
+            const state = document.getElementById('state');
+            const city = document.getElementById('city');
+            const address = document.getElementById('address');
+            const shippingCompany = document.getElementById('shipping-company');
+            const agreement = document.getElementById('nationalization-agreement');
             
-            if (!name || !email || !phone || !dni || !country || !state || !city || !address || !shippingCompany) {
+            if (!name || !name.value || !email || !email.value || !phone || !phone.value || 
+                !dni || !dni.value || !country || !country.value || !state || !state.value || 
+                !city || !city.value || !address || !address.value || !shippingCompany || !shippingCompany.value) {
                 showNotification('Por favor, completa todos los campos obligatorios.', 'error');
                 return false;
             }
             
             // Check if agreement is checked for Venezuela
-            if ((country === 've' || country === 'co') && !agreement) {
+            if (country && (country.value === 've' || country.value === 'co') && (!agreement || !agreement.checked)) {
                 showNotification('Debes aceptar el acuerdo de nacionalización para continuar.', 'error');
                 return false;
             }
@@ -582,14 +690,16 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (step === 3) {
             // Get selected payment method
             const activePaymentMethod = document.querySelector('.payment-methods .payment-method.active');
+            if (!activePaymentMethod) return false;
+            
             const paymentType = activePaymentMethod.getAttribute('data-payment');
             
             if (paymentType === 'card') {
                 // Validate card details
-                const cardName = cardNameInput.value;
-                const cardNumber = cardNumberInput.value.replace(/\s/g, '');
-                const cardExpiry = cardExpiryInput.value;
-                const cardCVV = cardCVVInput.value;
+                const cardName = cardNameInput && cardNameInput.value;
+                const cardNumber = cardNumberInput && cardNumberInput.value ? cardNumberInput.value.replace(/\s/g, '') : '';
+                const cardExpiry = cardExpiryInput && cardExpiryInput.value;
+                const cardCVV = cardCVVInput && cardCVVInput.value;
                 
                 if (!cardName || !cardNumber || !cardExpiry || !cardCVV) {
                     showNotification('Por favor, completa todos los campos de la tarjeta.', 'error');
@@ -605,11 +715,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return true;
             } else if (paymentType === 'pago-movil') {
                 // Validate Pago Móvil fields
-                const banco = document.getElementById('banco-emisor').value;
-                const referencia = document.getElementById('numero-referencia').value;
-                const telefono = document.getElementById('telefono-pago-movil').value;
+                const banco = document.getElementById('banco-emisor');
+                const referencia = document.getElementById('numero-referencia');
+                const telefono = document.getElementById('telefono-pago-movil');
                 
-                if (!banco || !referencia || !telefono) {
+                if (!banco || !banco.value || !referencia || !referencia.value || !telefono || !telefono.value) {
                     showNotification('Por favor, completa todos los campos del pago móvil.', 'error');
                     return false;
                 }
@@ -624,10 +734,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function applyCoupon() {
-        const couponCode = document.getElementById('coupon-code').value.trim().toUpperCase();
+        const couponCode = document.getElementById('coupon-code');
         const couponMessage = document.getElementById('coupon-message');
         
-        if (couponCode === 'NEW2025') {
+        if (!couponCode || !couponMessage) return;
+        
+        const code = couponCode.value.trim().toUpperCase();
+        
+        if (code === 'NEW2025') {
             // Apply 10% discount
             discount = subtotal * 0.1;
             couponMessage.textContent = '¡Cupón aplicado! 10% de descuento';
@@ -643,126 +757,165 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function setupEventListeners() {
         // Navegación entre pasos
-        document.getElementById('go-to-step-2').addEventListener('click', () => goToStep(2));
-        document.getElementById('back-to-step-1').addEventListener('click', () => goToStep(1));
-        document.getElementById('go-to-step-3').addEventListener('click', () => goToStep(3));
-        document.getElementById('back-to-step-2').addEventListener('click', () => goToStep(2));
-        document.getElementById('go-to-step-4').addEventListener('click', () => {
+        const goToStep2Btn = document.getElementById('go-to-step-2');
+        const backToStep1Btn = document.getElementById('back-to-step-1');
+        const goToStep3Btn = document.getElementById('go-to-step-3');
+        const backToStep2Btn = document.getElementById('back-to-step-2');
+        const goToStep4Btn = document.getElementById('go-to-step-4');
+        
+        if (goToStep2Btn) goToStep2Btn.addEventListener('click', () => goToStep(2));
+        if (backToStep1Btn) backToStep1Btn.addEventListener('click', () => goToStep(1));
+        if (goToStep3Btn) goToStep3Btn.addEventListener('click', () => goToStep(3));
+        if (backToStep2Btn) backToStep2Btn.addEventListener('click', () => goToStep(2));
+        if (goToStep4Btn) goToStep4Btn.addEventListener('click', () => {
             if (validateStep(3)) showOTPModal();
         });
         
         // Persistent summary continue button
-        document.getElementById('persistent-continue').addEventListener('click', () => {
-            if (currentStep < 4) {
-                if (validateStep(currentStep)) {
-                    if (currentStep === 3) {
-                        showOTPModal();
-                    } else {
-                        goToStep(currentStep + 1);
+        const persistentContinueBtn = document.getElementById('persistent-continue');
+        if (persistentContinueBtn) {
+            persistentContinueBtn.addEventListener('click', () => {
+                if (currentStep < 4) {
+                    if (validateStep(currentStep)) {
+                        if (currentStep === 3) {
+                            showOTPModal();
+                        } else {
+                            goToStep(currentStep + 1);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
         
         // Credit card form
-        cardCVVInput.addEventListener('focus', () => {
-            creditCard.classList.add('flipped');
-        });
-        
-        cardCVVInput.addEventListener('blur', () => {
-            creditCard.classList.remove('flipped');
-        });
-        
-        creditCard.addEventListener('click', toggleCardFlip);
-        
-        // Card input formatting
-        cardNumberInput.addEventListener('input', () => formatCardNumber(cardNumberInput));
-        cardExpiryInput.addEventListener('input', () => formatCardExpiry(cardExpiryInput));
-        cardNameInput.addEventListener('input', updateCardDisplay);
-        cardCVVInput.addEventListener('input', updateCardDisplay);
-        
-        // OTP inputs
-        otpInputs.forEach((input, index) => {
-            input.addEventListener('input', () => {
-                if (input.value.length >= 1) {
-                    if (index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
-                    } else {
-                        handleOTPInput();
-                    }
-                }
+        if (cardCVVInput) {
+            cardCVVInput.addEventListener('focus', () => {
+                if (creditCard) creditCard.classList.add('flipped');
             });
             
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Backspace' && input.value === '' && index > 0) {
-                    otpInputs[index - 1].focus();
-                }
+            cardCVVInput.addEventListener('blur', () => {
+                if (creditCard) creditCard.classList.remove('flipped');
             });
-        });
+        }
         
-        // OTP modal
-        document.getElementById('verify-otp').addEventListener('click', handleOTPInput);
-        document.getElementById('close-otp').addEventListener('click', hideOTPModal);
-        document.getElementById('resend-otp').addEventListener('click', () => {
-            hideOTPModal();
-            setTimeout(showOTPModal, 500);
-            showNotification('Se ha enviado un nuevo código de verificación.');
-        });
+        if (creditCard) creditCard.addEventListener('click', toggleCardFlip);
         
-        // Payment method selection
-        document.querySelectorAll('.payment-methods .payment-method').forEach(method => {
-            method.addEventListener('click', () => {
-                // Remove active class from all methods
-                document.querySelectorAll('.payment-methods .payment-method').forEach(m => {
-                    m.classList.remove('active');
+        // Card input formatting
+        if (cardNumberInput) cardNumberInput.addEventListener('input', () => formatCardNumber(cardNumberInput));
+        if (cardExpiryInput) cardExpiryInput.addEventListener('input', () => formatCardExpiry(cardExpiryInput));
+        if (cardNameInput) cardNameInput.addEventListener('input', updateCardDisplay);
+        if (cardCVVInput) cardCVVInput.addEventListener('input', updateCardDisplay);
+        
+        // OTP inputs
+        if (otpInputs) {
+            otpInputs.forEach((input, index) => {
+                if (!input) return;
+                
+                input.addEventListener('input', () => {
+                    if (input.value.length >= 1) {
+                        if (index < otpInputs.length - 1 && otpInputs[index + 1]) {
+                            otpInputs[index + 1].focus();
+                        } else {
+                            handleOTPInput();
+                        }
+                    }
                 });
                 
-                // Add active class to clicked method
-                method.classList.add('active');
-                
-                // Show corresponding form for payment methods
-                if (method.closest('.payment-methods') !== document.querySelector('.shipping-methods')) {
-                    const paymentType = method.getAttribute('data-payment');
-                    document.querySelectorAll('.payment-method-form').forEach(form => {
-                        form.classList.remove('active');
-                    });
-                    document.getElementById(`${paymentType}-payment-form`).classList.add('active');
-                } else {
-                    // Handle shipping method selection
-                    shipping = parseFloat(method.getAttribute('data-cost'));
-                    updateCartSummary();
-                    updateDeliveryDates();
-                }
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && index > 0 && otpInputs[index - 1]) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
             });
-        });
+        }
+        
+        // OTP modal
+        const verifyOtpBtn = document.getElementById('verify-otp');
+        const closeOtpBtn = document.getElementById('close-otp');
+        const resendOtpBtn = document.getElementById('resend-otp');
+        
+        if (verifyOtpBtn) verifyOtpBtn.addEventListener('click', handleOTPInput);
+        if (closeOtpBtn) closeOtpBtn.addEventListener('click', hideOTPModal);
+        if (resendOtpBtn) {
+            resendOtpBtn.addEventListener('click', () => {
+                hideOTPModal();
+                setTimeout(showOTPModal, 500);
+                showNotification('Se ha enviado un nuevo código de verificación.');
+            });
+        }
+        
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-methods .payment-method');
+        if (paymentMethods) {
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', () => {
+                    // Remove active class from all methods
+                    document.querySelectorAll('.payment-methods .payment-method').forEach(m => {
+                        m.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked method
+                    method.classList.add('active');
+                    
+                    // Show corresponding form for payment methods
+                    if (method.closest('.payment-methods') !== document.querySelector('.shipping-methods')) {
+                        const paymentType = method.getAttribute('data-payment');
+                        document.querySelectorAll('.payment-method-form').forEach(form => {
+                            form.classList.remove('active');
+                        });
+                        const paymentForm = document.getElementById(`${paymentType}-payment-form`);
+                        if (paymentForm) paymentForm.classList.add('active');
+                    } else {
+                        // Handle shipping method selection
+                        const shippingCost = parseFloat(method.getAttribute('data-cost'));
+                        if (!isNaN(shippingCost)) {
+                            shipping = shippingCost;
+                            updateCartSummary();
+                            updateDeliveryDates();
+                        }
+                    }
+                });
+            });
+        }
         
         // Apply coupon button
-        document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
+        const applyCouponBtn = document.getElementById('apply-coupon');
+        if (applyCouponBtn) applyCouponBtn.addEventListener('click', applyCoupon);
         
         // WhatsApp contact
-        document.getElementById('contact-whatsapp').addEventListener('click', (e) => {
-            e.preventDefault();
-            const orderNumber = document.getElementById('order-number').textContent;
-            const message = `Hola LatinPhone, acabo de realizar el pedido ${orderNumber}. Quiero confirmar mi compra.`;
-            window.open(`https://wa.me/18133584564?text=${encodeURIComponent(message)}`, '_blank');
-        });
+        const contactWhatsApp = document.getElementById('contact-whatsapp');
+        if (contactWhatsApp) {
+            contactWhatsApp.addEventListener('click', (e) => {
+                e.preventDefault();
+                const orderNumber = document.getElementById('order-number');
+                const orderNumberText = orderNumber ? orderNumber.textContent : 'nuevo pedido';
+                const message = `Hola LatinPhone, acabo de realizar el pedido ${orderNumberText}. Quiero confirmar mi compra.`;
+                window.open(`https://wa.me/18133584564?text=${encodeURIComponent(message)}`, '_blank');
+            });
+        }
         
         // Support link
-        document.getElementById('support-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            window.open(`https://wa.me/18133584564?text=${encodeURIComponent('Hola LatinPhone, necesito ayuda con mi compra.')}`, '_blank');
-        });
+        const supportLink = document.getElementById('support-link');
+        if (supportLink) {
+            supportLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(`https://wa.me/18133584564?text=${encodeURIComponent('Hola LatinPhone, necesito ayuda con mi compra.')}`, '_blank');
+            });
+        }
         
         // Complete order button (in confirmation step)
-        document.getElementById('complete-order').addEventListener('click', (e) => {
-            e.preventDefault();
-            // Clear the cart from localStorage
-            localStorage.removeItem('latinphone_cart');
-            localStorage.removeItem('latinphone_cart_totals');
-            showNotification('¡Gracias por tu compra!');
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1500);
-        });
+        const completeOrderBtn = document.getElementById('complete-order');
+        if (completeOrderBtn) {
+            completeOrderBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Clear the cart from localStorage
+                localStorage.removeItem('latinphone_cart');
+                localStorage.removeItem('latinphone_cart_totals');
+                showNotification('¡Gracias por tu compra!');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            });
+        }
     }
 });
