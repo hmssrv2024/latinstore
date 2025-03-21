@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Alternar barra de búsqueda
     function toggleSearchBar() {
+        if (!searchBar) return;
         searchBar.classList.toggle('active');
         if (searchBar.classList.contains('active')) {
             searchBar.querySelector('input').focus();
@@ -60,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Alternar carrito lateral
     function toggleCart() {
+        if (!cartSidebar || !cartOverlay) return;
         cartSidebar.classList.toggle('active');
         cartOverlay.classList.toggle('active');
         document.body.style.overflow = cartSidebar.classList.contains('active') ? 'hidden' : '';
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Cerrar carrito
     function closeCartSidebar() {
+        if (!cartSidebar || !cartOverlay) return;
         cartSidebar.classList.remove('active');
         cartOverlay.classList.remove('active');
         document.body.style.overflow = '';
@@ -74,6 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Actualizar carrito
     function updateCart() {
+        // Verificar que los elementos existan
+        if (!cartItems || !cartCount || !totalPrice) {
+            console.error("Elementos del carrito no encontrados");
+            return;
+        }
+        
         // Limpiar el contenido actual del carrito
         while (cartItems.firstChild) {
             cartItems.removeChild(cartItems.firstChild);
@@ -100,18 +109,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Agregar los items al carrito
         cart.forEach(item => {
+            // Validar precio y cantidad
+            const price = typeof item.price === 'number' ? item.price : 0;
+            const quantity = typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1;
+            
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
             cartItem.innerHTML = `
                 <div class="cart-item-img">
-                    <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}">
+                    <img src="${item.image || 'img/product-placeholder.png'}" alt="${item.name}">
                 </div>
                 <div class="cart-item-details">
                     <h4 class="cart-item-name">${item.name}</h4>
-                    <span class="cart-item-price">$${item.price} USD</span>
+                    <span class="cart-item-price">$${price.toFixed(2)} USD</span>
                     <div class="cart-item-quantity">
                         <button class="quantity-btn decrease" data-id="${item.id}">-</button>
-                        <span class="quantity-value">${item.quantity}</span>
+                        <span class="quantity-value">${quantity}</span>
                         <button class="quantity-btn increase" data-id="${item.id}">+</button>
                     </div>
                 </div>
@@ -120,8 +133,8 @@ document.addEventListener('DOMContentLoaded', function() {
             cartItems.appendChild(cartItem);
             
             // Actualizar el total y contador
-            total += item.price * item.quantity;
-            itemCount += item.quantity;
+            total += price * quantity;
+            itemCount += quantity;
         });
         
         // Actualizar contador y total
@@ -147,7 +160,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const btn = e.currentTarget;
         const id = btn.dataset.id;
         const name = btn.dataset.name;
-        const price = parseFloat(btn.dataset.price);
+        const priceString = btn.dataset.price;
+        
+        // Validar precio como número
+        const price = parseFloat(priceString);
+        if (isNaN(price) || price < 0) {
+            console.error(`Precio inválido (${priceString}) para el producto ${name}`);
+            showNotification(`Error al agregar ${name}. Precio inválido.`, 'error');
+            return;
+        }
         
         // Buscar si el producto ya está en el carrito
         const existingItem = cart.find(item => item.id === id);
@@ -180,6 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Obtener imagen del producto
     function getProductImage(btn) {
         const productCard = btn.closest('.product-card');
+        if (!productCard) return 'img/product-placeholder.png';
+        
         const img = productCard.querySelector('img');
         const video = productCard.querySelector('video');
         
@@ -187,10 +210,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return img.src;
         } else if (video) {
             // Si es un video, devolver un thumbnail por defecto o capturar frame
-            return 'https://via.placeholder.com/80';
+            return 'img/product-placeholder.png';
         }
         
-        return 'https://via.placeholder.com/80';
+        return 'img/product-placeholder.png';
     }
     
     // Aumentar cantidad
@@ -246,15 +269,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function loadCart() {
         const savedCart = localStorage.getItem('latinphone_cart');
         if (savedCart) {
-            cart = JSON.parse(savedCart);
-            updateCart();
+            try {
+                cart = JSON.parse(savedCart);
+                
+                // Validar elementos del carrito
+                cart = cart.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'number' ? item.price : 0,
+                    quantity: typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1
+                }));
+                
+                updateCart();
+            } catch (err) {
+                console.error("Error al cargar el carrito:", err);
+                cart = [];
+                updateCart();
+            }
         }
     }
     
     // Mostrar notificación
-    function showNotification(message) {
+    function showNotification(message, type = 'success') {
+        // Eliminar notificaciones existentes
+        document.querySelectorAll('.notification').forEach(notification => {
+            notification.remove();
+        });
+        
+        // Crear notificación
         const notification = document.createElement('div');
         notification.className = 'notification';
+        notification.classList.add(type === 'error' ? 'notification-error' : 'notification-success');
         notification.textContent = message;
         
         document.body.appendChild(notification);
@@ -268,13 +312,20 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => {
-                document.body.removeChild(notification);
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
             }, 300);
         }, 3000);
     }
     
     // Filtrar productos por categoría
     function filterProducts() {
+        if (!this.dataset || !this.dataset.category) {
+            console.error("Error: botón de filtro sin atributo data-category");
+            return;
+        }
+        
         const category = this.dataset.category;
         
         // Actualizar botones activos
@@ -288,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (category !== 'all') {
             filteredProducts = filteredProducts.filter(product => {
-                return product.dataset.category === category;
+                return product.dataset && product.dataset.category === category;
             });
         }
         
@@ -301,18 +352,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Ordenar productos
     function sortProducts() {
+        if (!sortSelect) return;
+        
         const sortOption = sortSelect.value;
         
         switch (sortOption) {
             case 'price-low':
                 filteredProducts.sort((a, b) => {
-                    return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+                    const aPrice = parseFloat(a.dataset.price || 0);
+                    const bPrice = parseFloat(b.dataset.price || 0);
+                    return isNaN(aPrice) || isNaN(bPrice) ? 0 : aPrice - bPrice;
                 });
                 break;
                 
             case 'price-high':
                 filteredProducts.sort((a, b) => {
-                    return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+                    const aPrice = parseFloat(a.dataset.price || 0);
+                    const bPrice = parseFloat(b.dataset.price || 0);
+                    return isNaN(aPrice) || isNaN(bPrice) ? 0 : bPrice - aPrice;
                 });
                 break;
                 
@@ -335,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Actualizar visualización de productos
     function updateProductsDisplay() {
         const productsWrapper = document.querySelector('.products-wrapper');
+        if (!productsWrapper) return;
         
         // Ocultar todos los productos
         productCards.forEach(product => {
@@ -347,16 +405,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Comprobar si no hay productos que mostrar
+        const noProducts = document.querySelector('.no-products');
+        
         if (filteredProducts.length === 0) {
-            const noProducts = document.createElement('div');
-            noProducts.className = 'no-products';
-            noProducts.innerHTML = `
-                <i class="fas fa-search"></i>
-                <p>No se encontraron productos en esta categoría</p>
-            `;
-            productsWrapper.appendChild(noProducts);
+            if (!noProducts) {
+                const noProductsElement = document.createElement('div');
+                noProductsElement.className = 'no-products';
+                noProductsElement.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <p>No se encontraron productos en esta categoría</p>
+                `;
+                productsWrapper.appendChild(noProductsElement);
+            }
         } else {
-            const noProducts = document.querySelector('.no-products');
             if (noProducts) {
                 noProducts.remove();
             }
@@ -366,8 +427,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cargar recomendaciones
     function loadRecommendations() {
         const recommendedSlider = document.querySelector('.recommended-slider .slider-track');
+        if (!recommendedSlider) return;
         
-        // Array de productos recomendados (puedes personalizar esto según tus necesidades)
+        // Array de productos recomendados
         const recommendations = [
             {
                 id: 'zflip6',
@@ -380,14 +442,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 'airpodsmax',
                 name: 'AirPods Max',
                 price: 549.99,
-                image: 'https://via.placeholder.com/300',
+                image: 'img/product-placeholder.png',
                 category: 'accessories'
             },
             {
                 id: 'pixel10pro',
                 name: 'Google Pixel 10 Pro',
                 price: 1099.99,
-                image: 'https://via.placeholder.com/300',
+                image: 'img/product-placeholder.png',
                 category: 'smartphone'
             },
             {
@@ -401,23 +463,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: 'mixflip',
                 name: 'Xiaomi Mix Flip',
                 price: 1199.99,
-                image: 'https://via.placeholder.com/300',
+                image: 'img/product-placeholder.png',
                 category: 'foldable'
             }
         ];
         
         // Generar HTML para cada recomendación
         recommendations.forEach(product => {
+            if (!product.name || typeof product.price !== 'number') {
+                console.error("Datos inválidos en producto recomendado:", product);
+                return;
+            }
+            
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
             productCard.innerHTML = `
                 <div class="product-media">
-                    <img src="${product.image}" alt="${product.name}">
+                    <img src="${product.image || 'img/product-placeholder.png'}" alt="${product.name}">
                 </div>
                 <div class="product-info">
                     <h3>${product.name}</h3>
                     <div class="product-price">
-                        <span class="price">$${product.price} USD</span>
+                        <span class="price">$${product.price.toFixed(2)} USD</span>
                     </div>
                     <div class="product-actions">
                         <button class="btn btn-primary add-to-cart" data-id="${product.id}" data-name="${product.name}" data-price="${product.price}">Añadir al carrito</button>
@@ -438,11 +505,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const sliderTrack = document.querySelector('.recommended-slider .slider-track');
         const prevBtn = document.querySelector('.recommended-slider .prev-slide');
         const nextBtn = document.querySelector('.recommended-slider .next-slide');
+        
+        if (!sliderTrack || !prevBtn || !nextBtn) return;
+        
         let position = 0;
         const slidesToShow = window.innerWidth > 992 ? 3 : window.innerWidth > 768 ? 2 : 1;
         
         function updateSliderPosition() {
-            const cardWidth = sliderTrack.querySelector('.product-card').offsetWidth + 30; // 30px de gap
+            const productCards = sliderTrack.querySelectorAll('.product-card');
+            if (productCards.length === 0) return;
+            
+            const cardWidth = productCards[0].offsetWidth + 30; // 30px de gap
             sliderTrack.style.transform = `translateX(-${position * cardWidth}px)`;
         }
         
@@ -471,15 +544,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Proceder al checkout - FUNCIÓN CORREGIDA
+    // Proceder al checkout
     function checkout() {
         if (cart.length === 0) {
             showNotification('Tu carrito está vacío');
             return;
         }
         
+        // Validar datos del carrito
+        const validCart = cart.every(item => 
+            typeof item.price === 'number' && 
+            !isNaN(item.price) && 
+            typeof item.quantity === 'number' && 
+            item.quantity > 0
+        );
+        
+        if (!validCart) {
+            console.error("Datos inválidos en el carrito");
+            showNotification('Ocurrió un error con los datos del carrito. Por favor, inténtalo de nuevo.', 'error');
+            return;
+        }
+        
         // Calcular totales antes de guardar
-        const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const subtotal = cart.reduce((total, item) => {
+            return total + (item.price * item.quantity);
+        }, 0);
+        
         const tax = subtotal * 0.16;
         const shipping = 70;
         const total = subtotal + tax + shipping;
@@ -496,8 +586,8 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('latinphone_cart', JSON.stringify(cart));
             localStorage.setItem('latinphone_cart_totals', JSON.stringify(totals));
             
-            // Mostrar mensaje
-            alert('¡Gracias por tu compra! Serás redirigido a la página de pago.');
+            console.log("Carrito guardado:", cart);
+            console.log("Totales guardados:", totals);
             
             // Redirigir a la página de pago después de un breve retraso
             setTimeout(function() {
@@ -513,14 +603,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Event Listeners
-    searchToggle.addEventListener('click', toggleSearchBar);
-    cartToggle.addEventListener('click', toggleCart);
-    closeCart.addEventListener('click', closeCartSidebar);
-    cartOverlay.addEventListener('click', closeCartSidebar);
-    filterBtns.forEach(btn => btn.addEventListener('click', filterProducts));
-    sortSelect.addEventListener('change', sortProducts);
-    addToCartBtns.forEach(btn => btn.addEventListener('click', addToCart));
-    checkoutBtn.addEventListener('click', checkout);
+    if (searchToggle) searchToggle.addEventListener('click', toggleSearchBar);
+    if (cartToggle) cartToggle.addEventListener('click', toggleCart);
+    if (closeCart) closeCart.addEventListener('click', closeCartSidebar);
+    if (cartOverlay) cartOverlay.addEventListener('click', closeCartSidebar);
+    
+    filterBtns.forEach(btn => {
+        if (btn) btn.addEventListener('click', filterProducts);
+    });
+    
+    if (sortSelect) sortSelect.addEventListener('change', sortProducts);
+    
+    addToCartBtns.forEach(btn => {
+        if (btn) btn.addEventListener('click', addToCart);
+    });
+    
+    if (checkoutBtn) checkoutBtn.addEventListener('click', checkout);
     
     // Inicializar funciones
     initVideoPlayback();
@@ -529,7 +627,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initRecommendedSlider();
     
     // Aplicar filtro "Todos" por defecto
-    document.querySelector('.filter-btn[data-category="all"]').click();
+    const defaultFilterBtn = document.querySelector('.filter-btn[data-category="all"]');
+    if (defaultFilterBtn) defaultFilterBtn.click();
     
     // Añadir estilos para notificaciones
     const style = document.createElement('style');
@@ -552,6 +651,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .notification.show {
             transform: translateY(0);
             opacity: 1;
+        }
+        
+        .notification-success {
+            background-color: #34c759;
+        }
+        
+        .notification-error {
+            background-color: #ff3b30;
         }
     `;
     document.head.appendChild(style);
