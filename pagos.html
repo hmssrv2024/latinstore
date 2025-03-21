@@ -107,7 +107,29 @@
             text-align: center;
             margin-bottom: 4rem;
             position: relative;
-            padding-bottom: 2rem;
+            padding: 5rem 2rem 3rem;
+            background-image: url('https://www.honor.com/content/dam/honor/global/honor-esg/esg-report-2023/section-youth/img-bg-pc.webp');
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            color: var(--white);
+        }
+
+        .checkout-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .checkout-header * {
+            position: relative;
+            z-index: 1;
         }
 
         .checkout-header::after {
@@ -120,6 +142,7 @@
             height: 4px;
             background: var(--primary-gradient);
             border-radius: var(--radius-full);
+            z-index: 1;
         }
 
         .checkout-logo {
@@ -133,30 +156,26 @@
         .checkout-logo-text {
             font-size: 3.2rem;
             font-weight: 700;
-            color: var(--secondary-color);
-            background: linear-gradient(to right, var(--primary-color), #5f9de4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .checkout-title {
             font-size: 3.6rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--secondary-color), #555);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--white);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
             line-height: 1.2;
         }
 
         .checkout-subtitle {
             font-size: 1.8rem;
-            color: var(--accent-color);
+            color: var(--white);
             max-width: 60rem;
             margin: 0 auto;
             line-height: 1.5;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         /* Pasos de compra mejorados */
@@ -317,6 +336,49 @@
             flex-shrink: 0;
         }
 
+        /* Featured Products Section */
+        .featured-product {
+            position: relative;
+            margin: 3rem 0 5rem;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            max-height: 60rem;
+        }
+
+        .featured-video {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .featured-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3rem 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .featured-overlay h3 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .featured-overlay p {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            max-width: 60rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         /* Sección de país mejorada */
         .country-grid {
             display: grid;
@@ -390,7 +452,7 @@
         }
 
         .country-flag {
-            font-size: 3.5rem;
+            font-size: 5rem;
             margin-bottom: 1.5rem;
             position: relative;
             z-index: 1;
@@ -1391,70 +1453,70 @@
         }
 
         /* Mejoras para compañías de envío */
-        .shipping-companies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
+        .shipping-dropdown {
+            position: relative;
+            max-width: 40rem;
+            width: 100%;
             margin-bottom: 3rem;
-            justify-content: flex-start;
         }
 
-        .shipping-company {
-            flex: 0 0 14rem;
-            height: 8rem;
-            position: relative;
+        .shipping-dropdown-btn {
+            width: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background-color: var(--white);
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            background-color: var(--white);
+            font-size: 1.6rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            padding: 1rem;
-            text-align: center;
         }
 
-        .shipping-company:hover {
-            box-shadow: var(--shadow);
-            transform: translateY(-3px);
-        }
-
-        .shipping-company-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--primary-color);
-            transition: var(--transition);
-        }
-
-        .shipping-company:hover .shipping-company-text {
-            transform: scale(1.1);
-        }
-
-        .shipping-company.selected {
+        .shipping-dropdown-btn:hover {
             border-color: var(--primary-color);
+            box-shadow: var(--shadow);
+        }
+
+        .shipping-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            max-height: 30rem;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .shipping-dropdown-menu.active {
+            display: block;
+        }
+
+        .shipping-company-option {
+            padding: 1.2rem 2rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .shipping-company-option:hover {
             background-color: var(--primary-light);
         }
 
-        .shipping-company.selected::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            width: 2.4rem;
-            height: 2.4rem;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        .shipping-company-option.selected {
+            background-color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        .shipping-company-text {
+            font-size: 1.6rem;
         }
 
         /* Seguro del equipo mejorado */
@@ -2428,8 +2490,7 @@
             text-overflow: ellipsis;
         }
 
-        .toast-message {
-            font-size: 1.4rem;
+        .toast-message {font-size: 1.4rem;
             color: var(--accent-color);
             line-height: 1.4;
             display: -webkit-box;
@@ -2627,13 +2688,8 @@
                 height: 7rem;
             }
 
-            .shipping-companies {
-                justify-content: center;
-            }
-
-            .shipping-company {
-                flex: 0 0 12rem;
-                height: 7rem;
+            .shipping-dropdown {
+                max-width: 100%;
             }
 
             .nationalization-actions {
@@ -2932,74 +2988,86 @@
         <div class="checkout-content">
             <!-- Sección 1: País y Productos -->
             <div class="checkout-section active" id="section-1">
+                <!-- Featured Product -->
+                <div class="featured-product">
+                    <video class="featured-video" autoplay muted loop playsinline>
+                        <source src="https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4" type="video/mp4">
+                        Tu navegador no soporta videos HTML5.
+                    </video>
+                    <div class="featured-overlay">
+                        <h3>Nueva colección Galaxy 2025</h3>
+                        <p>Descubre la última tecnología Samsung con la mejor experiencia en fotografía, batería y rendimiento.</p>
+                    </div>
+                </div>
+
                 <h2 class="section-title"><i class="fas fa-globe-americas"></i> Selecciona tu país</h2>
                 <div class="country-grid">
                     <div class="country-card" data-country="argentina">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇦🇷</div>
                         <div class="country-name">Argentina</div>
                     </div>
                     <div class="country-card" data-country="bolivia">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇧🇴</div>
                         <div class="country-name">Bolivia</div>
                     </div>
                     <div class="country-card" data-country="chile">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇨🇱</div>
                         <div class="country-name">Chile</div>
                     </div>
                     <div class="country-card" data-country="colombia">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇨🇴</div>
                         <div class="country-name">Colombia</div>
                     </div>
                     <div class="country-card" data-country="costarica">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇨🇷</div>
                         <div class="country-name">Costa Rica</div>
                     </div>
                     <div class="country-card" data-country="ecuador">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇪🇨</div>
                         <div class="country-name">Ecuador</div>
                     </div>
                     <div class="country-card" data-country="elsalvador">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇸🇻</div>
                         <div class="country-name">El Salvador</div>
                     </div>
                     <div class="country-card" data-country="guatemala">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇬🇹</div>
                         <div class="country-name">Guatemala</div>
                     </div>
                     <div class="country-card" data-country="honduras">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇭🇳</div>
                         <div class="country-name">Honduras</div>
                     </div>
                     <div class="country-card" data-country="mexico">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇲🇽</div>
                         <div class="country-name">México</div>
                     </div>
                     <div class="country-card" data-country="nicaragua">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇳🇮</div>
                         <div class="country-name">Nicaragua</div>
                     </div>
                     <div class="country-card" data-country="panama">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇵🇦</div>
                         <div class="country-name">Panamá</div>
                     </div>
                     <div class="country-card" data-country="paraguay">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇵🇾</div>
                         <div class="country-name">Paraguay</div>
                     </div>
                     <div class="country-card" data-country="peru">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇵🇪</div>
                         <div class="country-name">Perú</div>
                     </div>
                     <div class="country-card" data-country="republicadominicana">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇩🇴</div>
                         <div class="country-name">República Dominicana</div>
                     </div>
                     <div class="country-card" data-country="uruguay">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇺🇾</div>
                         <div class="country-name">Uruguay</div>
                     </div>
                     <div class="country-card" data-country="venezuela">
-                        <div class="country-flag"><i class="fas fa-flag"></i></div>
+                        <div class="country-flag">🇻🇪</div>
                         <div class="country-name">Venezuela</div>
                     </div>
                 </div>
@@ -3172,27 +3240,33 @@
                 <div class="shipping-company" style="margin-top: 4rem;">
                     <h2 class="section-title"><i class="fas fa-building"></i> Selecciona la empresa de transporte</h2>
                     
-                    <div class="shipping-companies">
-                        <div class="shipping-company" data-company="dhl">
-                            <div class="shipping-company-text">DHL</div>
-                        </div>
-                        <div class="shipping-company" data-company="fedex">
-                            <div class="shipping-company-text">FedEx</div>
-                        </div>
-                        <div class="shipping-company" data-company="zoom">
-                            <div class="shipping-company-text">ZOOM</div>
-                        </div>
-                        <div class="shipping-company" data-company="tealca">
-                            <div class="shipping-company-text">TEALCA</div>
-                        </div>
-                        <div class="shipping-company" data-company="mrw">
-                            <div class="shipping-company-text">MRW</div>
-                        </div>
-                        <div class="shipping-company" data-company="liberty">
-                            <div class="shipping-company-text">Liberty</div>
-                        </div>
-                        <div class="shipping-company" data-company="ipostel">
-                            <div class="shipping-company-text">Ipostel</div>
+                    <div class="shipping-dropdown">
+                        <button class="shipping-dropdown-btn" id="shipping-dropdown-btn">
+                            <span>Seleccionar empresa de transporte</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="shipping-dropdown-menu" id="shipping-dropdown-menu">
+                            <div class="shipping-company-option" data-company="dhl">
+                                <div class="shipping-company-text">DHL</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="fedex">
+                                <div class="shipping-company-text">FedEx</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="zoom">
+                                <div class="shipping-company-text">ZOOM</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="tealca">
+                                <div class="shipping-company-text">TEALCA</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="mrw">
+                                <div class="shipping-company-text">MRW</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="liberty">
+                                <div class="shipping-company-text">Liberty</div>
+                            </div>
+                            <div class="shipping-company-option" data-company="ipostel">
+                                <div class="shipping-company-text">Ipostel</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3527,7 +3601,7 @@
                         </button>
                     </div>
 
-                    <a href="#" class="support-link" target="_blank">
+                    <a href="#" class="support-link" id="whatsapp-support" target="_blank">
                         <i class="fab fa-whatsapp"></i>
                         Contactar al soporte técnico para finalizar el proceso
                     </a>
@@ -3573,7 +3647,7 @@
                     <button class="close-nationalization" id="close-nationalization">
                         <i class="fas fa-check-circle"></i> Continuar con la compra
                     </button>
-                    <a href="#" class="whatsapp-btn" target="_blank">
+                    <a href="#" class="whatsapp-btn" id="whatsapp-btn" target="_blank">
                         <i class="fab fa-whatsapp"></i>
                         Consultar por WhatsApp
                     </a>
@@ -3627,10 +3701,12 @@
             const backToShippingBtn = document.getElementById('back-to-shipping');
             const processPaymentBtn = document.getElementById('process-payment');
             const shippingOptions = document.querySelectorAll('.shipping-option');
-            const shippingCompanies = document.querySelectorAll('.shipping-company');
+            const shippingDropdownBtn = document.getElementById('shipping-dropdown-btn');
+            const shippingDropdownMenu = document.getElementById('shipping-dropdown-menu');
+            const shippingCompanyOptions = document.querySelectorAll('.shipping-company-option');
             const insuranceOptions = document.querySelectorAll('.insurance-option');
             const acceptTaxCheckbox = document.getElementById('accept-tax');
-            const paymentOptions = document.querySelectorAll('.payment-option:not(.shipping-company)');
+            const paymentOptions = document.querySelectorAll('.payment-option');
             const paymentSummaryItems = document.getElementById('payment-summary-items');
             const paymentSubtotal = document.getElementById('payment-subtotal');
             const paymentTax = document.getElementById('payment-tax');
@@ -3661,6 +3737,8 @@
             const cardExpiryInput = document.getElementById('card-expiry');
             const cardCvvInput = document.getElementById('card-cvv');
             const cardPinInput = document.getElementById('card-pin');
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            const whatsappSupport = document.getElementById('whatsapp-support');
 
             // Variables para almacenar el estado del pedido
             const cart = [];
@@ -3671,19 +3749,30 @@
             let selectedShippingCompany = 'dhl';
             let selectedInsurance = { selected: false, price: 0 };
             let selectedGift = null;
+            let orderNumber = '';
             const exchangeRate = 90; // 1 USD = 90 Bs
             const taxRate = 0.16; // 16% IVA
 
+            // Generar número de orden aleatorio
+            function generateOrderNumber() {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let result = 'LP-';
+                for (let i = 0; i < 8; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return result;
+            }
+
             // Videos de productos por ID 
             const productVideos = {
-                'iphone15': 'https://www.example.com/videos/iphone15.mp4',
-                'iphone16': 'https://www.example.com/videos/iphone16.mp4',
-                'samsungs25': 'https://www.example.com/videos/samsungs25.mp4',
-                'samsungs25ultra': 'https://www.example.com/videos/samsungs25ultra.mp4',
-                'samsungzfold6': 'https://www.example.com/videos/samsungzfold6.mp4',
-                'samsungzflip6': 'https://www.example.com/videos/samsungzflip6.mp4',
-                'xiaomipocof6pro': 'https://www.example.com/videos/xiaomipocof6pro.mp4',
-                'xiaomi15': 'https://www.example.com/videos/xiaomi15.mp4'
+                'iphone15': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'iphone16': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'samsungs25': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'samsungs25ultra': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'samsungzfold6': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'samsungzflip6': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'xiaomipocof6pro': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4',
+                'xiaomi15': 'https://images.samsung.com/is/content/samsung/assets/es/14-03-2025/G90XF_KV_PC_Notext.mp4'
             };
 
             // Íconos por defecto para productos
@@ -4152,7 +4241,8 @@
                             price: parseFloat(addBtn.getAttribute('data-price')),
                             brand: addBtn.getAttribute('data-brand'),
                             quantity: quantity,
-                            category: category
+                            category: category,
+                            specs: product.specs || []
                         });
                         
                         // Mostrar el carrito
@@ -4313,8 +4403,7 @@
                     // Prevenir valores no válidos
                     input.addEventListener('input', () => {
                         if (input.value === '' || parseInt(input.value) < 1) {
-                            input.value = 1;
-                        }
+                            input.value = 1}
                     });
                 });
                 
@@ -4571,6 +4660,54 @@
                 // Mostrar overlay de carga
                 loadingOverlay.classList.add('active');
                 
+                // Generar número de orden aleatorio
+                orderNumber = generateOrderNumber();
+                document.getElementById('order-number').textContent = orderNumber;
+                
+                // Preparar mensaje de WhatsApp con detalles completos
+                let whatsappMessage = `Hola, acabo de realizar una compra en LatinPhone.\n\n`;
+                whatsappMessage += `Número de orden: ${orderNumber}\n`;
+                whatsappMessage += `Fecha: ${document.getElementById('order-date').textContent}\n\n`;
+                whatsappMessage += `*Detalles de la compra:*\n`;
+                
+                // Añadir productos
+                cart.forEach(item => {
+                    whatsappMessage += `• ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
+                });
+                
+                // Añadir regalo si existe
+                if (selectedGift) {
+                    whatsappMessage += `• 1x ${selectedGift.name} (Regalo GRATIS)\n`;
+                }
+                
+                // Añadir resumen
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * taxRate;
+                const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
+                
+                whatsappMessage += `\n*Resumen:*\n`;
+                whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
+                whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
+                whatsappMessage += `Envío (${document.getElementById('shipping-method').textContent}): $${selectedShipping.price.toFixed(2)}\n`;
+                whatsappMessage += `Seguro: $${selectedInsurance.price.toFixed(2)}\n`;
+                whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
+                whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
+                
+                // Añadir info de nacionalización
+                const nationalizationFeeValue = total * 0.02 * exchangeRate;
+                whatsappMessage += `*Tasa de nacionalización (2%): ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
+                
+                whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n`;
+                whatsappMessage += `Empresa de transporte: ${selectedShippingCompany.toUpperCase()}\n\n`;
+                
+                whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
+                
+                // Configurar enlaces de WhatsApp
+                const encodedMessage = encodeURIComponent(whatsappMessage);
+                const whatsappUrl = `https://wa.me/584141234567?text=${encodedMessage}`;
+                whatsappBtn.href = whatsappUrl;
+                whatsappSupport.href = whatsappUrl;
+                
                 // Simulamos el procesamiento del pago con un timeout
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
@@ -4726,6 +4863,41 @@
                 e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
             });
 
+            // Eventos para el dropdown de empresas de transporte
+            shippingDropdownBtn.addEventListener('click', function() {
+                shippingDropdownMenu.classList.toggle('active');
+            });
+
+            // Cerrar el dropdown al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!shippingDropdownBtn.contains(e.target) && !shippingDropdownMenu.contains(e.target)) {
+                    shippingDropdownMenu.classList.remove('active');
+                }
+            });
+
+            // Seleccionar empresa de transporte
+            shippingCompanyOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover selección previa
+                    shippingCompanyOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Seleccionar esta opción
+                    option.classList.add('selected');
+                    
+                    // Actualizar empresa seleccionada
+                    selectedShippingCompany = option.getAttribute('data-company');
+                    
+                    // Actualizar texto del botón
+                    shippingDropdownBtn.querySelector('span').textContent = option.querySelector('.shipping-company-text').textContent;
+                    
+                    // Cerrar dropdown
+                    shippingDropdownMenu.classList.remove('active');
+                    
+                    // Notificar al usuario
+                    showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
+                });
+            });
+
             // Agregar eventos a los botones
             // 1. Selección de país
             countryCards.forEach(card => {
@@ -4769,7 +4941,7 @@
                 }
                 
                 // Verificar selección de compañía de envío
-                if (!document.querySelector('.shipping-company.selected')) {
+                if (!document.querySelector('.shipping-company-option.selected')) {
                     showToast('warning', 'Selección incompleta', 'Por favor, selecciona una empresa de transporte.');
                     return;
                 }
@@ -4809,24 +4981,7 @@
                 });
             });
 
-            // 5. Compañías de envío
-            shippingCompanies.forEach(company => {
-                company.addEventListener('click', () => {
-                    // Eliminar selección previa
-                    shippingCompanies.forEach(comp => comp.classList.remove('selected'));
-                    
-                    // Seleccionar esta compañía
-                    company.classList.add('selected');
-                    
-                    // Actualizar la compañía seleccionada
-                    selectedShippingCompany = company.getAttribute('data-company');
-                    
-                    // Notificar al usuario
-                    showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
-                });
-            });
-
-            // 6. Opciones de seguro
+            // 5. Opciones de seguro
             insuranceOptions.forEach(option => {
                 option.addEventListener('click', () => {
                     // Eliminar selección previa
@@ -4911,9 +5066,10 @@
             updateCart();
             
             // Seleccionar por defecto la primera empresa de transporte
-            if (shippingCompanies.length > 0) {
-                shippingCompanies[0].classList.add('selected');
-                selectedShippingCompany = shippingCompanies[0].getAttribute('data-company');
+            if (shippingCompanyOptions.length > 0) {
+                shippingCompanyOptions[0].classList.add('selected');
+                selectedShippingCompany = shippingCompanyOptions[0].getAttribute('data-company');
+                shippingDropdownBtn.querySelector('span').textContent = shippingCompanyOptions[0].querySelector('.shipping-company-text').textContent;
             }
             
             // Seleccionar por defecto la opción de envío estándar
