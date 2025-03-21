@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const summarySubtotal = document.getElementById('summary-subtotal');
     const summaryTax = document.getElementById('summary-tax');
     const summaryShipping = document.getElementById('summary-shipping');
+    const summaryInsurance = document.getElementById('summary-insurance');
+    const summaryDiscountRow = document.getElementById('summary-discount-row');
+    const summaryDiscount = document.getElementById('summary-discount');
     const summaryTotal = document.getElementById('summary-total');
     const summaryTotalBs = document.getElementById('summary-total-bs');
     
@@ -31,21 +34,32 @@ document.addEventListener('DOMContentLoaded', function() {
     let subtotal = 0;
     let tax = 0;
     let shipping = 70; // Default Express
+    let insurance = 0;
+    let discount = 0;
     let total = 0;
     
     // Cargar datos del carrito desde localStorage
     function loadCartFromStorage() {
         const savedCart = localStorage.getItem('latinphone_cart');
+        const savedTotals = localStorage.getItem('latinphone_cart_totals');
         console.log("Carrito cargado:", savedCart);
+        console.log("Totales cargados:", savedTotals);
         
-        if (savedCart && savedCart !== "[]" && savedCart !== "null") {
-            try {
-                return JSON.parse(savedCart);
-            } catch (e) {
-                console.error("Error al parsear el carrito:", e);
-                return getDefaultCart();
+        try {
+            if (savedCart && savedCart !== "[]" && savedCart !== "null") {
+                const cartData = JSON.parse(savedCart);
+                
+                // Validar datos del carrito
+                return cartData.map(item => ({
+                    ...item,
+                    price: typeof item.price === 'number' ? item.price : 0,
+                    quantity: typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1
+                }));
             }
+        } catch (e) {
+            console.error("Error al parsear el carrito:", e);
         }
+        
         return getDefaultCart();
     }
     
@@ -108,21 +122,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calcular totales
     function calculateTotals() {
+        // Reiniciar subtotal
         subtotal = 0;
+        
+        // Sumar precios validando los datos
         cart.forEach(item => {
             const product = getProductDetails(item.id);
             if (product) {
-                subtotal += product.price * item.quantity;
+                const price = typeof product.price === 'number' ? product.price : 0;
+                const quantity = typeof item.quantity === 'number' && item.quantity > 0 ? item.quantity : 1;
+                subtotal += price * quantity;
             }
         });
         
         tax = subtotal * 0.16; // IVA 16%
-        total = subtotal + tax + shipping;
+        insurance = subtotal * 0.02; // 2% de seguro
+        total = subtotal + tax + shipping + insurance - discount;
+        
+        // Validar montos
+        if (isNaN(subtotal)) subtotal = 0;
+        if (isNaN(tax)) tax = 0;
+        if (isNaN(shipping)) shipping = 70;
+        if (isNaN(insurance)) insurance = 0;
+        if (isNaN(discount)) discount = 0;
+        if (isNaN(total)) total = 0;
         
         // Actualizar en la interfaz
         if (summarySubtotal) summarySubtotal.textContent = formatCurrency(subtotal);
         if (summaryTax) summaryTax.textContent = formatCurrency(tax);
         if (summaryShipping) summaryShipping.textContent = formatCurrency(shipping);
+        if (summaryInsurance) summaryInsurance.textContent = formatCurrency(insurance);
+        
+        if (discount > 0) {
+            if (summaryDiscount) summaryDiscount.textContent = '-' + formatCurrency(discount);
+            if (summaryDiscountRow) summaryDiscountRow.style.display = 'flex';
+        } else {
+            if (summaryDiscountRow) summaryDiscountRow.style.display = 'none';
+        }
+        
         if (summaryTotal) summaryTotal.textContent = formatCurrency(total);
         if (summaryTotalBs) summaryTotalBs.textContent = formatBolivar(total);
         
@@ -132,10 +169,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Formatear moneda
     function formatCurrency(amount) {
+        // Manejar casos inválidos
+        if (isNaN(amount) || typeof amount !== 'number') {
+            console.error("Valor inválido para formatear:", amount);
+            amount = 0;
+        }
         return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
     
     function formatBolivar(amount) {
+        // Manejar casos inválidos
+        if (isNaN(amount) || typeof amount !== 'number') {
+            console.error("Valor inválido para formateo en bolívares:", amount);
+            amount = 0;
+        }
         const bsAmount = amount * BOLIVAR_RATE;
         return bsAmount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' Bs';
     }
@@ -599,6 +646,7 @@ document.addEventListener('DOMContentLoaded', function() {
             completeOrderBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 localStorage.removeItem('latinphone_cart');
+                localStorage.removeItem('latinphone_cart_totals');
                 alert('¡Gracias por tu compra! Tu pedido ha sido procesado correctamente.');
                 window.location.href = 'index.html';
             });
@@ -614,6 +662,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.open(`https://wa.me/13183584564?text=${encodeURIComponent(message)}`, '_blank');
             });
         }
+        
+        // Configurar manejo de botones de shipping
+        const shippingMethods = document.querySelectorAll('.shipping-methods .payment-method');
+        shippingMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                // Quitar clase active de todos los métodos
+                shippingMethods.forEach(m => m.classList.remove('active'));
+                
+                // Agregar clase active al método seleccionado
+                this.classList.add('active');
+                
+                // Actualizar costo de envío
+                const shippingCost = parseFloat(this.getAttribute('data-cost'));
+                if (!isNaN(shippingCost)) {
+                    shipping = shippingCost;
+                    calculateTotals();
+                }
+            });
+        });
     }
     
     // Inicializar
