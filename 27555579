@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura Optimizada - LatinPhone America Movil</title>
+    <style>
+        /* --- Variables CSS para fácil personalización --- */
+        :root {
+            --primary-color: #0052cc; /* Azul principal moderno */
+            --secondary-color: #0066ff; /* Azul secundario */
+            --accent-color: #4CAF50;   /* Verde para éxito/regalo */
+            --warning-color: #FF9800;  /* Naranja para en progreso */
+            --pending-color: #cccccc;  /* Gris para pendiente */
+            --light-gray: #f8f9fa;
+            --medium-gray: #dee2e6;
+            --dark-gray: #495057;
+            --text-color: #343a40;
+            --white: #ffffff;
+            --border-radius: 12px;     /* Bordes más suaves */
+            --box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07); /* Sombra más suave */
+            --font-main: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --spacing-unit: 8px;
+        }
+
+        /* --- Reseteo Básico y Estilos Globales --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px; /* Base para unidades rem */
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* --- Contenedor Principal --- */
+        .container {
+            max-width: 850px; /* Un poco más ancho */
+            margin: calc(var(--spacing-unit) * 3) auto;
+            padding: calc(var(--spacing-unit) * 5);
+            background-color: var(--white);
+            box-shadow: var(--box-shadow);
+            border-radius: var(--border-radius);
+        }
+
+        /* --- Cabecera --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Alinear al inicio */
+            border-bottom: 1px solid var(--medium-gray);
+            padding-bottom: calc(var(--spacing-unit) * 3);
+            margin-bottom: calc(var(--spacing-unit) * 4);
+            gap: calc(var(--spacing-unit) * 3); /* Espacio entre logo e info */
+        }
+
+        .logo {
+            width: 140px;
+            height: auto;
+            flex-shrink: 0; /* Evitar que el logo se encoja */
+        }
+
+        .company-info {
+            text-align: right;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        .company-info h2 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-unit);
+            font-size: 1.2rem;
+        }
+        .company-info p {
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+            line-height: 1.4;
+        }
+
+        /* --- Título de Factura --- */
+        .invoice-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: calc(var(--spacing-unit) * 4);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* --- Detalles de Factura y Cliente --- */
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: calc(var(--spacing-unit) * 4);
+            gap: calc(var(--spacing-unit) * 4); /* Espacio entre columnas */
+            flex-wrap: wrap; /* Para responsividad */
+        }
+
+        .client-info, .invoice-info {
+            width: calc(50% - var(--spacing-unit) * 2); /* Ajustar ancho con gap */
+            min-width: 280px; /* Ancho mínimo antes de envolver */
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+            border-radius: calc(var(--border-radius) / 1.5);
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+         .client-info p, .invoice-info p {
+             margin-bottom: var(--spacing-unit);
+             font-size: 0.95rem;
+             color: var(--dark-gray);
+         }
+         .client-info strong, .invoice-info strong {
+             color: var(--text-color);
+             min-width: 100px; /* Alineación visual */
+             display: inline-block;
+         }
+
+        /* --- Tabla de Detalles --- */
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: calc(var(--spacing-unit) * 4) 0;
+            border-radius: var(--border-radius);
+            overflow: hidden; /* Para aplicar border-radius a la tabla */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .details-table th {
+            background-color: #eef4ff; /* Azul muy claro */
+            padding: calc(var(--spacing-unit) * 2);
+            text-align: left;
+            border-bottom: 2px solid var(--medium-gray);
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .details-table td {
+            padding: calc(var(--spacing-unit) * 2);
+            border-bottom: 1px solid var(--medium-gray);
+            font-size: 0.95rem;
+        }
+
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Estilo para item de regalo */
+        .gift-item td {
+            background-color: #e8f5e9; /* Verde muy claro */
+            color: var(--accent-color);
+        }
+
+        .gift-badge {
+            background-color: var(--accent-color);
+            color: white;
+            padding: calc(var(--spacing-unit)*0.4) calc(var(--spacing-unit)*1);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: var(--spacing-unit);
+            font-weight: 500;
+            display: inline-block; /* Alineación vertical */
+            vertical-align: middle;
+        }
+
+        /* --- Sección de Totales --- */
+        .total-section {
+            width: 45%; /* Ajustar ancho */
+            max-width: 350px;
+            margin-left: auto;
+            margin-top: calc(var(--spacing-unit) * 3);
+            background-color: #f8faff; /* Azul extra claro */
+            padding: calc(var(--spacing-unit) * 3);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: calc(var(--spacing-unit)*1.25) 0;
+            border-bottom: 1px solid var(--medium-gray);
+            font-size: 0.95rem;
+        }
+        .total-row:last-of-type {
+             border-bottom: none; /* Quitar borde del último item normal */
+        }
+        .total-row span:first-child {
+            color: var(--dark-gray);
+        }
+        .total-row span:last-child {
+            font-weight: 500;
+        }
+
+        .total-row.final {
+            font-weight: bold;
+            border-top: 2px solid var(--primary-color); /* Línea arriba del total */
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            padding-top: calc(var(--spacing-unit) * 2);
+            margin-top: var(--spacing-unit);
+        }
+
+        /* --- Información de Pago --- */
+        .payment-info {
+            background-color: var(--light-gray);
+            padding: calc(var(--spacing-unit) * 3);
+            border-radius: var(--border-radius);
+            margin: calc(var(--spacing-unit) * 4) 0;
+            border-left: 5px solid var(--primary-color);
+            font-size: 0.95rem;
+        }
+        .payment-info .section-title {
+            margin-top: calc(var(--spacing-unit) * -1.5); /* Ajustar posición título */
+        }
+        .payment-info p {
+            margin-bottom: var(--spacing-unit);
+        }
+         .payment-info strong {
+             min-width: 120px;
+             display: inline-block;
+             color: var(--text-color);
+         }
+        .payment-info .status-paid {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* --- Video Preview --- */
+        .video-preview {
+            width: 100%;
+            margin: calc(var(--spacing-unit) * 4) 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+        .video-preview video {
+            width: 100%;
+            display: block;
+            background-color: #000; /* Fondo por si el video tarda */
+        }
+
+        /* --- Seguimiento de Pedido --- */
+        .tracking-title {
+            text-align: center;
+            margin: calc(var(--spacing-unit) * 5) 0 calc(var(--spacing-unit) * 3);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tracking-container {
+            position: relative;
+            padding: calc(var(--spacing-unit) * 2) 0;
+            margin-left: calc(var(--spacing-unit) * 3); /* Espacio para línea e iconos */
+        }
+
+        /* Línea vertical de seguimiento */
+        .tracking-container::before {
+            content: '';
+            position: absolute;
+            top: calc(var(--spacing-unit) * 2.5); /* Alinear con centro de iconos */
+            left: calc(var(--spacing-unit) * -0.25); /* Centrar línea con icono */
+            width: 3px;
+            height: calc(100% - var(--spacing-unit) * 5);
+            background-color: var(--medium-gray);
+            z-index: 1;
+        }
+
+        .tracking-steps {
+            position: relative;
+            z-index: 2;
+        }
+
+        .tracking-step {
+            display: flex;
+            align-items: flex-start; /* Alinear items al inicio */
+            margin-bottom: calc(var(--spacing-unit) * 4);
+            position: relative; /* Para la conexión de la línea */
+        }
+        .tracking-step:last-child {
+            margin-bottom: 0;
+        }
+        /* Línea activa que sobreescribe la gris */
+         .tracking-step.completed::before,
+         .tracking-step.in-progress::before {
+             content: '';
+             position: absolute;
+             top: calc(var(--spacing-unit) * 2.5); /* Alinear con centro de iconos */
+             left: calc(var(--spacing-unit) * -0.25); /* Centrar línea con icono */
+             width: 3px;
+             height: 100%; /* Conectar hasta el siguiente paso */
+             background-color: var(--accent-color);
+             z-index: -1; /* Detrás del icono */
+         }
+        .tracking-step.in-progress::before {
+             background-color: var(--warning-color);
+             height: 0; /* Solo colorea el icono en progreso */
+         }
+
+
+        .step-icon {
+            width: calc(var(--spacing-unit) * 5);
+            height: calc(var(--spacing-unit) * 5);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: calc(var(--spacing-unit) * 2.5);
+            flex-shrink: 0; /* Evitar que se encoja */
+            background-color: var(--pending-color); /* Default: Pendiente */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            position: relative; /* Asegurar que esté sobre la línea */
+            z-index: 3;
+            border: 3px solid var(--white); /* Efecto visual */
+        }
+        .step-icon svg {
+            width: 60%;
+            height: 60%;
+        }
+
+        /* Colores de icono por estado */
+        .tracking-step.completed .step-icon { background-color: var(--accent-color); }
+        .tracking-step.in-progress .step-icon { background-color: var(--warning-color); }
+
+        .step-content { flex: 1; }
+        .step-date { color: var(--dark-gray); font-size: 0.85rem; margin-bottom: calc(var(--spacing-unit) * 0.5); }
+        .step-title { font-weight: 600; margin-bottom: calc(var(--spacing-unit) * 0.5); color: var(--primary-color); }
+        .step-desc { color: var(--dark-gray); font-size: 0.9rem; }
+
+        /* --- Código de Barras / QR --- */
+        .barcode {
+            text-align: center;
+            margin: calc(var(--spacing-unit) * 5) 0;
+        }
+        .barcode img {
+            display: block;
+            margin: 0 auto calc(var(--spacing-unit) * 1.5);
+            max-width: 100%;
+            height: auto;
+        }
+         .barcode .qr-code { width: 130px; height: 130px; }
+         .barcode .barcode-img { max-width: 350px; height: 70px; }
+         .barcode p {
+             margin-top: var(--spacing-unit);
+             font-size: 0.9rem;
+             color: var(--dark-gray);
+             font-family: monospace; /* Fuente monoespaciada para códigos */
+         }
+
+        /* --- Términos y Condiciones --- */
+        .terms {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            margin-top: calc(var(--spacing-unit) * 4);
+            background-color: var(--light-gray);
+            padding: calc(var(--spacing-unit) * 3);
+            border-radius: var(--border-radius);
+            border-top: 3px solid var(--medium-gray);
+        }
+        .terms p { margin-bottom: var(--spacing-unit); }
+        .terms strong { color: var(--text-color); }
+
+        /* --- Pie de Página --- */
+        .footer {
+            margin-top: calc(var(--spacing-unit) * 5);
+            padding-top: calc(var(--spacing-unit) * 3);
+            border-top: 1px solid var(--medium-gray);
+            text-align: center;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+        }
+        .footer p { margin-bottom: var(--spacing-unit); }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: calc(var(--spacing-unit) * 2);
+            margin-top: calc(var(--spacing-unit) * 2);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            transition: all 0.3s ease;
+            text-decoration: none; /* Si fueran enlaces */
+        }
+        .social-icon svg {
+             width: 20px;
+             height: 20px;
+             fill: currentColor; /* El color se hereda */
+         }
+
+        .social-icon:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px); /* Pequeño efecto de elevación */
+            box-shadow: 0 4px 10px rgba(0, 82, 204, 0.3);
+        }
+
+        /* --- Responsividad --- */
+        @media (max-width: 768px) {
+            html { font-size: 15px; } /* Ajustar base de fuente */
+
+            .container {
+                margin: var(--spacing-unit) auto;
+                padding: calc(var(--spacing-unit) * 3);
+                border-radius: 0; /* Opcional: quitar bordes en móvil */
+                box-shadow: none;
+            }
+
+            .header {
+                flex-direction: column; /* Apilar logo e info */
+                align-items: center; /* Centrar items */
+                text-align: center;
+            }
+            .company-info { text-align: center; }
+
+            .invoice-details {
+                flex-direction: column; /* Apilar info cliente/factura */
+                gap: calc(var(--spacing-unit) * 3);
+            }
+            .client-info, .invoice-info {
+                width: 100%; /* Ocupar todo el ancho */
+                min-width: unset;
+            }
+
+            .details-table th, .details-table td {
+                 padding: var(--spacing-unit) * 1.5;
+                 font-size: 0.9rem;
+            }
+            /* Podrías necesitar ocultar/reorganizar columnas de tabla en pantallas muy pequeñas */
+
+            .total-section {
+                width: 80%; /* Más ancho en móvil */
+                max-width: unset;
+            }
+
+            .tracking-container { margin-left: var(--spacing-unit); } /* Menos margen */
+             .tracking-step { align-items: flex-start; } /* Asegurar alineación */
+
+             .barcode .barcode-img { max-width: 90%; height: auto; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <img src="https://pbs.twimg.com/profile_images/1598435612/Logo-LatinPhone3_400x400.png" alt="LatinPhone Logo" class="logo">
+            </div>
+            <div class="company-info">
+                <h2>LatinPhone America Movil</h2>
+                <p>33178 Road Av 74<br>Miami, Florida, USA</p>
+                <p>Tel: +1 (813) 358-4564</p>
+                <p>latinphone@usa.com | www.latinphone.store</p>
+            </div>
+        </div>
+
+        <h1 class="invoice-title">FACTURA DE COMPRA</h1>
+
+        <div class="invoice-details">
+            <div class="client-info">
+                <div class="section-title">DATOS DEL CLIENTE</div>
+                <p><strong>Nombre:</strong> Luis Guillermo Ascanio Reyes</p>
+                <p><strong>Documento:</strong> 27-555-579 (Venezuela)</p>
+                <p><strong>Dirección:</strong> Calabozo, Estado Guárico, Venezuela</p>
+                <p><strong>Teléfono:</strong> +58 412-7597032</p>
+            </div>
+            <div class="invoice-info">
+                <div class="section-title">DETALLES DE FACTURA</div>
+                <p><strong>Factura N°:</strong> LP-25041502</p>
+                <p><strong>Emisión:</strong> 15/04/2025</p> <p><strong>Orden N°:</strong> LPLFSEU74N</p> <p><strong>Pago:</strong> Tarjeta de crédito ****3009</p> </div>
+        </div>
+
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Cant.</th> <th>P. Unit.</th> <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Samsung Galaxy A55 5G - 8GB/256GB - Negro</td>
+                    <td>1</td>
+                    <td>$365.00</td>
+                    <td>$365.00</td>
+                </tr>
+                <tr>
+                    <td>Protector de pantalla Premium - Samsung A55</td>
+                    <td>1</td>
+                    <td>$12.99</td>
+                    <td>$12.99</td>
+                </tr>
+                <tr>
+                    <td>Garantía extendida (+12 meses)</td> <td>1</td>
+                    <td>$39.99</td>
+                    <td>$39.99</td>
+                </tr>
+                <tr class="gift-item">
+                    <td>Amazon Fire TV Stick 4K <span class="gift-badge">REGALO</span></td>
+                    <td>1</td>
+                    <td><del>$49.99</del></td> <td>$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span>$417.98</span>
+            </div>
+            <div class="total-row">
+                <span>IVA (7%):</span>
+                <span>$29.26</span>
+            </div>
+            <div class="total-row">
+                <span>Envío:</span> <span>$11.16</span>
+            </div>
+            <div class="total-row final">
+                <span>TOTAL:</span>
+                <span>$458.40</span>
+            </div>
+        </div>
+
+        <div class="payment-info">
+             <div class="section-title">INFORMACIÓN DE PAGO</div>
+             <p><strong>Método:</strong> Tarjeta de crédito ****3009</p>
+             <p><strong>Fecha:</strong> 15/04/2025</p> <p><strong>Estado:</strong> <span class="status-paid">PAGADO</span></p>
+             <p><strong>Referencia:</strong> TXN258974136</p> </div>
+
+        <div class="video-preview">
+            <video controls autoplay muted loop poster="URL_DE_TU_IMAGEN_PREVIEW.jpg">
+                <source src="https://images.samsung.com/is/content/samsung/assets/es/smartphones/galaxy-s25/videos/galaxy-s25-features-seamless-actions-across-apps-1.webm?imbypass=true" type="video/webm">
+                Tu navegador no soporta videos HTML5.
+            </video>
+        </div>
+
+        <h2 class="tracking-title">SEGUIMIENTO DE PEDIDO</h2>
+        <div class="tracking-container">
+            <div class="tracking-steps">
+                <div class="tracking-step completed">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Completado</title><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-date">15/04/2025 - 14:32 EST</div>
+                        <div class="step-title">Compra y Pago Exitoso</div>
+                        <div class="step-desc">Su pago ha sido procesado correctamente.</div>
+                    </div>
+                </div>
+                <div class="tracking-step completed">
+                     <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Completado</title><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-date">15/04/2025 - 16:45 EST</div>
+                        <div class="step-title">Pedido Verificado</div>
+                        <div class="step-desc">Su pedido ha sido verificado por ventas.</div>
+                    </div>
+                </div>
+                <div class="tracking-step in-progress">
+                     <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>En Progreso</title><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-date">16/04/2025 - 09:15 EST</div>
+                        <div class="step-title">En Proceso de Empaque</div>
+                        <div class="step-desc">Preparando su pedido para envío.</div>
+                    </div>
+                </div>
+                <div class="tracking-step pending">
+                     <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Pendiente</title><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-date">Estimado: 17/04/2025</div>
+                        <div class="step-title">Envío</div>
+                        <div class="step-desc">Entrega a mensajería y código de seguimiento.</div>
+                    </div>
+                </div>
+                <div class="tracking-step pending">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Pendiente</title><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-date">Estimado: 22/04 - 26/04/2025</div> <div class="step-title">Entrega</div>
+                        <div class="step-desc">Entrega estimada en su dirección.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="barcode">
+             <svg class="qr-code" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <title>Código QR Placeholder</title>
+                <rect width="100" height="100" fill="#f0f0f0"/>
+                <rect x="10" y="10" width="25" height="25" fill="#333"/> <rect x="45" y="10" width="5" height="5" fill="#333"/> <rect x="55" y="10" width="5" height="5" fill="#333"/> <rect x="65" y="10" width="25" height="25" fill="#333"/>
+                <rect x="10" y="40" width="5" height="5" fill="#333"/> <rect x="20" y="45" width="5" height="5" fill="#333"/> <rect x="30" y="40" width="5" height="5" fill="#333"/> <rect x="40" y="45" width="15" height="5" fill="#333"/> <rect x="60" y="40" width="5" height="5" fill="#333"/> <rect x="70" y="45" width="5" height="5" fill="#333"/> <rect x="85" y="40" width="5" height="5" fill="#333"/>
+                <rect x="10" y="65" width="25" height="25" fill="#333"/> <rect x="45" y="70" width="5" height="5" fill="#333"/> <rect x="55" y="65" width="10" height="5" fill="#333"/> <rect x="70" y="70" width="5" height="5" fill="#333"/> <rect x="80" y="65" width="10" height="15" fill="#333"/>
+            </svg>
+            <svg class="barcode-img" viewBox="0 0 350 70" xmlns="http://www.w3.org/2000/svg">
+                 <title>Código Barras Placeholder LPLFSEU74N</title>
+                 <rect width="100%" height="100%" fill="white"/>
+                 <g stroke="#333">
+                    <rect x="10" y="5" width="3" height="60"/> <rect x="16" y="5" width="1" height="60"/> <rect x="20" y="5" width="3" height="60"/> <rect x="26" y="5" width="1" height="60"/> <rect x="30" y="5" width="1" height="60"/> <rect x="34" y="5" width="3" height="60"/>
+                    <rect x="44" y="5" width="1" height="60"/> <rect x="48" y="5" width="3" height="60"/> <rect x="54" y="5" width="1" height="60"/> <rect x="58" y="5" width="3" height="60"/> <rect x="64" y="5" width="1" height="60"/> <rect x="68" y="5" width="1" height="60"/>
+                    <rect x="76" y="5" width="3" height="60"/> <rect x="82" y="5" width="1" height="60"/> <rect x="86" y="5" width="1" height="60"/> <rect x="90" y="5" width="3" height="60"/> <rect x="96" y="5" width="1" height="60"/> <rect x="100" y="5" width="3" height="60"/>
+                    <rect x="310" y="5" width="3" height="60"/> <rect x="316" y="5" width="1" height="60"/> <rect x="320" y="5" width="1" height="60"/> <rect x="324" y="5" width="3" height="60"/> <rect x="330" y="5" width="1" height="60"/> <rect x="334" y="5" width="3" height="60"/>
+                 </g>
+             </svg>
+            <p>LPLFSEU74N</p>
+        </div>
+
+        <div class="terms">
+            <p><strong>Términos y condiciones:</strong></p>
+            <p>Esta factura es prueba de compra y garantía. Garantía del fabricante: 12 meses por defectos de fabricación. Accesorios: 3 meses. Garantía extendida: +12 meses adicionales. Presentar esta factura para reclamaciones. LatinPhone se reserva el derecho de reparar, reemplazar o reembolsar.</p>
+            <p>El Amazon Fire TV Stick 4K es un regalo promocional sin costo (garantía limitada de 30 días por LatinPhone).</p>
+            <p>Soporte: <strong>soporte@latinphone.store</strong> | <strong>+1 (813) 358-4564</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>¡Gracias por su compra en LatinPhone America Movil!</p>
+            <p>www.latinphone.store | latinphone@usa.com</p>
+            <div class="social-links">
+                <a href="#" class="social-icon" title="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" class="social-icon" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                <a href="#" class="social-icon" title="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                <a href="#" class="social-icon" title="Twitter"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
