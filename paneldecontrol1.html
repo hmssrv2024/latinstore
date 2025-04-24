@@ -767,10 +767,46 @@
             font-weight: 600;
             color: var(--gray-700);
             margin-bottom: var(--space-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .currency-toggle {
+            display: flex;
+            background-color: var(--gray-100);
+            border-radius: var(--radius-full);
+            padding: 3px;
+            margin-left: auto;
+        }
+        
+        .currency-btn {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        
+        .currency-btn.active {
+            background-color: var(--white);
+            color: var(--visa-blue);
+            box-shadow: var(--shadow-xs);
+        }
+        
+        .currency-flag {
+            width: 24px;
+            height: 16px;
+            border-radius: 2px;
+            margin-right: var(--space-xs);
+            object-fit: cover;
+            vertical-align: middle;
         }
         
         .balance-amount {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--gray-900);
             display: flex;
@@ -779,14 +815,27 @@
         }
         
         .balance-currency {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             color: var(--gray-700);
         }
         
         .balance-secondary {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--gray-600);
             margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .exchange-rate {
+            background-color: rgba(247, 182, 0, 0.1);
+            color: var(--visa-gold-dark);
+            padding: 4px 8px;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: var(--space-xs);
         }
         
         .balance-trend {
@@ -1162,6 +1211,56 @@
             transform: scale(1.1);
             box-shadow: 0 10px 25px rgba(247, 182, 0, 0.3);
         }
+
+        /* Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 82px;
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-full);
+            background-color: var(--visa-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 50;
+            transition: all var(--transition);
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(26, 31, 113, 0.3);
+        }
+        
+        /* Support Button */
+        .support-button {
+            position: fixed;
+            bottom: 20px;
+            right: 144px;
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-full);
+            background-color: var(--visa-cyan);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 50;
+            transition: all var(--transition);
+        }
+        
+        .support-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 161, 223, 0.3);
+        }
         
         /* Animaciones */
         @keyframes fadeInUp {
@@ -1304,7 +1403,7 @@
                 padding-bottom: calc(var(--space) + 60px);
             }
             
-            .help-button {
+            .help-button, .chat-button, .support-button {
                 bottom: 80px;
             }
         }
@@ -1318,7 +1417,7 @@
             }
             
             .operations-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .header-action {
@@ -1336,7 +1435,7 @@
             }
             
             .balance-amount {
-                font-size: 1.75rem;
+                font-size: 2rem;
             }
             
             .transaction-item {
@@ -1366,7 +1465,7 @@
             }
             
             .balance-amount {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             
             .card-header, .card-body, .card-footer {
@@ -1556,14 +1655,28 @@
                             </div>
                             <div class="card-body">
                                 <div class="balance-header">
-                                    <div class="balance-title">Balance actual</div>
-                                    <div class="balance-amount">
-                                        <span class="balance-currency">Bs</span> 15.245,50
+                                    <div class="balance-title">
+                                        <span>Balance actual</span>
+                                        <div class="currency-toggle">
+                                            <button class="currency-btn active" id="toggleVES">VES</button>
+                                            <button class="currency-btn" id="toggleUSD">USD</button>
+                                        </div>
+                                    </div>
+                                    <div class="balance-amount" id="balanceAmount">
+                                        <span class="balance-currency" id="currencySymbol">Bs</span>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg" 
+                                             class="currency-flag" alt="Venezuela" id="currencyFlag">
+                                        15.245,50
                                         <span class="balance-trend">
                                             <i class="fas fa-arrow-up"></i> 8.5%
                                         </span>
                                     </div>
-                                    <div class="balance-secondary">≈ 220,42 USD</div>
+                                    <div class="balance-secondary" id="secondaryBalance">
+                                        ≈ 149,46 USD
+                                        <span class="exchange-rate">
+                                            <i class="fas fa-exchange-alt"></i> 1 USD = 102 Bs
+                                        </span>
+                                    </div>
                                 </div>
                                 
                                 <div class="operations-container">
@@ -1651,8 +1764,107 @@
                     </div>
                 </div>
                 
-                <!-- Recent Transactions -->
+                <!-- Funcionalidades adicionales -->
                 <div class="dashboard-row animate-fadeInUp delay-2">
+                    <div class="col-span-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i class="fas fa-bolt card-title-icon"></i>
+                                    Servicios financieros
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="operations-container">
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Convertir</div>
+                                            <div class="operation-description">Cambiar divisa</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Invertir</div>
+                                            <div class="operation-description">Gana intereses</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-shield-alt"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Seguros</div>
+                                            <div class="operation-description">Protección</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-hand-holding-heart"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Donar</div>
+                                            <div class="operation-description">Ayuda social</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="operations-container" style="margin-top: var(--space-md);">
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-university"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Crear cuenta</div>
+                                            <div class="operation-description">Recibir fondos</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-credit-card"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Tarjeta virtual</div>
+                                            <div class="operation-description">Compras seguras</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Alertas</div>
+                                            <div class="operation-description">Notificaciones</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="operation-button">
+                                        <div class="operation-icon">
+                                            <i class="fas fa-calculator"></i>
+                                        </div>
+                                        <div class="operation-content">
+                                            <div class="operation-title">Conversor</div>
+                                            <div class="operation-description">Calculadora</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="dashboard-row animate-fadeInUp delay-3">
                     <div class="col-span-8 col-lg-12">
                         <div class="card">
                             <div class="card-header">
@@ -1812,7 +2024,7 @@
                 </div>
                 
                 <!-- Quick Actions -->
-                <div class="dashboard-row no-margin animate-fadeInUp delay-3">
+                <div class="dashboard-row no-margin animate-fadeInUp delay-4">
                     <div class="col-span-12">
                         <div class="card">
                             <div class="card-header">
@@ -1901,6 +2113,16 @@
         <i class="fas fa-question"></i>
     </div>
     
+    <!-- Chat Button -->
+    <div class="chat-button" id="chatButton" aria-label="Chat en vivo">
+        <i class="fas fa-comments"></i>
+    </div>
+    
+    <!-- Support Button -->
+    <div class="support-button" id="supportButton" aria-label="Atención al cliente">
+        <i class="fas fa-headset"></i>
+    </div>
+    
     <!-- JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1961,6 +2183,70 @@
                     filterButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                 });
+            });
+            
+            // Currency toggle
+            const toggleVES = document.getElementById('toggleVES');
+            const toggleUSD = document.getElementById('toggleUSD');
+            const balanceAmount = document.getElementById('balanceAmount');
+            const secondaryBalance = document.getElementById('secondaryBalance');
+            const currencySymbol = document.getElementById('currencySymbol');
+            const currencyFlag = document.getElementById('currencyFlag');
+            
+            toggleVES.addEventListener('click', function() {
+                if (!this.classList.contains('active')) {
+                    this.classList.add('active');
+                    toggleUSD.classList.remove('active');
+                    balanceAmount.innerHTML = `
+                        <span class="balance-currency" id="currencySymbol">Bs</span>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg" 
+                             class="currency-flag" alt="Venezuela" id="currencyFlag">
+                        15.245,50
+                        <span class="balance-trend">
+                            <i class="fas fa-arrow-up"></i> 8.5%
+                        </span>
+                    `;
+                    secondaryBalance.innerHTML = `
+                        ≈ 149,46 USD
+                        <span class="exchange-rate">
+                            <i class="fas fa-exchange-alt"></i> 1 USD = 102 Bs
+                        </span>
+                    `;
+                }
+            });
+            
+            toggleUSD.addEventListener('click', function() {
+                if (!this.classList.contains('active')) {
+                    this.classList.add('active');
+                    toggleVES.classList.remove('active');
+                    balanceAmount.innerHTML = `
+                        <span class="balance-currency" id="currencySymbol">$</span>
+                        <img src="https://flagcdn.com/us.svg" 
+                             class="currency-flag" alt="USA" id="currencyFlag">
+                        149,46
+                        <span class="balance-trend">
+                            <i class="fas fa-arrow-up"></i> 3.2%
+                        </span>
+                    `;
+                    secondaryBalance.innerHTML = `
+                        ≈ 15.245,50 Bs
+                        <span class="exchange-rate">
+                            <i class="fas fa-exchange-alt"></i> 1 USD = 102 Bs
+                        </span>
+                    `;
+                }
+            });
+            
+            // Chat and support buttons
+            const chatButton = document.getElementById('chatButton');
+            const supportButton = document.getElementById('supportButton');
+            
+            chatButton.addEventListener('click', function() {
+                alert('Iniciando chat en vivo...');
+            });
+            
+            supportButton.addEventListener('click', function() {
+                alert('Conectando con atención al cliente...');
             });
             
             // Responsive adjustments
