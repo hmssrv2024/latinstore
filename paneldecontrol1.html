@@ -8,27 +8,29 @@
     <title>Remeex Visa | Servicios Financieros VISA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== VARIABLES DEL SISTEMA DE DISEÑO ===== */
         :root {
-            /* Colores principales de Visa */
+            /* Colores principales de Visa - Refinados */
             --visa-blue: #1A1F71;
-            --visa-blue-light: #293497;
-            --visa-blue-dark: #0F144D;
+            --visa-blue-light: #2C36A2;
+            --visa-blue-dark: #14184F;
             --visa-gold: #F7B600;
-            --visa-gold-light: #FFCD44;
-            --visa-gold-dark: #D99C00;
+            --visa-gold-light: #FFD54F;
+            --visa-gold-dark: #E0A800;
             
             /* Colores secundarios */
             --visa-cyan: #00A1DF;
-            --visa-success: #00AB4E;
-            --visa-warning: #FF8000;
-            --visa-danger: #D22730;
-            --visa-danger-light: #F7E6E7;
+            --visa-cyan-light: #33B5E5;
+            --visa-success: #26C485;
+            --visa-success-light: rgba(38, 196, 133, 0.1);
+            --visa-warning: #FF8800;
+            --visa-danger: #E63946;
+            --visa-danger-light: rgba(230, 57, 70, 0.1);
             
-            /* Neutrales */
+            /* Neutrales modernos */
             --white: #FFFFFF;
             --gray-50: #F9FAFB;
             --gray-100: #F3F4F6;
@@ -41,7 +43,7 @@
             --gray-800: #1F2937;
             --gray-900: #111827;
             
-            /* Radios de borde */
+            /* Radios de borde más modernos */
             --radius-sm: 4px;
             --radius: 8px;
             --radius-md: 12px;
@@ -49,33 +51,35 @@
             --radius-xl: 24px;
             --radius-full: 9999px;
             
-            /* Espaciado */
-            --space-xxs: 0.25rem;
-            --space-xs: 0.5rem;
-            --space-sm: 0.75rem;
-            --space: 1rem;
-            --space-md: 1.5rem;
-            --space-lg: 2rem;
-            --space-xl: 3rem;
-            --space-xxl: 4rem;
+            /* Espaciado más preciso */
+            --space-xxs: 0.25rem;  /* 4px */
+            --space-xs: 0.5rem;    /* 8px */
+            --space-sm: 0.75rem;   /* 12px */
+            --space: 1rem;         /* 16px */
+            --space-md: 1.25rem;   /* 20px */
+            --space-lg: 1.5rem;    /* 24px */
+            --space-xl: 2rem;      /* 32px */
+            --space-xxl: 2.5rem;   /* 40px */
             
-            /* Sombras */
-            --shadow-xs: 0 1px 2px rgba(17, 24, 39, 0.05);
-            --shadow-sm: 0 1px 3px rgba(17, 24, 39, 0.1), 0 1px 2px rgba(17, 24, 39, 0.06);
-            --shadow: 0 4px 6px -1px rgba(17, 24, 39, 0.1), 0 2px 4px -1px rgba(17, 24, 39, 0.06);
-            --shadow-md: 0 10px 15px -3px rgba(17, 24, 39, 0.1), 0 4px 6px -2px rgba(17, 24, 39, 0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(17, 24, 39, 0.1), 0 10px 10px -5px rgba(17, 24, 39, 0.04);
-            --shadow-xl: 0 25px 50px -12px rgba(17, 24, 39, 0.25);
+            /* Sombras más sutiles */
+            --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.07), 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 15px 25px rgba(0, 0, 0, 0.07), 0 5px 10px rgba(0, 0, 0, 0.05);
             
-            /* Transiciones */
+            /* Transiciones más naturales */
             --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
             
             /* Dimensiones del layout */
-            --header-height: 70px;
-            --sidebar-width: 280px;
-            --sidebar-collapsed: 84px;
+            --header-height: 64px;
+            --sidebar-width: 250px;
+            --sidebar-collapsed: 70px;
+            --content-max-width: 1280px;
         }
         
         /* ===== RESET Y ESTILOS BASE ===== */
@@ -86,13 +90,15 @@
         }
         
         html, body {
-            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 16px;
             line-height: 1.5;
             color: var(--gray-800);
             background-color: var(--gray-50);
             overflow-x: hidden;
             scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         a {
@@ -122,6 +128,14 @@
             height: auto;
             vertical-align: middle;
         }
+
+        /* Contenedor principal */
+        .container {
+            width: 100%;
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            padding: 0 var(--space);
+        }
         
         /* ===== LAYOUT PRINCIPAL ===== */
         .app-container {
@@ -132,16 +146,17 @@
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background-color: var(--visa-blue);
+            background-color: var(--white);
+            border-right: 1px solid var(--gray-200);
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
             z-index: 50;
-            transition: width var(--transition);
+            transition: transform var(--transition), width var(--transition);
             overflow-x: hidden;
             overflow-y: auto;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow);
         }
         
         .sidebar.collapsed {
@@ -152,27 +167,32 @@
             height: var(--header-height);
             display: flex;
             align-items: center;
-            padding: 0 var(--space-md);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 var(--space);
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            background-color: var(--white);
+            z-index: 10;
         }
         
         .sidebar-logo {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
         }
         
         .sidebar-logo img {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: auto;
             object-fit: contain;
         }
         
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
-            color: var(--white);
+            color: var(--visa-blue);
             transition: opacity var(--transition);
+            white-space: nowrap;
         }
         
         .sidebar.collapsed .logo-text {
@@ -182,23 +202,23 @@
         }
         
         .sidebar-menu {
-            padding: var(--space-md) 0;
+            padding: var(--space) 0;
         }
         
         .menu-section {
-            margin-bottom: var(--space-md);
+            margin-bottom: var(--space);
         }
         
         .menu-header {
-            padding: 0 var(--space-md);
+            padding: 0 var(--space);
             margin-bottom: var(--space-xs);
             transition: opacity var(--transition);
         }
         
         .menu-title {
             text-transform: uppercase;
-            color: var(--gray-400);
-            font-size: 0.75rem;
+            color: var(--gray-500);
+            font-size: 0.7rem;
             font-weight: 600;
             letter-spacing: 0.05em;
         }
@@ -217,36 +237,39 @@
         .menu-link {
             display: flex;
             align-items: center;
-            padding: var(--space-sm) var(--space-md);
-            color: var(--gray-300);
+            padding: var(--space-xs) var(--space);
+            color: var(--gray-700);
             transition: all var(--transition);
             border-left: 3px solid transparent;
+            margin-bottom: 2px;
         }
         
         .menu-link:hover {
-            color: var(--white);
-            background-color: rgba(255, 255, 255, 0.08);
+            color: var(--visa-blue);
+            background-color: var(--gray-100);
         }
         
         .menu-link.active {
-            color: var(--white);
-            background-color: rgba(255, 255, 255, 0.12);
-            border-left: 3px solid var(--visa-gold);
+            color: var(--visa-blue);
+            background-color: var(--gray-100);
+            border-left: 3px solid var(--visa-blue);
+            font-weight: 500;
         }
         
         .menu-icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1rem;
             flex-shrink: 0;
         }
         
         .menu-text {
             margin-left: var(--space-sm);
             transition: opacity var(--transition);
+            white-space: nowrap;
         }
         
         .sidebar.collapsed .menu-text {
@@ -258,23 +281,36 @@
         .menu-badge {
             position: absolute;
             top: 50%;
-            right: var(--space-md);
+            right: var(--space);
             transform: translateY(-50%);
             background-color: var(--visa-gold);
             color: var(--visa-blue);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
-            padding: 0.1rem var(--space-xs);
+            padding: 0.1rem var(--space-xxs);
             border-radius: var(--radius-full);
             transition: all var(--transition);
+            min-width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .sidebar.collapsed .menu-badge {
-            right: var(--space-sm);
+            right: var(--space-xs);
             width: 8px;
             height: 8px;
             padding: 0;
             font-size: 0;
+        }
+
+        /* Separador elegante */
+        .menu-separator {
+            height: 1px;
+            background: linear-gradient(to right, var(--gray-200), transparent);
+            margin: var(--space-sm) var(--space) var(--space-md);
+            opacity: 0.5;
         }
         
         /* Contenido principal */
@@ -282,6 +318,9 @@
             flex: 1;
             margin-left: var(--sidebar-width);
             transition: margin-left var(--transition);
+            min-height: 100vh;
+            background-color: var(--gray-50);
+            position: relative;
         }
         
         .sidebar.collapsed ~ .main-content {
@@ -293,7 +332,7 @@
             height: var(--header-height);
             background-color: var(--white);
             box-shadow: var(--shadow-sm);
-            position: fixed;
+            position: sticky;
             top: 0;
             left: var(--sidebar-width);
             right: 0;
@@ -312,28 +351,29 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: var(--space);
+            gap: var(--space-sm);
         }
         
         .menu-toggle {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--visa-blue);
+            color: var(--gray-700);
             transition: all var(--transition);
             border: 1px solid var(--gray-200);
+            background-color: var(--white);
         }
         
         .menu-toggle:hover {
             background-color: var(--gray-100);
-            color: var(--visa-blue-light);
+            color: var(--visa-blue);
         }
         
         .page-title {
-            font-size: 1.2rem;
+            font-size: 1.125rem;
             font-weight: 600;
             color: var(--gray-800);
         }
@@ -341,12 +381,12 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: var(--space);
+            gap: var(--space-sm);
         }
         
         .header-action {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: var(--radius-full);
             display: flex;
             align-items: center;
@@ -355,6 +395,7 @@
             transition: all var(--transition);
             position: relative;
             border: 1px solid var(--gray-200);
+            background-color: var(--white);
         }
         
         .header-action:hover {
@@ -364,13 +405,13 @@
         
         .badge {
             position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 18px;
-            height: 18px;
+            top: -4px;
+            right: -4px;
+            width: 16px;
+            height: 16px;
             background-color: var(--visa-gold);
             color: var(--visa-blue);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             border-radius: var(--radius-full);
             display: flex;
@@ -382,23 +423,26 @@
         .user-profile {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-xs);
+            gap: var(--space-xs);
+            padding: var(--space-xxs) var(--space-xs) var(--space-xxs) var(--space-xxs);
             border-radius: var(--radius-lg);
             transition: all var(--transition);
             border: 1px solid var(--gray-200);
             cursor: pointer;
+            background-color: var(--white);
         }
         
         .user-profile:hover {
             background-color: var(--gray-100);
+            border-color: var(--gray-300);
         }
         
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: var(--radius-full);
             overflow: hidden;
+            flex-shrink: 0;
         }
         
         .user-avatar img {
@@ -414,17 +458,24 @@
         
         .user-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: var(--gray-800);
+            line-height: 1.2;
         }
         
         .user-role {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
         
         /* Page Content */
         .page-content {
-            padding: calc(var(--header-height) + var(--space-md)) var(--space-lg) var(--space-lg);
+            padding: var(--space-lg);
+            max-width: var(--content-max-width);
+            margin: 0 auto;
         }
         
         /* ===== COMPONENTES DE LA INTERFAZ ===== */
@@ -437,11 +488,12 @@
             overflow: hidden;
             transition: all var(--transition);
             height: 100%;
+            border: 1px solid var(--gray-200);
         }
         
         .card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         
         .card-header {
@@ -453,7 +505,7 @@
         }
         
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--gray-800);
             display: flex;
@@ -462,7 +514,8 @@
         }
         
         .card-title-icon {
-            color: var(--visa-gold);
+            color: var(--visa-blue);
+            font-size: 0.9rem;
         }
         
         .card-body {
@@ -476,6 +529,76 @@
             align-items: center;
             justify-content: center;
         }
+
+        /* Toast Banner */
+        .toast-banner {
+            position: fixed;
+            top: calc(var(--header-height) + var(--space-sm));
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - var(--space-xl));
+            max-width: 600px;
+            background-color: var(--visa-blue);
+            color: var(--white);
+            padding: var(--space-sm) var(--space);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            transition: opacity var(--transition), transform var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toast-banner.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .toast-icon {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        
+        .toast-message {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .toast-text {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .toast-close {
+            color: var(--white);
+            opacity: 0.7;
+            transition: opacity var(--transition);
+            padding: var(--space-xs);
+            margin: -var(--space-xs);
+        }
+        
+        .toast-close:hover {
+            opacity: 1;
+        }
         
         /* Botones */
         .btn {
@@ -483,11 +606,13 @@
             align-items: center;
             justify-content: center;
             gap: var(--space-xs);
-            padding: var(--space-sm) var(--space);
+            padding: var(--space-xs) var(--space);
             font-weight: 500;
+            font-size: 0.875rem;
             border-radius: var(--radius);
             transition: all var(--transition);
             cursor: pointer;
+            white-space: nowrap;
         }
         
         .btn-primary {
@@ -507,6 +632,7 @@
         
         .btn-secondary:hover {
             background-color: var(--gray-50);
+            border-color: var(--visa-blue-light);
         }
         
         .btn-gold {
@@ -519,7 +645,7 @@
         }
         
         .btn-outline {
-            background-color: transparent;
+            background-color: var(--white);
             color: var(--gray-700);
             border: 1px solid var(--gray-300);
         }
@@ -531,12 +657,12 @@
         
         .btn-sm {
             padding: var(--space-xxs) var(--space-sm);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
         
         .btn-lg {
-            padding: var(--space) var(--space-lg);
-            font-size: 1.1rem;
+            padding: var(--space-sm) var(--space-lg);
+            font-size: 1rem;
         }
         
         .btn-link {
@@ -547,6 +673,7 @@
             display: inline-flex;
             align-items: center;
             gap: var(--space-xxs);
+            font-size: 0.875rem;
         }
         
         .btn-link:hover {
@@ -562,92 +689,44 @@
             margin-bottom: var(--space-lg);
         }
         
+        .col-span-3 { grid-column: span 3; }
         .col-span-4 { grid-column: span 4; }
         .col-span-6 { grid-column: span 6; }
         .col-span-8 { grid-column: span 8; }
+        .col-span-9 { grid-column: span 9; }
         .col-span-12 { grid-column: span 12; }
-        
-        /* Bienvenida */
-        .welcome-banner {
-            background-color: var(--visa-blue);
-            background-image: linear-gradient(135deg, var(--visa-blue) 0%, var(--visa-blue-light) 100%);
-            color: var(--white);
-            border-radius: var(--radius-lg);
-            padding: var(--space-md);
-            margin-bottom: var(--space-md);
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .welcome-banner::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -80px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .welcome-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: 30%;
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .welcome-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .welcome-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: var(--space-xs);
-        }
-        
-        .welcome-message {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-        
+                
         /* Tarjeta de crédito */
+        .cards-section {
+            margin-bottom: var(--space-md);
+        }
+        
         .credit-card-wrapper {
-            padding: var(--space);
+            position: relative;
+            padding: var(--space-sm);
+            height: 210px;
+            perspective: 1000px;
         }
         
         .credit-card {
             width: 100%;
-            max-width: 360px;
-            height: 220px;
-            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--visa-blue-dark) 100%);
+            height: 100%;
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--visa-blue-light) 100%);
             border-radius: var(--radius-lg);
-            padding: var(--space-md);
+            padding: var(--space);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            box-shadow: var(--shadow-lg);
             color: var(--white);
             overflow: hidden;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
-            perspective: 1000px;
-            margin: 0 auto;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-lg);
         }
         
         .credit-card:hover {
-            transform: rotateY(15deg) translateZ(10px);
+            transform: rotateY(10deg) translateZ(5px);
         }
         
         .credit-card::before {
@@ -657,7 +736,7 @@
             left: 0;
             right: 0;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
             z-index: 1;
         }
         
@@ -691,10 +770,10 @@
         }
         
         .card-chip {
-            width: 45px;
-            height: 35px;
+            width: 40px;
+            height: 30px;
             background: linear-gradient(135deg, var(--visa-gold), var(--visa-gold-light));
-            border-radius: 6px;
+            border-radius: 5px;
             overflow: hidden;
             position: relative;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
@@ -719,17 +798,17 @@
         }
         
         .card-logo {
-            width: 60px;
+            width: 55px;
             height: auto;
         }
         
         .card-number {
-            font-family: 'Courier New', monospace;
-            font-size: 1.4rem;
+            font-family: 'Inter', monospace;
+            font-size: 1.25rem;
             font-weight: 500;
             letter-spacing: 2px;
-            margin: var(--space-md) 0;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: var(--space) 0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
         .card-footer {
@@ -750,177 +829,190 @@
         }
         
         .card-value {
-            font-size: 0.9rem;
+            font-size: 0.825rem;
             font-weight: 500;
         }
         
         /* Balance */
+        .account-summary {
+            display: flex;
+            flex-direction: column;
+            padding: var(--space);
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            height: 100%;
+            border: 1px solid var(--gray-200);
+            transition: all var(--transition);
+        }
+        
+        .account-summary:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
         .balance-header {
             margin-bottom: var(--space);
         }
         
         .balance-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--gray-700);
             margin-bottom: var(--space-xs);
-        }
-        
-        .balance-amount {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: var(--gray-900);
             display: flex;
             align-items: center;
             gap: var(--space-xs);
         }
         
+        .balance-title i {
+            color: var(--visa-blue);
+            font-size: 0.9rem;
+        }
+        
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xxs);
+        }
+        
         .balance-currency {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--gray-700);
         }
         
         .balance-secondary {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: var(--gray-600);
-            margin-top: var(--space-xs);
+            margin-top: var(--space-xxs);
         }
         
         .balance-trend {
             display: inline-flex;
             align-items: center;
             gap: 2px;
-            background-color: var(--success-light);
+            background-color: var(--visa-success-light);
             color: var(--visa-success);
             padding: 2px 8px;
             border-radius: var(--radius-full);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            margin-left: var(--space-sm);
+            margin-left: var(--space-xs);
+        }
+        
+        /* Balance actions */
+        .balance-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space);
+        }
+        
+        .balance-action {
+            flex: 1;
+            padding: var(--space-xs);
+            background-color: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        
+        .balance-action:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-300);
+        }
+        
+        .balance-action i {
+            font-size: 0.875rem;
+            color: var(--visa-blue);
+        }
+        
+        .balance-action-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--gray-800);
         }
         
         /* Quick Actions */
-        .quick-action {
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space);
+        }
+        
+        .action-item {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: var(--space);
+            padding: var(--space-sm);
             background-color: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-            cursor: pointer;
+            border-radius: var(--radius);
             border: 1px solid var(--gray-200);
+            transition: all var(--transition-bounce);
+            cursor: pointer;
             height: 100%;
         }
         
-        .quick-action:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
+        .action-item:hover {
+            transform: translateY(-3px);
             border-color: var(--visa-gold);
+            box-shadow: var(--shadow);
         }
         
         .action-icon {
-            width: 60px;
-            height: 60px;
+            width: 40px;
+            height: 40px;
             border-radius: var(--radius-full);
             background-color: var(--gray-100);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1rem;
             color: var(--visa-blue);
-            margin-bottom: var(--space-sm);
+            margin-bottom: var(--space-xs);
             transition: all var(--transition);
         }
         
-        .quick-action:hover .action-icon {
+        .action-item:hover .action-icon {
             background-color: var(--visa-blue);
             color: var(--white);
         }
         
         .action-title {
             font-weight: 600;
-            font-size: 1rem;
-            color: var(--gray-800);
-            margin-bottom: 4px;
-        }
-        
-        .action-description {
             font-size: 0.85rem;
-            color: var(--gray-600);
-        }
-        
-        /* Operation Buttons */
-        .operation-button {
-            display: flex;
-            align-items: center;
-            gap: var(--space);
-            padding: var(--space);
-            background-color: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-            cursor: pointer;
-            border: 1px solid var(--gray-200);
-        }
-        
-        .operation-button:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--visa-gold);
-        }
-        
-        .operation-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius);
-            background-color: var(--gray-100);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            color: var(--visa-blue);
-            transition: all var(--transition);
-            flex-shrink: 0;
-        }
-        
-        .operation-button:hover .operation-icon {
-            background-color: var(--visa-blue);
-            color: var(--white);
-        }
-        
-        .operation-content {
-            flex: 1;
-        }
-        
-        .operation-title {
-            font-weight: 600;
-            font-size: 1rem;
             color: var(--gray-800);
             margin-bottom: 2px;
         }
         
-        .operation-description {
-            font-size: 0.85rem;
+        .action-subtitle {
+            font-size: 0.7rem;
             color: var(--gray-600);
+            line-height: 1.3;
         }
-        
+
         /* Transactions */
         .transaction-filters {
             display: flex;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
             flex-wrap: wrap;
             margin-bottom: var(--space);
         }
         
         .filter-btn {
-            padding: var(--space-xs) var(--space);
+            padding: var(--space-xxs) var(--space-sm);
             background-color: var(--white);
             border: 1px solid var(--gray-200);
             border-radius: var(--radius-full);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 500;
             color: var(--gray-700);
             transition: all var(--transition);
@@ -940,17 +1032,17 @@
         .transactions-list {
             display: flex;
             flex-direction: column;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
         }
         
         .transaction-item {
             display: flex;
             align-items: center;
-            gap: var(--space);
-            padding: var(--space);
+            gap: var(--space-sm);
+            padding: var(--space-sm);
             background-color: var(--white);
             border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-xs);
             transition: all var(--transition);
             border: 1px solid var(--gray-200);
             cursor: pointer;
@@ -958,28 +1050,28 @@
         
         .transaction-item:hover {
             background-color: var(--gray-50);
-            transform: translateX(5px);
-            box-shadow: var(--shadow);
+            transform: translateX(3px);
+            box-shadow: var(--shadow-sm);
         }
         
         .transaction-icon {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             flex-shrink: 0;
         }
         
         .transaction-icon.income {
-            background-color: rgba(0, 171, 78, 0.1);
+            background-color: rgba(38, 196, 133, 0.1);
             color: var(--visa-success);
         }
         
         .transaction-icon.expense {
-            background-color: rgba(210, 39, 48, 0.1);
+            background-color: rgba(230, 57, 70, 0.1);
             color: var(--visa-danger);
         }
         
@@ -990,7 +1082,7 @@
         
         .transaction-title {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.875rem;
             color: var(--gray-800);
             margin-bottom: 2px;
             white-space: nowrap;
@@ -1001,27 +1093,22 @@
         .transaction-details {
             display: flex;
             align-items: center;
-            gap: var(--space);
-            font-size: 0.8rem;
+            gap: var(--space-sm);
+            font-size: 0.7rem;
             color: var(--gray-600);
         }
         
-        .transaction-category {
+        .transaction-category, .transaction-date {
             display: flex;
             align-items: center;
             gap: 4px;
-        }
-        
-        .transaction-date {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            white-space: nowrap;
         }
         
         .transaction-amount {
             margin-left: auto;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             white-space: nowrap;
         }
         
@@ -1036,16 +1123,15 @@
         /* Services */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--space);
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
         }
         
         .service-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
-            padding: var(--space-sm);
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
             background-color: var(--white);
             border-radius: var(--radius);
             transition: all var(--transition);
@@ -1055,23 +1141,23 @@
         
         .service-item:hover {
             background-color: var(--gray-50);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-            border-color: var(--visa-gold);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--visa-blue);
         }
         
         .service-icon {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: var(--radius);
             background-color: var(--gray-100);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             color: var(--visa-blue);
-            margin-bottom: var(--space-xs);
             transition: all var(--transition);
+            flex-shrink: 0;
         }
         
         .service-item:hover .service-icon {
@@ -1081,138 +1167,135 @@
         
         .service-name {
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--gray-800);
         }
         
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .col-lg-12 { grid-column: span 12; }
-            .col-lg-6 { grid-column: span 6; }
-            .col-lg-4 { grid-column: span 4; }
-            
-            .dashboard-grid {
-                gap: var(--space);
-            }
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background-color: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: var(--space-sm) 0;
         }
         
-        @media (max-width: 992px) {
-            .col-md-12 { grid-column: span 12; }
-            .col-md-6 { grid-column: span 6; }
-            
-            .sidebar {
-                transform: translateX(-100%);
-                z-index: 100;
-            }
-            
-            .sidebar.mobile-active {
-                transform: translateX(0);
-            }
-            
-            .header, .main-content {
-                margin-left: 0 !important;
-            }
-            
-            .overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 90;
-            }
-            
-            .overlay.active {
-                display: block;
-            }
-            
-            .header {
-                left: 0;
-                padding: 0 var(--space);
-            }
-            
-            .page-title {
-                font-size: 1.1rem;
-            }
-            
-            .user-info {
-                display: none;
-            }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--visa-cyan);
+            border-radius: var(--radius-full);
+            width: 0%;
+            transition: width 1s ease-in-out;
         }
         
-        @media (max-width: 768px) {
-            .col-sm-12 { grid-column: span 12; }
-            .col-sm-6 { grid-column: span 6; }
-            
-            .header-action {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .welcome-content {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: var(--space);
-            }
-            
-            .credit-card {
-                height: 190px;
-            }
-            
-            .card-number {
-                font-size: 1.2rem;
-                margin: var(--space) 0;
-            }
-            
-            .operation-button {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: var(--space-sm);
-            }
-            
-            .operation-icon {
-                margin-bottom: var(--space-xs);
-            }
+        /* Security Features */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            padding: var(--space-xxs) var(--space-xs);
+            background-color: rgba(38, 196, 133, 0.1);
+            color: var(--visa-success);
+            border-radius: var(--radius);
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: var(--space);
         }
         
-        @media (max-width: 576px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .col-xs-12 { grid-column: span 1; }
-            
-            .credit-card {
-                height: 170px;
-            }
-            
-            .card-number {
-                font-size: 1rem;
-                letter-spacing: 1px;
-            }
-            
-            .page-content {
-                padding: calc(var(--header-height) + var(--space-sm)) var(--space) var(--space);
-            }
-            
-            .welcome-title {
-                font-size: 1.2rem;
-            }
-            
-            .operation-title {
-                font-size: 0.9rem;
-            }
-            
-            .operation-description {
-                font-size: 0.75rem;
-            }
-            
-            .balance-amount {
-                font-size: 1.75rem;
-            }
+        .security-badge i {
+            margin-right: 4px;
+            font-size: 0.7rem;
+        }
+        
+        /* Visa Secure */
+        .visa-secure {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xxs);
+            padding: var(--space-xxs) var(--space-xs);
+            background-color: rgba(26, 31, 113, 0.08);
+            color: var(--visa-blue);
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        /* Tabla de límites */
+        .limits-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+        }
+        
+        .limits-table th {
+            text-align: left;
+            padding: var(--space-xs) var(--space-sm);
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+        
+        .limits-table td {
+            padding: var(--space-xs) var(--space-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .limits-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .limit-type {
+            color: var(--gray-800);
+            font-weight: 500;
+        }
+        
+        .limit-value {
+            color: var(--gray-700);
+            font-weight: 600;
+            text-align: right;
+        }
+        
+        .limit-usage {
+            width: 30%;
+        }
+        
+        .limit-bar {
+            height: 6px;
+            background-color: var(--gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+        
+        .limit-progress {
+            height: 100%;
+            background-color: var(--visa-gold);
+            border-radius: var(--radius-full);
+        }
+        
+        /* Help Button */
+        .help-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-full);
+            background-color: var(--visa-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            z-index: 50;
+            transition: all var(--transition-bounce);
+        }
+        
+        .help-button:hover {
+            transform: scale(1.1);
+            background-color: var(--visa-blue-light);
         }
         
         /* Mobile Menu */
@@ -1224,7 +1307,7 @@
             right: 0;
             background-color: var(--white);
             z-index: 50;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.07);
             border-top: 1px solid var(--gray-200);
         }
         
@@ -1248,119 +1331,73 @@
         }
         
         .mobile-menu-icon {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             margin-bottom: 4px;
         }
         
         .mobile-menu-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 500;
         }
-        
-        @media (max-width: 992px) {
-            .mobile-menu {
-                display: block;
-            }
-            
-            .page-content {
-                padding-bottom: calc(var(--space-lg) + 60px);
-            }
-        }
-        
-        /* Help Button */
-        .help-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: var(--radius-full);
-            background-color: var(--visa-gold);
-            color: var(--visa-blue-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: var(--shadow-lg);
-            cursor: pointer;
-            z-index: 50;
-            transition: all var(--transition);
-        }
-        
-        .help-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(247, 182, 0, 0.3);
-        }
-        
-        @media (max-width: 992px) {
-            .help-button {
-                bottom: 80px;
-            }
-        }
-        
-        /* Security Features */
-        .security-badge {
-            display: flex;
-            align-items: center;
-            padding: var(--space-xs) var(--space-sm);
-            background-color: rgba(0, 171, 78, 0.1);
-            color: var(--visa-success);
-            border-radius: var(--radius);
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-right: var(--space);
-        }
-        
-        .security-badge i {
-            margin-right: 4px;
-        }
-        
-        /* Visa Secure */
-        .visa-secure {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-xs);
-            padding: var(--space-xxs) var(--space-xs);
-            background-color: rgba(26, 31, 113, 0.1);
-            color: var(--visa-blue);
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-        
-        /* Accessibility */
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-        
-        /* Focus and Keyboard Navigation */
-        a:focus, button:focus, input:focus, select:focus, textarea:focus {
-            outline: 2px solid var(--visa-gold);
-            outline-offset: 2px;
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
+
+        /* Animaciones */
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
         
-        .animate-fadeInUp {
-            animation: fadeInUp 0.5s ease forwards;
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .animate-slide-up {
+            animation: slideInUp 0.5s ease forwards;
+        }
+        
+        .animate-slide-right {
+            animation: slideInRight 0.5s ease forwards;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s infinite ease-in-out;
         }
         
         .delay-1 { animation-delay: 0.1s; }
@@ -1368,9 +1405,212 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
         .delay-5 { animation-delay: 0.5s; }
+        
+        /* Responsive */
+        @media (max-width: 1280px) {
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .col-xl-12 { grid-column: span 12; }
+            .col-xl-6 { grid-column: span 6; }
+            .col-xl-4 { grid-column: span 4; }
+        }
+        
+        @media (max-width: 1024px) {
+            .page-content {
+                padding: var(--space);
+            }
+            
+            .dashboard-grid {
+                gap: var(--space);
+            }
+            
+            .col-lg-12 { grid-column: span 12; }
+            .col-lg-6 { grid-column: span 6; }
+            .col-lg-4 { grid-column: span 4; }
+            
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+            }
+            
+            .sidebar.collapsed ~ .main-content {
+                margin-left: var(--sidebar-collapsed);
+            }
+            
+            .header {
+                left: 240px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .col-md-12 { grid-column: span 12; }
+            .col-md-6 { grid-column: span 6; }
+            .col-md-4 { grid-column: span 4; }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                z-index: 100;
+            }
+            
+            .sidebar.mobile-active {
+                transform: translateX(0);
+                width: 270px;
+            }
+            
+            .header, .main-content {
+                margin-left: 0 !important;
+                left: 0 !important;
+            }
+            
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 90;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+            
+            .header {
+                padding: 0 var(--space);
+            }
+            
+            .page-title {
+                font-size: 1rem;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .page-content {
+                padding-bottom: calc(var(--space) + 60px);
+            }
+            
+            .help-button {
+                bottom: 80px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .col-sm-12 { grid-column: span 12; }
+            .col-sm-6 { grid-column: span 6; }
+            
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-action {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .credit-card-wrapper {
+                height: 180px;
+            }
+            
+            .card-number {
+                font-size: 1.1rem;
+                margin: var(--space-sm) 0;
+            }
+            
+            .balance-amount {
+                font-size: 1.75rem;
+            }
+            
+            .balance-actions {
+                flex-wrap: wrap;
+            }
+            
+            .balance-action {
+                flex: 0 0 calc(50% - (var(--space-xs)));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .col-xs-12 { grid-column: span 12; }
+            .col-xs-6 { grid-column: span 6; }
+            
+            .dashboard-grid {
+                gap: var(--space-sm);
+            }
+            
+            .page-content {
+                padding: var(--space-sm);
+            }
+            
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .transaction-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
+            }
+            
+            .credit-card-wrapper {
+                height: 170px;
+            }
+            
+            .card-number {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+            
+            .balance-actions {
+                margin-top: var(--space-sm);
+            }
+            
+            .toast-banner {
+                max-width: calc(100% - var(--space));
+                padding: var(--space-xs) var(--space-sm);
+            }
+            
+            .toast-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.875rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Banner de bienvenida -->
+    <div class="toast-banner" id="welcomeBanner">
+        <div class="toast-content">
+            <div class="toast-icon">
+                <i class="fas fa-hand-wave"></i>
+            </div>
+            <div class="toast-message">
+                <div class="toast-title">Hola, Carlos</div>
+                <div class="toast-text">Bienvenido a tu banca segura. Última conexión: hoy 10:34 AM</div>
+            </div>
+        </div>
+        <button class="toast-close" id="closeBanner">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
     <div class="app-container">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -1415,6 +1655,8 @@
                     </ul>
                 </div>
                 
+                <div class="menu-separator"></div>
+                
                 <div class="menu-section">
                     <div class="menu-header">
                         <div class="menu-title">Servicios</div>
@@ -1446,6 +1688,8 @@
                         </li>
                     </ul>
                 </div>
+                
+                <div class="menu-separator"></div>
                 
                 <div class="menu-section">
                     <div class="menu-header">
@@ -1513,10 +1757,10 @@
                         <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="Foto de perfil">
                     </div>
                     <div class="user-info">
-                        <div class="user-name">Carlos Rodríguez</div>
-                        <div class="user-role">Premium <i class="fas fa-crown" style="color: var(--visa-gold); font-size: 0.7rem;"></i></div>
+                        <div class="user-name">Carlos R.</div>
+                        <div class="user-role">Premium <i class="fas fa-crown" style="color: var(--visa-gold); font-size: 0.65rem;"></i></div>
                     </div>
-                    <i class="fas fa-chevron-down" style="font-size: 0.8rem; color: var(--gray-500);"></i>
+                    <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: var(--gray-500); margin-left: 4px;"></i>
                 </div>
             </div>
         </header>
@@ -1524,68 +1768,66 @@
         <!-- Main Content -->
         <main class="main-content">
             <div class="page-content">
-                <!-- Welcome Banner -->
-                <div class="welcome-banner animate-fadeInUp">
-                    <div class="welcome-content">
-                        <div>
-                            <h2 class="welcome-title">Hola, Carlos</h2>
-                            <p class="welcome-message">Bienvenido a tu banca segura. Tu última conexión fue hoy a las 10:34 AM</p>
-                        </div>
-                        <button class="btn btn-gold">
-                            <i class="fas fa-shield-alt"></i>
-                            Verificar seguridad
-                        </button>
-                    </div>
-                </div>
-                
                 <!-- Dashboard Grid -->
                 <div class="dashboard-grid">
-                    <!-- Balance and Credit Card -->
-                    <div class="col-span-8 col-md-12 animate-fadeInUp delay-1">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <i class="fas fa-wallet card-title-icon"></i>
+                    <!-- Balance Section -->
+                    <div class="col-span-6 col-lg-12 col-md-12 animate-slide-up delay-1">
+                        <div class="account-summary">
+                            <div class="balance-header">
+                                <div class="balance-title">
+                                    <i class="fas fa-wallet"></i>
                                     Saldo disponible
+                                    <div class="visa-secure" style="margin-left: auto;">
+                                        <i class="fas fa-shield-alt"></i>
+                                        VISA Secure
+                                    </div>
                                 </div>
-                                <div class="visa-secure">
-                                    <i class="fas fa-shield-alt"></i>
-                                    VISA Secure
+                                <div class="balance-amount">
+                                    <span class="balance-currency">Bs</span> 15.245,50
+                                    <span class="balance-trend">
+                                        <i class="fas fa-arrow-up"></i> 8.5%
+                                    </span>
+                                </div>
+                                <div class="balance-secondary">≈ 220,42 USD</div>
+                            </div>
+                            
+                            <div class="balance-actions">
+                                <div class="balance-action">
+                                    <i class="fas fa-plus"></i>
+                                    <span class="balance-action-text">Agregar fondos</span>
+                                </div>
+                                <div class="balance-action">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span class="balance-action-text">Recibir</span>
+                                </div>
+                                <div class="balance-action">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span class="balance-action-text">Transferir</span>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="balance-header">
-                                    <div class="balance-title">Balance actual</div>
-                                    <div class="balance-amount">
-                                        <span class="balance-currency">Bs</span> 15.245,50
-                                        <span class="balance-trend">
-                                            <i class="fas fa-arrow-up"></i> 8.5%
-                                        </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Credit Card -->
+                    <div class="col-span-6 col-lg-12 col-md-12 animate-slide-up delay-2">
+                        <div class="credit-card-wrapper">
+                            <div class="credit-card" id="creditCard">
+                                <div class="card-decoration"></div>
+                                <div class="card-decoration"></div>
+                                <div class="card-content">
+                                    <div class="card-top">
+                                        <div class="card-chip"></div>
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="card-logo">
                                     </div>
-                                    <div class="balance-secondary">≈ 220,42 USD</div>
-                                </div>
-                                
-                                <!-- Credit Card -->
-                                <div class="credit-card-wrapper">
-                                    <div class="credit-card" id="creditCard">
-                                        <div class="card-decoration"></div>
-                                        <div class="card-decoration"></div>
-                                        <div class="card-content">
-                                            <div class="card-top">
-                                                <div class="card-chip"></div>
-                                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="card-logo">
-                                            </div>
-                                            <div class="card-number">**** **** **** 4578</div>
-                                            <div class="card-footer">
-                                                <div class="card-holder">
-                                                    <div class="card-label">Titular</div>
-                                                    <div class="card-value">Carlos Rodríguez</div>
-                                                </div>
-                                                <div class="card-expires">
-                                                    <div class="card-label">Vence</div>
-                                                    <div class="card-value">04/27</div>
-                                                </div>
-                                            </div>
+                                    <div class="card-number">**** **** **** 4578</div>
+                                    <div class="card-footer">
+                                        <div class="card-holder">
+                                            <div class="card-label">Titular</div>
+                                            <div class="card-value">Carlos Rodríguez</div>
+                                        </div>
+                                        <div class="card-expires">
+                                            <div class="card-label">Vence</div>
+                                            <div class="card-value">04/27</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1594,93 +1836,51 @@
                     </div>
                     
                     <!-- Quick Actions -->
-                    <div class="col-span-4 col-md-12 animate-fadeInUp delay-2">
-                        <div class="dashboard-grid" style="margin-bottom: 0;">
-                            <div class="col-span-12 col-md-6 col-sm-6">
-                                <div class="quick-action">
-                                    <div class="action-icon">
-                                        <i class="fas fa-plus"></i>
-                                    </div>
-                                    <div class="action-title">Agregar fondos</div>
-                                    <div class="action-description">Deposita dinero a tu cuenta</div>
+                    <div class="col-span-12 animate-slide-up delay-3">
+                        <div class="action-grid">
+                            <div class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-paper-plane"></i>
                                 </div>
+                                <div class="action-title">Transferir</div>
+                                <div class="action-subtitle">A cuentas o contactos</div>
                             </div>
-                            <div class="col-span-12 col-md-6 col-sm-6">
-                                <div class="quick-action">
-                                    <div class="action-icon">
-                                        <i class="fas fa-arrow-down"></i>
-                                    </div>
-                                    <div class="action-title">Recibir</div>
-                                    <div class="action-description">Genera un código para pagos</div>
+                            <div class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-qrcode"></i>
                                 </div>
+                                <div class="action-title">Pagar QR</div>
+                                <div class="action-subtitle">Rápido y seguro</div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Operation Buttons -->
-                    <div class="col-span-12 animate-fadeInUp delay-3">
-                        <div class="dashboard-grid" style="margin-bottom: 0;">
-                            <div class="col-span-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="operation-button">
-                                    <div class="operation-icon">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </div>
-                                    <div class="operation-content">
-                                        <div class="operation-title">Transferir</div>
-                                        <div class="operation-description">A cuentas o contactos</div>
-                                    </div>
+                            <div class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-file-invoice"></i>
                                 </div>
+                                <div class="action-title">Pagar servicios</div>
+                                <div class="action-subtitle">Facturas y recibos</div>
                             </div>
-                            <div class="col-span-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="operation-button">
-                                    <div class="operation-icon">
-                                        <i class="fas fa-qrcode"></i>
-                                    </div>
-                                    <div class="operation-content">
-                                        <div class="operation-title">Pagar QR</div>
-                                        <div class="operation-description">Rápido y seguro</div>
-                                    </div>
+                            <div class="action-item">
+                                <div class="action-icon">
+                                    <i class="fas fa-mobile-alt"></i>
                                 </div>
-                            </div>
-                            <div class="col-span-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="operation-button">
-                                    <div class="operation-icon">
-                                        <i class="fas fa-file-invoice"></i>
-                                    </div>
-                                    <div class="operation-content">
-                                        <div class="operation-title">Pagar servicios</div>
-                                        <div class="operation-description">Facturas y recibos</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-3 col-md-6 col-sm-6 col-xs-12">
-                                <div class="operation-button">
-                                    <div class="operation-icon">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <div class="operation-content">
-                                        <div class="operation-title">Recargar</div>
-                                        <div class="operation-description">Saldo móvil y servicios</div>
-                                    </div>
-                                </div>
+                                <div class="action-title">Recargar</div>
+                                <div class="action-subtitle">Saldo móvil</div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Transactions -->
-                    <div class="col-span-8 col-lg-12 animate-fadeInUp delay-4">
+                    <div class="col-span-8 col-lg-12 animate-slide-up delay-4">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">
                                     <i class="fas fa-history card-title-icon"></i>
                                     Movimientos recientes
                                 </div>
-                                <div>
-                                    <button class="btn btn-outline btn-sm">
-                                        <i class="fas fa-filter"></i>
-                                        <span>Filtrar</span>
-                                    </button>
-                                </div>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-filter"></i>
+                                    <span>Filtrar</span>
+                                </button>
                             </div>
                             <div class="card-body">
                                 <div class="transaction-filters">
@@ -1698,11 +1898,11 @@
                                             <div class="transaction-title">Transferencia recibida</div>
                                             <div class="transaction-details">
                                                 <div class="transaction-category">
-                                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-tag" style="font-size: 0.65rem;"></i>
                                                     Ingresos
                                                 </div>
                                                 <div class="transaction-date">
-                                                    <i class="fas fa-clock" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-clock" style="font-size: 0.65rem;"></i>
                                                     Hoy, 10:30
                                                 </div>
                                             </div>
@@ -1717,11 +1917,11 @@
                                             <div class="transaction-title">Pago de servicio</div>
                                             <div class="transaction-details">
                                                 <div class="transaction-category">
-                                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-tag" style="font-size: 0.65rem;"></i>
                                                     Servicios
                                                 </div>
                                                 <div class="transaction-date">
-                                                    <i class="fas fa-clock" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-clock" style="font-size: 0.65rem;"></i>
                                                     Ayer, 15:45
                                                 </div>
                                             </div>
@@ -1736,11 +1936,11 @@
                                             <div class="transaction-title">Depósito Bancario</div>
                                             <div class="transaction-details">
                                                 <div class="transaction-category">
-                                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-tag" style="font-size: 0.65rem;"></i>
                                                     Ingresos
                                                 </div>
                                                 <div class="transaction-date">
-                                                    <i class="fas fa-clock" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-clock" style="font-size: 0.65rem;"></i>
                                                     22 Abr, 09:20
                                                 </div>
                                             </div>
@@ -1755,11 +1955,11 @@
                                             <div class="transaction-title">Retiro a Banco</div>
                                             <div class="transaction-details">
                                                 <div class="transaction-category">
-                                                    <i class="fas fa-tag" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-tag" style="font-size: 0.65rem;"></i>
                                                     Retiros
                                                 </div>
                                                 <div class="transaction-date">
-                                                    <i class="fas fa-clock" style="font-size: 0.7rem;"></i>
+                                                    <i class="fas fa-clock" style="font-size: 0.65rem;"></i>
                                                     20 Abr, 14:15
                                                 </div>
                                             </div>
@@ -1771,22 +1971,23 @@
                             <div class="card-footer">
                                 <a href="#" class="btn-link">
                                     Ver todos los movimientos
-                                    <i class="fas fa-chevron-right"></i>
+                                    <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Services -->
-                    <div class="col-span-4 col-lg-12 animate-fadeInUp delay-5">
+                    <!-- Services & Limits -->
+                    <div class="col-span-4 col-lg-12 animate-slide-up delay-5">
                         <div class="card">
                             <div class="card-header">
                                 <div class="card-title">
                                     <i class="fas fa-th card-title-icon"></i>
-                                    Servicios populares
+                                    Servicios rápidos
                                 </div>
                                 <button class="btn btn-outline btn-sm">
                                     <i class="fas fa-plus"></i>
+                                    <span>Añadir</span>
                                 </button>
                             </div>
                             <div class="card-body">
@@ -1815,12 +2016,51 @@
                                         </div>
                                         <div class="service-name">TV Cable</div>
                                     </div>
+                                    <div class="service-item">
+                                        <div class="service-icon">
+                                            <i class="fas fa-water"></i>
+                                        </div>
+                                        <div class="service-name">Agua</div>
+                                    </div>
+                                    <div class="service-item">
+                                        <div class="service-icon">
+                                            <i class="fas fa-dollar-sign"></i>
+                                        </div>
+                                        <div class="service-name">Impuestos</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: var(--space-md);">
+                                    <div class="card-title" style="margin-bottom: var(--space-xs);">
+                                        <i class="fas fa-chart-pie card-title-icon"></i>
+                                        Límites de operación
+                                    </div>
+                                    <table class="limits-table">
+                                        <tr>
+                                            <td class="limit-type">Diario</td>
+                                            <td class="limit-usage">
+                                                <div class="limit-bar">
+                                                    <div class="limit-progress" style="width: 45%;"></div>
+                                                </div>
+                                            </td>
+                                            <td class="limit-value">45%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="limit-type">Mensual</td>
+                                            <td class="limit-usage">
+                                                <div class="limit-bar">
+                                                    <div class="limit-progress" style="width: 70%;"></div>
+                                                </div>
+                                            </td>
+                                            <td class="limit-value">70%</td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <a href="#" class="btn-link">
-                                    Ver todos los servicios
-                                    <i class="fas fa-chevron-right"></i>
+                                    Administrar límites
+                                    <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
                                 </a>
                             </div>
                         </div>
@@ -1880,7 +2120,39 @@
             const overlay = document.getElementById('overlay');
             const creditCard = document.getElementById('creditCard');
             const filterButtons = document.querySelectorAll('.filter-btn');
+            const welcomeBanner = document.getElementById('welcomeBanner');
+            const closeBanner = document.getElementById('closeBanner');
+            const progressBars = document.querySelectorAll('.progress-bar');
             const isMobile = window.innerWidth < 992;
+            
+            // Show welcome banner after a small delay
+            setTimeout(() => {
+                welcomeBanner.classList.add('show');
+            }, 500);
+            
+            // Close welcome banner
+            closeBanner.addEventListener('click', function() {
+                welcomeBanner.classList.remove('show');
+                setTimeout(() => {
+                    welcomeBanner.style.display = 'none';
+                }, 500);
+            });
+            
+            // Auto-hide welcome banner after 10 seconds
+            setTimeout(() => {
+                welcomeBanner.classList.remove('show');
+                setTimeout(() => {
+                    welcomeBanner.style.display = 'none';
+                }, 500);
+            }, 10000);
+            
+            // Animate progress bars
+            progressBars.forEach(bar => {
+                const targetWidth = bar.getAttribute('data-width') || '0%';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 500);
+            });
             
             // Toggle sidebar
             menuToggle.addEventListener('click', function() {
@@ -1898,38 +2170,92 @@
                 overlay.classList.remove('active');
             });
             
-            // Credit Card 3D effect
-            document.addEventListener('mousemove', function(e) {
-                if (!isMobile && creditCard) {
-                    const cardRect = creditCard.getBoundingClientRect();
-                    const cardCenterX = cardRect.left + cardRect.width / 2;
-                    const cardCenterY = cardRect.top + cardRect.height / 2;
-                    
-                    // Calculate distance from mouse to center
-                    const distX = e.clientX - cardCenterX;
-                    const distY = e.clientY - cardCenterY;
-                    
-                    // Apply rotation if mouse is near the card
-                    if (Math.abs(distX) < cardRect.width * 2 && Math.abs(distY) < cardRect.height * 2) {
-                        const rotateY = (distX / (cardRect.width * 2)) * 15;
-                        const rotateX = (distY / (cardRect.height * 2)) * -15;
-                        creditCard.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+            // Credit Card 3D effect with smoother transitions
+            if (creditCard) {
+                const cardContainer = creditCard.parentElement;
+                
+                cardContainer.addEventListener('mousemove', function(e) {
+                    if (!isMobile) {
+                        const rect = cardContainer.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2;
+                        const centerY = rect.top + rect.height / 2;
+                        
+                        // Calculate distance from mouse to center as a percentage
+                        const percentX = (e.clientX - centerX) / (rect.width / 2);
+                        const percentY = (e.clientY - centerY) / (rect.height / 2);
+                        
+                        // Limit rotation angle to a reasonable degree
+                        const maxRotation = 10;
+                        const rotateY = percentX * maxRotation;
+                        const rotateX = -percentY * maxRotation;
+                        
+                        // Apply 3D transform with subtle perspective
+                        creditCard.style.transform = `
+                            perspective(1000px)
+                            rotateY(${rotateY}deg)
+                            rotateX(${rotateX}deg)
+                            scale3d(1.02, 1.02, 1.02)
+                        `;
+                        
+                        // Add subtle shadow movement based on angle
+                        creditCard.style.boxShadow = `
+                            ${-rotateY/2}px ${-rotateX/2}px 20px rgba(0, 0, 0, 0.2),
+                            0 10px 15px rgba(0, 0, 0, 0.1)
+                        `;
                     }
-                }
-            });
+                });
+                
+                cardContainer.addEventListener('mouseleave', function() {
+                    // Reset transformations with smooth transition
+                    creditCard.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
+                    creditCard.style.boxShadow = 'var(--shadow-lg)';
+                });
+                
+                // Add initial animation
+                setTimeout(() => {
+                    creditCard.style.transform = 'perspective(1000px) rotateY(5deg) rotateX(-2deg) scale3d(1.03, 1.03, 1.03)';
+                    setTimeout(() => {
+                        creditCard.style.transform = 'perspective(1000px) rotateY(0) rotateX(0) scale3d(1, 1, 1)';
+                    }, 700);
+                }, 1000);
+            }
             
-            // Reset card rotation
-            document.addEventListener('mouseleave', function() {
-                if (creditCard) {
-                    creditCard.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                }
-            });
-            
-            // Transaction Filters
+            // Transaction Filters with smooth transitions
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     filterButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+                });
+            });
+            
+            // Add click effect for action items
+            const actionItems = document.querySelectorAll('.action-item, .service-item');
+            actionItems.forEach(item => {
+                item.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.97)';
+                });
+                
+                item.addEventListener('mouseup', function() {
+                    this.style.transform = '';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+            
+            // Make transactions expandable on mobile
+            const transactions = document.querySelectorAll('.transaction-item');
+            transactions.forEach(transaction => {
+                transaction.addEventListener('click', function() {
+                    if (window.innerWidth < 768) {
+                        const details = this.querySelector('.transaction-details');
+                        if (details.style.display === 'block') {
+                            details.style.display = '';
+                        } else {
+                            details.style.display = 'block';
+                        }
+                    }
                 });
             });
             
@@ -1945,6 +2271,16 @@
                         overlay.classList.remove('active');
                     }
                 }
+            });
+            
+            // Help button animation
+            const helpButton = document.getElementById('helpButton');
+            helpButton.addEventListener('mouseover', function() {
+                this.classList.add('animate-pulse');
+            });
+            
+            helpButton.addEventListener('mouseout', function() {
+                this.classList.remove('animate-pulse');
             });
         });
     </script>
