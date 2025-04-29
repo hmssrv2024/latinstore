@@ -4,266 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura LatinPhone LLC - LP-6BMD03C6</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: #000;
-            color: #fff;
+            background: #ffffff;
+            color: #1e3a8a;
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Futuristic Animated Background */
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .background::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"%3E%3Cfilter id="a"%3E%3CfeTurbulence type="fractalNoise" baseFrequency=".02" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23a)" opacity=".3"/%3E%3C/svg%3E');
-            animation: wave 15s ease-in-out infinite;
-            opacity: 0.4;
-        }
-
-        .background::after {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(0, 255, 212, 0.3), transparent);
-            animation: rotate 25s linear infinite;
-            top: -50%;
-            left: -50%;
-            opacity: 0.2;
-        }
-
-        @keyframes wave {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
-        }
-
-        .lock-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 0.7s;
-        }
-
-        .lock-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .lock-box {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            padding: 50px;
-            border-radius: 25px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(0, 255, 212, 0.3);
-        }
-
-        .lock-box h2 {
-            font-size: 2.2em;
-            margin-bottom: 30px;
-            color: #00ffd4;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 255, 212, 0.5);
-        }
-
-        .lock-box input {
-            padding: 16px;
-            font-size: 1.2em;
-            width: 100%;
-            max-width: 350px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.12);
-            color: #fff;
-            margin-bottom: 25px;
-            transition: background 0.3s, box-shadow 0.3s;
-        }
-
-        .lock-box input:focus {
-            background: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 0 15px rgba(0, 255, 212, 0.3);
-            outline: none;
-        }
-
-        .lock-box button {
-            padding: 16px 50px;
-            background: linear-gradient(45deg, #00ffd4, #ff00ff);
-            color: #000;
-            font-weight: 700;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .lock-box button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 212, 0.5);
+            padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 50px auto;
+            max-width: 900px;
+            width: 100%;
+            background: #f8fafc;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
-            border: 1px solid rgba(0, 255, 212, 0.3);
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s, transform 0.8s;
+            margin: 20px 0;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        .container.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header-video {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            overflow: hidden;
-            border-radius: 25px;
-            margin-bottom: 50px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .header-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(0.9);
+        .header img {
+            width: 120px;
+            margin-bottom: 20px;
         }
 
-        .header-video .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1e3a8a;
+            letter-spacing: 1px;
         }
 
-        .header-video h1 {
-            font-size: 4em;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #00ffd4;
-            text-shadow: 0 0 15px rgba(0, 255, 212, 0.7);
-            animation: glow 2s ease-in-out infinite;
+        .success-message {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            animation: slideIn 0.6s ease-out;
         }
 
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 15px rgba(0, 255, 212, 0.7); }
-            50% { text-shadow: 0 0 25px rgba(0, 255, 212, 1); }
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 212, 0.2);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .info-grid div {
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-
-        .info-grid a {
-            color: #00ffd4;
-            text-decoration: none;
-            transition: color 0.3s, text-shadow 0.3s;
-        }
-
-        .info-grid a:hover {
-            color: #ff00ff;
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
-        }
-
-        .order-details, .summary {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 212, 0.2);
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .order-details h2, .summary h2 {
-            color: #00ffd4;
+        .success-message h2 {
             font-size: 1.8em;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 212, 0.5);
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            font-size: 1.1em;
+            color: #3b82f6;
+        }
+
+        .order-details {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-details h2 {
+            font-size: 1.6em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .order-details p {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #334155;
         }
 
         .order-details ul {
             list-style: none;
-            font-size: 1.2em;
+            font-size: 1.1em;
         }
 
         .order-details ul li {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s, transform 0.3s;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background 0.3s;
         }
 
         .order-details ul li:hover {
-            background: rgba(0, 255, 212, 0.08);
-            transform: translateX(5px);
+            background: #f1f5f9;
+        }
+
+        .summary {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary h2 {
+            font-size: 1.6em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
         .summary table {
             width: 100%;
-            font-size: 1.2em;
+            font-size: 1.1em;
+            color: #334155;
         }
 
         .summary table td {
@@ -275,129 +145,113 @@
         }
 
         .summary .total {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #00ffd4;
-            text-shadow: 0 0 10px rgba(0, 255, 212, 0.5);
-        }
-
-        .product-image {
-            text-align: center;
-            margin: 50px 0;
-        }
-
-        .product-image img {
-            max-width: 100%;
-            border-radius: 25px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-            transition: transform 0.4s, box-shadow 0.4s;
-        }
-
-        .product-image img:hover {
-            transform: scale(1.06);
-            box-shadow: 0 25px 70px rgba(0, 255, 212, 0.4);
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1e40af;
         }
 
         .timeline {
-            position: relative;
-            margin: 50px 0;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 212, 0.2);
-            animation: fadeIn 1s ease-in-out;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
         }
 
         .timeline h2 {
-            color: #00ffd4;
+            font-size: 1.6em;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-weight: 600;
             text-align: center;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0, 255, 212, 0.5);
         }
 
         .timeline-container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
         }
 
         .timeline-item {
             display: flex;
             align-items: center;
-            gap: 25px;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.12);
-            border-radius: 15px;
+            gap: 20px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
             transition: transform 0.3s, box-shadow 0.3s;
-            animation: slideIn 0.7s ease-in-out;
+            animation: slideIn 0.6s ease-out;
         }
 
         .timeline-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 30px rgba(0, 255, 212, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item.delivered {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
         }
 
         .timeline-item .dot {
-            width: 20px;
-            height: 20px;
-            background: #00ffd4;
+            width: 16px;
+            height: 16px;
+            background: #3b82f6;
             border-radius: 50%;
             flex-shrink: 0;
-            box-shadow: 0 0 15px rgba(0, 255, 212, 0.7);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+        }
+
+        .timeline-item.delivered .dot {
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
         }
 
         .timeline-item h3 {
-            font-size: 1.3em;
-            color: #fff;
+            font-size: 1.2em;
+            color: #1e3a8a;
+            font-weight: 600;
         }
 
         .timeline-item p {
             font-size: 1em;
-            color: #ccc;
+            color: #64748b;
         }
 
         .mrw-info {
             text-align: center;
-            margin: 50px 0;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            border: 1px solid rgba(0, 255, 212, 0.2);
-            animation: fadeIn 1s ease-in-out;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .mrw-info img {
-            width: 100px;
-            margin-bottom: 20px;
+            width: 80px;
+            margin-bottom: 15px;
+        }
+
+        .mrw-info p {
+            font-size: 1.1em;
+            color: #334155;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-40px); }
+            from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @media (max-width: 768px) {
-            .header-video {
-                height: 350px;
-            }
-
-            .header-video h1 {
-                font-size: 2.5em;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-
             .container {
-                margin: 30px;
-                padding: 25px;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .success-message h2 {
+                font-size: 1.5em;
             }
 
             .timeline-item {
@@ -409,40 +263,15 @@
     </style>
 </head>
 <body>
-    <div class="background"></div>
-
-    <div class="lock-screen" id="lockScreen">
-        <div class="lock-box">
-            <h2>Acceso a la Factura</h2>
-            <input type="password" id="passwordInput" placeholder="Ingrese su clave">
-            <button onclick="unlockInvoice()">Desbloquear</button>
-        </div>
-    </div>
-
-    <div class="container" id="invoiceContent">
-        <div class="header-video">
-            <video autoplay loop muted>
-                <source src="https://www.hp.com/content/dam/sites/hp/worldwide/videopool/consumer/Notebook_hero_light_230124.mp4" type="video/mp4">
-            </video>
-            <div class="overlay">
-                <h1>Factura LatinPhone</h1>
-            </div>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.agencias.com.ve/img/couriers/logos/mrw.png" alt="LatinPhone Logo">
+            <h1>Factura LatinPhone LLC</h1>
         </div>
 
-        <div class="info-grid">
-            <div>
-                <strong>LatinPhone LLC</strong><br>
-                1990 M St NW #200, Washington, DC 20036, USA<br>
-                Tel: <a href="tel:+18133584564">+1 (813) 358-4564</a><br>
-                Email: <a href="mailto:latiphone@usa.com">latiphone@usa.com</a><br>
-                Web: <a href="https://latinphone.store">latinphone.store</a>
-            </div>
-            <div>
-                <strong>Miguel Alexander Ortiz Laya</strong><br>
-                Cédula: V27.408.151<br>
-                Dirección: Av. Soublette, Maiquetía 1060, La Guaira, Venezuela, Edificio Sensación, Piso 8, Apto 8<br>
-                Email: <a href="mailto:lagracitana@gmail.com">lagracitana@gmail.com</a>
-            </div>
+        <div class="success-message">
+            <h2>¡Entrega Exitosa!</h2>
+            <p>Su orden LP-6BMD03C6 fue entregada con éxito el 29/04/2025 a las 14:00 VET.</p>
         </div>
 
         <div class="order-details">
@@ -455,10 +284,6 @@
                 <li><span>1x HP I7 1355U</span><span>$800.00</span></li>
                 <li><span>Redmi A3 3GB RAM (Regalo GRATIS)</span><span>$0.00</span></li>
             </ul>
-        </div>
-
-        <div class="product-image">
-            <img src="https://m.media-amazon.com/images/I/61z6x8jQ5vL._AC_SL1500_.jpg" alt="HP I7 1355U" loading="lazy">
         </div>
 
         <div class="summary">
@@ -481,44 +306,32 @@
                     <div class="dot"></div>
                     <div>
                         <h3>Orden Confirmada</h3>
-                        <p>27/04/2025 - Su orden ha sido procesada.</p>
+                        <p>27/04/2025</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="dot"></div>
                     <div>
                         <h3>Enviado</h3>
-                        <p>28/04/2025 - El paquete ha sido enviado vía MRW.</p>
+                        <p>28/04/2025</p>
                     </div>
                 </div>
-                <div class="timeline-item">
+                <div class="timeline-item delivered">
                     <div class="dot"></div>
                     <div>
                         <h3>Entregado</h3>
-                        <p>29/04/2025 - Entrega en MRW Catia La Mar, La Guaira, Venezuela.</p>
+                        <p>29/04/2025, 14:00 VET</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="mrw-info">
-            <img src="https://www.agencias.com.ve/img/couriers/logos/mrw.png" alt="MRW Logo" loading="lazy">
+            <img src="https://www.agencias.com.ve/img/couriers/logos/mrw.png" alt="MRW Logo">
             <p><strong>MRW Catia La Mar</strong><br>
             Dirección: Catia La Mar, La Guaira, Venezuela<br>
-            Entrega programada: 29/04/2025</p>
+            Entrega realizada: 29/04/2025, 14:00 VET</p>
         </div>
     </div>
-
-    <script>
-        function unlockInvoice() {
-            const password = document.getElementById('passwordInput').value;
-            if (password === '27408151') {
-                document.getElementById('lockScreen').classList.add('hidden');
-                document.getElementById('invoiceContent').classList.add('visible');
-            } else {
-                alert('Clave incorrecta. Intente de nuevo.');
-            }
-        }
-    </script>
 </body>
 </html>
