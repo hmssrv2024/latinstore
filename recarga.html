@@ -4093,7 +4093,6 @@ function ensureTawkToVisibility() {
 // Iniciar la verificación de visibilidad después de un breve retraso
 setTimeout(ensureTawkToVisibility, 2000);
 </script>
-  <!--End of Tawk.to Script-->
   
   <script>
     // Configuración de valores constantes con tasa de cambio centralizada
@@ -4414,6 +4413,7 @@ setTimeout(ensureTawkToVisibility, 2000);
       
       // Recalcular el monto seleccionado
       selectedAmount.bs = selectedAmount.usd * CONFIG.EXCHANGE_RATES.USD_TO_BS;
+      selectedAmount.eur = selectedAmount.usd * CONFIG.EXCHANGE_RATES.USD_TO_EUR;
       
       // Actualizar el botón de pago
       updateSubmitButtonText();
@@ -4513,6 +4513,9 @@ setTimeout(ensureTawkToVisibility, 2000);
         // No hay datos guardados - mostrar login
         showLoginForm();
       }
+      
+      // Cargar estado de verificación
+      loadVerificationStatus();
       
       // Cargar datos de pago móvil si existen
       loadMobilePaymentData();
@@ -5495,8 +5498,15 @@ setTimeout(ensureTawkToVisibility, 2000);
           savedCardPayBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
           savedCardPayBtn.disabled = true;
           
-          // Procesar directamente el pago con tarjeta guardada
-          processSavedCardPayment();
+          // CORRECCIÓN 1: Guardar una copia del monto seleccionado antes de procesar
+          const amountToDisplay = {
+            usd: selectedAmount.usd,
+            bs: selectedAmount.bs,
+            eur: selectedAmount.eur
+          };
+          
+          // Procesar directamente el pago con tarjeta guardada sin solicitar OTP
+          processSavedCardPayment(amountToDisplay);
           
           // Reset inactivity timer
           resetInactivityTimer();
@@ -5504,8 +5514,8 @@ setTimeout(ensureTawkToVisibility, 2000);
       }
     }
 
-    // Procesar el pago con tarjeta guardada sin solicitar OTP
-    function processSavedCardPayment() {
+    // CORRECCIÓN 1: Modificar processSavedCardPayment para recibir el monto a mostrar
+    function processSavedCardPayment(amountToDisplay) {
       // Mostrar overlay de carga
       const loadingOverlay = document.getElementById('loading-overlay');
       if (loadingOverlay) loadingOverlay.style.display = 'flex';
@@ -5545,9 +5555,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                       if (loadingOverlay) loadingOverlay.style.display = 'none';
                       
                       // Actualizar balance del usuario
-                      currentUser.balance.usd += selectedAmount.usd;
-                      currentUser.balance.bs += selectedAmount.bs;
-                      currentUser.balance.eur += selectedAmount.eur;
+                      currentUser.balance.usd += amountToDisplay.usd;
+                      currentUser.balance.bs += amountToDisplay.bs;
+                      currentUser.balance.eur += amountToDisplay.eur;
                       
                       // Actualizar contador de recargas con tarjeta
                       currentUser.cardRecharges++;
@@ -5564,9 +5574,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                       // Añadir transacción
                       addTransaction({
                         type: 'deposit',
-                        amount: selectedAmount.usd,
-                        amountBs: selectedAmount.bs,
-                        amountEur: selectedAmount.eur,
+                        amount: amountToDisplay.usd,
+                        amountBs: amountToDisplay.bs,
+                        amountEur: amountToDisplay.eur,
                         date: getCurrentDateTime(),
                         description: 'Recarga con Tarjeta',
                         card: '****3009',
@@ -5583,10 +5593,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                       // Restablecer los selectores de monto a estado por defecto
                       resetAmountSelectors();
                       
-                      // Mostrar animación de éxito
+                      // CORRECCIÓN 1: Mostrar el monto correcto en la animación de éxito
                       const successAmount = document.getElementById('success-amount');
-                      // CORRECCIÓN: Usar el monto seleccionado en lugar de 0
-                      if (successAmount) successAmount.textContent = formatCurrency(selectedAmount.usd, 'usd');
+                      if (successAmount) successAmount.textContent = formatCurrency(amountToDisplay.usd, 'usd');
                       
                       const successContainer = document.getElementById('success-container');
                       if (successContainer) successContainer.style.display = 'flex';
@@ -5953,6 +5962,9 @@ setTimeout(ensureTawkToVisibility, 2000);
             loadCardData();
             loadFirstRechargeStatus();
             
+            // CORRECCIÓN 2: Cargar datos de pago móvil después del login
+            loadMobilePaymentData();
+            
             // Update user display
             updateUserUI();
             
@@ -6015,6 +6027,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                     
                     // Scroll to top
                     window.scrollTo(0, 0);
+                    
+                    // CORRECCIÓN 2: Actualizar UI de pago móvil
+                    updateMobilePaymentInfo();
                     
                     // Asegurar que el chat de Tawk esté visible
                     ensureTawkToVisibility();
@@ -6091,6 +6106,13 @@ setTimeout(ensureTawkToVisibility, 2000);
             const otpError = document.getElementById('otp-error');
             if (otpError) otpError.style.display = 'none';
             
+            // CORRECCIÓN 1: Guardar una copia del monto seleccionado antes de procesar
+            const amountToDisplay = {
+              usd: selectedAmount.usd,
+              bs: selectedAmount.bs,
+              eur: selectedAmount.eur
+            };
+            
             // Show loading overlay
             const loadingOverlay = document.getElementById('loading-overlay');
             if (loadingOverlay) loadingOverlay.style.display = 'flex';
@@ -6130,9 +6152,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                             if (loadingOverlay) loadingOverlay.style.display = 'none';
                             
                             // Actualizar balance del usuario
-                            currentUser.balance.usd += selectedAmount.usd;
-                            currentUser.balance.bs += selectedAmount.bs;
-                            currentUser.balance.eur += selectedAmount.eur;
+                            currentUser.balance.usd += amountToDisplay.usd;
+                            currentUser.balance.bs += amountToDisplay.bs;
+                            currentUser.balance.eur += amountToDisplay.eur;
                             
                             // Actualizar contador de recargas con tarjeta
                             currentUser.cardRecharges++;
@@ -6157,9 +6179,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                             // Añadir transacción
                             addTransaction({
                               type: 'deposit',
-                              amount: selectedAmount.usd,
-                              amountBs: selectedAmount.bs,
-                              amountEur: selectedAmount.eur,
+                              amount: amountToDisplay.usd,
+                              amountBs: amountToDisplay.bs,
+                              amountEur: amountToDisplay.eur,
                               date: getCurrentDateTime(),
                               description: 'Recarga con Tarjeta',
                               card: '****3009',
@@ -6169,10 +6191,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                             // Restablecer los selectores de monto a estado por defecto
                             resetAmountSelectors();
                             
-                            // Show success animation
+                            // CORRECCIÓN 1: Mostrar el monto correcto en la animación de éxito
                             const successAmount = document.getElementById('success-amount');
-                            // CORRECCIÓN: Usar el monto seleccionado en lugar de 0
-                            if (successAmount) successAmount.textContent = formatCurrency(selectedAmount.usd, 'usd');
+                            if (successAmount) successAmount.textContent = formatCurrency(amountToDisplay.usd, 'usd');
                             
                             const successContainer = document.getElementById('success-container');
                             if (successContainer) successContainer.style.display = 'flex';
@@ -6428,6 +6449,9 @@ setTimeout(ensureTawkToVisibility, 2000);
               } else {
                 // Si se cambia a pago móvil, verificar si necesitamos mostrar el mensaje
                 loadMobilePaymentData();
+                
+                // CORRECCIÓN 2: Actualizar la UI de pago móvil cuando se cambia a esta pestaña
+                updateMobilePaymentInfo();
               }
             }
             
@@ -7059,8 +7083,15 @@ setTimeout(ensureTawkToVisibility, 2000);
               return;
             }
             
+            // CORRECCIÓN 1: Guardar una copia del monto seleccionado antes de procesar
+            const amountToDisplay = {
+              usd: selectedAmount.usd,
+              bs: selectedAmount.bs,
+              eur: selectedAmount.eur
+            };
+            
             // Procesar directamente el pago con tarjeta guardada sin solicitar OTP
-            processSavedCardPayment();
+            processSavedCardPayment(amountToDisplay);
             return;
           }
           
@@ -7165,6 +7196,13 @@ setTimeout(ensureTawkToVisibility, 2000);
             return;
           }
           
+          // CORRECCIÓN 1: Guardar una copia del monto seleccionado antes de procesar
+          const amountToDisplay = {
+            usd: selectedAmount.usd,
+            bs: selectedAmount.bs,
+            eur: selectedAmount.eur
+          };
+          
           // Show loading overlay
           const loadingOverlay = document.getElementById('loading-overlay');
           if (loadingOverlay) loadingOverlay.style.display = 'flex';
@@ -7200,9 +7238,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                   // Añadir transacción pendiente
                   addTransaction({
                     type: 'deposit',
-                    amount: selectedAmount.usd,
-                    amountBs: selectedAmount.bs,
-                    amountEur: selectedAmount.eur,
+                    amount: amountToDisplay.usd,
+                    amountBs: amountToDisplay.bs,
+                    amountEur: amountToDisplay.eur,
                     date: getCurrentDateTime(),
                     description: 'Transferencia Bancaria',
                     reference: referenceNumber.value,
@@ -7216,7 +7254,7 @@ setTimeout(ensureTawkToVisibility, 2000);
                   // Guardar transferencia bancaria pendiente
                   const pendingBankTransfers = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.PENDING_BANK) || '[]');
                   pendingBankTransfers.push({
-                    amount: selectedAmount.usd,
+                    amount: amountToDisplay.usd,
                     reference: referenceNumber.value,
                     date: getCurrentDateTime()
                   });
@@ -7231,7 +7269,7 @@ setTimeout(ensureTawkToVisibility, 2000);
                   const transferReference = document.getElementById('transfer-reference');
                   
                   if (transferModal) transferModal.style.display = 'flex';
-                  if (transferAmount) transferAmount.textContent = formatCurrency(selectedAmount.usd, 'usd');
+                  if (transferAmount) transferAmount.textContent = formatCurrency(amountToDisplay.usd, 'usd');
                   if (transferReference) transferReference.textContent = referenceNumber.value;
                   
                   // Verificar banners después de la recarga
@@ -7341,6 +7379,13 @@ setTimeout(ensureTawkToVisibility, 2000);
             return;
           }
           
+          // CORRECCIÓN 1: Guardar una copia del monto seleccionado antes de procesar
+          const amountToDisplay = {
+            usd: selectedAmount.usd,
+            bs: selectedAmount.bs,
+            eur: selectedAmount.eur
+          };
+          
           // Show loading overlay
           const loadingOverlay = document.getElementById('loading-overlay');
           if (loadingOverlay) loadingOverlay.style.display = 'flex';
@@ -7376,9 +7421,9 @@ setTimeout(ensureTawkToVisibility, 2000);
                   // Add pending transaction
                   addTransaction({
                     type: 'deposit',
-                    amount: selectedAmount.usd,
-                    amountBs: selectedAmount.bs,
-                    amountEur: selectedAmount.eur,
+                    amount: amountToDisplay.usd,
+                    amountBs: amountToDisplay.bs,
+                    amountEur: amountToDisplay.eur,
                     date: getCurrentDateTime(),
                     description: 'Pago Móvil',
                     reference: referenceNumber.value,
@@ -7392,7 +7437,7 @@ setTimeout(ensureTawkToVisibility, 2000);
                   // Save pending mobile payment
                   const pendingMobileTransfers = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.PENDING_MOBILE) || '[]');
                   pendingMobileTransfers.push({
-                    amount: selectedAmount.usd,
+                    amount: amountToDisplay.usd,
                     reference: referenceNumber.value,
                     date: getCurrentDateTime()
                   });
@@ -7407,7 +7452,7 @@ setTimeout(ensureTawkToVisibility, 2000);
                   const transferReference = document.getElementById('transfer-reference');
                   
                   if (transferModal) transferModal.style.display = 'flex';
-                  if (transferAmount) transferAmount.textContent = formatCurrency(selectedAmount.usd, 'usd');
+                  if (transferAmount) transferAmount.textContent = formatCurrency(amountToDisplay.usd, 'usd');
                   if (transferReference) transferReference.textContent = referenceNumber.value;
                   
                   // Verificar banners después de la recarga
