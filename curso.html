@@ -100,7 +100,7 @@
             --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* Z-index stack */
+            /* Z-index stack CORREGIDO */
             --z-dropdown: 1000;
             --z-sticky: 1020;
             --z-fixed: 1030;
@@ -136,10 +136,10 @@
             margin-bottom: var(--space-md);
         }
 
-        h1 { font-size: clamp(2rem, 4vw, 3rem); }
-        h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
-        h3 { font-size: clamp(1.25rem, 2.5vw, 1.875rem); }
-        h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+        h1 { font-size: clamp(1.75rem, 4vw, 3rem); }
+        h2 { font-size: clamp(1.25rem, 3vw, 2.25rem); }
+        h3 { font-size: clamp(1.125rem, 2.5vw, 1.875rem); }
+        h4 { font-size: clamp(1rem, 2vw, 1.5rem); }
 
         p {
             margin-bottom: var(--space-md);
@@ -165,6 +165,7 @@
             position: relative;
             overflow: hidden;
             white-space: nowrap;
+            min-height: 44px; /* Mejora accesibilidad táctil */
         }
 
         .btn:focus-visible {
@@ -366,6 +367,8 @@
             padding: var(--space-sm);
             border-radius: var(--radius-sm);
             transition: all var(--transition-fast);
+            min-width: 44px;
+            min-height: 44px;
         }
 
         .mobile-menu-btn:hover {
@@ -381,7 +384,7 @@
             position: relative;
         }
 
-        /* Sidebar moderno */
+        /* Sidebar moderno CORREGIDO */
         .sidebar {
             background: var(--white);
             border-right: 1px solid var(--gray-200);
@@ -389,6 +392,8 @@
             scrollbar-width: thin;
             scrollbar-color: var(--gray-300) transparent;
             transition: transform var(--transition-normal);
+            position: relative;
+            z-index: var(--z-dropdown);
         }
 
         .sidebar::-webkit-scrollbar {
@@ -437,6 +442,7 @@
             position: relative;
             font-size: 0.9rem;
             font-weight: 500;
+            min-height: 44px;
         }
 
         .sidebar-item::before {
@@ -565,7 +571,7 @@
         }
 
         .dashboard-title {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 700;
             background: linear-gradient(135deg, var(--primary-navy), var(--accent-blue));
             -webkit-background-clip: text;
@@ -575,7 +581,7 @@
         }
 
         .dashboard-subtitle {
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
             color: var(--gray-600);
             font-weight: 400;
             line-height: 1.6;
@@ -614,6 +620,7 @@
             margin-bottom: var(--space-xl);
             font-weight: 600;
             box-shadow: var(--shadow-md);
+            font-size: clamp(0.875rem, 2vw, 1rem);
         }
 
         .info-content {
@@ -621,14 +628,14 @@
         }
 
         .info-text {
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
             font-weight: 600;
             color: var(--gray-900);
             margin-bottom: var(--space-md);
         }
 
         .info-subtext {
-            font-size: 1rem;
+            font-size: clamp(0.875rem, 2vw, 1rem);
             color: var(--gray-600);
             line-height: 1.7;
         }
@@ -636,7 +643,7 @@
         /* Grid de programas mejorado */
         .programs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
             gap: var(--space-2xl);
             margin-bottom: var(--space-3xl);
         }
@@ -721,7 +728,7 @@
         }
 
         .program-title {
-            font-size: 1.375rem;
+            font-size: clamp(1.125rem, 2vw, 1.375rem);
             font-weight: 700;
             color: var(--gray-900);
             margin-bottom: var(--space-md);
@@ -796,9 +803,10 @@
 
         .detail-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: var(--space-lg);
             margin-bottom: var(--space-2xl);
+            flex-wrap: wrap;
         }
 
         .back-button {
@@ -813,6 +821,7 @@
             color: var(--gray-600);
             cursor: pointer;
             transition: all var(--transition-fast);
+            flex-shrink: 0;
         }
 
         .back-button:hover {
@@ -823,12 +832,13 @@
 
         .detail-title {
             flex: 1;
-            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(1.25rem, 3vw, 2rem);
             font-weight: 700;
             color: var(--gray-900);
+            min-width: 0; /* Permite que el texto se ajuste */
         }
 
-        /* Tabs mejorados */
+        /* Tabs mejorados CORREGIDO */
         .tabs-nav {
             display: flex;
             gap: var(--space-xs);
@@ -838,6 +848,8 @@
             border-radius: var(--radius-xl);
             overflow-x: auto;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
         }
 
         .tabs-nav::-webkit-scrollbar {
@@ -855,6 +867,8 @@
             transition: all var(--transition-fast);
             white-space: nowrap;
             font-size: 0.9rem;
+            min-width: auto;
+            flex-shrink: 0;
         }
 
         .tab-button:hover {
@@ -888,7 +902,7 @@
         }
 
         .section-title {
-            font-size: 1.875rem;
+            font-size: clamp(1.5rem, 3vw, 1.875rem);
             font-weight: 700;
             margin-bottom: var(--space-xl);
             color: var(--gray-900);
@@ -908,7 +922,7 @@
         }
 
         .section-subtitle {
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 2vw, 1.25rem);
             font-weight: 600;
             margin-bottom: var(--space-lg);
             color: var(--primary-navy);
@@ -917,7 +931,7 @@
         /* Módulos grid mejorado */
         .modules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
             gap: var(--space-xl);
         }
 
@@ -1072,7 +1086,7 @@
         }
 
         .pricing-value {
-            font-size: 3rem;
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 800;
             font-family: var(--font-display);
             background: linear-gradient(135deg, var(--primary-navy), var(--accent-blue));
@@ -1401,7 +1415,7 @@
         /* About highlights mejorado */
         .about-highlights {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
             gap: var(--space-xl);
             margin-top: var(--space-2xl);
         }
@@ -1440,7 +1454,7 @@
         }
 
         .highlight-number {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 4vw, 2.5rem);
             font-weight: 800;
             font-family: var(--font-display);
             background: linear-gradient(135deg, var(--primary-navy), var(--accent-blue));
@@ -1722,28 +1736,38 @@
             border-radius: var(--radius-lg);
         }
 
-        /* Responsive Design Mejorado */
+        /* Responsive Design Mejorado CORREGIDO */
         @media (max-width: 1200px) {
             .main-wrapper {
                 grid-template-columns: 280px 1fr;
             }
             
-            .sidebar {
+            :root {
                 --sidebar-width: 280px;
             }
         }
 
         @media (max-width: 1024px) {
             .programs-grid {
-                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
             }
             
             .modules-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
             }
             
             .about-highlights {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Mejorar tabs en tablets */
+            .tabs-nav {
+                justify-content: flex-start;
+            }
+
+            .tab-button {
+                padding: var(--space-sm) var(--space-lg);
+                font-size: 0.875rem;
             }
         }
 
@@ -1767,7 +1791,7 @@
             }
 
             .mobile-menu-btn {
-                display: block;
+                display: flex;
             }
 
             .user-counter {
@@ -1778,6 +1802,7 @@
                 grid-template-columns: 1fr;
             }
 
+            /* Sidebar móvil CORREGIDO */
             .sidebar {
                 position: fixed;
                 top: var(--header-height);
@@ -1785,8 +1810,10 @@
                 height: calc(100vh - var(--header-height));
                 width: var(--sidebar-width);
                 transform: translateX(-100%);
-                z-index: var(--z-fixed);
+                z-index: var(--z-modal);
                 box-shadow: var(--shadow-xl);
+                background: var(--white);
+                border-right: none;
             }
 
             .sidebar.mobile-open {
@@ -1830,24 +1857,62 @@
                 gap: var(--space-lg);
             }
 
+            /* Tabs móviles CORREGIDOS */
             .tabs-nav {
                 padding: var(--space-sm);
                 gap: var(--space-xs);
+                margin-bottom: var(--space-xl);
+                position: relative;
             }
 
             .tab-button {
-                padding: var(--space-sm) var(--space-md);
+                padding: var(--space-md) var(--space-lg);
                 font-size: 0.8rem;
-                min-width: 120px;
+                min-width: max-content;
+                flex-shrink: 0;
+            }
+
+            /* Indicador de scroll para tabs móviles */
+            .tabs-nav::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 30px;
+                background: linear-gradient(to left, var(--gray-100), transparent);
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity var(--transition-fast);
+                border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+            }
+
+            .tabs-nav.scrollable::after {
+                opacity: 1;
+            }
+
+            .detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-md);
+            }
+
+            .back-button {
+                align-self: flex-start;
+            }
+
+            .detail-title {
+                font-size: clamp(1.25rem, 4vw, 1.75rem);
             }
 
             .chat-container {
-                width: calc(100% - 2rem);
+                width: calc(100vw - 2rem);
                 max-width: 380px;
                 right: 50%;
                 transform: translateX(50%) translateY(20px);
                 bottom: 6rem;
                 height: 450px;
+                margin: 0 1rem;
             }
 
             .chat-container.active {
@@ -1864,6 +1929,7 @@
             .modal-content {
                 margin: var(--space-md);
                 padding: var(--space-xl);
+                max-width: calc(100vw - 2rem);
             }
 
             .testimonial-author {
@@ -1886,39 +1952,72 @@
                 left: var(--space-lg);
                 max-width: none;
             }
+
+            /* Mejorar formularios en móviles */
+            .form-input {
+                padding: var(--space-lg);
+                font-size: 16px; /* Previene zoom en iOS */
+            }
+
+            /* Mejorar pricing en móviles */
+            .pricing-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--space-xs);
+            }
         }
 
         @media (max-width: 480px) {
             .dashboard-title {
-                font-size: 2rem;
+                font-size: clamp(1.5rem, 6vw, 2rem);
             }
 
             .pricing-value {
-                font-size: 2.5rem;
+                font-size: clamp(2rem, 8vw, 2.5rem);
             }
 
             .highlight-number {
-                font-size: 2rem;
+                font-size: clamp(1.75rem, 6vw, 2rem);
             }
 
             .section-title {
-                font-size: 1.5rem;
+                font-size: clamp(1.25rem, 5vw, 1.5rem);
             }
 
-            .detail-header {
+            .about-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .program-meta {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: var(--space-md);
+                gap: var(--space-sm);
             }
 
-            .back-button {
-                align-self: flex-start;
+            .program-footer {
+                flex-direction: column;
+                gap: var(--space-md);
+                align-items: stretch;
+            }
+
+            .program-cta {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Tabs en pantallas muy pequeñas */
+            .tab-button {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.75rem;
+            }
+
+            .location-badge {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.8rem;
             }
         }
 
         /* Dark mode support preparado */
         @media (prefers-color-scheme: dark) {
-            /* Variables para modo oscuro si se implementa en el futuro */
             :root {
                 --dark-bg: #0f172a;
                 --dark-surface: #1e293b;
@@ -2049,14 +2148,20 @@
         .mt-3 { margin-top: var(--space-md); }
         .mt-4 { margin-top: var(--space-lg); }
         .mt-5 { margin-top: var(--space-xl); }
+        .mt-6 { margin-top: var(--space-2xl); }
+        .mt-8 { margin-top: var(--space-3xl); }
 
         .mb-1 { margin-bottom: var(--space-xs); }
         .mb-2 { margin-bottom: var(--space-sm); }
         .mb-3 { margin-bottom: var(--space-md); }
         .mb-4 { margin-bottom: var(--space-lg); }
         .mb-5 { margin-bottom: var(--space-xl); }
+        .mb-6 { margin-bottom: var(--space-2xl); }
+        .mb-8 { margin-bottom: var(--space-3xl); }
 
         .p-0 { padding: 0; }
+        .p-4 { padding: var(--space-lg); }
+        .p-6 { padding: var(--space-2xl); }
         .pt-1 { padding-top: var(--space-xs); }
         .pt-2 { padding-top: var(--space-sm); }
         .pt-3 { padding-top: var(--space-md); }
@@ -2082,6 +2187,10 @@
         /* Border utilities */
         .border { border: 1px solid var(--gray-200); }
         .border-primary { border-color: var(--primary-navy); }
+        .border-error { 
+            border-color: var(--error) !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+        }
 
         .rounded { border-radius: var(--radius-md); }
         .rounded-lg { border-radius: var(--radius-lg); }
@@ -2106,6 +2215,85 @@
         .ease-in { transition-timing-function: cubic-bezier(0.4, 0, 1, 1); }
         .ease-out { transition-timing-function: cubic-bezier(0, 0, 0.2, 1); }
         .ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Gap utilities */
+        .gap-2 { gap: var(--space-sm); }
+        .gap-3 { gap: var(--space-md); }
+        .gap-4 { gap: var(--space-lg); }
+        .gap-6 { gap: var(--space-2xl); }
+
+        /* Space utilities */
+        .space-y-2 > * + * { margin-top: var(--space-sm); }
+        .space-y-4 > * + * { margin-top: var(--space-lg); }
+        .space-y-6 > * + * { margin-top: var(--space-2xl); }
+        .space-y-8 > * + * { margin-top: var(--space-3xl); }
+
+        /* Grid utilities */
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        @media (min-width: 768px) {
+            .md\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        /* Flex utilities */
+        .items-center { align-items: center; }
+        .items-start { align-items: flex-start; }
+        .items-end { align-items: flex-end; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .flex-1 { flex: 1 1 0%; }
+        .flex-col { flex-direction: column; }
+        .flex-shrink-0 { flex-shrink: 0; }
+
+        /* Text utilities */
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-6xl { font-size: 3.75rem; }
+
+        .text-gray-300 { color: var(--gray-300); }
+        .text-gray-500 { color: var(--gray-500); }
+        .text-gray-600 { color: var(--gray-600); }
+        .text-gray-700 { color: var(--gray-700); }
+        .text-gray-900 { color: var(--gray-900); }
+
+        /* Hover utilities */
+        .hover\\:opacity-70:hover { opacity: 0.7; }
+
+        /* Max width utilities */
+        .max-w-none { max-width: none; }
+
+        /* Margin auto utilities */
+        .ml-6 { margin-left: var(--space-2xl); }
+        .mr-2 { margin-right: var(--space-sm); }
+
+        /* Min width utilities */
+        .min-w-\\[120px\\] { min-width: 120px; }
+
+        /* Pricing info styles for modal */
+        .pricing-info {
+            background: var(--light-blue);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .price-tag {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            font-family: var(--font-display);
+        }
+
+        .price-details {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            margin-top: var(--space-sm);
+        }
     </style>
 </head>
 <body>
@@ -2301,8 +2489,7 @@
                                             <i class="fa fa-calendar"></i>
                                             <span>7-10 Julio 2025</span>
                                         </div>
-                                        <div class="program-meta-item">
-                                            <i class="fa fa-clock"></i>
+                                        <div class="program-meta-item"><i class="fa fa-clock"></i>
                                             <span>08:00-16:00</span>
                                         </div>
                                         <div class="program-meta-item">
@@ -3449,7 +3636,7 @@
             </main>
         </div>
 
-        <!-- Sidebar Overlay for Mobile -->
+        <!-- Sidebar Overlay for Mobile CORREGIDO -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     </div>
 
@@ -3557,7 +3744,7 @@
 
     <!-- Scripts -->
     <script>
-        // Modern JavaScript with ES6+ features
+        // Modern JavaScript with ES6+ features CORREGIDO
         class IAPIWebsite {
             constructor() {
                 this.currentPage = 'dashboard-page';
@@ -3589,6 +3776,7 @@
                 this.startUserCountSimulation();
                 this.setupIntersectionObserver();
                 this.setupAccessibility();
+                this.setupTabsScrollIndicator();
             }
 
             // Loader management
@@ -3602,7 +3790,7 @@
                 }, 800);
             }
 
-            // Event listeners setup
+            // Event listeners setup CORREGIDO
             setupEventListeners() {
                 // Tab navigation
                 document.querySelectorAll('.tab-button').forEach(button => {
@@ -3644,7 +3832,7 @@
                 window.addEventListener('scroll', () => this.handleScroll());
             }
 
-            // Navigation
+            // Navigation CORREGIDO
             showPage(pageId) {
                 const pages = document.querySelectorAll('.view-page');
                 pages.forEach(page => {
@@ -3700,11 +3888,13 @@
                 }
             }
 
-            // Tab handling
+            // Tab handling CORREGIDO
             handleTabClick(e) {
                 const button = e.currentTarget;
                 const tabGroup = button.parentElement;
                 const courseDetail = button.closest('.course-detail');
+                
+                // Buscar tabs content en el mismo curso detail
                 const tabContents = courseDetail.querySelectorAll('.tab-content');
                 
                 // Remove active states
@@ -3718,7 +3908,9 @@
                 button.classList.add('active');
                 button.setAttribute('aria-selected', 'true');
                 
-                const targetTab = document.getElementById(button.dataset.tab);
+                // Buscar el contenido correspondiente usando un selector más específico
+                const targetTabId = button.dataset.tab;
+                const targetTab = courseDetail.querySelector(`#${targetTabId}`);
                 if (targetTab) {
                     targetTab.classList.add('active');
                 }
@@ -3742,248 +3934,229 @@
 
             // Program card handling
             handleProgramCardClick(e) {
+                e.preventDefault();
                 const card = e.currentTarget;
                 const courseId = this.extractCourseId(card);
                 if (courseId) {
                     this.showCourseDetail(courseId);
-                }
-            }
+                }}
 
             extractCourseId(card) {
-                const onclick = card.getAttribute('onclick');
-                if (onclick) {
-                    const match = onclick.match(/showCourseDetail\('([^']+)'\)/);
+                const onclickAttr = card.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/showCourseDetail\('([^']+)'\)/);
                     return match ? match[1] : null;
                 }
                 return null;
             }
 
-            // Modal management
+            // Modal management CORREGIDO
             showLoginModal() {
                 document.getElementById('loginModal').classList.add('active');
+                document.body.classList.add('modal-open');
                 this.trackEvent('Modal', 'Open', 'Login');
             }
 
             closeLoginModal() {
                 document.getElementById('loginModal').classList.remove('active');
+                document.body.classList.remove('modal-open');
             }
 
             showRegisterModal() {
                 document.getElementById('registerModal').classList.add('active');
+                document.body.classList.add('modal-open');
                 this.trackEvent('Modal', 'Open', 'Register');
             }
 
             closeRegisterModal() {
                 document.getElementById('registerModal').classList.remove('active');
+                document.body.classList.remove('modal-open');
             }
 
             closeAllModals() {
                 document.querySelectorAll('.modal').forEach(modal => {
                     modal.classList.remove('active');
                 });
+                document.body.classList.remove('modal-open');
             }
 
-            // Authentication
-            requireLogin(pageId) {
-                if (!this.isLoggedIn) {
-                    this.showLoginModal();
+            // Authentication CORREGIDO
+            requireLogin(targetPage) {
+                if (this.isLoggedIn) {
+                    this.showPage(targetPage);
                 } else {
-                    this.showPage(pageId);
+                    this.showLoginModal();
                 }
             }
 
             handleLogin(event) {
                 event.preventDefault();
-                this.isLoggedIn = true;
-                localStorage.setItem('iapiLoggedIn', 'true');
-                this.closeLoginModal();
-                this.showNotification('Sesión iniciada correctamente', 'success');
-                this.trackEvent('Auth', 'Login', 'Success');
+                const form = event.target;
+                const email = form.querySelector('input[type="email"]').value;
+                const password = form.querySelector('input[type="password"]').value;
+                
+                // Simulación de login
+                if (email && password) {
+                    this.isLoggedIn = true;
+                    localStorage.setItem('iapiLoggedIn', 'true');
+                    this.closeLoginModal();
+                    this.showSuccessMessage('Inicio de sesión exitoso');
+                    this.trackEvent('Auth', 'Login Success', email);
+                }
             }
 
             handleRegister(event) {
                 event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+                
+                // Simulación de registro
                 this.closeRegisterModal();
-                this.showNotification('Su solicitud ha sido recibida. Un representante del Departamento de Admisiones se comunicará con usted en las próximas 24 horas hábiles.', 'success');
-                this.trackEvent('Registration', 'Submit', 'Success');
+                this.showSuccessMessage('Solicitud de admisión enviada correctamente. Nos contactaremos pronto.');
+                this.trackEvent('Registration', 'Submit', formData.get('program'));
             }
 
-            // Mobile menu
+            // Mobile menu CORREGIDO
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebarOverlay');
+                const isOpen = sidebar.classList.contains('active');
                 
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.toggle('mobile-open');
-                    overlay.classList.toggle('active');
+                if (isOpen) {
+                    this.closeMobileMenu();
+                } else {
+                    this.openMobileMenu();
                 }
+            }
+
+            openMobileMenu() {
+                document.getElementById('sidebar').classList.add('active');
+                document.getElementById('sidebarOverlay').classList.add('active');
+                document.body.classList.add('sidebar-open');
             }
 
             closeMobileMenu() {
-                if (window.innerWidth <= 768) {
-                    document.getElementById('sidebar').classList.remove('mobile-open');
-                    document.getElementById('sidebarOverlay').classList.remove('active');
-                }
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+                document.body.classList.remove('sidebar-open');
             }
 
-            // Chat system
+            // Support chat
             toggleChat() {
                 const chatContainer = document.getElementById('chatContainer');
-                chatContainer.classList.toggle('active');
+                const supportButton = document.getElementById('supportButton');
                 
                 if (chatContainer.classList.contains('active')) {
-                    this.trackEvent('Support', 'Chat Open', 'User Initiated');
+                    chatContainer.classList.remove('active');
+                    supportButton.classList.remove('active');
+                } else {
+                    chatContainer.classList.add('active');
+                    supportButton.classList.add('active');
+                    this.trackEvent('Support', 'Chat Open');
                 }
             }
 
-            // Information rotation
-            startInfoRotation() {
-                setInterval(() => {
-                    this.rotateInfo();
-                }, 15000);
+            // Animation and UI effects
+            animatePageElements(page) {
+                const elements = page.querySelectorAll('.animate-fade-in-up');
+                elements.forEach((el, index) => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        el.style.transition = 'all 0.6s ease';
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
             }
 
-            rotateInfo() {
-                const mainText = document.getElementById('infoText1');
-                const subText = document.getElementById('infoSubtext1');
+            // Info rotation
+            startInfoRotation() {
+                setInterval(() => {
+                    this.currentInfoIndex = (this.currentInfoIndex + 1) % this.infoTexts.length;
+                    this.updateInfoText();
+                }, 8000);
+            }
+
+            updateInfoText() {
+                const mainText = document.querySelector('.info-text-main');
+                const subText = document.querySelector('.info-text-sub');
+                const currentInfo = this.infoTexts[this.currentInfoIndex];
                 
                 if (mainText && subText) {
-                    this.currentInfoIndex = (this.currentInfoIndex + 1) % this.infoTexts.length;
-                    
-                    // Smooth transition
-                    mainText.style.opacity = '0.7';
-                    subText.style.opacity = '0.7';
+                    mainText.style.opacity = '0';
+                    subText.style.opacity = '0';
                     
                     setTimeout(() => {
-                        mainText.textContent = this.infoTexts[this.currentInfoIndex].main;
-                        subText.textContent = this.infoTexts[this.currentInfoIndex].sub;
+                        mainText.textContent = currentInfo.main;
+                        subText.textContent = currentInfo.sub;
                         mainText.style.opacity = '1';
                         subText.style.opacity = '1';
-                    }, 500);
+                    }, 300);
                 }
             }
 
             // User count simulation
             startUserCountSimulation() {
                 setInterval(() => {
-                    const change = Math.floor(Math.random() * 7) - 3;
-                    this.userCount = Math.max(100, Math.min(200, this.userCount + change));
-                    const userCountEl = document.getElementById('userCount');
-                    if (userCountEl) {
-                        userCountEl.textContent = `${this.userCount} usuarios conectados`;
+                    if (Math.random() > 0.7) {
+                        this.userCount += Math.floor(Math.random() * 3) + 1;
+                        const countElement = document.querySelector('.user-count');
+                        if (countElement) {
+                            countElement.textContent = this.userCount;
+                        }
                     }
-                }, 12000);
+                }, 15000);
             }
 
-            // Animations
-            animatePageElements(page) {
-                setTimeout(() => {
-                    page.querySelectorAll('.animate-fade-in-up, .animate-slide-in-right, .animate-scale-in').forEach((el, index) => {
-                        el.style.opacity = '0';
-                        el.style.transform = el.classList.contains('animate-fade-in-up') ? 'translateY(30px)' :
-                                           el.classList.contains('animate-slide-in-right') ? 'translateX(30px)' : 'scale(0.95)';
-                        
-                        setTimeout(() => {
-                            el.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-                            el.style.opacity = '1';
-                            el.style.transform = 'translateY(0) translateX(0) scale(1)';
-                        }, index * 100);
-                    });
-                }, 100);
-            }
-
+            // Intersection Observer
             setupIntersectionObserver() {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            entry.target.classList.add('animate-fade-in-up');
+                            entry.target.classList.add('visible');
                         }
                     });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -50px 0px'
-                });
+                }, { threshold: 0.1 });
 
-                document.querySelectorAll('.program-card, .module-card, .testimonial-card, .highlight-card').forEach(el => {
+                document.querySelectorAll('.animate-fade-in-up').forEach(el => {
                     observer.observe(el);
                 });
             }
 
-            // FAQ toggle
-            toggleFAQ(element) {
-                const faqItem = element.parentElement;
-                const isActive = faqItem.classList.contains('active');
-                
-                // Close all FAQ items
-                document.querySelectorAll('.faq-item').forEach(item => {
-                    item.classList.remove('active');
+            // Accessibility
+            setupAccessibility() {
+                // Focus management
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        document.body.classList.add('user-is-tabbing');
+                    }
                 });
-                
-                // Open clicked item if it wasn't active
-                if (!isActive) {
-                    faqItem.classList.add('active');
-                }
 
-                this.trackEvent('FAQ', 'Toggle', element.textContent.trim());
+                document.addEventListener('mousedown', () => {
+                    document.body.classList.remove('user-is-tabbing');
+                });
+
+                // Screen reader support
+                this.updateAriaLabels();
             }
 
-            // Notifications
-            showNotification(message, type = 'info', duration = 5000) {
-                const notification = document.createElement('div');
-                const icons = {
-                    success: 'check-circle',
-                    error: 'exclamation-circle',
-                    warning: 'exclamation-triangle',
-                    info: 'info-circle'
-                };
-                
-                notification.className = `notification notification-${type}`;
-                notification.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <i class="fa fa-${icons[type]} text-xl"></i>
-                        <span class="flex-1">${message}</span>
-                        <button onclick="this.parentElement.parentElement.remove()" 
-                                class="bg-transparent border-none text-inherit cursor-pointer text-lg hover:opacity-70">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                
-                document.body.appendChild(notification);
-                
-                // Show notification
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 100);
-                
-                // Auto-remove
-                if (duration > 0) {
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.style.opacity = '0';
-                            notification.style.transform = 'translateX(100%)';
-                            setTimeout(() => {
-                                if (notification.parentNode) {
-                                    notification.parentNode.removeChild(notification);
-                                }
-                            }, 300);
-                        }
-                    }, duration);
-                }
-
-                this.trackEvent('Notification', 'Show', type);
+            updateAriaLabels() {
+                document.querySelectorAll('.program-card').forEach(card => {
+                    const title = card.querySelector('.program-title')?.textContent;
+                    if (title) {
+                        card.setAttribute('aria-label', `Ver detalles de ${title}`);
+                    }
+                });
             }
 
             // Event handlers
             handleKeyDown(e) {
                 if (e.key === 'Escape') {
                     this.closeAllModals();
-                    this.closeMobileMenu();
-                    document.getElementById('chatContainer').classList.remove('active');
-                }
-                
-                if (e.key === 'Enter' && e.target.classList.contains('sidebar-item')) {
-                    e.target.click();
+                    if (document.getElementById('chatContainer').classList.contains('active')) {
+                        this.toggleChat();
+                    }
                 }
             }
 
@@ -3991,627 +4164,425 @@
                 if (window.innerWidth > 768) {
                     this.closeMobileMenu();
                 }
-                
-                // Adjust chat position on mobile
-                const chatContainer = document.getElementById('chatContainer');
-                if (window.innerWidth <= 768 && chatContainer.classList.contains('active')) {
-                    chatContainer.style.width = 'calc(100% - 2rem)';
-                    chatContainer.style.right = '50%';
-                    chatContainer.style.transform = 'translateX(50%)';
-                } else if (chatContainer.classList.contains('active')) {
-                    chatContainer.style.width = '380px';
-                    chatContainer.style.right = 'var(--space-2xl)';
-                    chatContainer.style.transform = 'none';
-                }
             }
 
             handleScroll() {
-                // Add scroll-based animations or effects here if needed
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 const header = document.querySelector('.header');
-                if (window.scrollY > 10) {
-                    header.style.boxShadow = 'var(--shadow-md)';
+                
+                if (scrollTop > 100) {
+                    header?.classList.add('scrolled');
                 } else {
-                    header.style.boxShadow = 'var(--shadow-sm)';
+                    header?.classList.remove('scrolled');
                 }
             }
 
-            // Accessibility
-            setupAccessibility() {
-                // Add main content ID
-                const mainContent = document.querySelector('.content-panel');
-                if (mainContent && !mainContent.id) {
-                    mainContent.id = 'main-content';
-                }
-
-                // Add aria-labels where needed
-                document.querySelectorAll('.program-card').forEach((card, index) => {
-                    if (!card.getAttribute('aria-label')) {
-                        const title = card.querySelector('.program-title');
-                        if (title) {
-                            card.setAttribute('aria-label', `Ver detalles de ${title.textContent}`);
-                        }
-                    }
+            // Tabs scroll indicator
+            setupTabsScrollIndicator() {
+                const tabsNavs = document.querySelectorAll('.tabs-nav');
+                tabsNavs.forEach(nav => {
+                    nav.addEventListener('scroll', () => {
+                        const scrollLeft = nav.scrollLeft;
+                        const scrollWidth = nav.scrollWidth;
+                        const clientWidth = nav.clientWidth;
+                        
+                        nav.classList.toggle('scroll-start', scrollLeft <= 5);
+                        nav.classList.toggle('scroll-end', scrollLeft >= scrollWidth - clientWidth - 5);
+                    });
                 });
             }
 
-            // Analytics and tracking
-            trackEvent(category, action, label = '') {
-                // Enhanced tracking
-                console.log(`[Analytics] ${category} - ${action} - ${label}`);
+            // Utility methods
+            showSuccessMessage(message) {
+                const notification = document.createElement('div');
+                notification.className = 'notification success';
+                notification.textContent = message;
+                document.body.appendChild(notification);
                 
-                // Send to analytics service
+                setTimeout(() => notification.classList.add('show'), 100);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => document.body.removeChild(notification), 300);
+                }, 4000);
+            }
+
+            trackEvent(category, action, label = '') {
+                // Analytics tracking
+                console.log(`Event: ${category} - ${action} - ${label}`);
+                
+                // Google Analytics 4 example
                 if (typeof gtag !== 'undefined') {
                     gtag('event', action, {
                         event_category: category,
                         event_label: label,
-                        custom_map: {
-                            page: this.currentPage,
-                            timestamp: new Date().toISOString()
-                        }
+                        value: 1
                     });
                 }
-
-                // Send to internal analytics
-                this.sendInternalAnalytics(category, action, label);
             }
 
-            sendInternalAnalytics(category, action, label) {
-                const data = {
-                    category,
-                    action,
-                    label,
-                    page: this.currentPage,
-                    timestamp: Date.now(),
-                    user_agent: navigator.userAgent,
-                    referrer: document.referrer,
-                    session_id: this.getSessionId()
-                };
-
-                // Store locally for batch sending
-                const analytics = JSON.parse(localStorage.getItem('iapi_analytics') || '[]');
-                analytics.push(data);
-                localStorage.setItem('iapi_analytics', JSON.stringify(analytics.slice(-100))); // Keep last 100 events
-            }
-
-            getSessionId() {
-                let sessionId = sessionStorage.getItem('iapi_session_id');
-                if (!sessionId) {
-                    sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                    sessionStorage.setItem('iapi_session_id', sessionId);
-                }
-                return sessionId;
-            }
-
-            // External redirects
             redirectToInscription() {
-                this.trackEvent('Navigation', 'External Redirect', 'Inscription');
-                // For demo purposes, show register modal instead
                 this.showRegisterModal();
-            }
-
-            redirectToPodcast() {
-                this.trackEvent('Navigation', 'External Redirect', 'Podcast');
-                window.open('https://iapivenezuela.com/podcast', '_blank');
-            }
-
-            // Utility methods
-            debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-
-            throttle(func, limit) {
-                let inThrottle;
-                return function() {
-                    const args = arguments;
-                    const context = this;
-                    if (!inThrottle) {
-                        func.apply(context, args);
-                        inThrottle = true;
-                        setTimeout(() => inThrottle = false, limit);
-                    }
-                };
-            }
-
-            // Performance monitoring
-            measurePerformance() {
-                if ('performance' in window) {
-                    window.addEventListener('load', () => {
-                        setTimeout(() => {
-                            const perfData = performance.getEntriesByType('navigation')[0];
-                            const loadTime = perfData.loadEventEnd - perfData.fetchStart;
-                            
-                            console.log(`Page load time: ${loadTime}ms`);
-                            
-                            if (loadTime > 3000) {
-                                console.warn('Slow page load detected');
-                            }
-
-                            this.trackEvent('Performance', 'Page Load Time', Math.round(loadTime));
-                        }, 0);
-                    });
-                }
-            }
-
-            // Error handling
-            setupErrorHandling() {
-                window.addEventListener('error', (e) => {
-                    console.error('JavaScript Error:', e.error);
-                    this.trackEvent('Error', 'JavaScript', e.message);
-                });
-
-                window.addEventListener('unhandledrejection', (e) => {
-                    console.error('Unhandled Promise Rejection:', e.reason);
-                    this.trackEvent('Error', 'Promise Rejection', e.reason.toString());
-                });
-
-                // Image loading errors
-                document.addEventListener('error', (e) => {
-                    if (e.target.tagName === 'IMG') {
-                        e.target.style.display = 'none';
-                        console.warn('Image failed to load:', e.target.src);
-                        this.trackEvent('Error', 'Image Load', e.target.src);
-                    }
-                }, true);
-            }
-
-            // Service Worker registration
-            registerServiceWorker() {
-                if ('serviceWorker' in navigator) {
-                    window.addEventListener('load', () => {
-                        navigator.serviceWorker.register('/sw.js')
-                            .then((registration) => {
-                                console.log('SW registered: ', registration);
-                                this.trackEvent('SW', 'Registered', 'Success');
-                            })
-                            .catch((registrationError) => {
-                                console.log('SW registration failed: ', registrationError);
-                                this.trackEvent('SW', 'Registration Failed', registrationError.message);
-                            });
-                    });
-                }
-            }
-
-            // Initialize performance and error monitoring
-            initMonitoring() {
-                this.measurePerformance();
-                this.setupErrorHandling();
-                // this.registerServiceWorker(); // Uncomment when SW is ready
             }
         }
 
-        // Global functions for backward compatibility
-        let iapiWebsite;
-
-        // Wait for DOM to be ready
-        document.addEventListener('DOMContentLoaded', () => {
-            iapiWebsite = new IAPIWebsite();
-            iapiWebsite.initMonitoring();
-        });
-
-        // Global function exports for onclick handlers
-        function showPage(pageId) {
-            if (iapiWebsite) iapiWebsite.showPage(pageId);
+        // Global functions for inline event handlers CORREGIDO
+        function showDashboard() {
+            window.iapiWebsite.showDashboard();
         }
 
         function showCourseDetail(courseId) {
-            if (iapiWebsite) iapiWebsite.showCourseDetail(courseId);
+            window.iapiWebsite.showCourseDetail(courseId);
         }
 
-        function showDashboard() {
-            if (iapiWebsite) iapiWebsite.showDashboard();
+        function showPage(pageId) {
+            window.iapiWebsite.showPage(pageId);
         }
 
         function toggleSidebar() {
-            if (iapiWebsite) iapiWebsite.toggleSidebar();
+            window.iapiWebsite.toggleSidebar();
         }
 
         function showLoginModal() {
-            if (iapiWebsite) iapiWebsite.showLoginModal();
+            window.iapiWebsite.showLoginModal();
         }
 
         function closeLoginModal() {
-            if (iapiWebsite) iapiWebsite.closeLoginModal();
+            window.iapiWebsite.closeLoginModal();
         }
 
         function showRegisterModal() {
-            if (iapiWebsite) iapiWebsite.showRegisterModal();
+            window.iapiWebsite.showRegisterModal();
         }
 
         function closeRegisterModal() {
-            if (iapiWebsite) iapiWebsite.closeRegisterModal();
-        }
-
-        function handleLogin(event) {
-            if (iapiWebsite) iapiWebsite.handleLogin(event);
-        }
-
-        function handleRegister(event) {
-            if (iapiWebsite) iapiWebsite.handleRegister(event);
-        }
-
-        function requireLogin(pageId) {
-            if (iapiWebsite) iapiWebsite.requireLogin(pageId);
-        }
-
-        function toggleFAQ(element) {
-            if (iapiWebsite) iapiWebsite.toggleFAQ(element);
-        }
-
-        function toggleChat() {
-            if (iapiWebsite) iapiWebsite.toggleChat();
+            window.iapiWebsite.closeRegisterModal();
         }
 
         function redirectToInscription() {
-            if (iapiWebsite) iapiWebsite.redirectToInscription();
+            window.iapiWebsite.redirectToInscription();
         }
 
-        function redirectToPodcast() {
-            if (iapiWebsite) iapiWebsite.redirectToPodcast();
+        function handleLogin(event) {
+            window.iapiWebsite.handleLogin(event);
         }
 
-        // Enhanced form validation
-        function validateForm(form) {
-            const inputs = form.querySelectorAll('input[required], select[required]');
-            let isValid = true;
+        function handleRegister(event) {
+            window.iapiWebsite.handleRegister(event);
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const answer = faqItem.querySelector('.faq-answer');
+            const icon = element.querySelector('.faq-icon');
             
-            inputs.forEach(input => {
-                const value = input.value.trim();
-                
-                // Remove previous error styling
-                input.classList.remove('border-error');
-                
-                if (!value) {
-                    input.classList.add('border-error');
-                    isValid = false;
-                } else if (input.type === 'email' && !isValidEmail(value)) {
-                    input.classList.add('border-error');
-                    isValid = false;
-                } else if (input.type === 'tel' && !isValidPhone(value)) {
-                    input.classList.add('border-error');
-                    isValid = false;
+            faqItem.classList.toggle('active');
+            icon.style.transform = faqItem.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // Initialize the application CORREGIDO
+        document.addEventListener('DOMContentLoaded', () => {
+            window.iapiWebsite = new IAPIWebsite();
+        });
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Performance monitoring
+        window.addEventListener('load', () => {
+            const loadTime = performance.now();
+            console.log(`Page loaded in ${loadTime.toFixed(2)}ms`);
+            
+            // Report to analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_load_time', {
+                    value: Math.round(loadTime),
+                    custom_parameter: 'iapi_website'
+                });
+            }
+        });
+
+        // Error handling
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e.error);
+            
+            // Report to error tracking service
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'exception', {
+                    description: e.error?.message || 'Unknown error',
+                    fatal: false
+                });
+            }
+        });
+
+        // Unhandled promise rejection handling
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e.reason);
+            e.preventDefault();
+        });
+    </script>
+
+    <!-- Additional Scripts -->
+    <script>
+        // Additional utility functions and polyfills
+        
+        // Polyfill for older browsers
+        if (!Element.prototype.closest) {
+            Element.prototype.closest = function(s) {
+                var el = this;
+                do {
+                    if (Element.prototype.matches.call(el, s)) return el;
+                    el = el.parentElement || el.parentNode;
+                } while (el !== null && el.nodeType === 1);
+                return null;
+            };
+        }
+
+        // Custom events for components
+        const IAPIEvents = {
+            dispatch: function(eventName, detail = {}) {
+                const event = new CustomEvent(eventName, { detail });
+                document.dispatchEvent(event);
+            },
+            
+            listen: function(eventName, callback) {
+                document.addEventListener(eventName, callback);
+            }
+        };
+
+        // Lazy loading for images
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.src || img.dataset.src;
+                    img.classList.remove('lazy');
+                    observer.unobserve(img);
                 }
             });
-            
-            return isValid;
-        }
+        });
 
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
+        lazyImages.forEach(img => imageObserver.observe(img));
 
-        function isValidPhone(phone) {
-            const phoneRegex = /^[\+]?[0-9\-\(\)\s]+$/;
-            return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10;
-        }
+        // Smooth scrolling polyfill
+        if (!('scrollBehavior' in document.documentElement.style)) {
+            const smoothScroll = (target, duration = 500) => {
+                const targetElement = typeof target === 'string' ? document.querySelector(target) : target;
+                if (!targetElement) return;
 
-        // Enhanced mobile experience
-        function enhanceMobileExperience() {
-            // Add touch feedback
-            const addTouchFeedback = (selector) => {
-                document.addEventListener('touchstart', (e) => {
-                    if (e.target.matches(selector)) {
-                        e.target.style.opacity = '0.7';
-                        e.target.style.transform = 'scale(0.98)';
-                    }
-                }, { passive: true });
-                
-                document.addEventListener('touchend', (e) => {
-                    if (e.target.matches(selector)) {
-                        setTimeout(() => {
-                            e.target.style.opacity = '';
-                            e.target.style.transform = '';
-                        }, 150);
-                    }
-                }, { passive: true });
+                const targetPosition = targetElement.offsetTop;
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+
+                const animation = (currentTime) => {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const run = ease(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                };
+
+                const ease = (t, b, c, d) => {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                };
+
+                requestAnimationFrame(animation);
             };
 
-            addTouchFeedback('.sidebar-item, .program-card, .tab-button, .btn');
-
-            // Prevent zoom on input focus (iOS)
-            const preventZoom = () => {
-                const inputs = document.querySelectorAll('input, select, textarea');
-                inputs.forEach(input => {
-                    input.addEventListener('focus', () => {
-                        if (window.innerWidth <= 768) {
-                            const viewport = document.querySelector('meta[name="viewport"]');
-                            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
-                        }
-                    });
-
-                    input.addEventListener('blur', () => {
-                        if (window.innerWidth <= 768) {
-                            const viewport = document.querySelector('meta[name="viewport"]');
-                            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
-                        }
-                    });
+            // Override default anchor behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) smoothScroll(target);
                 });
-            };
-
-            preventZoom();
+            });
         }
 
-        // Initialize mobile enhancements
-        document.addEventListener('DOMContentLoaded', enhanceMobileExperience);
-
-        // Print optimization
+        // Print styles handler
         window.addEventListener('beforeprint', () => {
-            document.querySelectorAll('.sidebar, .support-button, .chat-container, .mobile-menu-btn').forEach(el => {
-                el.style.display = 'none';
-            });
+            document.body.classList.add('printing');
         });
 
         window.addEventListener('afterprint', () => {
-            document.querySelectorAll('.sidebar, .support-button, .chat-container, .mobile-menu-btn').forEach(el => {
-                el.style.display = '';
-            });
+            document.body.classList.remove('printing');
         });
 
-        // Lazy loading images
-        function setupLazyLoading() {
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src || img.src;
-                            img.classList.remove('loading');
-                            observer.unobserve(img);
-                        }
-                    });
-                });
+        // Online/Offline status
+        window.addEventListener('online', () => {
+            document.body.classList.remove('offline');
+            IAPIEvents.dispatch('connectionChanged', { online: true });
+        });
 
-                document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-                    imageObserver.observe(img);
-                });
-            }
+        window.addEventListener('offline', () => {
+            document.body.classList.add('offline');
+            IAPIEvents.dispatch('connectionChanged', { online: false });
+        });
+
+        // Reduced motion support
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            document.body.classList.add('reduced-motion');
         }
 
-        // Add CSS for error states
-        const errorStyles = document.createElement('style');
-        errorStyles.textContent = `
-            .border-error {
-                border-color: var(--error) !important;
-                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
-            }
-            
-            .notification {
-                animation: slideInRight 0.3s ease-out;
-            }
-            
-            @keyframes slideInRight {
-                from {
-                    opacity: 0;
-                    transform: translateX(100%);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            
-            .loading {
-                opacity: 0.7;
-                pointer-events: none;
-            }
-            
-            /* Enhanced mobile tabs scroll indicator */
-            @media (max-width: 768px) {
-                .tabs-nav.show-scroll-indicator::after {
-                    content: "Desliza →";
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    font-size: 0.7rem;
-                    color: var(--gray-500);
-                    pointer-events: none;
-                    background: linear-gradient(to left, var(--white), transparent);
-                    padding-left: 20px;
-                    z-index: 1;
-                }
-            }
-            
-            /* Focus improvements */
-            .btn:focus-visible,
-            .sidebar-item:focus-visible,
-            .program-card:focus-visible {
-                outline: 3px solid var(--primary-blue);
-                outline-offset: 2px;
-            }
-            
-            /* High contrast mode */
-            @media (prefers-contrast: high) {
-                .program-card,
-                .content-section,
-                .testimonial-card {
-                    border: 2px solid var(--gray-800);
-                }
-            }
-            
-            /* Reduced motion */
-            @media (prefers-reduced-motion: reduce) {
-                * {
-                    animation-duration: 0.01ms !important;
-                    animation-iteration-count: 1 !important;
-                    transition-duration: 0.01ms !important;
-                    scroll-behavior: auto !important;
-                }
-            }
-        `;
-        document.head.appendChild(errorStyles);
+        prefersReducedMotion.addEventListener('change', () => {
+            document.body.classList.toggle('reduced-motion', prefersReducedMotion.matches);
+        });
 
-        // Initialize lazy loading
-        document.addEventListener('DOMContentLoaded', setupLazyLoading);
+        // Focus visible polyfill
+        function applyFocusVisiblePolyfill(scope) {
+            var hadKeyboardEvent = true;
+            var hadFocusVisibleRecently = false;
+            var hadFocusVisibleRecentlyTimeout = null;
 
-        // Mobile tabs scroll indicator
-        function setupMobileTabsIndicator() {
-            const tabsNavs = document.querySelectorAll('.tabs-nav');
-            tabsNavs.forEach(nav => {
-                const checkScroll = () => {
-                    const isScrollable = nav.scrollWidth > nav.clientWidth;
-                    const isAtEnd = nav.scrollLeft >= (nav.scrollWidth - nav.clientWidth - 10);
-                    
-                    if (isScrollable && !isAtEnd && window.innerWidth <= 768) {
-                        nav.classList.add('show-scroll-indicator');
-                    } else {
-                        nav.classList.remove('show-scroll-indicator');
-                    }
-                };
-
-                nav.addEventListener('scroll', checkScroll);
-                window.addEventListener('resize', checkScroll);
-                checkScroll(); // Initial check
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', setupMobileTabsIndicator);
-
-        // Advanced accessibility features
-        function setupAdvancedAccessibility() {
-            // Skip links
-            const skipLink = document.querySelector('.sr-only');
-            if (skipLink) {
-                skipLink.addEventListener('focus', () => {
-                    skipLink.classList.remove('sr-only');
-                    skipLink.style.position = 'fixed';
-                    skipLink.style.top = '0';
-                    skipLink.style.left = '0';
-                    skipLink.style.zIndex = '9999';
-                });
-
-                skipLink.addEventListener('blur', () => {
-                    skipLink.classList.add('sr-only');
-                });
-            }
-
-            // Announce page changes to screen readers
-            const announcer = document.createElement('div');
-            announcer.setAttribute('aria-live', 'polite');
-            announcer.setAttribute('aria-atomic', 'true');
-            announcer.className = 'sr-only';
-            document.body.appendChild(announcer);
-
-            // Announce when pages change
-            const originalShowPage = showPage;
-            showPage = function(pageId) {
-                originalShowPage(pageId);
-                const pageTitle = document.querySelector(`#${pageId} .detail-title, #${pageId} .dashboard-title`);
-                if (pageTitle) {
-                    announcer.textContent = `Navegando a ${pageTitle.textContent}`;
-                }
+            var inputTypesAllowlist = {
+                text: true,
+                search: true,
+                url: true,
+                tel: true,
+                email: true,
+                password: true,
+                number: true,
+                date: true,
+                month: true,
+                week: true,
+                time: true,
+                datetime: true,
+                'datetime-local': true
             };
+
+            function isValidFocusTarget(el) {
+                if (el && el !== document && el.nodeName !== 'HTML' && el.nodeName !== 'BODY' && 'classList' in el && 'contains' in el.classList) {
+                    return true;
+                }
+                return false;
+            }
+
+            function focusTriggersKeyboardModality(el) {
+                var type = el.type;
+                var tagName = el.tagName;
+
+                if (tagName === 'INPUT' && inputTypesAllowlist[type] && !el.readOnly) {
+                    return true;
+                }
+
+                if (tagName === 'TEXTAREA' && !el.readOnly) {
+                    return true;
+                }
+
+                if (el.isContentEditable) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            function addFocusVisibleClass(el) {
+                if (el.classList.contains('focus-visible')) {
+                    return;
+                }
+                el.classList.add('focus-visible');
+                el.setAttribute('data-focus-visible-added', '');
+            }
+
+            function removeFocusVisibleClass(el) {
+                if (!el.hasAttribute('data-focus-visible-added')) {
+                    return;
+                }
+                el.classList.remove('focus-visible');
+                el.removeAttribute('data-focus-visible-added');
+            }
+
+            function onPointerDown() {
+                hadKeyboardEvent = false;
+            }
+
+            function onKeyDown(e) {
+                if (e.metaKey || e.altKey || e.ctrlKey) {
+                    return;
+                }
+                hadKeyboardEvent = true;
+            }
+
+            function onFocus(e) {
+                if (!isValidFocusTarget(e.target)) {
+                    return;
+                }
+
+                if (hadKeyboardEvent || focusTriggersKeyboardModality(e.target)) {
+                    addFocusVisibleClass(e.target);
+                }
+            }
+
+            function onBlur(e) {
+                if (!isValidFocusTarget(e.target)) {
+                    return;
+                }
+
+                if (e.target.classList.contains('focus-visible') || e.target.hasAttribute('data-focus-visible-added')) {
+                    hadFocusVisibleRecently = true;
+                    window.clearTimeout(hadFocusVisibleRecentlyTimeout);
+                    hadFocusVisibleRecentlyTimeout = window.setTimeout(function() {
+                        hadFocusVisibleRecently = false;
+                    }, 100);
+                    removeFocusVisibleClass(e.target);
+                }
+            }
+
+            if (!('focus-visible' in HTMLElement.prototype)) {
+                scope.addEventListener('keydown', onKeyDown, true);
+                scope.addEventListener('mousedown', onPointerDown, true);
+                scope.addEventListener('pointerdown', onPointerDown, true);
+                scope.addEventListener('touchstart', onPointerDown, true);
+                scope.addEventListener('focus', onFocus, true);
+                scope.addEventListener('blur', onBlur, true);
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', setupAdvancedAccessibility);
-
-        // Console welcome message
-        console.log(`
-        %c🎓 Instituto Americano de Propiedad Intelectual
-        %cVersión 2.0 - Sistema Académico Avanzado
-        %c📧 Desarrollado con tecnologías modernas para una experiencia educativa superior
-        `, 
-        'color: #0a1a2e; font-size: 16px; font-weight: bold;',
-        'color: #16213e; font-size: 12px;',
-        'color: #64748b; font-size: 10px;'
-        );
+        applyFocusVisiblePolyfill(document);
     </script>
 
-    <!-- Additional meta tags for PWA -->
-    <meta name="theme-color" content="#0a1a2e">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="IAPI Venezuela">
-
-    <!-- Structured data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Instituto Americano de Propiedad Intelectual",
-        "alternateName": "IAPI",
-        "url": "https://iapivenezuela.com",
-        "logo": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEggoSOTo37Jm8WxsrSCamOKshIgTggVCDExjQoStH5U_1ve_zL1T_bRjhgZWPX-i0y69_tIob6P4mPrnBQVVFOhj5ThUDUaBrrVKZLt1RJTyWIxovPL1ZzDIsPq5h0PNCvBHEqryr0JSUjwEeJMs_7exkwpJasH8HuaV_kG-0RjxFpzBHFvys30JtsTg5c/s320/file_00000000787c620a803880dfab6eb08a%20(1)%20(1).png",
-        "description": "Instituto especializado en formación académica en Inteligencia Artificial, Propiedad Intelectual y Derecho Digital con reconocimiento ministerial.",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Universidad Nacional de las Ciencias Dr. Humberto Fernández-Morán, Sector Altos de Pipe",
-            "addressLocality": "Caracas",
-            "addressRegion": "Estado Miranda",
-            "postalCode": "1040",
-            "addressCountry": "VE"
-        },
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+58-212-720-5094",
-            "contactType": "customer service",
-            "email": "info@iapivenezuela.com"
-        },
-        "sameAs": [
-            "https://twitter.com/iapivenezuela",
-            "https://facebook.com/iapivenezuela",
-            "https://instagram.com/iapivenezuela",
-            "https://linkedin.com/company/iapivenezuela"
-        ],
-        "hasCredential": {
-            "@type": "EducationalOccupationalCredential",
-            "credentialCategory": "Diploma",
-            "recognizedBy": {
-                "@type": "Organization",
-                "name": "Universidad Nacional de las Ciencias Dr. Humberto Fernández-Morán"
-            }
-        },
-        "offers": [
-            {
-                "@type": "Course",
-                "name": "Diplomado en Inteligencia Artificial, Propiedad Intelectual y Derecho Digital",
-                "courseCode": "DIAPI-2025-01",
-                "provider": {
-                    "@type": "Organization",
-                    "name": "Instituto Americano de Propiedad Intelectual"
-                },
-                "offers": {
-                    "@type": "Offer",
-                    "price": "120",
-                    "priceCurrency": "USD"
-                }
-            },
-            {
-                "@type": "Course", 
-                "name": "Diplomado en IA en Salud de la Mujer",
-                "courseCode": "DISM-2025-02",
-                "provider": {
-                    "@type": "Organization",
-                    "name": "Instituto Americano de Propiedad Intelectual"
-                },
-                "offers": {
-                    "@type": "Offer",
-                    "price": "180",
-                    "priceCurrency": "USD"
-                }
-            }
-        ]
-    }
+    <!-- Analytics (placeholder) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'IAPI Venezuela - Instituto Americano de Propiedad Intelectual',
+            page_location: window.location.href
+        });
     </script>
 
-    <!-- Preload critical resources -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" as="style">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
-
-    <!-- DNS prefetch for external resources -->
-    <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <link rel="dns-prefetch" href="//blogger.googleusercontent.com">
-
+    <!-- Meta Pixel (placeholder) -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_PIXEL_ID');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+    /></noscript>
 </body>
 </html>
