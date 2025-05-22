@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Instituto Americano de Propiedad Intelectual | IAPI</title>
     
     <!-- Meta tags mejorados -->
@@ -100,7 +100,7 @@
             --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
             --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* Z-index stack CORREGIDO */
+            /* Z-index stack */
             --z-dropdown: 1000;
             --z-sticky: 1020;
             --z-fixed: 1030;
@@ -165,7 +165,7 @@
             position: relative;
             overflow: hidden;
             white-space: nowrap;
-            min-height: 44px; /* Mejora accesibilidad táctil */
+            min-height: 44px;
         }
 
         .btn:focus-visible {
@@ -384,7 +384,7 @@
             position: relative;
         }
 
-        /* Sidebar moderno CORREGIDO */
+        /* Sidebar moderno - CORREGIDO PARA MÓVIL */
         .sidebar {
             background: var(--white);
             border-right: 1px solid var(--gray-200);
@@ -835,10 +835,10 @@
             font-size: clamp(1.25rem, 3vw, 2rem);
             font-weight: 700;
             color: var(--gray-900);
-            min-width: 0; /* Permite que el texto se ajuste */
+            min-width: 0;
         }
 
-        /* Tabs mejorados CORREGIDO */
+        /* Tabs mejorados */
         .tabs-nav {
             display: flex;
             gap: var(--space-xs);
@@ -1499,12 +1499,11 @@
             font-size: 1.5rem;
         }
 
-        .chat-container {
+        /* Chat options mejorado */
+        .chat-options {
             position: fixed;
             bottom: 7rem;
             right: var(--space-2xl);
-            width: 380px;
-            height: 500px;
             background: var(--white);
             border-radius: var(--radius-2xl);
             box-shadow: var(--shadow-2xl);
@@ -1516,67 +1515,60 @@
             transform: translateY(20px);
             opacity: 0;
             transition: all var(--transition-normal);
+            min-width: 280px;
         }
 
-        .chat-container.active {
+        .chat-options.active {
             display: flex;
             opacity: 1;
             transform: translateY(0);
         }
 
-        .chat-header {
-            background: linear-gradient(135deg, var(--primary-navy), var(--accent-blue));
-            padding: var(--space-lg);
-            color: var(--white);
+        .chat-option {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            color: var(--gray-700);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        .chat-header h3 {
-            color: var(--white);
-            font-size: 1.125rem;
-            margin: 0;
-            font-family: var(--font-primary);
+        .chat-option:last-child {
+            border-bottom: none;
         }
 
-        .chat-close {
-            width: 28px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
+        .chat-option:hover {
+            background: var(--gray-50);
+            color: var(--primary-navy);
+        }
+
+        .chat-option-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--light-blue);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--white);
-            transition: all var(--transition-fast);
+            color: var(--primary-navy);
+            font-size: 1.25rem;
         }
 
-        .chat-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .chat-body {
+        .chat-option-text {
             flex: 1;
-            overflow-y: auto;
-            background: var(--white);
-            scrollbar-width: thin;
-            scrollbar-color: var(--gray-300) transparent;
         }
 
-        .chat-body::-webkit-scrollbar {
-            width: 6px;
+        .chat-option-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: var(--space-xs);
         }
 
-        .chat-body::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .chat-body::-webkit-scrollbar-thumb {
-            background: var(--gray-300);
-            border-radius: 3px;
+        .chat-option-desc {
+            font-size: 0.8rem;
+            color: var(--gray-500);
         }
 
         /* Contact info mejorado */
@@ -1736,7 +1728,7 @@
             border-radius: var(--radius-lg);
         }
 
-        /* Responsive Design Mejorado CORREGIDO */
+        /* Responsive Design Mejorado - CORREGIDO PARA MÓVIL */
         @media (max-width: 1200px) {
             .main-wrapper {
                 grid-template-columns: 280px 1fr;
@@ -1760,7 +1752,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            /* Mejorar tabs en tablets */
             .tabs-nav {
                 justify-content: flex-start;
             }
@@ -1802,7 +1793,7 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Sidebar móvil CORREGIDO */
+            /* Sidebar móvil - CORREGIDO */
             .sidebar {
                 position: fixed;
                 top: var(--header-height);
@@ -1814,6 +1805,7 @@
                 box-shadow: var(--shadow-xl);
                 background: var(--white);
                 border-right: none;
+                transition: transform var(--transition-normal);
             }
 
             .sidebar.mobile-open {
@@ -1828,7 +1820,7 @@
                 height: calc(100vh - var(--header-height));
                 background: rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(4px);
-                z-index: var(--z-modal-backdrop);
+                z-index: calc(var(--z-modal) - 1);
                 opacity: 0;
                 visibility: hidden;
                 transition: all var(--transition-normal);
@@ -1857,7 +1849,6 @@
                 gap: var(--space-lg);
             }
 
-            /* Tabs móviles CORREGIDOS */
             .tabs-nav {
                 padding: var(--space-sm);
                 gap: var(--space-xs);
@@ -1872,7 +1863,6 @@
                 flex-shrink: 0;
             }
 
-            /* Indicador de scroll para tabs móviles */
             .tabs-nav::after {
                 content: "";
                 position: absolute;
@@ -1905,17 +1895,16 @@
                 font-size: clamp(1.25rem, 4vw, 1.75rem);
             }
 
-            .chat-container {
+            .chat-options {
                 width: calc(100vw - 2rem);
                 max-width: 380px;
                 right: 50%;
                 transform: translateX(50%) translateY(20px);
                 bottom: 6rem;
-                height: 450px;
                 margin: 0 1rem;
             }
 
-            .chat-container.active {
+            .chat-options.active {
                 transform: translateX(50%) translateY(0);
             }
 
@@ -1953,13 +1942,11 @@
                 max-width: none;
             }
 
-            /* Mejorar formularios en móviles */
             .form-input {
                 padding: var(--space-lg);
-                font-size: 16px; /* Previene zoom en iOS */
+                font-size: 16px;
             }
 
-            /* Mejorar pricing en móviles */
             .pricing-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -2004,7 +1991,6 @@
                 text-align: center;
             }
 
-            /* Tabs en pantallas muy pequeñas */
             .tab-button {
                 padding: var(--space-sm) var(--space-md);
                 font-size: 0.75rem;
@@ -2039,7 +2025,7 @@
         @media print {
             .sidebar,
             .support-button,
-            .chat-container,
+            .chat-options,
             .mobile-menu-btn,
             .header-nav {
                 display: none !important;
@@ -2410,12 +2396,12 @@
                             <span>Inscripción</span>
                         </button>
                         
-                        <button class="sidebar-item" onclick="redirectToPodcast()" aria-label="Ir al podcast">
+                        <button class="sidebar-item" onclick="window.open('https://iapivenezuela.com/podcast', '_blank')" aria-label="Ir al podcast">
                             <i class="fa fa-podcast"></i>
                             <span>Podcast</span>
                         </button>
                         
-                        <button class="sidebar-item" onclick="toggleChat()" aria-label="Abrir soporte">
+                        <button class="sidebar-item" onclick="toggleChatOptions()" aria-label="Abrir soporte">
                             <i class="fa fa-headset"></i>
                             <span>Soporte</span>
                         </button>
@@ -2489,7 +2475,8 @@
                                             <i class="fa fa-calendar"></i>
                                             <span>7-10 Julio 2025</span>
                                         </div>
-                                        <div class="program-meta-item"><i class="fa fa-clock"></i>
+                                        <div class="program-meta-item">
+                                            <i class="fa fa-clock"></i>
                                             <span>08:00-16:00</span>
                                         </div>
                                         <div class="program-meta-item">
@@ -3636,7 +3623,7 @@
             </main>
         </div>
 
-        <!-- Sidebar Overlay for Mobile CORREGIDO -->
+        <!-- Sidebar Overlay for Mobile -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     </div>
 
@@ -3713,38 +3700,48 @@
         </div>
     </div>
 
-    <!-- Customer Support Button & Chat -->
-    <button class="support-button" id="supportButton" aria-label="Abrir soporte">
+    <!-- Customer Support Button & Chat Options -->
+    <button class="support-button" id="supportButton" onclick="toggleChatOptions()" aria-label="Abrir opciones de soporte">
         <i class="fa fa-comments"></i>
     </button>
 
-    <div class="chat-container" id="chatContainer">
-        <div class="chat-header">
-            <h3>Atención al Participante</h3>
-            <button class="chat-close" id="chatClose" aria-label="Cerrar chat">
-                <i class="fa fa-times"></i>
-            </button>
-        </div>
-        <div class="chat-body" id="chatBody">
-            <div class="p-6 text-center">
-                <p class="mb-4 font-semibold text-primary-navy">Departamento de Atención al Participante</p>
-                <p class="mb-6 text-sm text-gray-600">Horario de atención: Lunes a viernes de 8:00 AM a 4:00 PM</p>
-                <div class="bg-gray-50 p-4 rounded-lg mb-4 text-left">
-                    <p class="text-sm mb-3 text-gray-700">Para asistencia inmediata, puede contactarnos a través de:</p>
-                    <div class="space-y-2">
-                        <p class="text-sm text-gray-600"><i class="fa fa-phone mr-2 text-primary-navy"></i> +58 (212) 720-5094</p>
-                        <p class="text-sm text-gray-600"><i class="fa fa-envelope mr-2 text-primary-navy"></i> atencion@iapivenezuela.com</p>
-                        <p class="text-sm text-gray-600"><i class="fa fa-whatsapp mr-2 text-primary-navy"></i> +58 414-123-4567</p>
-                    </div>
-                </div>
-                <p class="text-xs text-gray-500">Sistema de chat en línea próximamente disponible</p>
+    <div class="chat-options" id="chatOptions">
+        <a href="#" class="chat-option" onclick="openTawkChat()">
+            <div class="chat-option-icon">
+                <i class="fa fa-comments"></i>
             </div>
-        </div>
+            <div class="chat-option-text">
+                <div class="chat-option-title">Chat en Vivo</div>
+                <div class="chat-option-desc">Habla con nuestro equipo de soporte</div>
+            </div>
+        </a>
+        <a href="https://wa.me/+18133584564" target="_blank" class="chat-option">
+            <div class="chat-option-icon">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <div class="chat-option-text">
+                <div class="chat-option-title">WhatsApp</div>
+                <div class="chat-option-desc">Contacta por WhatsApp</div>
+            </div>
+        </a>
     </div>
+
+    <!-- Tawk.to Script -->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/67cca8c614b1ee191063c36a/default';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
 
     <!-- Scripts -->
     <script>
-        // Modern JavaScript with ES6+ features CORREGIDO
+        // Modern JavaScript with ES6+ features - CORREGIDO
         class IAPIWebsite {
             constructor() {
                 this.currentPage = 'dashboard-page';
@@ -3790,7 +3787,7 @@
                 }, 800);
             }
 
-            // Event listeners setup CORREGIDO
+            // Event listeners setup
             setupEventListeners() {
                 // Tab navigation
                 document.querySelectorAll('.tab-button').forEach(button => {
@@ -3818,21 +3815,27 @@
                     if (e.target.classList.contains('modal')) {
                         this.closeAllModals();
                     }
+                    if (e.target.classList.contains('chat-options') || e.target.classList.contains('sidebar-overlay')) {
+                        this.closeChatOptions();
+                        this.closeMobileMenu();
+                    }
                 });
 
                 // Keyboard navigation
                 document.addEventListener('keydown', (e) => this.handleKeyDown(e));
 
                 // Support chat
-                document.getElementById('supportButton').addEventListener('click', () => this.toggleChat());
-                document.getElementById('chatClose').addEventListener('click', () => this.toggleChat());
+                document.getElementById('supportButton').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleChatOptions();
+                });
 
                 // Window events
                 window.addEventListener('resize', () => this.handleResize());
                 window.addEventListener('scroll', () => this.handleScroll());
             }
 
-            // Navigation CORREGIDO
+            // Navigation
             showPage(pageId) {
                 const pages = document.querySelectorAll('.view-page');
                 pages.forEach(page => {
@@ -3853,6 +3856,7 @@
                 }
                 
                 this.closeMobileMenu();
+                this.closeChatOptions();
                 this.trackEvent('Navigation', 'Page View', pageId);
             }
 
@@ -3888,13 +3892,12 @@
                 }
             }
 
-            // Tab handling CORREGIDO
+            // Tab handling
             handleTabClick(e) {
                 const button = e.currentTarget;
                 const tabGroup = button.parentElement;
                 const courseDetail = button.closest('.course-detail');
                 
-                // Buscar tabs content en el mismo curso detail
                 const tabContents = courseDetail.querySelectorAll('.tab-content');
                 
                 // Remove active states
@@ -3908,7 +3911,6 @@
                 button.classList.add('active');
                 button.setAttribute('aria-selected', 'true');
                 
-                // Buscar el contenido correspondiente usando un selector más específico
                 const targetTabId = button.dataset.tab;
                 const targetTab = courseDetail.querySelector(`#${targetTabId}`);
                 if (targetTab) {
@@ -3939,7 +3941,8 @@
                 const courseId = this.extractCourseId(card);
                 if (courseId) {
                     this.showCourseDetail(courseId);
-                }}
+                }
+            }
 
             extractCourseId(card) {
                 const onclickAttr = card.getAttribute('onclick');
@@ -3950,7 +3953,7 @@
                 return null;
             }
 
-            // Modal management CORREGIDO
+            // Modal management
             showLoginModal() {
                 document.getElementById('loginModal').classList.add('active');
                 document.body.classList.add('modal-open');
@@ -3980,7 +3983,7 @@
                 document.body.classList.remove('modal-open');
             }
 
-            // Authentication CORREGIDO
+            // Authentication
             requireLogin(targetPage) {
                 if (this.isLoggedIn) {
                     this.showPage(targetPage);
@@ -4016,11 +4019,11 @@
                 this.trackEvent('Registration', 'Submit', formData.get('program'));
             }
 
-            // Mobile menu CORREGIDO
+            // Mobile menu - CORREGIDO
             toggleSidebar() {
                 const sidebar = document.getElementById('sidebar');
                 const overlay = document.getElementById('sidebarOverlay');
-                const isOpen = sidebar.classList.contains('active');
+                const isOpen = sidebar.classList.contains('mobile-open');
                 
                 if (isOpen) {
                     this.closeMobileMenu();
@@ -4030,30 +4033,66 @@
             }
 
             openMobileMenu() {
-                document.getElementById('sidebar').classList.add('active');
-                document.getElementById('sidebarOverlay').classList.add('active');
-                document.body.classList.add('sidebar-open');
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                sidebar.classList.add('mobile-open');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             }
 
             closeMobileMenu() {
-                document.getElementById('sidebar').classList.remove('active');
-                document.getElementById('sidebarOverlay').classList.remove('active');
-                document.body.classList.remove('sidebar-open');
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
 
-            // Support chat
-            toggleChat() {
-                const chatContainer = document.getElementById('chatContainer');
+            // Support chat - NUEVO SISTEMA
+            toggleChatOptions() {
+                const chatOptions = document.getElementById('chatOptions');
                 const supportButton = document.getElementById('supportButton');
                 
-                if (chatContainer.classList.contains('active')) {
-                    chatContainer.classList.remove('active');
-                    supportButton.classList.remove('active');
+                if (chatOptions.classList.contains('active')) {
+                    this.closeChatOptions();
                 } else {
-                    chatContainer.classList.add('active');
-                    supportButton.classList.add('active');
-                    this.trackEvent('Support', 'Chat Open');
+                    this.openChatOptions();
                 }
+            }
+
+            openChatOptions() {
+                const chatOptions = document.getElementById('chatOptions');
+                const supportButton = document.getElementById('supportButton');
+                
+                chatOptions.classList.add('active');
+                supportButton.classList.add('active');
+                this.trackEvent('Support', 'Options Open');
+            }
+
+            closeChatOptions() {
+                const chatOptions = document.getElementById('chatOptions');
+                const supportButton = document.getElementById('supportButton');
+                
+                chatOptions.classList.remove('active');
+                supportButton.classList.remove('active');
+            }
+
+            openTawkChat() {
+                this.closeChatOptions();
+                if (typeof Tawk_API !== 'undefined' && Tawk_API.maximize) {
+                    Tawk_API.maximize();
+                } else {
+                    // Fallback si Tawk.to no está cargado
+                    this.showSuccessMessage('Cargando chat en vivo...');
+                    setTimeout(() => {
+                        if (typeof Tawk_API !== 'undefined' && Tawk_API.maximize) {
+                            Tawk_API.maximize();
+                        }
+                    }, 2000);
+                }
+                this.trackEvent('Support', 'Tawk Chat Open');
             }
 
             // Animation and UI effects
@@ -4079,8 +4118,8 @@
             }
 
             updateInfoText() {
-                const mainText = document.querySelector('.info-text-main');
-                const subText = document.querySelector('.info-text-sub');
+                const mainText = document.getElementById('infoText1');
+                const subText = document.getElementById('infoSubtext1');
                 const currentInfo = this.infoTexts[this.currentInfoIndex];
                 
                 if (mainText && subText) {
@@ -4101,9 +4140,9 @@
                 setInterval(() => {
                     if (Math.random() > 0.7) {
                         this.userCount += Math.floor(Math.random() * 3) + 1;
-                        const countElement = document.querySelector('.user-count');
+                        const countElement = document.getElementById('userCount');
                         if (countElement) {
-                            countElement.textContent = this.userCount;
+                            countElement.textContent = `${this.userCount} usuarios conectados`;
                         }
                     }
                 }, 15000);
@@ -4154,15 +4193,14 @@
             handleKeyDown(e) {
                 if (e.key === 'Escape') {
                     this.closeAllModals();
-                    if (document.getElementById('chatContainer').classList.contains('active')) {
-                        this.toggleChat();
-                    }
+                    this.closeChatOptions();
                 }
             }
 
             handleResize() {
                 if (window.innerWidth > 768) {
                     this.closeMobileMenu();
+                    this.closeChatOptions();
                 }
             }
 
@@ -4195,14 +4233,18 @@
             // Utility methods
             showSuccessMessage(message) {
                 const notification = document.createElement('div');
-                notification.className = 'notification success';
+                notification.className = 'notification notification-success';
                 notification.textContent = message;
                 document.body.appendChild(notification);
                 
                 setTimeout(() => notification.classList.add('show'), 100);
                 setTimeout(() => {
                     notification.classList.remove('show');
-                    setTimeout(() => document.body.removeChild(notification), 300);
+                    setTimeout(() => {
+                        if (document.body.contains(notification)) {
+                            document.body.removeChild(notification);
+                        }
+                    }, 300);
                 }, 4000);
             }
 
@@ -4225,7 +4267,7 @@
             }
         }
 
-        // Global functions for inline event handlers CORREGIDO
+        // Global functions for inline event handlers
         function showDashboard() {
             window.iapiWebsite.showDashboard();
         }
@@ -4270,6 +4312,18 @@
             window.iapiWebsite.handleRegister(event);
         }
 
+        function toggleChatOptions() {
+            window.iapiWebsite.toggleChatOptions();
+        }
+
+        function openTawkChat() {
+            window.iapiWebsite.openTawkChat();
+        }
+
+        function requireLogin(targetPage) {
+            window.iapiWebsite.requireLogin(targetPage);
+        }
+
         function toggleFAQ(element) {
             const faqItem = element.parentElement;
             const answer = faqItem.querySelector('.faq-answer');
@@ -4279,7 +4333,7 @@
             icon.style.transform = faqItem.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
-        // Initialize the application CORREGIDO
+        // Initialize the application
         document.addEventListener('DOMContentLoaded', () => {
             window.iapiWebsite = new IAPIWebsite();
         });
@@ -4554,6 +4608,33 @@
         }
 
         applyFocusVisiblePolyfill(document);
+
+        // Touch device detection
+        function isTouchDevice() {
+            return (('ontouchstart' in window) ||
+                   (navigator.maxTouchPoints > 0) ||
+                   (navigator.msMaxTouchPoints > 0));
+        }
+
+        if (isTouchDevice()) {
+            document.body.classList.add('touch-device');
+        }
+
+        // Prevent zoom on mobile inputs
+        document.addEventListener('touchstart', function(e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 
     <!-- Analytics (placeholder) -->
