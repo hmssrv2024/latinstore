@@ -98,6 +98,23 @@
             color: #334155;
         }
 
+        .product-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .product-image img {
+            max-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-image img:hover {
+            transform: scale(1.05);
+        }
+
         .order-details ul {
             list-style: none;
             font-size: 1.1em;
@@ -280,6 +297,11 @@
             <p><strong>Fecha:</strong> 27/04/2025</p>
             <p><strong>Método de Pago:</strong> Tarjeta</p>
             <p><strong>Empresa de Transporte:</strong> MRW</p>
+            <div class="product-image">
+                <a href="https://m.media-amazon.com/images/I/71vdqQpjktL.jpg" target="_blank">
+                    <img src="https://m.media-amazon.com/images/I/71vdqQpjktL.jpg" alt="iPhone 13" />
+                </a>
+            </div>
             <ul>
                 <li><span>1x HP I7 1355U</span><span>$800.00</span></li>
                 <li><span>Redmi A3 3GB RAM (Regalo GRATIS)</span><span>$0.00</span></li>
