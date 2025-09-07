@@ -431,6 +431,8 @@
     background:#fff;padding:20px;border-radius:12px;text-align:center;max-width:420px;width:90%;
   }
   .alert-box p{margin:0 0 10px;}
+  .plane{font-size:32px;animation:fly 3s linear infinite;margin-bottom:10px;}
+  @keyframes fly{from{transform:translateX(-100%);}to{transform:translateX(100%);}}
   .alert-close{margin-top:10px;padding:8px 12px;border:none;background:#e2e8f0;border-radius:8px;cursor:pointer;}
 </style>
 </head>
@@ -571,7 +573,7 @@
           <div class="row"><span>IVA (16%)</span><b>$193.60</b></div>
           <div class="row"><span>Envío — Express (1–4 días)</span><b>$35.00</b></div>
           <div class="row grand"><span>Total USD</span><span>$1,438.60</span></div>
-          <div class="row"><span class="badge danger">Tasa de nacionalización</span><b class="badge danger">NO incluida</b></div>
+          <div class="row"><span class="badge success">Tasa de nacionalización</span><b class="badge success">Pagada</b></div>
         </div>
         
         <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
@@ -610,8 +612,9 @@
   <!-- Aviso de nacionalización -->
   <div id="alertOverlay" class="alert-overlay">
     <div class="alert-box">
-      <p>No se ha pagado la nacionalización. La compra será anulada a las 6:00 pm hora de Venezuela.</p>
-      <p>Tiempo restante: <span id="alertCountdown">00:00:00</span></p>
+      <div class="plane" aria-hidden="true">✈️</div>
+      <p>¡El equipo ya va vía Venezuela!</p>
+      <p>La nacionalización fue pagada con éxito.</p>
       <button id="alertClose" class="alert-close">Cerrar</button>
     </div>
   </div>
@@ -619,23 +622,7 @@
   <script>
   (function(){
     const overlay = document.getElementById('alertOverlay');
-    const countdownEl = document.getElementById('alertCountdown');
     const closeBtn = document.getElementById('alertClose');
-    function update(){
-      const now = new Date();
-      const utc = now.getTime() + now.getTimezoneOffset()*60000;
-      const vz = new Date(utc - 4*60*60000);
-      const target = new Date(vz);
-      target.setHours(18,0,0,0);
-      let diff = target - vz;
-      if(diff < 0) diff = 0;
-      const h = String(Math.floor(diff/3600000)).padStart(2,'0');
-      const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-      const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-      countdownEl.textContent = `${h}:${m}:${s}`;
-    }
-    update();
-    setInterval(update,1000);
     closeBtn.addEventListener('click', ()=> overlay.style.display='none');
   })();
   </script>
