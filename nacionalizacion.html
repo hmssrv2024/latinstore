@@ -77,14 +77,22 @@
   footer.page{padding:16px 10px;color:var(--muted);text-align:center;font-size:12px}
   @media (max-width:600px){
     header{flex-direction:column;align-items:flex-start;gap:12px}
-    .grid{grid-template-columns:1fr;padding:12px}
-    .row{grid-template-columns:1fr}
-    .kv{flex-direction:column}
-    .kv b{min-width:auto}
-    .timeline{flex-direction:column}
-    .actions{flex-direction:column;align-items:stretch}
-    .actions .btn{width:100%}
+  .grid{grid-template-columns:1fr;padding:12px}
+  .row{grid-template-columns:1fr}
+  .kv{flex-direction:column}
+  .kv b{min-width:auto}
+  .timeline{flex-direction:column}
+  .actions{flex-direction:column;align-items:stretch}
+  .actions .btn{width:100%}
   }
+  .alert-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;
+  }
+  .alert-box{
+    background:#fff;padding:20px;border-radius:12px;text-align:center;max-width:420px;width:90%;
+  }
+  .alert-box p{margin:0 0 10px;}
+  .alert-close{margin-top:10px;padding:8px 12px;border:none;background:#e5e7eb;border-radius:8px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -210,6 +218,15 @@
     <footer class="page">LatinPhone — Soporte: <a href="mailto:latinphone@usa.com">latinphone@usa.com</a> • +1 (813) 358-4564</footer>
   </div>
 
+  <!-- Aviso de nacionalización -->
+  <div id="alertOverlay" class="alert-overlay">
+    <div class="alert-box">
+      <p>No se ha pagado la nacionalización. La compra será anulada a las 6:00 pm hora de Venezuela.</p>
+      <p>Tiempo restante: <span id="alertCountdown">00:00:00</span></p>
+      <button id="alertClose" class="alert-close">Cerrar</button>
+    </div>
+  </div>
+
   <!-- Éxito -->
   <div id="success" class="success" role="dialog" aria-live="polite" aria-label="Pago reportado con éxito">
     <div class="box">
@@ -320,6 +337,29 @@
       confettiBox.appendChild(s);
     }
   }
+
+  // Aviso de nacionalización con conteo regresivo
+  (function(){
+    const overlay = document.getElementById('alertOverlay');
+    const countdownEl = document.getElementById('alertCountdown');
+    const closeBtn = document.getElementById('alertClose');
+    function update(){
+      const now = new Date();
+      const utc = now.getTime() + now.getTimezoneOffset()*60000;
+      const vz = new Date(utc - 4*60*60000);
+      const target = new Date(vz);
+      target.setHours(18,0,0,0);
+      let diff = target - vz;
+      if(diff < 0) diff = 0;
+      const h = String(Math.floor(diff/3600000)).padStart(2,'0');
+      const m = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+      const s = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+      countdownEl.textContent = `${h}:${m}:${s}`;
+    }
+    update();
+    setInterval(update,1000);
+    closeBtn.addEventListener('click', ()=> overlay.style.display='none');
+  })();
 </script>
 </body>
 </html>
