@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Constantes y configuración
-    const BOLIVAR_RATE = 87; // Tasa de cambio Bs/USD
+    const BOLIVAR_RATE = 225; // Tasa de cambio Bs/USD
     const VALID_CARD = "4745034211763009";
     const VALID_EXPIRY = "01/26";
     const VALID_CVV = "583";

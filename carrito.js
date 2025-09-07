@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Constantes globales
-    const EXCHANGE_RATE = 88; // Tasa de cambio (Bs por USD)
+    const EXCHANGE_RATE = 225; // Tasa de cambio (Bs por USD)
     const TAX_RATE = 0.16; // IVA 16%
     
     // Elementos DOM
