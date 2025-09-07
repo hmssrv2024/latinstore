@@ -3691,6 +3691,15 @@
     <script>
         // Inicializar el script cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
+            const orderDateEl = document.getElementById('order-date');
+            if (orderDateEl) {
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                orderDateEl.textContent = `${day}/${month}/${year}`;
+            }
+
             // Elementos de la interfaz
             const checkoutSteps = document.querySelectorAll('.checkout-step');
             const checkoutSections = document.querySelectorAll('.checkout-section');
