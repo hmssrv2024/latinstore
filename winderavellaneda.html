@@ -159,6 +159,11 @@
     margin-top: 4px;
   }
 
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
   th,
   td {
     padding: 12px;
@@ -375,6 +380,17 @@
       top: 1px;
       left: -18px;
     }
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .meta {
+      text-align: left;
+    }
+    .table-responsive {
+      margin-bottom: 16px;
+    }
     footer {
       flex-direction: column;
       gap: 8px;
@@ -502,7 +518,8 @@
     <section class="section" aria-label="Detalle de compra">
       <div class="card">
         <h3>Productos</h3>
-        <table role="table" aria-label="Tabla de productos">
+        <div class="table-responsive">
+          <table role="table" aria-label="Tabla de productos">
           <thead>
             <tr>
               <th>Descripción</th>
@@ -537,7 +554,8 @@
               <td class="right">$0.00</td>
             </tr>
           </tbody>
-        </table>
+          </table>
+        </div>
 
         <div class="total-summary" aria-label="Resumen de totales">
           <div class="row"><span>Subtotal</span><b>$1,210.00</b></div>
