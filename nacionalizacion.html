@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pago de Nacionalización — Orden LP-X9D8NVWE</title>
+<style>
+  :root{
+    --primary:#0b5fff; --ink:#1a1f36; --muted:#6b7280;
+    --line:#e5e7eb; --success:#10b981; --bg:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#f7f9fc;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:980px;margin:32px auto;padding:0 16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.05);overflow:hidden}
+  header{padding:20px 22px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;gap:12px;align-items:center}
+  .badge{background:#eef2ff;color:var(--primary);border:1px solid #dbe4ff;padding:2px 10px;border-radius:999px;font-size:12px}
+  h1{font-size:18px;margin:0}
+  .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;padding:18px}
+  .panel{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
+  .panel h3{margin:0 0 10px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .kv{display:flex;gap:10px;margin:8px 0}
+  .kv b{min-width:170px;color:#566}
+  .amount{font-size:22px;font-weight:800}
+  .copyrow{display:flex;gap:8px;align-items:center;margin:6px 0}
+  .pill{border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:#fafafa}
+  button.copy{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer}
+  form{display:grid;gap:10px}
+  label{font-size:13px;color:var(--muted)}
+  input[type="text"], input[type="tel"], input[type="number"], input[type="date"], textarea, select{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font-size:14px
+  }
+  input[readonly]{background:#f8fafc;color:#667}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .drop{border:1px dashed #cbd5e1;border-radius:12px;padding:14px;text-align:center;background:#f8fafc}
+  .drop.drag{background:#eef6ff;border-color:#bcd2ff}
+  .actions{display:flex;gap:12px;justify-content:flex-end;margin-top:8px}
+  .btn{border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+  .btn.primary{background:var(--primary);color:#fff}
+  .btn.muted{background:#f1f5f9}
+  .help{font-size:13px;color:var(--muted)}
+  .timeline{display:flex;gap:12px;margin-top:10px}
+  .step{flex:1;background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:10px;position:relative}
+  .step:before{content:"";position:absolute;top:14px;left:-6px;width:10px;height:10px;border-radius:50%;background:#d1d5db;border:1px solid #9ca3af}
+  .step.done{background:#f0fdf4;border-color:#bbf7d0}
+  .step.done:before{background:#34d399;border-color:#059669}
+  .step.current{background:#eff6ff;border-color:#bfdbfe}
+  .step.current:before{background:#3b82f6;border-color:#1d4ed8}
+  .carrier{display:flex;align-items:center;gap:10px}
+  .carrier img{height:26px}
+  /* Success overlay */
+  .success{
+    position:fixed;inset:0;background:rgba(15,23,42,.6);
+    display:none;align-items:center;justify-content:center;z-index:50
+  }
+  .success .box{
+    width:min(520px,92vw);background:#fff;border-radius:18px;padding:26px;border:1px solid var(--line);
+    text-align:center;position:relative;overflow:hidden
+  }
+  .check{
+    width:92px;height:92px;border-radius:50%;border:6px solid var(--success);
+    display:inline-grid;place-items:center;margin:10px auto 6px;position:relative
+  }
+  .check svg{width:54px;height:54px;stroke:var(--success);stroke-width:8;fill:none;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:100;stroke-dashoffset:100;animation:draw 1.2s ease forwards .2s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  /* confetti */
+  .confetti{position:absolute;inset:0;pointer-events:none}
+  .confetti span{
+    position:absolute;width:8px;height:14px;background:hsla(var(--h),90%,55%,.95);top:-10px;left:50%;
+    transform:translateX(-50%);animation:fall 1.4s ease-out forwards;
+  }
+  @keyframes fall{
+    to{transform:translate(calc(var(--x)*1px), 460px) rotate(340deg)}
+  }
+  footer.page{padding:16px 10px;color:var(--muted);text-align:center;font-size:12px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div class="brand">
+          <div style="width:42px;height:42px;border-radius:12px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:800;">LP</div>
+          <div>
+            <h1>Pago de nacionalización</h1>
+            <div class="badge">Orden: LP-X9D8NVWE</div>
+          </div>
+        </div>
+        <div class="carrier">
+          <span class="help">Transporte</span>
+          <img src="https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg" alt="Liberty Express">
+        </div>
+      </header>
+
+      <div class="grid">
+        <!-- Instrucciones de Pago Móvil -->
+        <section class="panel">
+          <h3>Datos para Pago Móvil</h3>
+          <div class="kv"><b>Monto a cancelar</b> <span class="amount">6.473,70 Bs</span></div>
+          <div class="copyrow">
+            <div class="pill"><b>Teléfono receptor:</b> 0414-4272486</div>
+            <button class="copy" data-copy="04144272486">Copiar</button>
+          </div>
+          <div class="copyrow">
+            <div class="pill"><b>Cédula/RIF receptor:</b> 20.639.785</div>
+            <button class="copy" data-copy="20639785">Copiar</button>
+          </div>
+          <div class="copyrow">
+            <div class="pill"><b>Banco receptor:</b> Banco Nacional de Crédito (BNC)</div>
+            <button class="copy" data-copy="Banco Nacional de Crédito (BNC)">Copiar</button>
+          </div>
+          <div class="copyrow">
+            <div class="pill"><b>Concepto / Referencia:</b> LP-X9D8NVWE</div>
+            <button class="copy" data-copy="LP-X9D8NVWE">Copiar</button>
+          </div>
+          <p class="help">Realiza el Pago Móvil por el monto exacto e introduce como <b>concepto</b> tu número de orden.</p>
+
+          <h3 style="margin-top:14px">Seguimiento</h3>
+          <div class="timeline" aria-label="Línea de tiempo">
+            <div class="step done">
+              <b>Compra</b><div class="help">07/09/2025</div>
+            </div>
+            <div class="step current">
+              <b>Nacionalización</b><div class="help">En curso</div>
+            </div>
+            <div class="step">
+              <b>Retiro</b><div class="help">En 3 días (10/09/2025)</div>
+            </div>
+          </div>
+          <p class="help" style="margin-top:10px">
+            <b>Retiro exclusivo del titular:</b> Winder Manuel Fernández Avellaneda (presentar cédula).
+          </p>
+        </section>
+
+        <!-- Formulario de carga de comprobante -->
+        <section class="panel">
+          <h3>Reportar pago y adjuntar comprobante</h3>
+          <form id="payForm">
+            <div class="row">
+              <div>
+                <label>Orden</label>
+                <input type="text" value="LP-X9D8NVWE" readonly>
+              </div>
+              <div>
+                <label>Monto (Bs)</label>
+                <input type="text" value="6473,70" readonly>
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>Teléfono del pagador</label>
+                <input required type="tel" name="telPagador" placeholder="Ej: 04121234567" pattern="[0-9]{11}">
+              </div>
+              <div>
+                <label>Cédula del pagador</label>
+                <input required type="text" name="cedulaPagador" placeholder="Ej: 12345678" pattern="[0-9]{5,12}">
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>Banco emisor</label>
+                <input required type="text" name="bancoEmisor" placeholder="Ej: BOD, BNC, Provincial…">
+              </div>
+              <div>
+                <label>Fecha del pago</label>
+                <input required type="date" name="fechaPago">
+              </div>
+            </div>
+
+            <div class="row">
+              <div>
+                <label>N° de referencia del Pago Móvil</label>
+                <input required type="text" name="referencia" placeholder="Ej: 123456">
+              </div>
+              <div>
+                <label>Adjuntar comprobante (imagen o PDF)</label>
+                <input id="fileInput" required type="file" accept="image/*,application/pdf">
+              </div>
+            </div>
+
+            <div id="drop" class="drop" aria-label="Zona de arrastre">
+              Arrastra y suelta tu comprobante aquí o usa el selector de archivo.
+              <div id="preview" class="help" style="margin-top:6px"></div>
+            </div>
+
+            <div class="actions">
+              <button type="reset" class="btn muted">Limpiar</button>
+              <button type="submit" class="btn primary">Enviar comprobante</button>
+            </div>
+            <p class="help">Al enviar, tus datos se guardarán localmente en este navegador como constancia inmediata.</p>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <footer class="page">LatinPhone — Soporte: <a href="mailto:latinphone@usa.com">latinphone@usa.com</a> • +1 (813) 358-4564</footer>
+  </div>
+
+  <!-- Éxito -->
+  <div id="success" class="success" role="dialog" aria-live="polite" aria-label="Pago reportado con éxito">
+    <div class="box">
+      <div class="confetti" id="confetti"></div>
+      <div class="check">
+        <svg viewBox="0 0 48 48"><path d="M10 26 L20 36 L38 14"/></svg>
+      </div>
+      <h2 style="margin:6px 0 4px">¡Comprobante recibido!</h2>
+      <p class="help">Guardamos tu reporte de pago de nacionalización para la orden <b>LP-X9D8NVWE</b>.<br>Pronto recibirás la confirmación de verificación.</p>
+      <div class="actions" style="justify-content:center;margin-top:8px">
+        <button class="btn primary" onclick="closeSuccess()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Prefija la fecha con hoy
+  document.querySelector('input[name="fechaPago"]').valueAsDate = new Date();
+
+  // Copiar al portapapeles
+  document.querySelectorAll('button.copy').forEach(b=>{
+    b.addEventListener('click',()=>{
+      navigator.clipboard.writeText(b.dataset.copy||'');
+      b.textContent='Copiado ✓';
+      setTimeout(()=>b.textContent='Copiar',1200);
+    });
+  });
+
+  // Drag & Drop para el comprobante
+  const drop = document.getElementById('drop');
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.getElementById('preview');
+
+  function showFileInfo(file){
+    if(!file) return preview.textContent='';
+    const mb = (file.size/1024/1024).toFixed(2);
+    preview.textContent = `Archivo: ${file.name} — ${mb} MB`;
+  }
+  drop.addEventListener('dragover',e=>{e.preventDefault(); drop.classList.add('drag');});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
+  drop.addEventListener('drop',e=>{
+    e.preventDefault(); drop.classList.remove('drag');
+    const f = e.dataTransfer.files[0];
+    if(f){ fileInput.files = e.dataTransfer.files; showFileInfo(f); }
+  });
+  fileInput.addEventListener('change',e=>showFileInfo(e.target.files[0]));
+
+  // Manejo de envío (demo: guarda en localStorage y muestra animación)
+  const form = document.getElementById('payForm');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    // Validación básica
+    if(!fileInput.files[0]){ alert('Adjunta el comprobante.'); return; }
+
+    // Convertir el archivo a Base64 (para persistir local en demo)
+    const file = fileInput.files[0];
+    const b64 = await toBase64(file);
+
+    const payload = {
+      order: 'LP-X9D8NVWE',
+      amount_bs: '6473,70',
+      tel_pagador: form.telPagador.value.trim(),
+      ci_pagador: form.cedulaPagador.value.trim(),
+      banco_emisor: form.bancoEmisor.value.trim(),
+      fecha_pago: form.fechaPago.value,
+      referencia: form.referencia.value.trim(),
+      file_name: file.name,
+      file_type: file.type,
+      file_b64: b64
+    };
+    localStorage.setItem('lp_nacionalizacion_LP-X9D8NVWE', JSON.stringify(payload));
+
+    // Mostrar éxito + confetti
+    openSuccess();
+    form.reset();
+    preview.textContent='';
+  });
+
+  function toBase64(file){
+    return new Promise((res,rej)=>{
+      const r = new FileReader();
+      r.onload = ()=>res(r.result); r.onerror=rej;
+      r.readAsDataURL(file);
+    });
+  }
+
+  // Éxito / Confetti
+  const modal = document.getElementById('success');
+  const confettiBox = document.getElementById('confetti');
+
+  function openSuccess(){
+    modal.style.display='flex';
+    makeConfetti(90);
+  }
+  function closeSuccess(){
+    modal.style.display='none';
+    confettiBox.innerHTML='';
+  }
+  function makeConfetti(n){
+    confettiBox.innerHTML='';
+    for(let i=0;i<n;i++){
+      const s = document.createElement('span');
+      s.style.setProperty('--h', Math.floor(Math.random()*360));
+      s.style.setProperty('--x', (Math.random()*600-300).toFixed(0));
+      s.style.left = (50 + (Math.random()*40-20)) + '%';
+      s.style.animationDelay = (Math.random()*0.6)+'s';
+      confettiBox.appendChild(s);
+    }
+  }
+</script>
+</body>
+</html>
