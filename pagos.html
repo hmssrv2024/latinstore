@@ -20,8 +20,12 @@
     <!-- Confetti JS -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js" defer></script>
     
-    </head>
+</head>
 <body>
+    <nav class="top-bar">
+        <a href="index.html" class="top-link"><i class="fas fa-home"></i> Inicio</a>
+        <a href="paneldecontrol.html" class="top-link"><i class="fas fa-user"></i> Mi cuenta</a>
+    </nav>
     <div class="checkout-container">
         <!-- Cabecera de la pasarela de pago -->
         <header class="checkout-header fade-in">
@@ -702,6 +706,18 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Overlay para continuar compra -->
+    <div class="add-more-overlay" id="add-more-overlay">
+        <div class="add-more-modal">
+            <h3>Producto añadido al carrito</h3>
+            <p>¿Deseas agregar más productos?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" id="add-more-btn"><i class="fas fa-plus-circle btn-icon"></i>Añadir más</button>
+                <button class="btn btn-primary" id="continue-checkout-btn"><i class="fas fa-arrow-right btn-icon"></i>Continuar</button>
+            </div>
+        </div>
     </div>
 
     <!-- Loading Overlay Mejorado -->
