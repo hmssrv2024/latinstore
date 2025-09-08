@@ -340,13 +340,16 @@
             border-collapse: collapse;
             margin-bottom: 20px;
             text-align: left;
+            table-layout: fixed;
         }
 
         .products-table th, .products-table td {
             padding: 12px 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            white-space: nowrap;
             font-size: 0.85rem;
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .products-table th {
@@ -701,17 +704,20 @@
             }
 
             .products-table {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 table-layout: fixed;
                 width: 100%;
+                display: block;
+                overflow-x: auto;
             }
 
             .products-table th,
             .products-table td {
                 padding: 8px 6px;
-                white-space: nowrap;
-                word-break: normal;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: anywhere;
             }
 
             .buy-btn {
@@ -730,12 +736,16 @@
             }
 
             .products-table {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
 
             .products-table th,
             .products-table td {
                 padding: 6px 4px;
+                font-size: 0.7rem;
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: anywhere;
             }
 
             .buy-btn {
