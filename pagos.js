@@ -82,6 +82,7 @@
             let selectedInsurance = { selected: false, price: 0 };
             let selectedGift = null;
             let orderNumber = '';
+            let preselectedProductName = localStorage.getItem('selectedProduct');
             const exchangeRate = 225; // 1 USD = 225 Bs
             const taxRate = 0.16; // 16% IVA
             const MIN_NATIONALIZATION_AMOUNT_BS = 1800; // Monto mínimo de tasa de nacionalización en Bs
@@ -334,6 +335,37 @@
                 });
             }
 
+            function autoAddPreselectedProduct() {
+                if (!preselectedProductName) return;
+                let foundProduct = null;
+                let foundCategory = '';
+                let foundBrand = '';
+
+                Object.entries(inventory).forEach(([category, brands]) => {
+                    Object.entries(brands).forEach(([brand, products]) => {
+                        const match = products.find(p => p.name === preselectedProductName);
+                        if (match && !foundProduct) {
+                            foundProduct = match;
+                            foundCategory = category;
+                            foundBrand = brand;
+                        }
+                    });
+                });
+
+                if (foundProduct) {
+                    addToCart({ ...foundProduct, quantity: 1, category: foundCategory, brand: foundBrand });
+                    productSelection.style.display = 'none';
+                    cartSection.style.display = 'block';
+                    showToast('success', 'Producto añadido', `Has añadido ${foundProduct.name} a tu carrito.`);
+                    setTimeout(() => {
+                        cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
+
+                localStorage.removeItem('selectedProduct');
+                preselectedProductName = null;
+            }
+
             // Función para mostrar los productos disponibles como regalo
             function renderGiftProducts() {
                 giftGrid.innerHTML = '';
@@ -416,6 +448,8 @@
                 setTimeout(() => {
                     productSelection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 300);
+
+                autoAddPreselectedProduct();
             }
 
             // Función para seleccionar una categoría
