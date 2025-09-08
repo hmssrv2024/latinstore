@@ -48,7 +48,7 @@
 
         html {
             scroll-behavior: smooth;
-            font-size: 50%;
+            font-size: clamp(8px, 1vw + 4px, 10px);
             scroll-padding-top: var(--header-height);
             height: 100%;
         }
@@ -58,7 +58,7 @@
             font-size: 1.6rem;
             line-height: 1.6;
             color: var(--secondary-color);
-            background-color: var(--background-color);
+            background: var(--background-gradient);
             min-height: 100vh;
             padding-top: var(--header-height);
             overflow-x: hidden;
@@ -114,6 +114,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
             z-index: 0;
         }
 
@@ -176,6 +177,7 @@
             position: relative;
             overflow: visible;
             padding: 0 1rem;
+            gap: 2rem;
         }
 
         .checkout-steps::before {
@@ -196,6 +198,11 @@
             width: 20%;
             position: relative;
             z-index: 1;
+            transition: transform var(--transition);
+        }
+
+        .checkout-step:hover {
+            transform: translateY(-0.4rem);
         }
 
         .step-number {
@@ -247,8 +254,8 @@
         }
 
         .checkout-step.active .step-number {
-            transform: scale(1.1);
             box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.2);
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         .checkout-step.active .step-number::before {
@@ -304,6 +311,26 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn var(--transition-slow) ease both;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
             }
         }
 
@@ -2581,10 +2608,6 @@
         }
 
         @media (max-width: 768px) {
-            html {
-                font-size: 55%;
-            }
-            
             .checkout-header {
                 margin-bottom: 3rem;
             }
