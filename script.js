@@ -240,13 +240,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function animateOnScroll() {
         const elementsToAnimate = document.querySelectorAll('.feature-row, .product-card, .category-card');
-        
+
         elementsToAnimate.forEach(element => {
             if (isInViewport(element) && !element.classList.contains('animated')) {
                 element.classList.add('animated');
             }
         });
     }
+
+    // Guardar el producto seleccionado antes de ir a pagos.html
+    document.querySelectorAll('.buy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            if (row) {
+                const nameEl = row.querySelector('.product-name');
+                if (nameEl) {
+                    localStorage.setItem('selectedProduct', nameEl.textContent.trim());
+                }
+            }
+        });
+    });
     
     // Event Listeners
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleMobileMenu);
