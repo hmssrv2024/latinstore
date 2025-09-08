@@ -700,14 +700,20 @@
 
             .products-table {
                 font-size: 0.9rem;
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
+                table-layout: fixed;
+                width: 100%;
             }
-            
-            .products-table th:nth-child(3),
-            .products-table td:nth-child(3) {
-                display: none;
+
+            .products-table th,
+            .products-table td {
+                padding: 8px 6px;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            .buy-btn {
+                padding: 4px 8px;
+                font-size: 0.75rem;
             }
         }
 
@@ -721,12 +727,17 @@
             }
 
             .products-table {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
 
             .products-table th,
             .products-table td {
-                padding: 8px 10px;
+                padding: 6px 4px;
+            }
+
+            .buy-btn {
+                padding: 3px 5px;
+                font-size: 0.7rem;
             }
         }
     </style>
