@@ -1768,6 +1768,9 @@
         /* Payment Methods Section mejorado */
         .payment-methods {
             margin-bottom: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .payment-options {
@@ -1775,6 +1778,9 @@
             flex-wrap: wrap;
             gap: 2rem;
             margin-bottom: 3rem;
+            justify-content: center;
+            width: 100%;
+            max-width: 60rem;
         }
 
         .payment-option {
@@ -1865,6 +1871,10 @@
             margin-top: 2rem;
             box-shadow: var(--shadow);
             border: 1px solid rgba(210, 210, 215, 0.5);
+            width: 100%;
+            max-width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .credit-card-form h3 {
@@ -2844,6 +2854,7 @@
             .payment-options {
                 justify-content: center;
                 gap: 1.5rem;
+                max-width: 100%;
             }
 
             .payment-option {
