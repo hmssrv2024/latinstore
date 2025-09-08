@@ -614,7 +614,10 @@
                 productGrid.innerHTML = '';
                 
                 // Obtener los productos para esta categoría y marca
-                const products = inventory[category][brand];
+                // Ordenar los productos por precio (más caros y nuevos primero)
+                const products = inventory[category][brand]
+                    .slice()
+                    .sort((a, b) => b.price - a.price);
                 
                 if (!products) return;
                 
