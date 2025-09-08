@@ -1,45 +1,5 @@
-        :root {
-            --primary-color: #0071e3;
-            --primary-hover: #0062c3;
-            --primary-light: #e9f3ff;
-            --primary-gradient: linear-gradient(135deg, #0071e3, #4e9fff);
-            --secondary-color: #1d1d1f;
-            --accent-color: #86868b;
-            --success-color: #4cd964;
-            --success-gradient: linear-gradient(135deg, #4cd964, #34c759);
-            --error-color: #ff3b30;
-            --warning-color: #ffcc00;
-            --background-color: #ffffff;
-            --background-alt: #f5f7fa;
-            --background-gradient: linear-gradient(135deg, #f5f7fa, #ffffff);
-            --light-gray: #f5f5f7;
-            --medium-gray: #d2d2d7;
-            --border-color: #d2d2d7;
-            --white: #ffffff;
-            --black: #000000;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
-            --shadow-color: rgba(0, 0, 0, 0.15);
-            --transition-fast: 0.2s ease;
-            --transition: 0.3s ease;
-            --transition-slow: 0.5s ease;
-            --radius-sm: 8px;
-            --radius: 14px;
-            --radius-lg: 24px;
-            --radius-xl: 32px;
-            --radius-full: 9999px;
-            --header-height: 70px;
-            --z-header: 1000;
-            --z-overlay: 1001;
-            --z-dropdown: 1002;
-            --z-modal: 1003;
-            --z-toast: 1004;
-            --max-width: 1280px;
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        *, *::before, *::after {
+@import url("css/variables.css");
+*, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;

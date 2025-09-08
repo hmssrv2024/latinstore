@@ -1,28 +1,5 @@
+@import url("css/variables.css");
 /* Checkout Specific Styles */
-:root {
-    --primary: #0056b3;
-    --primary-dark: #003d7a;
-    --primary-light: #e6f0ff;
-    --secondary: #ff3a6e;
-    --secondary-dark: #d81b51;
-    --accent: #00e676;
-    --dark: #10131c;
-    --light: #f8f9fc;
-    --success: #34c759;
-    --danger: #ff3b30;
-    --warning: #ffc107;
-    --venezuela-red: #ef3340;
-    --venezuela-blue: #00247d;
-    --venezuela-yellow: #ffcc00;
-    --gradient-1: linear-gradient(135deg, #0056b3, #00a1ff);
-    --gradient-2: linear-gradient(135deg, #ff3a6e, #ff7c34);
-    --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-    --hover-shadow: 0 12px 24px rgba(0, 86, 179, 0.18);
-    --border-radius-sm: 8px;
-    --border-radius: 12px;
-    --border-radius-lg: 20px;
-}
-
 /* Utility Classes */
 .d-flex {
     display: flex;
