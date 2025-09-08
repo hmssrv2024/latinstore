@@ -1252,3 +1252,13 @@ footer::before {
         font-size: 3.5rem;
     }
 }
+
+@media (max-width: 480px) {
+    html {
+        font-size: 47.5%;
+    }
+
+    .nav-icons {
+        gap: 1.5rem;
+    }
+}

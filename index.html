@@ -697,14 +697,36 @@
                 flex-direction: column;
                 gap: 30px;
             }
-            
+
             .products-table {
                 font-size: 0.9rem;
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
             
-            .products-table th:nth-child(3), 
+            .products-table th:nth-child(3),
             .products-table td:nth-child(3) {
                 display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+
+            .products-table {
+                font-size: 0.8rem;
+            }
+
+            .products-table th,
+            .products-table td {
+                padding: 8px 10px;
             }
         }
     </style>
