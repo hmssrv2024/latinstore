@@ -378,9 +378,9 @@
             color: var(--accent-color);
         }
 
+        .products-table th:nth-child(4),
         .products-table td.product-price-bs {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
+            display: none;
         }
 
         .buy-cell {
@@ -723,15 +723,13 @@
                 font-size: 0.75rem;
                 table-layout: fixed;
                 width: 100%;
-                display: block;
-                overflow-x: auto;
             }
 
             .products-table th,
             .products-table td {
                 padding: 6px 4px;
                 font-size: 0.7rem;
-                white-space: nowrap;
+                white-space: normal;
                 word-break: normal;
             }
 
@@ -775,7 +773,7 @@
             .products-table td {
                 padding: 4px 3px;
                 font-size: 0.65rem;
-                white-space: nowrap;
+                white-space: normal;
                 word-break: normal;
             }
 
