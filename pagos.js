@@ -106,9 +106,9 @@
             let selectedCountry = '';
             let selectedCategory = '';
             let selectedBrand = '';
-            let selectedShipping = { method: 'express', price: 70 };
-            let selectedShippingCompany = 'dhl';
-            let selectedInsurance = { selected: true, price: 50 };
+            let selectedShipping = { method: null, price: 0 };
+            let selectedShippingCompany = null;
+            let selectedInsurance = { selected: null, price: 0 };
             let selectedGift = null;
             let orderNumber = '';
             let preselectedProductName = localStorage.getItem('selectedProduct');
@@ -301,62 +301,12 @@
             // Base de datos de productos por precio (para regalos)
             let giftProducts = [];
 
-            // Función para mostrar notificaciones toast
+            // Notificaciones deshabilitadas
             function showToast(type, title, message, duration = 5000) {
-                const toast = document.createElement('div');
-                toast.className = 'toast';
-                
-                let iconClass = '';
-                
-                if (type === 'success') {
-                    iconClass = 'fas fa-check-circle';
-                } else if (type === 'warning') {
-                    iconClass = 'fas fa-exclamation-triangle';
-                } else if (type === 'error') {
-                    iconClass = 'fas fa-times-circle';
-                } else if (type === 'info') {
-                    iconClass = 'fas fa-info-circle';
-                }
-                
-                toast.innerHTML = `
-                    <div class="toast-icon ${type}">
-                        <i class="${iconClass}"></i>
-                    </div>
-                    <div class="toast-content">
-                        <div class="toast-title">${title}</div>
-                        <div class="toast-message">${message}</div>
-                    </div>
-                    <button class="toast-close">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                toastContainer.appendChild(toast);
-                
-                // Mostrar la notificación con animación
-                setTimeout(() => {
-                    toast.classList.add('show');
-                }, 10);
-                
-                // Configurar el cierre automático
-                const timeoutId = setTimeout(() => {
-                    closeToast(toast);
-                }, duration);
-                
-                // Agregar evento para cerrar manualmente
-                toast.querySelector('.toast-close').addEventListener('click', () => {
-                    clearTimeout(timeoutId);
-                    closeToast(toast);
-                });
+                console.log(`${title}: ${message}`);
             }
 
-            // Función para cerrar un toast
-            function closeToast(toast) {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    toast.remove();
-                }, 500);
-            }
+            function closeToast(toast) {}
 
             // Función para abrir el modal de video
             function openVideoModal(videoId) {
@@ -927,21 +877,31 @@
 
             function updateSelectionSummary() {
                 summaryGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
+
                 const selectedShipTitle = document.querySelector('.shipping-option.selected .shipping-title');
                 if (selectedShipTitle) {
                     const shipText = `${selectedShipTitle.textContent.trim()} ($${selectedShipping.price.toFixed(2)})`;
                     summaryShipping.textContent = `Envío: ${shipText}`;
                     shippingSummaryText.textContent = shipText;
+                } else {
+                    summaryShipping.textContent = 'Envío: no seleccionado';
+                    shippingSummaryText.textContent = 'No seleccionado';
                 }
-                const companyText = shippingDropdownBtn.querySelector('span').textContent.trim();
+
+                const companySelected = document.querySelector('.shipping-company-option.selected');
+                const companyText = companySelected ? companySelected.querySelector('.shipping-company-text').textContent.trim() : 'No seleccionado';
                 summaryCompany.textContent = `Empresa: ${companyText}`;
                 shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
-                if (selectedInsurance.selected) {
+
+                if (selectedInsurance.selected === true) {
                     summaryInsurance.textContent = `Seguro: Premium ($${selectedInsurance.price.toFixed(2)})`;
                     insuranceSummaryText.textContent = `Seguro Premium - $${selectedInsurance.price.toFixed(2)}`;
-                } else {
+                } else if (selectedInsurance.selected === false) {
                     summaryInsurance.textContent = 'Seguro: Sin seguro';
                     insuranceSummaryText.textContent = 'Sin seguro';
+                } else {
+                    summaryInsurance.textContent = 'Seguro: no seleccionado';
+                    insuranceSummaryText.textContent = 'No seleccionado';
                 }
             }
 
@@ -998,6 +958,13 @@
                     
                     paymentSummaryItems.appendChild(giftItem);
                 }
+            }
+
+            function updateContinueToPaymentBtnState() {
+                const shippingSelected = document.querySelector('.shipping-option.selected');
+                const companySelected = document.querySelector('.shipping-company-option.selected');
+                const insuranceSelected = document.querySelector('.insurance-option.selected');
+                continueToPaymentBtn.disabled = !(shippingSelected && companySelected && insuranceSelected && acceptTaxCheckbox.checked);
             }
 
             // Función para cambiar de paso
@@ -1124,8 +1091,12 @@
             // Función para procesar el pago
             function processPayment() {
                 // Validar información de tarjeta si es el método seleccionado
-                const selectedPaymentMethod = document.querySelector('.payment-option.selected').getAttribute('data-payment');
-                
+                const selectedPaymentOption = document.querySelector('.payment-option.selected');
+                if (!selectedPaymentOption) {
+                    return;
+                }
+                const selectedPaymentMethod = selectedPaymentOption.getAttribute('data-payment');
+
                 if (selectedPaymentMethod === 'credit-card' && !validateCardInfo()) {
                     return;
                 }
@@ -1378,6 +1349,7 @@
 
                     // Actualizar resúmenes
                     updateSelectionSummary();
+                    updateContinueToPaymentBtnState();
 
                     // Notificar al usuario
                     showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
@@ -1449,17 +1421,7 @@
             });
 
             continueToPaymentBtn.addEventListener('click', () => {
-                if (!acceptTaxCheckbox.checked) {
-                    showToast('warning', 'Aceptar términos', 'Debes aceptar los términos de la tasa de nacionalización para continuar.');
-                    return;
-                }
-                
-                // Verificar selección de compañía de envío
-                if (!document.querySelector('.shipping-company-option.selected')) {
-                    showToast('warning', 'Selección incompleta', 'Por favor, selecciona una empresa de transporte.');
-                    return;
-                }
-                
+                if (continueToPaymentBtn.disabled) return;
                 goToStep(3);
                 updatePaymentSummary();
             });
@@ -1496,6 +1458,8 @@
                     // Actualizar resúmenes
                     updateOrderSummary();
                     updateSelectionSummary();
+                    updateContinueToPaymentBtnState();
+                    updateContinueToPaymentBtnState();
 
                     // Notificar al usuario
                     showToast('info', 'Envío seleccionado', `Has elegido el envío ${option.querySelector('.shipping-title').textContent.trim()}.`);
@@ -1564,9 +1528,10 @@
                 option.addEventListener('click', () => {
                     // Eliminar selección previa
                     paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                    
+
                     // Seleccionar esta opción
                     option.classList.add('selected');
+                    processPaymentBtn.disabled = false;
                     
                     // Notificar al usuario
                     showToast('info', 'Método de pago', `Has seleccionado ${option.getAttribute('data-payment')} como método de pago.`);
@@ -1592,13 +1557,7 @@
             closeNationalizationBtn.addEventListener('click', continueAfterNationalization);
 
             // 11. Escuchar cambios en el checkbox de aceptación de tasas
-            acceptTaxCheckbox.addEventListener('change', function() {
-                if (this.checked) {
-                    continueToPaymentBtn.disabled = false;
-                } else {
-                    continueToPaymentBtn.disabled = true;
-                }
-            });
+            acceptTaxCheckbox.addEventListener('change', updateContinueToPaymentBtnState);
 
             // Manejar eventos de teclas para accesibilidad
             document.addEventListener('keydown', function(e) {
@@ -1615,33 +1574,8 @@
 
             // Inicialización
             updateCart();
-            
-            // Seleccionar por defecto la primera empresa de transporte
-            if (shippingCompanyOptions.length > 0) {
-                shippingCompanyOptions[0].classList.add('selected');
-                selectedShippingCompany = shippingCompanyOptions[0].getAttribute('data-company');
-                shippingDropdownBtn.querySelector('span').textContent = shippingCompanyOptions[0].querySelector('.shipping-company-text').textContent;
-            }
-            
-            // Seleccionar por defecto la opción de envío express
-            const expressOption = document.querySelector('.shipping-option[data-shipping="express"]');
-            if (expressOption) {
-                expressOption.classList.add('selected');
-            }
-
-            // Seleccionar por defecto el seguro premium
-            const premiumOption = document.querySelector('.insurance-option.premium');
-            if (premiumOption) {
-                premiumOption.classList.add('selected');
-            }
 
             updateSelectionSummary();
-
-            // Deshabilitar botón de continuar al pago hasta aceptar términos
-            continueToPaymentBtn.disabled = true;
-            
-            // Mostrar un toast de bienvenida
-            setTimeout(() => {
-                showToast('info', '¡Bienvenido a LatinPhone!', 'Selecciona tu país para comenzar tu compra.', 8000);
-            }, 1000);
+            updateContinueToPaymentBtnState();
+            processPaymentBtn.disabled = true;
         });
