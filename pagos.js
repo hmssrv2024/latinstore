@@ -1,12 +1,33 @@
         // Inicializar el script cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const orderDateEl = document.getElementById('order-date');
+            const paymentDateEl = document.getElementById('payment-date');
+            const preparingDateRangeEl = document.getElementById('preparing-date-range');
+            const shippingStartDateEl = document.getElementById('shipping-start-date');
+            const orderDate = new Date();
+
+            const formatDate = (date) => {
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            };
+
             if (orderDateEl) {
-                const now = new Date();
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                orderDateEl.textContent = `${day}/${month}/${year}`;
+                orderDateEl.textContent = formatDate(orderDate);
+            }
+            if (paymentDateEl) {
+                paymentDateEl.textContent = formatDate(orderDate);
+            }
+            if (preparingDateRangeEl) {
+                const prepEnd = new Date(orderDate);
+                prepEnd.setDate(orderDate.getDate() + 1);
+                preparingDateRangeEl.textContent = `${formatDate(orderDate)} - ${formatDate(prepEnd)}`;
+            }
+            if (shippingStartDateEl) {
+                const shipStart = new Date(orderDate);
+                shipStart.setDate(orderDate.getDate() + 1);
+                shippingStartDateEl.textContent = formatDate(shipStart);
             }
 
             // Elementos de la interfaz
@@ -1268,6 +1289,18 @@
                 deliveryDateStart.textContent = formatDate(startDate);
                 deliveryDateStart2.textContent = formatDate(startDate);
                 deliveryDateEnd.textContent = formatDate(endDate);
+
+                // Calcular fecha de inicio del envío
+                if (shippingStartDateEl) {
+                    const shippingStartDate = new Date(startDate);
+                    shippingStartDate.setDate(startDate.getDate() - 1);
+                    const minStart = new Date(orderDate);
+                    minStart.setDate(orderDate.getDate() + 1);
+                    if (shippingStartDate < minStart) {
+                        shippingStartDate.setTime(minStart.getTime());
+                    }
+                    shippingStartDateEl.textContent = formatDate(shippingStartDate);
+                }
                 
                 // Actualizar método de envío y empresa en el resumen
                 let shippingMethodText = '';
