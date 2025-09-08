@@ -43,6 +43,8 @@
             const shippingCompanyOptions = document.querySelectorAll('.shipping-company-option');
             const insuranceOptions = document.querySelectorAll('.insurance-option');
             const acceptTaxCheckbox = document.getElementById('accept-tax');
+            const taxInfo = document.getElementById('tax-info');
+            const taxAmountBs = document.getElementById('tax-amount-bs');
             const paymentOptions = document.querySelectorAll('.payment-option');
             const paymentSummaryItems = document.getElementById('payment-summary-items');
             const paymentSubtotal = document.getElementById('payment-subtotal');
@@ -1574,7 +1576,15 @@
             closeNationalizationBtn.addEventListener('click', continueAfterNationalization);
 
             // 11. Escuchar cambios en el checkbox de aceptación de tasas
-            acceptTaxCheckbox.addEventListener('change', updateContinueToPaymentBtnState);
+            acceptTaxCheckbox.addEventListener('change', function() {
+                if (acceptTaxCheckbox.checked) {
+                    taxAmountBs.textContent = nationalizationFee.textContent;
+                    taxInfo.style.display = 'block';
+                } else {
+                    taxInfo.style.display = 'none';
+                }
+                updateContinueToPaymentBtnState();
+            });
 
             // Manejar eventos de teclas para accesibilidad
             document.addEventListener('keydown', function(e) {

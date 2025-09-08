@@ -1727,6 +1727,7 @@
             position: relative;
             z-index: 1;
             line-height: 1.5;
+            text-align: justify;
         }
 
         .tax-checkbox {
@@ -1751,6 +1752,12 @@
             color: var(--secondary-color);
             cursor: pointer;
             line-height: 1.4;
+            text-align: justify;
+        }
+
+        .seniat-logo {
+            max-width: 15rem;
+            margin-top: 1rem;
         }
 
         /* Payment Methods Section mejorado */
