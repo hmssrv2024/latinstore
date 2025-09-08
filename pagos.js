@@ -158,6 +158,14 @@
                 'videojuegos': 'fas fa-gamepad'
             };
 
+            // Logos for specific brands
+            const brandLogos = {
+                apple: 'https://1000logos.net/wp-content/uploads/2017/02/Apple-Logosu.png',
+                samsung: 'https://www.logo.wine/a/logo/Samsung/Samsung-Logo.wine.svg',
+                xiaomi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xiaomi_logo_%282021-%29.svg/512px-Xiaomi_logo_%282021-%29.svg.png',
+                google: 'https://www.pngmart.com/files/23/Google-Logo-PNG-1.png'
+            };
+
             // Base de datos de productos del inventario proporcionado
             const inventory = {
                 smartphones: {
@@ -534,9 +542,12 @@
                     const brandCard = document.createElement('div');
                     brandCard.className = 'brand-card';
                     brandCard.setAttribute('data-brand', brand);
-                    
+
+                    const logo = brandLogos[brand];
                     brandCard.innerHTML = `
-                        <div class="brand-icon">${brand.toUpperCase()}</div>
+                        <div class="brand-icon">
+                            ${logo ? `<img src="${logo}" alt="${brand} logo">` : brand.toUpperCase()}
+                        </div>
                         <div class="brand-info">
                             <div class="brand-name">${brand.charAt(0).toUpperCase() + brand.slice(1)}</div>
                         </div>
