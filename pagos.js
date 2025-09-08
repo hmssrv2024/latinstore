@@ -737,9 +737,6 @@
                         </div>
                     `;
                     
-                    // Deshabilitar botón de continuar
-                    continueToShippingBtn.disabled = true;
-                    
                     // Actualizar resumen
                     updateOrderSummary();
                     return;
@@ -846,9 +843,6 @@
                         removeFromCart(productId);
                     });
                 });
-                
-                // Habilitar botón de continuar
-                continueToShippingBtn.disabled = false;
                 
                 // Actualizar resumen
                 updateOrderSummary();
@@ -999,10 +993,7 @@
             }
 
             function updateContinueToPaymentBtnState() {
-                const shippingSelected = document.querySelector('.shipping-option.selected');
-                const companySelected = document.querySelector('.shipping-company-option.selected');
-                const insuranceSelected = document.querySelector('.insurance-option.selected');
-                continueToPaymentBtn.disabled = !(shippingSelected && companySelected && insuranceSelected && acceptTaxCheckbox.checked);
+                // La validación se realiza al intentar continuar al pago.
             }
 
             // Función para cambiar de paso
@@ -1131,6 +1122,7 @@
                 // Validar información de tarjeta si es el método seleccionado
                 const selectedPaymentOption = document.querySelector('.payment-option.selected');
                 if (!selectedPaymentOption) {
+                    showToast('error', 'Método de pago', 'Por favor, selecciona un método de pago.');
                     return;
                 }
                 const selectedPaymentMethod = selectedPaymentOption.getAttribute('data-payment');
@@ -1490,7 +1482,25 @@
             });
 
             continueToPaymentBtn.addEventListener('click', () => {
-                if (continueToPaymentBtn.disabled) return;
+                const missing = [];
+                if (!document.querySelector('.shipping-option.selected')) {
+                    missing.push('el método de envío');
+                }
+                if (!document.querySelector('.shipping-company-option.selected')) {
+                    missing.push('la empresa de envío');
+                }
+                if (!document.querySelector('.insurance-option.selected')) {
+                    missing.push('una opción de seguro');
+                }
+                if (!acceptTaxCheckbox.checked) {
+                    missing.push('aceptar la tasa de nacionalización');
+                }
+
+                if (missing.length > 0) {
+                    showToast('warning', 'Faltan datos', `Para continuar, debes seleccionar ${missing.join(', ')}.`);
+                    return;
+                }
+
                 goToStep(3);
                 updatePaymentSummary();
             });
@@ -1600,8 +1610,7 @@
 
                     // Seleccionar esta opción
                     option.classList.add('selected');
-                    processPaymentBtn.disabled = false;
-                    
+
                     // Notificar al usuario
                     showToast('info', 'Método de pago', `Has seleccionado ${option.getAttribute('data-payment')} como método de pago.`);
                 });
@@ -1654,5 +1663,4 @@
 
             updateSelectionSummary();
             updateContinueToPaymentBtnState();
-            processPaymentBtn.disabled = true;
         });
