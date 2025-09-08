@@ -76,6 +76,9 @@
             const cardPinInput = document.getElementById('card-pin');
             const whatsappBtn = document.getElementById('whatsapp-btn');
             const whatsappSupport = document.getElementById('whatsapp-support');
+            const addMoreOverlay = document.getElementById('add-more-overlay');
+            const addMoreBtn = document.getElementById('add-more-btn');
+            const continueCheckoutBtn = document.getElementById('continue-checkout-btn');
 
             // Variables para almacenar el estado del pedido
             const cart = [];
@@ -618,6 +621,7 @@
                         
                         // Notificar al usuario
                         showToast('success', 'Producto añadido', `Has añadido ${quantity} ${quantity > 1 ? 'unidades' : 'unidad'} de ${addBtn.getAttribute('data-name')} a tu carrito.`);
+                        addMoreOverlay.classList.add('active');
                     });
                     
                     productGrid.appendChild(productCard);
@@ -1324,6 +1328,15 @@
                 
                 // Notificar al usuario
                 showToast('info', 'Elige un regalo', 'Como agradecimiento por tu compra, puedes elegir un regalo gratis.');
+            });
+
+            addMoreBtn.addEventListener('click', () => {
+                addMoreOverlay.classList.remove('active');
+            });
+
+            continueCheckoutBtn.addEventListener('click', () => {
+                addMoreOverlay.classList.remove('active');
+                continueToShippingBtn.click();
             });
 
             backToProductsBtn.addEventListener('click', () => {
