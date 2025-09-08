@@ -2042,6 +2042,20 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .order-status {
+            background: var(--background-gradient);
+            padding: 3.5rem;
+            border-radius: var(--radius-lg);
+            max-width: 70rem;
+            margin: 0 auto 5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(210, 210, 215, 0.5);
+        }
+
+        .order-status .delivery-timeline {
+            margin: 0;
+        }
+
         .delivery-timeline {
             display: flex;
             flex-direction: column;
