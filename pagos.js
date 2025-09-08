@@ -168,7 +168,10 @@
                 oneplus: 'https://www.logo.wine/a/logo/OnePlus/OnePlus-Logo.wine.svg',
                 oppo: 'https://www.logo.wine/a/logo/Oppo/Oppo-Logo.wine.svg',
                 honor: 'https://www.logo.wine/a/logo/Honor_(brand)/Honor_(brand)-Logo.wine.svg',
-                huawei: 'https://www.logo.wine/a/logo/Huawei/Huawei-Logo.wine.svg'
+                huawei: 'https://www.logo.wine/a/logo/Huawei/Huawei-Logo.wine.svg',
+                realme: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg/609px-Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg.png',
+                nubia: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nubia_logo.svg/512px-Nubia_logo.svg.png',
+                vivo: 'https://www.logo.wine/a/logo/Vivo_(technology_company)/Vivo_(technology_company)-Logo.wine.svg'
             };
 
             // Base de datos de productos del inventario proporcionado
