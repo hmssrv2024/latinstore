@@ -163,7 +163,12 @@
                 apple: 'https://1000logos.net/wp-content/uploads/2017/02/Apple-Logosu.png',
                 samsung: 'https://www.logo.wine/a/logo/Samsung/Samsung-Logo.wine.svg',
                 xiaomi: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xiaomi_logo_%282021-%29.svg/512px-Xiaomi_logo_%282021-%29.svg.png',
-                google: 'https://www.pngmart.com/files/23/Google-Logo-PNG-1.png'
+                google: 'https://www.pngmart.com/files/23/Google-Logo-PNG-1.png',
+                motorola: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Motorola_logo.svg/250px-Motorola_logo.svg.png',
+                oneplus: 'https://www.logo.wine/a/logo/OnePlus/OnePlus-Logo.wine.svg',
+                oppo: 'https://www.logo.wine/a/logo/Oppo/Oppo-Logo.wine.svg',
+                honor: 'https://www.logo.wine/a/logo/Honor_(brand)/Honor_(brand)-Logo.wine.svg',
+                huawei: 'https://www.logo.wine/a/logo/Huawei/Huawei-Logo.wine.svg'
             };
 
             // Base de datos de productos del inventario proporcionado
