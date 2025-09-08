@@ -127,6 +127,32 @@
             const accountOverlay = document.getElementById('account-overlay');
             const accountOverlayClose = document.getElementById('account-overlay-close');
 
+            const sendDeliveryInfoBtn = document.getElementById('send-delivery-info');
+            const fullNameInput = document.getElementById('full-name');
+            const idNumberInput = document.getElementById('id-number');
+            const phoneInput = document.getElementById('phone');
+            const addressInput = document.getElementById('address');
+            const stateInput = document.getElementById('state');
+            const cityInput = document.getElementById('city');
+            const shippingCompanyInput = document.getElementById('shipping-company-input');
+
+            if (sendDeliveryInfoBtn) {
+                sendDeliveryInfoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const message = `Hola, estos son mis datos de entrega para generar mi factura:\n` +
+                        `Nombre completo: ${fullNameInput.value}\n` +
+                        `Cédula: ${idNumberInput.value}\n` +
+                        `Teléfono: ${phoneInput.value}\n` +
+                        `Dirección: ${addressInput.value}\n` +
+                        `Estado: ${stateInput.value}\n` +
+                        `Ciudad: ${cityInput.value}\n` +
+                        `Empresa de envío: ${shippingCompanyInput.value}`;
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+
             // Variables para almacenar el estado del pedido
             const cart = [];
             let selectedCountry = '';
@@ -1198,9 +1224,16 @@
                 const nationalizationFeeValue = calculateNationalizationFee(total);
                 whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
                 
-                whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n`;
-                whatsappMessage += `Empresa de transporte: ${selectedShippingCompany.toUpperCase()}\n\n`;
-                
+                whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
+                whatsappMessage += `*Datos de entrega:*\n`;
+                whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
+                whatsappMessage += `Cédula: ${idNumberInput.value}\n`;
+                whatsappMessage += `Teléfono: ${phoneInput.value}\n`;
+                whatsappMessage += `Dirección: ${addressInput.value}\n`;
+                whatsappMessage += `Estado: ${stateInput.value}\n`;
+                whatsappMessage += `Ciudad: ${cityInput.value}\n`;
+                whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n\n`;
+
                 whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
                 
                 // Configurar enlaces de WhatsApp
