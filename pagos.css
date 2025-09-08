@@ -97,6 +97,33 @@
             gap: 0.5rem;
         }
 
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-link.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .cart-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        #cart-count {
+            background: var(--error-color);
+            color: var(--white);
+            border-radius: var(--radius-full);
+            padding: 0 0.5rem;
+            font-size: 1.2rem;
+            line-height: 1.2;
+        }
+
         .checkout-container {
             max-width: 120rem;
             margin: 0 auto;

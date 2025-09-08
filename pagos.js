@@ -117,6 +117,13 @@
             const MIN_NATIONALIZATION_AMOUNT_BS = 1800; // Monto mínimo de tasa de nacionalización en Bs
             const MIN_NATIONALIZATION_THRESHOLD_USD = 1000; // Umbral en USD para aplicar lógica especial
 
+            function updateCartCount() {
+                const cartCountEl = document.getElementById('cart-count');
+                if (!cartCountEl) return;
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountEl.textContent = count;
+            }
+
             // Generar número de orden aleatorio
             function generateOrderNumber() {
                 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -689,6 +696,7 @@
 
             // Función para actualizar la interfaz del carrito
             function updateCart() {
+                updateCartCount();
                 if (cart.length === 0) {
                     // Carrito vacío
                     cartItems.innerHTML = `
@@ -1171,13 +1179,22 @@
             // Función para continuar después del overlay de nacionalización
             function continueAfterNationalization() {
                 nationalizationOverlay.classList.remove('active');
-                
+
+                cart.length = 0;
+                updateCartCount();
+                const accountLink = document.getElementById('account-link');
+                if (accountLink) {
+                    accountLink.classList.remove('disabled');
+                    accountLink.setAttribute('href', 'paneldecontrol.html');
+                    accountLink.removeAttribute('aria-disabled');
+                }
+
                 // Pago exitoso, avanzar a la confirmación
                 goToStep(4);
-                
+
                 // Actualizar información de entrega
                 updateDeliveryDates();
-                
+
                 // Mostrar confeti para celebrar
                 if (window.confetti) {
                     confetti({
@@ -1186,10 +1203,10 @@
                         origin: { y: 0.6 }
                     });
                 }
-                
+
                 // Generar código de promoción aleatorio
                 generatePromoCode();
-                
+
                 // Notificar al usuario
                 showToast('success', '¡Compra exitosa!', 'Tu pago ha sido procesado correctamente.', 8000);
             }
