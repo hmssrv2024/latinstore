@@ -688,42 +688,34 @@
                                 <div class="delivery-form-grid">
                                     <div class="form-group">
                                         <label class="form-label required">Nombre completo</label>
-                                        <input type="text" class="form-input" placeholder="Nombre y apellido" required>
+                                        <input type="text" id="full-name" class="form-input" placeholder="Nombre y apellido" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label required">Correo electrónico</label>
-                                        <input type="email" class="form-input" placeholder="ejemplo@correo.com" required>
+                                        <label class="form-label required">Cédula</label>
+                                        <input type="text" id="id-number" class="form-input" placeholder="V-12345678" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label required">Teléfono</label>
-                                        <input type="tel" class="form-input" placeholder="Incluye código de país" required>
+                                        <input type="tel" id="phone" class="form-input" placeholder="+58 412-1234567" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label required">Número de identificación</label>
-                                        <input type="text" class="form-input" placeholder="Cédula, DNI, Pasaporte, etc." required>
+                                        <label class="form-label required">Estado</label>
+                                        <input type="text" id="state" class="form-input" placeholder="Estado" required>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label required">Ciudad</label>
-                                        <input type="text" class="form-input" placeholder="Ciudad" required>
+                                        <input type="text" id="city" class="form-input" placeholder="Ciudad" required>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label required">Estado/Provincia</label>
-                                        <input type="text" class="form-input" placeholder="Estado o provincia" required>
+                                        <label class="form-label required">Empresa de envío</label>
+                                        <input type="text" id="shipping-company-input" class="form-input" placeholder="Nombre de la empresa" required>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="form-label required">Código postal</label>
-                                        <input type="text" class="form-input" placeholder="Código postal" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label required">Dirección completa</label>
-                                        <textarea class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Instrucciones adicionales</label>
-                                        <textarea class="form-input" rows="2" placeholder="Indicaciones especiales para la entrega (opcional)"></textarea>
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label class="form-label required">Dirección de casa</label>
+                                        <textarea id="address" class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
                                     </div>
                                     <div class="form-group" style="grid-column: span 2; text-align: center; margin-top: 1rem;">
-                                        <button class="btn btn-primary" style="min-width: 20rem;">
+                                        <button class="btn btn-primary" id="send-delivery-info" style="min-width: 20rem;">
                                             <i class="fas fa-paper-plane btn-icon"></i>Enviar información
                                         </button>
                                     </div>
