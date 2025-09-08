@@ -24,7 +24,10 @@
 <body>
     <nav class="top-bar">
         <a href="index.html" class="top-link"><i class="fas fa-home"></i> Inicio</a>
-        <a href="paneldecontrol.html" class="top-link"><i class="fas fa-user"></i> Mi cuenta</a>
+        <div class="top-right">
+            <a href="#" class="top-link disabled" id="account-link" aria-disabled="true"><i class="fas fa-user"></i> Mi cuenta</a>
+            <div class="top-link cart-indicator"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></div>
+        </div>
     </nav>
     <div class="checkout-container">
         <!-- Cabecera de la pasarela de pago -->
