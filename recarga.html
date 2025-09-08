@@ -4041,12 +4041,12 @@
           <i class="fas fa-upload"></i> Comprobante de Pago
         </div>
         
-        <label class="receipt-upload" id="mobile-receipt-upload" for="mobile-receipt-file">
+        <div id="mobile-receipt-upload" class="receipt-upload">
           <i class="fas fa-cloud-upload-alt"></i>
           <div class="receipt-upload-title">Subir Comprobante</div>
           <div class="receipt-upload-subtitle">Comprobante de tu recarga desde tu <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnBzNdjl6bNp-nIdaiHVENczJhwlJNA7ocsyiOObMmzbu8at0dY5yGcZ9cLxLF39qI6gwNfqBxlkTDC0txVULEwQVwGkeEzN0Jq9MRTRagA48mh18UqTlR4WhsXOLAEZugUyhqJHB19xJgnkpe-S5VOWFgzpKFwctv3XP9XhH41vNTvq0ZS-nik58Qhr-O/s320/remeex.png" alt="REMEEX" style="height:1em;vertical-align:middle;"> <br>Formatos aceptados: JPG, PNG, PDF (máx. 5MB)</div>
-        </label>
-        <input type="file" id="mobile-receipt-file" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+          <input type="file" id="mobile-receipt-file" accept="image/jpeg,image/png,application/pdf" style="display: none;">
+        </div>
         
         <div class="receipt-preview" id="mobile-receipt-preview">
           <div class="receipt-preview-container">
@@ -7365,8 +7365,8 @@ function updateVerificationProcessingBanner() {
       const mobileReceiptRemove = document.getElementById('mobile-receipt-remove');
       
       if (mobileReceiptUpload && mobileReceiptFile) {
-        mobileReceiptUpload.addEventListener('click', function() {
-          // Reset inactivity timer
+        mobileReceiptUpload.addEventListener('click', () => {
+          mobileReceiptFile.click();
           resetInactivityTimer();
         });
 
