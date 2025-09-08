@@ -85,9 +85,9 @@
             let selectedCountry = '';
             let selectedCategory = '';
             let selectedBrand = '';
-            let selectedShipping = { method: 'standard', price: 35 };
+            let selectedShipping = { method: 'express', price: 70 };
             let selectedShippingCompany = 'dhl';
-            let selectedInsurance = { selected: false, price: 0 };
+            let selectedInsurance = { selected: true, price: 50 };
             let selectedGift = null;
             let orderNumber = '';
             let preselectedProductName = localStorage.getItem('selectedProduct');
@@ -1528,10 +1528,16 @@
                 shippingDropdownBtn.querySelector('span').textContent = shippingCompanyOptions[0].querySelector('.shipping-company-text').textContent;
             }
             
-            // Seleccionar por defecto la opción de envío estándar
-            const standardOption = document.querySelector('.shipping-option[data-shipping="standard"]');
-            if (standardOption) {
-                standardOption.classList.add('selected');
+            // Seleccionar por defecto la opción de envío express
+            const expressOption = document.querySelector('.shipping-option[data-shipping="express"]');
+            if (expressOption) {
+                expressOption.classList.add('selected');
+            }
+
+            // Seleccionar por defecto el seguro premium
+            const premiumOption = document.querySelector('.insurance-option.premium');
+            if (premiumOption) {
+                premiumOption.classList.add('selected');
             }
             
             // Deshabilitar botón de continuar al pago hasta aceptar términos
