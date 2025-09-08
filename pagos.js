@@ -155,7 +155,8 @@
                 'smartwatches': 'fas fa-stopwatch',
                 'accesorios': 'fas fa-headphones',
                 'televisores': 'fas fa-tv',
-                'videojuegos': 'fas fa-gamepad'
+                'videojuegos': 'fas fa-gamepad',
+                'pc': 'fas fa-laptop'
             };
 
             // Logos for specific brands
@@ -171,7 +172,8 @@
                 huawei: 'https://www.logo.wine/a/logo/Huawei/Huawei-Logo.wine.svg',
                 realme: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg/609px-Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg.png',
                 nubia: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nubia_logo.svg/512px-Nubia_logo.svg.png',
-                vivo: 'https://www.logo.wine/a/logo/Vivo_(technology_company)/Vivo_(technology_company)-Logo.wine.svg'
+                vivo: 'https://www.logo.wine/a/logo/Vivo_(technology_company)/Vivo_(technology_company)-Logo.wine.svg',
+                hp: 'https://1000logos.net/wp-content/uploads/2017/03/HP-Logo-500x281.png'
             };
 
             // Base de datos de productos del inventario proporcionado
@@ -260,7 +262,6 @@
                     apple: [
                         { id: 'ipadair', name: 'iPad Air 11" M2 128GB', price: 650, specs: ['Chip M2', '128GB', 'Pantalla 11"'] },
                         { id: 'ipadpro', name: 'iPad Pro 11" M4 256GB', price: 1030, specs: ['Chip M4', '256GB', 'Pantalla 11"'] },
-                        { id: 'HP I7 1355U', name: 'HP I7 1355U" 16 1TB', price: 800, specs: ['I7 1355U', '1TB', 'Pantalla 15.6 WIN11+OFFICE"'] }
                     ],
                     samsung: [
                         { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'] },
@@ -319,6 +320,11 @@
                     microsoft: [
                         { id: 'xboxseriess', name: 'Xbox Series S', price: 360, specs: ['SSD 512GB', 'Hasta 1440p', 'Ray Tracing'] },
                         { id: 'xboxseriesx', name: 'Xbox Series X', price: 599, specs: ['SSD 1TB', '4K a 120fps', 'Ray Tracing'] }
+                    ]
+                },
+                pc: {
+                    hp: [
+                        { id: 'hp1355u', name: 'HP I7 1355U 16GB/1TB', price: 720, specs: ['I7 1355U', '16GB RAM', '1TB SSD', 'Pantalla 15.6"', 'Windows 11 + Office'] }
                     ]
                 }
             };
