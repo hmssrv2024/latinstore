@@ -102,6 +102,9 @@
             const addMoreOverlay = document.getElementById('add-more-overlay');
             const addMoreBtn = document.getElementById('add-more-btn');
             const continueCheckoutBtn = document.getElementById('continue-checkout-btn');
+            const accountLink = document.getElementById('account-link');
+            const accountOverlay = document.getElementById('account-overlay');
+            const accountOverlayClose = document.getElementById('account-overlay-close');
 
             // Variables para almacenar el estado del pedido
             const cart = [];
@@ -1209,7 +1212,6 @@
 
                 cart.length = 0;
                 updateCartCount();
-                const accountLink = document.getElementById('account-link');
                 if (accountLink) {
                     accountLink.classList.remove('disabled');
                     accountLink.setAttribute('href', 'paneldecontrol.html');
@@ -1459,6 +1461,29 @@
                 addMoreOverlay.classList.remove('active');
                 continueToShippingBtn.click();
             });
+
+            if (accountLink) {
+                accountLink.addEventListener('click', (e) => {
+                    if (accountLink.classList.contains('disabled')) {
+                        e.preventDefault();
+                        if (accountOverlay) {
+                            accountOverlay.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            if (accountOverlay && accountOverlayClose) {
+                accountOverlayClose.addEventListener('click', () => {
+                    accountOverlay.classList.remove('active');
+                });
+
+                accountOverlay.addEventListener('click', (e) => {
+                    if (e.target === accountOverlay) {
+                        accountOverlay.classList.remove('active');
+                    }
+                });
+            }
 
             backToProductsBtn.addEventListener('click', () => {
                 goToStep(1);
