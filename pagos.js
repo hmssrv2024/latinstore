@@ -60,6 +60,27 @@
             const shippingMethod = document.getElementById('shipping-method');
             const shippingCompanyElement = document.getElementById('shipping-company');
             const giftGrid = document.getElementById('gift-grid');
+            const giftSectionHeader = document.querySelector('.gift-section-header');
+            const selectionSummary = document.getElementById('selection-summary');
+            const summaryGift = document.getElementById('summary-gift');
+            const summaryShipping = document.getElementById('summary-shipping');
+            const summaryCompany = document.getElementById('summary-company');
+            const summaryInsurance = document.getElementById('summary-insurance');
+            const giftSummary = document.getElementById('gift-summary');
+            const giftSummaryText = document.getElementById('gift-summary-text');
+            const changeGiftBtn = document.getElementById('change-gift');
+            const shippingSummary = document.getElementById('shipping-summary');
+            const shippingSummaryText = document.getElementById('shipping-summary-text');
+            const changeShippingBtn = document.getElementById('change-shipping');
+            const shippingCompanySummary = document.getElementById('shipping-company-summary');
+            const shippingCompanySummaryText = document.getElementById('shipping-company-summary-text');
+            const changeShippingCompanyBtn = document.getElementById('change-shipping-company');
+            const insuranceOptionsContainer = document.querySelector('.insurance-options');
+            const insuranceSummary = document.getElementById('insurance-summary');
+            const insuranceSummaryText = document.getElementById('insurance-summary-text');
+            const changeInsuranceBtn = document.getElementById('change-insurance');
+            const shippingOptionsContainer = document.querySelector('.shipping-options');
+            const shippingDropdownContainer = document.querySelector('.shipping-dropdown');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
             const deliveryDateStart = document.getElementById('delivery-date-start');
             const deliveryDateStart2 = document.getElementById('delivery-date-start-2');
@@ -457,11 +478,18 @@
                         document.querySelectorAll('.gift-card.selected').forEach(card => {
                             card.classList.remove('selected');
                         });
-                        
+
                         // Seleccionar este regalo
                         giftCard.classList.add('selected');
                         selectedGift = product;
-                        
+
+                        // Mostrar resumen compacto
+                        giftSectionHeader.classList.add('hidden');
+                        giftGrid.classList.add('hidden');
+                        giftSummaryText.textContent = `Regalo seleccionado: ${product.name}`;
+                        giftSummary.classList.remove('hidden');
+                        updateSelectionSummary();
+
                         // Mostrar notificación
                         showToast('success', '¡Regalo seleccionado!', `Has elegido ${product.name} como tu regalo gratuito.`);
                     });
@@ -894,6 +922,26 @@
                 orderTotal.textContent = `$${total.toFixed(2)}`;
             }
 
+            function updateSelectionSummary() {
+                summaryGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
+                const selectedShipTitle = document.querySelector('.shipping-option.selected .shipping-title');
+                if (selectedShipTitle) {
+                    const shipText = `${selectedShipTitle.textContent.trim()} ($${selectedShipping.price.toFixed(2)})`;
+                    summaryShipping.textContent = `Envío: ${shipText}`;
+                    shippingSummaryText.textContent = shipText;
+                }
+                const companyText = shippingDropdownBtn.querySelector('span').textContent.trim();
+                summaryCompany.textContent = `Empresa: ${companyText}`;
+                shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
+                if (selectedInsurance.selected) {
+                    summaryInsurance.textContent = `Seguro: Premium ($${selectedInsurance.price.toFixed(2)})`;
+                    insuranceSummaryText.textContent = `Seguro Premium - $${selectedInsurance.price.toFixed(2)}`;
+                } else {
+                    summaryInsurance.textContent = 'Seguro: Sin seguro';
+                    insuranceSummaryText.textContent = 'Sin seguro';
+                }
+            }
+
             // Función para actualizar el resumen de productos en la sección de pago
             function updatePaymentSummary() {
                 paymentSummaryItems.innerHTML = '';
@@ -1308,19 +1356,26 @@
                 option.addEventListener('click', function() {
                     // Remover selección previa
                     shippingCompanyOptions.forEach(opt => opt.classList.remove('selected'));
-                    
+
                     // Seleccionar esta opción
                     option.classList.add('selected');
-                    
+
                     // Actualizar empresa seleccionada
                     selectedShippingCompany = option.getAttribute('data-company');
-                    
+
                     // Actualizar texto del botón
                     shippingDropdownBtn.querySelector('span').textContent = option.querySelector('.shipping-company-text').textContent;
-                    
+
                     // Cerrar dropdown
                     shippingDropdownMenu.classList.remove('active');
-                    
+                    shippingDropdownContainer.classList.add('hidden');
+                    const companyText = option.querySelector('.shipping-company-text').textContent;
+                    shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
+                    shippingCompanySummary.classList.remove('hidden');
+
+                    // Actualizar resúmenes
+                    updateSelectionSummary();
+
                     // Notificar al usuario
                     showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
                 });
@@ -1419,19 +1474,26 @@
                 option.addEventListener('click', () => {
                     // Eliminar selección previa
                     shippingOptions.forEach(opt => opt.classList.remove('selected'));
-                    
+
                     // Seleccionar esta opción
                     option.classList.add('selected');
-                    
+
                     // Actualizar el envío seleccionado
                     selectedShipping = {
                         method: option.getAttribute('data-shipping'),
                         price: parseFloat(option.getAttribute('data-price'))
                     };
-                    
-                    // Actualizar resumen
+
+                    // Mostrar resumen compacto
+                    shippingOptionsContainer.classList.add('hidden');
+                    const shipText = `${option.querySelector('.shipping-title').textContent.trim()} - $${selectedShipping.price.toFixed(2)}`;
+                    shippingSummaryText.textContent = shipText;
+                    shippingSummary.classList.remove('hidden');
+
+                    // Actualizar resúmenes
                     updateOrderSummary();
-                    
+                    updateSelectionSummary();
+
                     // Notificar al usuario
                     showToast('info', 'Envío seleccionado', `Has elegido el envío ${option.querySelector('.shipping-title').textContent.trim()}.`);
                 });
@@ -1451,17 +1513,47 @@
                         selected: option.getAttribute('data-insurance') === 'true',
                         price: parseFloat(option.getAttribute('data-price'))
                     };
-                    
-                    // Actualizar resumen
+
+                    // Mostrar resumen compacto
+                    insuranceOptionsContainer.classList.add('hidden');
+                    insuranceSummaryText.textContent = selectedInsurance.selected ? `Seguro Premium - $${selectedInsurance.price.toFixed(2)}` : 'Sin seguro';
+                    insuranceSummary.classList.remove('hidden');
+
+                    // Actualizar resúmenes
                     updateOrderSummary();
-                    
+                    updateSelectionSummary();
+
                     // Notificar al usuario
-                    const insuranceMsg = selectedInsurance.selected ? 
-                        'Has seleccionado el seguro premium para tu dispositivo.' : 
+                    const insuranceMsg = selectedInsurance.selected ?
+                        'Has seleccionado el seguro premium para tu dispositivo.' :
                         'Has elegido no incluir seguro para tu dispositivo.';
-                    
+
                     showToast('info', 'Seguro actualizado', insuranceMsg);
                 });
+            });
+
+            changeGiftBtn.addEventListener('click', () => {
+                giftSummary.classList.add('hidden');
+                giftSectionHeader.classList.remove('hidden');
+                giftGrid.classList.remove('hidden');
+                selectedGift = null;
+                document.querySelectorAll('.gift-card.selected').forEach(card => card.classList.remove('selected'));
+                updateSelectionSummary();
+            });
+
+            changeShippingBtn.addEventListener('click', () => {
+                shippingSummary.classList.add('hidden');
+                shippingOptionsContainer.classList.remove('hidden');
+            });
+
+            changeShippingCompanyBtn.addEventListener('click', () => {
+                shippingCompanySummary.classList.add('hidden');
+                shippingDropdownContainer.classList.remove('hidden');
+            });
+
+            changeInsuranceBtn.addEventListener('click', () => {
+                insuranceSummary.classList.add('hidden');
+                insuranceOptionsContainer.classList.remove('hidden');
             });
 
             // 7. Métodos de pago
@@ -1539,7 +1631,9 @@
             if (premiumOption) {
                 premiumOption.classList.add('selected');
             }
-            
+
+            updateSelectionSummary();
+
             // Deshabilitar botón de continuar al pago hasta aceptar términos
             continueToPaymentBtn.disabled = true;
             
