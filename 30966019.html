@@ -212,6 +212,7 @@
           <h1>Tracking de Envío</h1>
           <div class="id">
             <span class="pill">Orden: <b data-id="orderId">LP-X9D8NVWE</b></span>
+            <span class="pill" id="customerNameWrap" style="display:none;">Cliente: <b id="customerName"></b></span>
             <span class="pill paid">Todo pago ✓</span>
           </div>
         </div>
@@ -267,7 +268,7 @@
         <h3>Datos del paquete</h3>
         <div class="facts">
           <div class="row"><div class="kv">Estado</div><div class="val" id="stateTxt">Calculando...</div></div>
-          <div class="row"><div class="kv">Courier internacional</div><div class="val">DHL • <span id="dhlAwb"></span></div></div>
+          <div class="row"><div class="kv">Courier internacional</div><div class="val">DHL • <a id="dhlAwbLink" target="_blank"><span id="dhlAwb"></span></a></div></div>
           <div class="row"><div class="kv">Courier local</div><div class="val">Liberty Express</div></div>
           <div class="row"><div class="kv">Origen</div><div class="val">Doral, Florida (USA)</div></div>
           <div class="row"><div class="kv">Destino final</div><div class="val" id="finalDest"></div></div>
@@ -291,7 +292,21 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
+  const orders = JSON.parse(localStorage.getItem('lpOrders') || '[]');
+  const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
+  const latestOrder = orders[orders.length - 1];
+
   // ====== 1. DATOS DEL ENVÍO (Puedes editar aquí) ======
+  const defaultSteps = [
+      { date: "2025-09-07T13:15:00Z", title: "Pago confirmado", meta: "LatinPhone • Todo al día", courier: "LATINPHONE" },
+      { date: "2025-09-07T17:40:00Z", title: "Recibido en almacén", meta: "Doral, FL", courier: "LATINPHONE" },
+      { date: "2025-09-08T03:20:00Z", title: "Salida de centro de clasificación", meta: "DHL • Miami Hub", courier: "DHL" },
+      { date: "2025-09-09T12:10:00Z", title: "Arribo a Venezuela (CCS)", meta: "DHL • Caracas", courier: "DHL" },
+      { date: "2025-09-09T18:00:00Z", title: "Traspaso de courier", meta: "DHL → Liberty Express", courier: "LIBERTY" },
+      { date: "2025-09-10T14:45:00Z", title: "En ruta a sucursal", meta: "Liberty • Acarigua", courier: "LIBERTY" },
+      { date: "2025-09-10T21:00:00Z", title: "Listo para retiro", meta: `Liberty — ${"C.C. Rupica"}`, courier: "LIBERTY" }
+  ];
+
   const data = {
     orderId: "LP-X9D8NVWE",
     paid: true,
@@ -300,16 +315,26 @@ document.addEventListener('DOMContentLoaded', () => {
     dhlAwb: "9876 4521 309",
     handoffUTC: "2025-09-09T18:00:00Z",
     libertyBranch: "C.C. Rupica, Acarigua",
-    steps: [
-      { date: "2025-09-07T13:15:00Z", title: "Pago confirmado", meta: "LatinPhone • Todo al día", courier: "LATINPHONE" },
-      { date: "2025-09-07T17:40:00Z", title: "Recibido en almacén", meta: "Doral, FL", courier: "LATINPHONE" },
-      { date: "2025-09-08T03:20:00Z", title: "Salida de centro de clasificación", meta: "DHL • Miami Hub", courier: "DHL" },
-      { date: "2025-09-09T12:10:00Z", title: "Arribo a Venezuela (CCS)", meta: "DHL • Caracas", courier: "DHL" },
-      { date: "2025-09-09T18:00:00Z", title: "Traspaso de courier", meta: "DHL → Liberty Express", courier: "LIBERTY" },
-      { date: "2025-09-10T14:45:00Z", title: "En ruta a sucursal", meta: "Liberty • Acarigua", courier: "LIBERTY" },
-      { date: "2025-09-10T21:00:00Z", title: "Listo para retiro", meta: `Liberty — ${"C.C. Rupica"}`, courier: "LIBERTY" }
-    ]
+    steps: defaultSteps
   };
+
+  if (latestOrder) {
+    data.orderId = latestOrder.id || data.orderId;
+    data.purchaseUTC = latestOrder.date ? new Date(latestOrder.date).toISOString() : data.purchaseUTC;
+    if (latestOrder.shipping) {
+      data.etaUTC = latestOrder.shipping.eta ? new Date(latestOrder.shipping.eta).toISOString() : data.etaUTC;
+      if (latestOrder.shipping.tracking) data.dhlAwb = latestOrder.shipping.tracking;
+      if (latestOrder.shipping.steps && latestOrder.shipping.steps.length) {
+        const userSteps = latestOrder.shipping.steps.map(s => ({
+          date: s.when.includes('T') ? s.when + 'Z' : s.when.replace(' ', 'T') + 'Z',
+          title: s.text,
+          meta: '',
+          courier: (latestOrder.shipping.courier || '').toUpperCase() || 'LATINPHONE'
+        }));
+        data.steps = userSteps.concat(defaultSteps.slice(1));
+      }
+    }
+  }
 
   // ====== 2. ELEMENTOS DEL DOM ======
   const DOMElements = {
@@ -327,6 +352,9 @@ document.addEventListener('DOMContentLoaded', () => {
     notifyBtn: document.getElementById('notifyBtn'),
     copyLinkBtn: document.getElementById('copyLink'),
     printBtn: document.getElementById('printBtn'),
+    customerNameWrap: document.getElementById('customerNameWrap'),
+    customerName: document.getElementById('customerName'),
+    dhlAwbLink: document.getElementById('dhlAwbLink'),
   };
 
   // ====== 3. UTILIDADES (Formateo de fechas) ======
@@ -351,8 +379,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // ====== 4. RENDERIZADO INICIAL (Contenido que no cambia) ======
   function renderStaticContent() {
     DOMElements.orderId.textContent = data.orderId;
+    if (user.name) {
+      DOMElements.customerName.textContent = user.name;
+      DOMElements.customerNameWrap.style.display = 'inline-flex';
+    }
     DOMElements.eta.textContent = fmtDate(data.etaUTC);
     DOMElements.dhlAwb.textContent = `AWB: ${data.dhlAwb}`;
+    if (DOMElements.dhlAwbLink) {
+      const awbClean = data.dhlAwb.replace(/\s+/g, '');
+      DOMElements.dhlAwbLink.href = `https://www.dhl.com/global-en/home/tracking/tracking-express.html?submit=1&tracking-id=${encodeURIComponent(awbClean)}`;
+    }
     DOMElements.finalDest.textContent = `Liberty Express — ${data.libertyBranch}`;
 
     // Renderizar Timeline (estructura)
