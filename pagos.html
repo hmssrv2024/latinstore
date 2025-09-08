@@ -76,8 +76,9 @@
                     </div>
                 </div>
 
-                <h2 class="section-title"><i class="fas fa-globe-americas"></i> Selecciona tu país</h2>
-                <div class="country-grid">
+                <div id="step-country" class="wizard-step active">
+                    <h2 class="section-title"><i class="fas fa-globe-americas"></i> Selecciona tu país</h2>
+                    <div class="country-grid">
                     <div class="country-card" data-country="argentina">
                         <div class="country-flag">🇦🇷</div>
                         <div class="country-name">Argentina</div>
@@ -146,12 +147,17 @@
                         <div class="country-flag">🇻🇪</div>
                         <div class="country-name">Venezuela</div>
                     </div>
+                    </div>
                 </div>
 
                 <div class="product-selection" style="margin-top: 6rem; display: none;">
-                    <h2 class="section-title"><i class="fas fa-list"></i> Selecciona la categoría</h2>
-                    
-                    <div class="category-grid">
+                    <div id="step-category" class="wizard-step">
+                        <button class="btn btn-secondary back-btn" id="back-to-country" style="display:none;">
+                            <i class="fas fa-arrow-left btn-icon"></i>Volver
+                        </button>
+                        <h2 class="section-title"><i class="fas fa-list"></i> Selecciona la categoría</h2>
+
+                        <div class="category-grid">
                         <div class="category-card" data-category="smartphones">
                             <div class="category-icon"><i class="fas fa-mobile-alt"></i></div>
                             <div class="category-info">
@@ -188,72 +194,79 @@
                                 <div class="category-name">Videojuegos</div>
                             </div>
                         </div>
+                        </div>
                     </div>
 
-                    <div class="brand-selection" style="margin-top: 6rem; display: none;">
+                    <div class="brand-selection wizard-step" id="step-brand" style="margin-top: 6rem; display: none;">
+                        <button class="btn btn-secondary back-btn" id="back-to-category">
+                            <i class="fas fa-arrow-left btn-icon"></i>Volver
+                        </button>
                         <h2 class="section-title"><i class="fas fa-building"></i> Selecciona la marca</h2>
-                        
+
                         <div class="brand-grid" id="brand-grid">
                             <!-- Las marcas se cargarán dinámicamente según la categoría seleccionada -->
                         </div>
                     </div>
 
-                    <div class="product-list" style="margin-top: 6rem; display: none;">
+                    <div class="product-step wizard-step" id="step-product" style="margin-top: 6rem; display: none;">
+                        <button class="btn btn-secondary back-btn" id="back-to-brand">
+                            <i class="fas fa-arrow-left btn-icon"></i>Volver
+                        </button>
                         <h2 class="section-title"><i class="fas fa-mobile-alt"></i> Selecciona el producto</h2>
-                        
+
                         <div class="product-grid" id="product-grid">
                             <!-- Los productos se cargarán dinámicamente según la marca seleccionada -->
                         </div>
-                    </div>
 
-                    <div class="cart-section" style="margin-top: 6rem; display: none;">
-                        <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Tu carrito</h2>
+                        <div class="cart-section" style="margin-top: 6rem; display: none;">
+                            <h2 class="section-title"><i class="fas fa-shopping-cart"></i> Tu carrito</h2>
 
-                        <div class="checkout-grid">
-                            <div class="cart-items" id="cart-items">
-                                <div class="cart-empty">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    <p>Tu carrito está vacío</p>
-                                    <p>Selecciona productos para continuar</p>
+                            <div class="checkout-grid">
+                                <div class="cart-items" id="cart-items">
+                                    <div class="cart-empty">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <p>Tu carrito está vacío</p>
+                                        <p>Selecciona productos para continuar</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="order-summary">
-                                <div class="summary-header">
-                                    <i class="fas fa-receipt"></i> Resumen del pedido
-                                </div>
-                                <div class="summary-content">
-                                    <div class="exchange-rate-info">
-                                        Tasa actual: 1 USD = 225 Bs
+                                <div class="order-summary">
+                                    <div class="summary-header">
+                                        <i class="fas fa-receipt"></i> Resumen del pedido
                                     </div>
-                                    <div class="summary-row">
-                                        <span>Subtotal:</span>
-                                        <span id="subtotal">$0.00</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>IVA (16%):</span>
-                                        <span id="tax">$0.00</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>Envío:</span>
-                                        <span id="shipping">$0.00</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>Seguro:</span>
-                                        <span id="insurance">$0.00</span>
-                                    </div>
-                                    <div class="summary-row total">
-                                        <span>Total:</span>
-                                        <div>
-                                            <div id="total">$0.00</div>
-                                            <div class="bs-price" id="total-bs">0.00 Bs</div>
+                                    <div class="summary-content">
+                                        <div class="exchange-rate-info">
+                                            Tasa actual: 1 USD = 225 Bs
                                         </div>
-                                    </div>
+                                        <div class="summary-row">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">$0.00</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>IVA (16%):</span>
+                                            <span id="tax">$0.00</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Envío:</span>
+                                            <span id="shipping">$0.00</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Seguro:</span>
+                                            <span id="insurance">$0.00</span>
+                                        </div>
+                                        <div class="summary-row total">
+                                            <span>Total:</span>
+                                            <div>
+                                                <div id="total">$0.00</div>
+                                                <div class="bs-price" id="total-bs">0.00 Bs</div>
+                                            </div>
+                                        </div>
 
-                                    <div class="checkout-actions">
-                                        <button class="btn btn-primary btn-block" id="continue-to-shipping" disabled>
-                                            <i class="fas fa-truck btn-icon"></i>Continuar con el envío
-                                        </button>
+                                        <div class="checkout-actions">
+                                            <button class="btn btn-primary btn-block" id="continue-to-shipping" disabled>
+                                                <i class="fas fa-truck btn-icon"></i>Continuar con el envío
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

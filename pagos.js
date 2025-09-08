@@ -17,9 +17,14 @@
             const categoryCards = document.querySelectorAll('.category-card');
             const brandSelection = document.querySelector('.brand-selection');
             const brandGrid = document.querySelector('#brand-grid');
-            const productList = document.querySelector('.product-list');
             const productGrid = document.querySelector('#product-grid');
             const cartSection = document.querySelector('.cart-section');
+            const stepCountry = document.getElementById('step-country');
+            const stepCategory = document.getElementById('step-category');
+            const stepProduct = document.getElementById('step-product');
+            const backToCountryBtn = document.getElementById('back-to-country');
+            const backToCategoryBtn = document.getElementById('back-to-category');
+            const backToBrandBtn = document.getElementById('back-to-brand');
             const cartItems = document.querySelector('#cart-items');
             const subtotalElement = document.getElementById('subtotal');
             const taxElement = document.getElementById('tax');
@@ -354,12 +359,13 @@
 
                 if (foundProduct) {
                     addToCart({ ...foundProduct, quantity: 1, category: foundCategory, brand: foundBrand });
-                    productSelection.style.display = 'none';
+                    stepCountry.style.display = 'none';
+                    productSelection.style.display = 'block';
+                    stepCategory.style.display = 'none';
+                    brandSelection.style.display = 'none';
+                    stepProduct.style.display = 'block';
                     cartSection.style.display = 'block';
                     showToast('success', 'Producto añadido', `Has añadido ${foundProduct.name} a tu carrito.`);
-                    setTimeout(() => {
-                        cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 300);
                 }
 
                 localStorage.removeItem('selectedProduct');
@@ -425,8 +431,14 @@
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
                 
-                // Mostrar la sección de selección de producto
+                // Mostrar la sección de selección de producto (categorías)
+                stepCountry.style.display = 'none';
                 productSelection.style.display = 'block';
+                stepCategory.style.display = 'block';
+                brandSelection.style.display = 'none';
+                stepProduct.style.display = 'none';
+                cartSection.style.display = 'none';
+                backToCountryBtn.style.display = 'inline-flex';
                 
                 // Si el país es Venezuela, ocultar métodos de pago no permitidos
                 if (country === 'venezuela') {
@@ -443,11 +455,6 @@
                 
                 // Notificar al usuario
                 showToast('success', 'País seleccionado', `Has seleccionado ${country}. Ahora elige una categoría de productos.`);
-                
-                // Scroll a la sección de categorías
-                setTimeout(() => {
-                    productSelection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
 
                 autoAddPreselectedProduct();
             }
@@ -467,18 +474,13 @@
                 renderBrands(category);
                 
                 // Mostrar la sección de selección de marca
+                stepCategory.style.display = 'none';
                 brandSelection.style.display = 'block';
-                
-                // Ocultar secciones siguientes
-                productList.style.display = 'none';
-                
+                stepProduct.style.display = 'none';
+                backToCategoryBtn.style.display = 'inline-flex';
+
                 // Notificar al usuario
                 showToast('info', 'Categoría seleccionada', `Has seleccionado ${category}. Ahora elige una marca.`);
-                
-                // Scroll a la sección de marcas
-                setTimeout(() => {
-                    brandSelection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
             }
 
             // Función para renderizar las marcas según la categoría
@@ -515,17 +517,14 @@
                         
                         // Renderizar los productos de esta marca
                         renderProducts(category, brand);
-                        
+
                         // Mostrar la lista de productos
-                        productList.style.display = 'block';
-                        
+                        brandSelection.style.display = 'none';
+                        stepProduct.style.display = 'block';
+                        cartSection.style.display = 'none';
+
                         // Notificar al usuario
                         showToast('info', 'Marca seleccionada', `Has seleccionado ${brand}. Ahora elige un producto.`);
-                        
-                        // Scroll a la sección de productos
-                        setTimeout(() => {
-                            productList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 300);
                     });
                     
                     brandGrid.appendChild(brandCard);
@@ -619,11 +618,6 @@
                         
                         // Notificar al usuario
                         showToast('success', 'Producto añadido', `Has añadido ${quantity} ${quantity > 1 ? 'unidades' : 'unidad'} de ${addBtn.getAttribute('data-name')} a tu carrito.`);
-                        
-                        // Scroll al carrito
-                        setTimeout(() => {
-                            cartSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 300);
                     });
                     
                     productGrid.appendChild(productCard);
@@ -1294,6 +1288,25 @@
                 card.addEventListener('click', () => {
                     selectCategory(card.getAttribute('data-category'));
                 });
+            });
+
+            // Botones para regresar entre pasos
+            backToCountryBtn.addEventListener('click', () => {
+                stepCategory.style.display = 'none';
+                stepCountry.style.display = 'block';
+                productSelection.style.display = 'none';
+                backToCountryBtn.style.display = 'none';
+            });
+
+            backToCategoryBtn.addEventListener('click', () => {
+                brandSelection.style.display = 'none';
+                stepCategory.style.display = 'block';
+                stepProduct.style.display = 'none';
+            });
+
+            backToBrandBtn.addEventListener('click', () => {
+                stepProduct.style.display = 'none';
+                brandSelection.style.display = 'block';
             });
 
             // 3. Botones de navegación entre pasos
