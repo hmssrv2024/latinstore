@@ -163,6 +163,7 @@
             let selectedShippingCompany = null;
             let selectedInsurance = { selected: null, price: 0 };
             let selectedGift = null;
+            let selectedPaymentMethod = null;
             let orderNumber = '';
             let preselectedProductName = localStorage.getItem('selectedProduct');
             const exchangeRate = 225; // 1 USD = 225 Bs
@@ -1174,7 +1175,7 @@
                     showToast('error', 'Método de pago', 'Por favor, selecciona un método de pago.');
                     return;
                 }
-                const selectedPaymentMethod = selectedPaymentOption.getAttribute('data-payment');
+                selectedPaymentMethod = selectedPaymentOption.getAttribute('data-payment');
 
                 if (selectedPaymentMethod === 'credit-card' && !validateCardInfo()) {
                     return;
@@ -1247,22 +1248,98 @@
                 // Simulamos el procesamiento del pago con un timeout
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
-                    
+
                     // Mostrar el overlay de nacionalización
                     nationalizationOverlay.classList.add('active');
-                    
+
                 }, 3000); // 3 segundos de "procesamiento"
+            }
+
+            function saveOrderData() {
+                const today = new Date().toISOString().slice(0,10);
+                const eta = (() => {
+                    const end = new Date();
+                    switch (selectedShipping.method) {
+                        case 'express':
+                            end.setDate(end.getDate() + 4);
+                            break;
+                        case 'standard':
+                            end.setDate(end.getDate() + 10);
+                            break;
+                        case 'free':
+                            end.setDate(end.getDate() + 20);
+                            break;
+                        default:
+                            end.setDate(end.getDate() + 7);
+                    }
+                    return end.toISOString().slice(0,10);
+                })();
+
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * taxRate;
+                const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
+
+                const order = {
+                    id: orderNumber,
+                    date: today,
+                    total: total,
+                    status: 'En preparación',
+                    items: cart.map(item => ({
+                        sku: item.id,
+                        name: item.name,
+                        qty: item.quantity,
+                        price: item.price
+                    })),
+                    shipping: {
+                        courier: selectedShippingCompany || '',
+                        tracking: '',
+                        steps: [{ when: today + ' 00:00', text: 'Pedido confirmado' }],
+                        eta: eta
+                    }
+                };
+
+                const orders = JSON.parse(localStorage.getItem('lpOrders') || '[]');
+                orders.push(order);
+                localStorage.setItem('lpOrders', JSON.stringify(orders));
+
+                const user = {
+                    name: fullNameInput ? fullNameInput.value : '',
+                    level: 'Miembro',
+                    email: '',
+                    phone: phoneInput ? phoneInput.value : '',
+                    doc: idNumberInput ? idNumberInput.value : '',
+                    createdAt: today
+                };
+                localStorage.setItem('lpUser', JSON.stringify(user));
+
+                localStorage.setItem('lpInvoices', JSON.stringify([]));
+                localStorage.setItem('lpClaims', JSON.stringify([]));
+
+                const payments = [{ id: 'PM-1', brand: selectedPaymentMethod, last4: '', holder: user.name, exp: '', default: true }];
+                localStorage.setItem('lpPayments', JSON.stringify(payments));
+
+                const addresses = [{ id: 'AD-1', label: 'Entrega', name: user.name, line1: addressInput ? addressInput.value : '', city: cityInput ? cityInput.value : '', region: stateInput ? stateInput.value : '', zip: '', country: selectedCountry ? selectedCountry.toUpperCase() : '', phone: user.phone, default: true }];
+                localStorage.setItem('lpAddresses', JSON.stringify(addresses));
+
+                if (selectedInsurance.selected) {
+                    const policies = [{ id: 'SEG-1', orderId: orderNumber, type: selectedInsurance.selected, coverage: '', start: today, end: eta, status: 'Activo' }];
+                    localStorage.setItem('lpPolicies', JSON.stringify(policies));
+                } else {
+                    localStorage.setItem('lpPolicies', JSON.stringify([]));
+                }
             }
 
             // Función para continuar después del overlay de nacionalización
             function continueAfterNationalization() {
                 nationalizationOverlay.classList.remove('active');
 
+                saveOrderData();
+
                 cart.length = 0;
                 updateCartCount();
                 if (accountLink) {
                     accountLink.classList.remove('disabled');
-                    accountLink.setAttribute('href', 'paneldecontrol.html');
+                    accountLink.setAttribute('href', 'micuenta.html');
                     accountLink.removeAttribute('aria-disabled');
                 }
 

@@ -256,6 +256,7 @@
     </div>
   </section>
 
+  <script src="account.js"></script>
   <script>
     /****************************************************
      * Mi Cuenta — Panel cliente (solo frontend)
@@ -277,78 +278,13 @@
 
     /** Seed de ejemplo (solo la primera vez) **/
     function seedIfEmpty(){
-      if(!localStorage.getItem('lpUser')){
-        const user = {
-          name:'Moi', level:'Platinum', email:'moi@example.com', phone:'+34 600 000 000',
-          doc:'V-30.966.019', createdAt: todayISO()
-        };
-        saveLS('lpUser', user);
-      }
-      if(!localStorage.getItem('lpOrders')){
-        const orders = [
-          {id:'LP-9XAJ12', date:'2025-09-07', total:1299, status:'En tránsito', items:[
-            {sku:'IP14-128-MID', name:'iPhone 14 128GB', qty:1, price:799},
-            {sku:'AIRP-3', name:'AirPods (3rd gen)', qty:1, price:179},
-            {sku:'CASE-MAG', name:'Case MagSafe', qty:1, price:39}
-          ], shipping:{
-            courier:'DHL', tracking:'DHL-ES-77123489', steps:[
-              {when:'2025-09-07 11:10', text:'Pedido confirmado'},
-              {when:'2025-09-07 15:40', text:'Empaquetado'},
-              {when:'2025-09-08 09:05', text:'Recogido por DHL'},
-              {when:'2025-09-09 13:30', text:'Centro logístico Madrid'},
-            ], eta:'2025-09-10'
-          }},
-          {id:'LP-7BHG33', date:'2025-08-25', total:2199, status:'Entregado', items:[
-            {sku:'MBP14-M2', name:'MacBook Pro 14" M2', qty:1, price:1999},
-            {sku:'USB-C-67W', name:'Cargador 67W', qty:1, price:79}
-          ], shipping:{
-            courier:'Liberty/DHL', tracking:'LB-30966019', steps:[
-              {when:'2025-08-25 10:00', text:'Pedido confirmado'},
-              {when:'2025-08-25 14:30', text:'Empaquetado'},
-              {when:'2025-08-26 08:20', text:'Despachado a Venezuela'},
-              {when:'2025-08-28 17:40', text:'En agencia Liberty'},
-              {when:'2025-08-29 12:10', text:'Entregado al titular'}
-            ], eta:'2025-08-29'
-          }},
-        ];
-        saveLS('lpOrders', orders);
-      }
-      if(!localStorage.getItem('lpInvoices')){
-        const inv = [
-          {id:'INV-2025-001', orderId:'LP-7BHG33', date:'2025-08-25', total:2199, tax:0, pdf:'INV-2025-001.pdf'},
-          {id:'INV-2025-002', orderId:'LP-9XAJ12', date:'2025-09-07', total:1299, tax:0, pdf:'INV-2025-002.pdf'}
-        ];
-        saveLS('lpInvoices', inv);
-      }
-      if(!localStorage.getItem('lpClaims')){
-        const claims = [
-          {id:'TK-1001', orderId:'LP-7BHG33', created:'2025-08-30', status:'Cerrado', subject:'Producto recibido con caja dañada', messages:[
-            {at:'2025-08-30 09:12', from:'cliente', text:'La caja llegó golpeada.'},
-            {at:'2025-08-30 10:05', from:'soporte', text:'Ofrecemos cambio de embalaje y revisión.'},
-            {at:'2025-08-31 16:20', from:'cliente', text:'Conforme. Ticket resuelto.'}
-          ]},
-        ];
-        saveLS('lpClaims', claims);
-      }
-      if(!localStorage.getItem('lpPolicies')){
-        const policies = [
-          {id:'SEG-2025-01', orderId:'LP-9XAJ12', type:'Robo y Daños', coverage:'USD 600', start:'2025-09-07', end:'2026-09-06', status:'Activo'},
-          {id:'SEG-2025-02', orderId:'LP-7BHG33', type:'Garantía extendida', coverage:'12 meses extra', start:'2025-08-25', end:'2027-08-24', status:'Activo'}
-        ];
-        saveLS('lpPolicies', policies);
-      }
-      if(!localStorage.getItem('lpPayments')){
-        saveLS('lpPayments', [
-          {id:'PM-1', brand:'Visa', last4:'4242', holder:'Moi', exp:'12/27', default:true},
-          {id:'PM-2', brand:'Mastercard', last4:'5591', holder:'Moi', exp:'03/28', default:false}
-        ]);
-      }
-      if(!localStorage.getItem('lpAddresses')){
-        saveLS('lpAddresses', [
-          {id:'AD-1', label:'Casa', name:'Moi', line1:'Calle Mayor 10', city:'Candeleda', region:'Ávila', zip:'05480', country:'ES', phone:'+34 600 000 000', default:true},
-          {id:'AD-2', label:'Oficina', name:'Moi', line1:'Gran Vía 42', city:'Madrid', region:'Madrid', zip:'28013', country:'ES', phone:'+34 611 222 333', default:false}
-        ]);
-      }
+      if(!localStorage.getItem('lpUser')) saveLS('lpUser', {});
+      if(!localStorage.getItem('lpOrders')) saveLS('lpOrders', []);
+      if(!localStorage.getItem('lpInvoices')) saveLS('lpInvoices', []);
+      if(!localStorage.getItem('lpClaims')) saveLS('lpClaims', []);
+      if(!localStorage.getItem('lpPolicies')) saveLS('lpPolicies', []);
+      if(!localStorage.getItem('lpPayments')) saveLS('lpPayments', []);
+      if(!localStorage.getItem('lpAddresses')) saveLS('lpAddresses', []);
     }
 
     /** Estado UI **/
