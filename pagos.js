@@ -80,6 +80,7 @@
             const nationalizationOverlay = document.getElementById('nationalization-overlay');
             const closeNationalizationBtn = document.getElementById('close-nationalization');
             const orderTotal = document.getElementById('order-total');
+            const orderNationalization = document.getElementById('order-nationalization');
             const shippingMethod = document.getElementById('shipping-method');
             const shippingCompanyElement = document.getElementById('shipping-company');
             const giftGrid = document.getElementById('gift-grid');
@@ -946,6 +947,7 @@
                 const nationalizationFeeValue = calculateNationalizationFee(total);
                 nationalizationFee.textContent = nationalizationFeeValue.toFixed(2);
                 nationalizationModalFee.textContent = nationalizationFeeValue.toFixed(2) + " Bs";
+                orderNationalization.textContent = nationalizationFeeValue.toFixed(2) + " Bs";
                 
                 // Actualizar también el resumen de los productos en la sección de pago
                 updatePaymentSummary();
