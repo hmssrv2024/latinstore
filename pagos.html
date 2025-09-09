@@ -39,7 +39,28 @@
             right: 10px;
             cursor: pointer;
         }
-        .cart-item { margin-bottom: 0.5rem; }
+        .cart-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .cart-item .item-name { flex: 1; }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .quantity-control button {
+            padding: 0 0.4rem;
+        }
+        .cart-controls {
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
         .cart-footer {
             margin-top: 1rem;
             display: flex;
@@ -71,6 +92,10 @@
         <div class="cart-modal-content">
             <button class="close-cart" id="close-cart">&times;</button>
             <h3>Tu carrito</h3>
+            <div class="cart-controls">
+                <input type="checkbox" id="select-all-cart">
+                <label for="select-all-cart">Seleccionar todo</label>
+            </div>
             <ul id="cart-items-list"></ul>
             <div class="cart-footer">
                 <div class="cart-total">Total: $<span id="cart-total">0.00</span></div>
@@ -967,6 +992,12 @@
                 const closeCartBtn = document.getElementById('close-cart');
                 const cartItemsList = document.getElementById('cart-items-list');
                 const cartCountEl = document.getElementById('cart-count');
+                const selectAllChk = document.getElementById('select-all-cart');
+
+                function saveCart(cart) {
+                    localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                    window.dispatchEvent(new Event('cart-updated'));
+                }
 
                 function loadCart() {
                     let cart = [];
@@ -975,21 +1006,92 @@
                     } catch (e) {
                         cart = [];
                     }
+                    // asegurar propiedad selected
+                    cart = cart.map(item => ({
+                        ...item,
+                        selected: item.selected !== false
+                    }));
+                    saveCart(cart);
+
                     const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
                     if (cartCountEl) cartCountEl.textContent = count;
                     if (cartItemsList) {
                         cartItemsList.innerHTML = '';
                         let total = 0;
                         cart.forEach(item => {
+                            const itemTotal = (item.price || 0) * (item.quantity || 0);
+                            if (item.selected) total += itemTotal;
                             const li = document.createElement('li');
                             li.className = 'cart-item';
-                            const itemTotal = (item.price || 0) * (item.quantity || 0);
-                            total += itemTotal;
-                            li.textContent = `${item.name} x${item.quantity} - $${itemTotal.toFixed(2)}`;
+                            li.innerHTML = `
+                                <input type="checkbox" class="select-item" data-id="${item.id}" ${item.selected ? 'checked' : ''}>
+                                <span class="item-name">${item.name}</span>
+                                <div class="quantity-control">
+                                    <button class="qty-btn minus" data-id="${item.id}">-</button>
+                                    <span class="item-qty">${item.quantity}</span>
+                                    <button class="qty-btn plus" data-id="${item.id}">+</button>
+                                </div>
+                                <span class="item-subtotal">$${itemTotal.toFixed(2)}</span>
+                                <button class="remove-item" data-id="${item.id}">&times;</button>
+                            `;
                             cartItemsList.appendChild(li);
                         });
                         const cartTotalEl = document.getElementById('cart-total');
                         if (cartTotalEl) cartTotalEl.textContent = total.toFixed(2);
+
+                        if (selectAllChk) {
+                            selectAllChk.checked = cart.length > 0 && cart.every(i => i.selected);
+                            selectAllChk.onchange = () => {
+                                cart.forEach(i => (i.selected = selectAllChk.checked));
+                                saveCart(cart);
+                                loadCart();
+                            };
+                        }
+
+                        cartItemsList.querySelectorAll('.qty-btn.plus').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const id = btn.getAttribute('data-id');
+                                const item = cart.find(i => i.id === id);
+                                if (item) {
+                                    item.quantity += 1;
+                                    saveCart(cart);
+                                    loadCart();
+                                }
+                            });
+                        });
+
+                        cartItemsList.querySelectorAll('.qty-btn.minus').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const id = btn.getAttribute('data-id');
+                                const item = cart.find(i => i.id === id);
+                                if (item && item.quantity > 1) {
+                                    item.quantity -= 1;
+                                    saveCart(cart);
+                                    loadCart();
+                                }
+                            });
+                        });
+
+                        cartItemsList.querySelectorAll('.remove-item').forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const id = btn.getAttribute('data-id');
+                                cart = cart.filter(i => i.id !== id);
+                                saveCart(cart);
+                                loadCart();
+                            });
+                        });
+
+                        cartItemsList.querySelectorAll('.select-item').forEach(chk => {
+                            chk.addEventListener('change', () => {
+                                const id = chk.getAttribute('data-id');
+                                const item = cart.find(i => i.id === id);
+                                if (item) {
+                                    item.selected = chk.checked;
+                                    saveCart(cart);
+                                    loadCart();
+                                }
+                            });
+                        });
                     }
                 }
 
