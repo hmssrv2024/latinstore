@@ -272,6 +272,15 @@
     const todayISO = () => new Date().toISOString().slice(0,10);
     const uid = (p='ID') => p + Math.random().toString(36).slice(2,9).toUpperCase();
 
+    const courierInfo = {
+      dhl: {name:'DHL',logo:'https://www.logo.wine/a/logo/DHL/DHL-Logo.wine.svg'},
+      fedex: {name:'FedEx',logo:'https://www.logo.wine/a/logo/FedEx_Express/FedEx_Express-Logo.wine.svg'},
+      zoom: {name:'ZOOM',logo:'https://upload.wikimedia.org/wikipedia/commons/7/71/Grupo_ZOOM_logo.png?20211116211646'},
+      tealca: {name:'TEALCA',logo:'https://www.tealca.es/wp-content/uploads/logo.png'},
+      mrw: {name:'MRW',logo:'https://upload.wikimedia.org/wikipedia/commons/2/26/MRW_logo.svg'},
+      liberty: {name:'Liberty Express',logo:'https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg'}
+    };
+
     function saveLS(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
     function getLS(key, fallback){
       try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch(e){ return fallback; }
@@ -471,13 +480,17 @@
 
       orders.forEach(o=>{
         const steps = o.shipping?.steps || [];
-        const progress = Math.min(100, Math.round((steps.length / 5) * 100)); // escala simple
+        const progress = Math.min(100, Math.round((steps.length / 5) * 100));
+        const courier = courierInfo[o.shipping?.courier] || {};
+        const address = getLS('lpAddresses', [])[0] || {};
         root.insertAdjacentHTML('beforeend', `
           <div class="card">
             <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap">
               <div>
-                <strong>${o.id}</strong> · <span class="muted">${o.shipping?.courier || 'Courier'}</span><br>
-                <span class="muted">Tracking: ${o.shipping?.tracking || '-'}</span>
+                <strong>${o.id}</strong><br>
+                <span class="muted">${courier.logo ? `<img src="${courier.logo}" alt="${courier.name}" style="height:16px;vertical-align:middle;margin-right:4px;">${courier.name}` : (o.shipping?.courier || 'Courier')}</span><br>
+                <span class="muted">Tracking: ${o.shipping?.tracking || '-'}</span><br>
+                <span class="muted">${address.city || '-'}, ${address.region || '-'}</span>
               </div>
               <div style="min-width:220px">
                 <div class="progress"><span style="width:${progress}%"></span></div>
@@ -851,6 +864,8 @@
     function openOrder(id){
       const o = getLS('lpOrders', []).find(x=>x.id===id);
       if(!o) return;
+      const courier = courierInfo[o.shipping?.courier] || {};
+      const address = getLS('lpAddresses', [])[0] || {};
       const el = $('#modalOrderBody');
       el.innerHTML = `
         <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap">
@@ -860,11 +875,12 @@
         <div class="hr"></div>
         <h4>Artículos</h4>
         <table class="table">
-          <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr></thead>
+          <thead><tr><th>Producto</th><th>Color</th><th>Cant.</th><th>Precio</th><th>Subtotal</th></tr></thead>
           <tbody>
             ${o.items.map(it=>`
               <tr>
                 <td>${it.name} <span class="muted">(${it.sku})</span></td>
+                <td>${it.color || '-'}</td>
                 <td>${it.qty}</td>
                 <td>${fmt.format(it.price)}</td>
                 <td>${fmt.format(it.price*it.qty)}</td>
@@ -874,7 +890,9 @@
         </table>
         <div class="hr"></div>
         <h4>Envío</h4>
-        <div class="muted">Courier: ${o.shipping?.courier || '-'}</div>
+        <div class="muted">Courier: ${courier.logo ? `<img src="${courier.logo}" alt="${courier.name}" style="height:20px;vertical-align:middle;margin-right:4px;">${courier.name}` : (o.shipping?.courier || '-')}</div>
+        <div class="muted">Estado: ${address.region || '-'}</div>
+        <div class="muted">Ciudad: ${address.city || '-'}</div>
         <div class="muted">Tracking: ${o.shipping?.tracking || '-'}</div>
         <div class="muted">ETA: ${o.shipping?.eta || '-'}</div>
         <div class="timeline" style="margin-top:10px">
