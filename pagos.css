@@ -1640,6 +1640,11 @@
             line-height: 1.3;
         }
 
+        .insurance-logo {
+            height: 2.4rem;
+            object-fit: contain;
+        }
+
         .insurance-description {
             font-size: 1.4rem;
             color: var(--accent-color);
@@ -2282,6 +2287,34 @@
         }
 
         .account-modal {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            max-width: 40rem;
+            width: 90%;
+        }
+
+        /* Overlay de recomendación de seguro */
+        .insurance-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: var(--z-overlay);
+        }
+
+        .insurance-overlay.active {
+            display: flex;
+        }
+
+        .insurance-modal {
             background: var(--white);
             padding: 3rem;
             border-radius: var(--radius);

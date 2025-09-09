@@ -101,6 +101,8 @@
             const insuranceSummary = document.getElementById('insurance-summary');
             const insuranceSummaryText = document.getElementById('insurance-summary-text');
             const changeInsuranceBtn = document.getElementById('change-insurance');
+            const insuranceOverlay = document.getElementById('insurance-overlay');
+            const insuranceOverlayClose = document.getElementById('insurance-overlay-close');
             const shippingOptionsContainer = document.querySelector('.shipping-options');
             const shippingCompanyContainer = document.getElementById('shipping-company-container');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
@@ -180,7 +182,7 @@
             let selectedShipping = { method: null, price: 0 };
             let selectedShippingCompany = null;
             let selectedShippingCompanyName = '';
-            let selectedInsurance = { selected: null, price: 0 };
+            let selectedInsurance = { selected: null, provider: null, price: 0 };
             let selectedGift = null;
             let selectedPaymentMethod = null;
             let orderNumber = '';
@@ -1062,8 +1064,8 @@
                 shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
 
                 if (selectedInsurance.selected === true) {
-                    summaryInsurance.textContent = `Seguro: Premium ($${selectedInsurance.price.toFixed(2)})`;
-                    insuranceSummaryText.textContent = `Seguro Premium - $${selectedInsurance.price.toFixed(2)}`;
+                    summaryInsurance.textContent = `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})`;
+                    insuranceSummaryText.textContent = `${selectedInsurance.provider} - $${selectedInsurance.price.toFixed(2)}`;
                 } else if (selectedInsurance.selected === false) {
                     summaryInsurance.textContent = 'Seguro: Sin seguro';
                     insuranceSummaryText.textContent = 'Sin seguro';
@@ -1343,7 +1345,7 @@
                 whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
                 whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
                 whatsappMessage += `Envío (${document.getElementById('shipping-method').textContent}): $${selectedShipping.price.toFixed(2)}\n`;
-                whatsappMessage += `Seguro: $${selectedInsurance.price.toFixed(2)}\n`;
+                whatsappMessage += `Seguro: ${selectedInsurance.selected ? selectedInsurance.provider : 'Sin seguro'} - $${selectedInsurance.price.toFixed(2)}\n`;
                 whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
                 whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
 
@@ -1470,7 +1472,7 @@
                 localStorage.setItem('lpAddresses', JSON.stringify(addresses));
 
                 if (selectedInsurance.selected) {
-                    const policies = [{ id: 'SEG-1', orderId: orderNumber, type: selectedInsurance.selected, coverage: '', start: today, end: eta, status: 'Activo' }];
+                    const policies = [{ id: 'SEG-1', orderId: orderNumber, type: selectedInsurance.provider, coverage: '', start: today, end: eta, status: 'Activo' }];
                     localStorage.setItem('lpPolicies', JSON.stringify(policies));
                 } else {
                     localStorage.setItem('lpPolicies', JSON.stringify([]));
@@ -1747,6 +1749,18 @@
                 });
             }
 
+            if (insuranceOverlay && insuranceOverlayClose) {
+                insuranceOverlayClose.addEventListener('click', () => {
+                    insuranceOverlay.classList.remove('active');
+                });
+
+                insuranceOverlay.addEventListener('click', (e) => {
+                    if (e.target === insuranceOverlay) {
+                        insuranceOverlay.classList.remove('active');
+                    }
+                });
+            }
+
             backToProductsBtn.addEventListener('click', () => {
                 goToStep(1);
             });
@@ -1820,19 +1834,20 @@
                 option.addEventListener('click', () => {
                     // Eliminar selección previa
                     insuranceOptions.forEach(opt => opt.classList.remove('selected'));
-                    
+
                     // Seleccionar esta opción
                     option.classList.add('selected');
-                    
+
                     // Actualizar el seguro seleccionado
                     selectedInsurance = {
                         selected: option.getAttribute('data-insurance') === 'true',
+                        provider: option.getAttribute('data-provider') || null,
                         price: parseFloat(option.getAttribute('data-price'))
                     };
 
                     // Mostrar resumen compacto
                     insuranceOptionsContainer.classList.add('hidden');
-                    insuranceSummaryText.textContent = selectedInsurance.selected ? `Seguro Premium - $${selectedInsurance.price.toFixed(2)}` : 'Sin seguro';
+                    insuranceSummaryText.textContent = selectedInsurance.selected ? `${selectedInsurance.provider} - $${selectedInsurance.price.toFixed(2)}` : 'Sin seguro';
                     insuranceSummary.classList.remove('hidden');
 
                     // Actualizar resúmenes
@@ -1841,10 +1856,14 @@
 
                     // Notificar al usuario
                     const insuranceMsg = selectedInsurance.selected ?
-                        'Has seleccionado el seguro premium para tu dispositivo.' :
+                        `Has seleccionado el seguro de ${selectedInsurance.provider}.` :
                         'Has elegido no incluir seguro para tu dispositivo.';
 
                     showToast('info', 'Seguro actualizado', insuranceMsg);
+
+                    if (!selectedInsurance.selected && insuranceOverlay) {
+                        insuranceOverlay.classList.add('active');
+                    }
                 });
             });
 

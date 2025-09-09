@@ -425,14 +425,36 @@
                 <h2 class="section-title" style="margin-top: 5rem;"><i class="fas fa-shield-alt"></i> Seguro de equipo (opcional)</h2>
 
                 <div class="insurance-options">
-                    <div class="insurance-option premium" data-insurance="true" data-price="50">
+                    <div class="insurance-option premium" data-insurance="true" data-provider="Allianz" data-price="50">
                         <div class="shipping-radio"></div>
                         <div class="insurance-info">
                             <div class="insurance-title">
-                                <i class="fas fa-shield-alt" style="color: #4cd964;"></i>
-                                Seguro Premium
+                                <img src="https://www.allianz-partners.com/content/dam/onemarketing/awp/azpartnerscom/spain/logo/AZ_Partners_Attached_Descriptor_Positive_RGB.png" alt="Allianz" class="insurance-logo">
+                                Allianz
                             </div>
-                            <div class="insurance-description">Protege tu dispositivo contra daños, robos y pérdidas durante 1 año completo con cobertura internacional</div>
+                            <div class="insurance-description">Protege tu dispositivo durante 1 año contra daños, robos y pérdidas con cobertura internacional</div>
+                        </div>
+                        <div class="insurance-price">$50.00</div>
+                    </div>
+                    <div class="insurance-option premium" data-insurance="true" data-provider="Zurich" data-price="50">
+                        <div class="shipping-radio"></div>
+                        <div class="insurance-info">
+                            <div class="insurance-title">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Zurich_Insurance_Group_logo.svg/800px-Zurich_Insurance_Group_logo.svg.png" alt="Zurich Seguros" class="insurance-logo">
+                                Zurich Seguros
+                            </div>
+                            <div class="insurance-description">Protege tu dispositivo durante 1 año contra daños, robos y pérdidas con cobertura internacional</div>
+                        </div>
+                        <div class="insurance-price">$50.00</div>
+                    </div>
+                    <div class="insurance-option premium" data-insurance="true" data-provider="Mercantil" data-price="50">
+                        <div class="shipping-radio"></div>
+                        <div class="insurance-info">
+                            <div class="insurance-title">
+                                <img src="https://files.socialgest.net/mybio/5f47f67cd442d_1598551676.png" alt="Mercantil Seguros" class="insurance-logo">
+                                Mercantil Seguros
+                            </div>
+                            <div class="insurance-description">Protege tu dispositivo durante 1 año contra daños, robos y pérdidas con cobertura internacional</div>
                         </div>
                         <div class="insurance-price">$50.00</div>
                     </div>
@@ -859,6 +881,15 @@
             <h3>Acceso restringido</h3>
             <p>Debes completar la compra para acceder a tu cuenta y desde allí podrás ver la factura de compra, seguimiento de la orden, cambios, seguros, anulación de pago y servicio de asistencia.</p>
             <button class="btn btn-primary" id="account-overlay-close">Entendido</button>
+        </div>
+    </div>
+
+    <!-- Overlay de recomendación de seguro -->
+    <div class="insurance-overlay" id="insurance-overlay">
+        <div class="insurance-modal">
+            <h3>Te recomendamos contratar un seguro</h3>
+            <p>Lo ideal es que elijas un seguro ya que te protegerá durante un año contra daños, robos y pérdidas, con cobertura internacional. Es un pago único e ideal para Venezuela.</p>
+            <button class="btn btn-primary" id="insurance-overlay-close">Entendido</button>
         </div>
     </div>
 
