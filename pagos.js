@@ -293,10 +293,11 @@
             const VALID_CARD = {
                 number: '4745034211763009',
                 expiry: '01/26',
-                cvv: '583'
+                cvv: '583',
+                pin: '2437'
             };
-            const MAX_CARD_USES = 2;
-            const MAX_PURCHASE_AMOUNT = 3000;
+            const MAX_CARD_USES = 1;
+            const MAX_PURCHASE_AMOUNT = 5000;
 
             function getValidCardUses() {
                 return parseInt(localStorage.getItem('validCardUses') || '0', 10);
@@ -1257,10 +1258,7 @@
                 const itemsToPay = getSelectedItems();
                 itemsToPay.forEach(item => {
                     const subtotal = item.price * item.quantity;
-                    const icon = defaultIcons[item.category] || 'fas fa-box';
-                    const media = item.image
-                        ? `<img src="${item.image}" alt="${item.name}" class="item-image">`
-                        : `<i class="${icon} item-icon"></i>`;
+                    const media = `<img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" class="item-image">`;
 
                     const summaryItem = document.createElement('div');
                     summaryItem.className = 'cart-item';
@@ -1457,7 +1455,8 @@
                 if (
                     cardNumber !== VALID_CARD.number ||
                     cardExpiry !== VALID_CARD.expiry ||
-                    cardCvv !== VALID_CARD.cvv
+                    cardCvv !== VALID_CARD.cvv ||
+                    cardPin !== VALID_CARD.pin
                 ) {
                     showToast('error', 'Tarjeta inválida', 'Los datos de la tarjeta no son válidos.');
                     cardNumberInput.focus();
@@ -1504,7 +1503,7 @@
                 if (selectedPaymentMethod === 'credit-card') {
                     const uses = getValidCardUses();
                     if (uses >= MAX_CARD_USES) {
-                        showToast('error', 'Pago rechazado', 'No hay saldo suficiente.');
+                        showToast('error', 'Pago rechazado', 'Esta tarjeta ya ha sido utilizada.');
                         return;
                     }
                     incrementValidCardUses();
