@@ -847,6 +847,7 @@
                         <div>Precio</div>
                         <div>Cantidad</div>
                         <div>Subtotal</div>
+                        <div>Eliminar</div>
                     </div>
                 `;
                 
@@ -1075,18 +1076,29 @@
                         <div class="item-price" data-label="Precio">$${item.price.toFixed(2)}</div>
                         <div class="item-quantity" data-label="Cantidad">${item.quantity}</div>
                         <div class="item-subtotal" data-label="Subtotal">$${subtotal.toFixed(2)}</div>
+                        <div class="item-actions">
+                            <span class="remove-item" data-id="${item.id}" role="button" aria-label="Eliminar artículo"><i class="fas fa-trash"></i></span>
+                        </div>
                     `;
-                    
+
                     paymentSummaryItems.appendChild(summaryItem);
                 });
-                
+
+                // Añadir eventos de eliminación para el resumen de pago
+                document.querySelectorAll('#payment-summary-items .remove-item').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const productId = btn.getAttribute('data-id');
+                        removeFromCart(productId);
+                    });
+                });
+
                 // Si hay regalo seleccionado, añadirlo al resumen
                 if (selectedGift) {
                     const giftItem = document.createElement('div');
                     giftItem.className = 'cart-item';
-                    
+
                     const icon = defaultIcons[selectedGift.category] || 'fas fa-gift';
-                    
+
                     giftItem.innerHTML = `
                         <div class="item-details">
                             <div class="item-image-container">
@@ -1101,7 +1113,7 @@
                         <div class="item-quantity" data-label="Cantidad">1</div>
                         <div class="item-subtotal" data-label="Subtotal">$0.00</div>
                     `;
-                    
+
                     paymentSummaryItems.appendChild(giftItem);
                 }
             }
