@@ -1113,8 +1113,9 @@
                 if (goToCheckoutBtn) {
                     goToCheckoutBtn.addEventListener('click', () => {
                         cartModal.classList.remove('show');
-                        const step2 = document.querySelector('.checkout-step[data-step="2"]');
-                        if (step2) step2.click();
+                        if (window.goToStep) {
+                            window.goToStep(2);
+                        }
                         const section2 = document.getElementById('section-2');
                         if (section2) section2.scrollIntoView({ behavior: 'smooth' });
                     });

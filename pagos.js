@@ -1325,6 +1325,9 @@
                 });
             }
 
+            // Exponer la función para que otros scripts puedan cambiar de paso
+            window.goToStep = goToStep;
+
             // Validar información de la tarjeta
             function validateCardInfo() {
                 const cardName = cardNameInput.value.trim();
