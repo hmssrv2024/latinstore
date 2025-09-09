@@ -1475,6 +1475,7 @@
             border-radius: var(--radius);
             padding: 2rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 2rem;
             margin-bottom: 2rem;
@@ -1484,6 +1485,7 @@
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .recommended-badge {
@@ -1523,7 +1525,7 @@
             border-color: var(--primary-color);
             background-color: var(--primary-light);
             box-shadow: var(--shadow);
-            padding-left: 2.4rem;
+            padding-left: 2rem;
         }
 
         .shipping-option.selected::before {
@@ -1554,8 +1556,12 @@
         }
 
         .shipping-info {
-            flex-grow: 1;
+            flex-grow: 0;
             min-width: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .shipping-title {
@@ -1564,10 +1570,12 @@
             margin-bottom: 0.8rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 1rem;
             color: var(--secondary-color);
             line-height: 1.3;
             flex-wrap: wrap;
+            text-align: center;
         }
 
         .shipping-description {
@@ -1631,6 +1639,7 @@
             padding: 2.5rem;
             margin-bottom: 2rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 2rem;
             cursor: pointer;
@@ -1639,6 +1648,7 @@
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
         .insurance-option::before {
@@ -1669,7 +1679,7 @@
         .insurance-option.selected {
             border-color: var(--primary-color);
             box-shadow: var(--shadow);
-            padding-left: 2.9rem;
+            padding-left: 2.5rem;
         }
 
         .insurance-option.premium.selected {
@@ -1682,7 +1692,7 @@
         }
 
         .insurance-info {
-            flex-grow: 1;
+            flex-grow: 0;
             min-width: 0;
             text-align: center;
             display: flex;
