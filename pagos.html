@@ -13,6 +13,34 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="pagos.css">
+
+    <style>
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: #fff;
+            color: #000;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+            z-index: 2000;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .cart-modal.show { display: block; }
+        .cart-modal .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .cart-item { margin-bottom: 0.5rem; }
+    </style>
     
     <!-- Lottie Animation -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
@@ -26,9 +54,16 @@
         <a href="index.html" class="top-link"><i class="fas fa-home"></i> Inicio</a>
         <div class="top-right">
             <a href="#" class="top-link disabled" id="account-link" aria-disabled="true" style="display:none;"><i class="fas fa-user"></i> Mi cuenta</a>
-            <a href="carrito.html" class="top-link cart-indicator"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
+            <a href="#" class="top-link cart-indicator" id="cart-link"><i class="fas fa-shopping-cart"></i><span id="cart-count">0</span></a>
         </div>
     </nav>
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <button class="close-cart" id="close-cart">&times;</button>
+            <h3>Tu carrito</h3>
+            <ul id="cart-items-list"></ul>
+        </div>
+    </div>
     <div class="checkout-container">
         <!-- Cabecera de la pasarela de pago -->
         <header class="checkout-header fade-in">
@@ -864,5 +899,48 @@
 
         <script src="account.js"></script>
         <script src="pagos.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const cartLink = document.getElementById('cart-link');
+                const cartModal = document.getElementById('cart-modal');
+                const closeCartBtn = document.getElementById('close-cart');
+                const cartItemsList = document.getElementById('cart-items-list');
+                const cartCountEl = document.getElementById('cart-count');
+
+                function loadCart() {
+                    let cart = [];
+                    try {
+                        cart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
+                    } catch (e) {
+                        cart = [];
+                    }
+                    const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                    if (cartCountEl) cartCountEl.textContent = count;
+                    if (cartItemsList) {
+                        cartItemsList.innerHTML = '';
+                        cart.forEach(item => {
+                            const li = document.createElement('li');
+                            li.className = 'cart-item';
+                            li.textContent = `${item.name} x${item.quantity}`;
+                            cartItemsList.appendChild(li);
+                        });
+                    }
+                }
+
+                loadCart();
+
+                if (cartLink) {
+                    cartLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadCart();
+                        cartModal.classList.add('show');
+                    });
+                }
+
+                if (closeCartBtn) {
+                    closeCartBtn.addEventListener('click', () => cartModal.classList.remove('show'));
+                }
+            });
+        </script>
 </body>
 </html>
