@@ -3357,7 +3357,7 @@
         }
 
         /* Mejoras de accesibilidad y usabilidad */
-        @media (hover: none) {
+@media (hover: none) {
             .btn:hover,
             .country-card:hover,
             .category-card:hover,
@@ -3395,4 +3395,20 @@
             .support-link:active {
                 transform: scale(0.98);
             }
+        }
+
+        /* Spinner for Zelle verification */
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }

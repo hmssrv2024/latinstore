@@ -133,6 +133,9 @@
             const cardPinInput = document.getElementById('card-pin');
             const creditCardForm = document.querySelector('.credit-card-form');
             const zelleInfo = document.getElementById('zelle-info');
+            const zelleReceipt = document.getElementById('zelle-receipt');
+            const zelleVerification = document.getElementById('zelle-verification');
+            const zelleResult = document.getElementById('zelle-result');
             const paypalInfo = document.getElementById('paypal-info');
             const whatsappBtn = document.getElementById('whatsapp-btn');
             const whatsappSupport = document.getElementById('whatsapp-support');
@@ -145,6 +148,7 @@
             const validationOverlay = document.getElementById('validation-overlay');
             const validationMessage = document.getElementById('validation-message');
             const validationClose = document.getElementById('validation-close');
+            let zelleTimer;
 
             const locationOverlay = document.getElementById('location-overlay');
             const locationStateSelect = document.getElementById('location-state');
@@ -2142,9 +2146,27 @@
                     zelleInfo.style.display = method === 'zelle' ? 'block' : 'none';
                     paypalInfo.style.display = method === 'paypal' ? 'block' : 'none';
 
+                    if (method !== 'zelle') {
+                        if (zelleTimer) clearTimeout(zelleTimer);
+                        zelleVerification.style.display = 'none';
+                        zelleResult.style.display = 'none';
+                    }
+
                     // Notificar al usuario
                     showToast('info', 'Método de pago', `Has seleccionado ${method} como método de pago.`);
                 });
+            });
+
+            zelleReceipt.addEventListener('change', () => {
+                if (zelleTimer) clearTimeout(zelleTimer);
+                zelleVerification.style.display = 'block';
+                zelleResult.style.display = 'none';
+                zelleTimer = setTimeout(() => {
+                    zelleVerification.style.display = 'none';
+                    zelleResult.style.display = 'block';
+                    zelleResult.textContent = 'No pudimos verificar tu pago con Zelle. Por favor, comunícate con tu banco.';
+                    showToast('error', 'Pago rechazado', 'No pudimos verificar tu pago con Zelle. Comunícate con tu banco.');
+                }, 180000);
             });
 
             // 8. Descargar factura

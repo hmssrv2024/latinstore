@@ -614,6 +614,11 @@
                     <div id="zelle-info" class="payment-info" style="display: none;">
                         <p>Envía tu pago vía Zelle a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
                         <input type="file" id="zelle-receipt" accept="image/*,application/pdf">
+                        <div id="zelle-verification" style="display:none;text-align:center;margin-top:1rem;">
+                            <p>Verificando comprobante...</p>
+                            <div class="spinner"></div>
+                        </div>
+                        <div id="zelle-result" style="display:none;text-align:center;margin-top:1rem;color:var(--error-color);"></div>
                     </div>
 
                     <div id="paypal-info" class="payment-info" style="display: none;">
