@@ -358,20 +358,20 @@
             const inventory = {
                 smartphones: {
                     apple: [
-                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/identify-iphone-11-colors.jpg' },
-                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/2022-spring-iphone13-colors.png' },
-                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-14-colors-spring-2023.png' },
-                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15.png' },
-                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-plus.png' },
-                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-pro-max.png' },
-                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-colors.png' },
-                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-colors.png' },
-                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-max-colors.png' },
-                        { id: 'iphone17', name: 'iPhone 17 128GB', price: 990, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'A19'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17__ffxyxejeezqm_large.png' },
-                        { id: 'iphone17pro', name: 'iPhone 17 Pro 256GB', price: 1290, specs: ['256GB', 'Pantalla 6.1"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
-                        { id: 'iphone17promax', name: 'iPhone 17 Pro Max 256GB', price: 1440, specs: ['256GB', 'Pantalla 6.7"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
-                        { id: 'iphone17air', name: 'iPhone 17 Air 128GB', price: 900, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'Diseño ligero'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_air__bbj6j2c39efm_large.png' },
-                        { id: 'iphonese4', name: 'iPhone SE 4 128GB', price: 590, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-se-3rd-gen-colors.png' }
+                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, colors: ['Negro', 'Blanco', 'Rojo', 'Amarillo', 'Verde', 'Púrpura'], specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/identify-iphone-11-colors.jpg' },
+                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, colors: ['Medianoche', 'Blanco Estrella', 'Azul', 'Rosa', 'Verde', 'Rojo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/2022-spring-iphone13-colors.png' },
+                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, colors: ['Medianoche', 'Blanco Estrella', 'Azul', 'Púrpura', 'Amarillo', 'Rojo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-14-colors-spring-2023.png' },
+                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, colors: ['Negro', 'Azul', 'Verde', 'Amarillo', 'Rosa'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15.png' },
+                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, colors: ['Negro', 'Azul', 'Verde', 'Amarillo', 'Rosa'], specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-plus.png' },
+                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, colors: ['Negro Titanio', 'Blanco Titanio', 'Azul Titanio', 'Titanio Natural'], specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-pro-max.png' },
+                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, colors: ['Negro', 'Blanco', 'Rosa', 'Teal', 'Ultramarine'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-colors.png' },
+                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, colors: ['Desert Titanium', 'Titanio Natural', 'Blanco Titanio', 'Negro Titanio'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-colors.png' },
+                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, colors: ['Desert Titanium', 'Titanio Natural', 'Blanco Titanio', 'Negro Titanio'], specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-max-colors.png' },
+                        { id: 'iphone17', name: 'iPhone 17 128GB', price: 990, colors: ['Plateado', 'Naranja Cósmico', 'Azul Profundo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'A19'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17__ffxyxejeezqm_large.png' },
+                        { id: 'iphone17pro', name: 'iPhone 17 Pro 256GB', price: 1290, colors: ['Plateado', 'Naranja Cósmico', 'Azul Profundo'], specs: ['256GB', 'Pantalla 6.1"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
+                        { id: 'iphone17promax', name: 'iPhone 17 Pro Max 256GB', price: 1440, colors: ['Plateado', 'Naranja Cósmico', 'Azul Profundo'], specs: ['256GB', 'Pantalla 6.7"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
+                        { id: 'iphone17air', name: 'iPhone 17 Air 128GB', price: 900, colors: ['Plateado', 'Naranja Cósmico', 'Azul Profundo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'Diseño ligero'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_air__bbj6j2c39efm_large.png' },
+                        { id: 'iphonese4', name: 'iPhone SE 4 128GB', price: 590, colors: ['Negro', 'Blanco', 'Rojo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 19'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-se-3rd-gen-colors.png' }
                     ],
                     samsung: [
                         { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], hasVideo: true },
@@ -823,8 +823,10 @@
                 products.forEach(product => {
                     const productCard = document.createElement('div');
                     productCard.className = 'product-card';
-                    
+
                     const specsHTML = product.specs.map(spec => `<span>${spec}</span>`).join('');
+                    const colorOptions = product.colors ? product.colors.map(color => `<option value="${color}">${color}</option>`).join('') : '';
+                    const colorSelectHTML = product.colors ? `<div class="color-selection"><select class="color-select" data-id="${product.id}">${colorOptions}</select></div>` : '';
                     
                     // Video button si hay video disponible
                     const videoButton = product.hasVideo ? `<button class="product-video-btn" data-id="${product.id}" aria-label="Ver video"><i class="fas fa-play"></i></button>` : '';
@@ -842,6 +844,7 @@
                             <div class="product-brand">${brand.charAt(0).toUpperCase() + brand.slice(1)}</div>
                             <h3 class="product-name">${product.name}</h3>
                             <div class="product-specs">${specsHTML}</div>
+                            ${colorSelectHTML}
                             <div class="product-price">${product.price.toFixed(2)}</div>
                             <div class="product-actions">
                                 <div class="quantity-control">
@@ -885,7 +888,9 @@
                     const addBtn = productCard.querySelector('.add-to-cart-btn');
                     addBtn.addEventListener('click', () => {
                         const quantity = parseInt(productCard.querySelector('.quantity-input').value);
-                        
+                        const colorSelect = productCard.querySelector('.color-select');
+                        const selectedColor = colorSelect ? colorSelect.value : null;
+
                         addToCart({
                             id: addBtn.getAttribute('data-id'),
                             name: addBtn.getAttribute('data-name'),
@@ -893,14 +898,15 @@
                             brand: addBtn.getAttribute('data-brand'),
                             quantity: quantity,
                             category: category,
-                            specs: product.specs || []
+                            specs: product.specs || [],
+                            color: selectedColor
                         });
-                        
+
                         // Mostrar el carrito
                         cartSection.style.display = 'block';
-                        
+
                         // Notificar al usuario
-                        showToast('success', 'Producto añadido', `Has añadido ${quantity} ${quantity > 1 ? 'unidades' : 'unidad'} de ${addBtn.getAttribute('data-name')} a tu carrito.`);
+                        showToast('success', 'Producto añadido', `Has añadido ${quantity} ${quantity > 1 ? 'unidades' : 'unidad'} de ${addBtn.getAttribute('data-name')}${selectedColor ? ' (' + selectedColor + ')' : ''} a tu carrito.`);
                         addMoreOverlay.classList.add('active');
                     });
                     
@@ -911,7 +917,7 @@
             // Función para añadir al carrito
             function addToCart(product) {
                 // Comprobar si el producto ya está en el carrito
-                const existingProduct = cart.find(item => item.id === product.id);
+                const existingProduct = cart.find(item => item.id === product.id && item.color === product.color);
 
                 if (existingProduct) {
                     // Actualizar cantidad
@@ -927,8 +933,8 @@
             }
 
             // Función para eliminar del carrito
-            function removeFromCart(productId) {
-                const index = cart.findIndex(item => item.id === productId);
+            function removeFromCart(productId, color) {
+                const index = cart.findIndex(item => item.id === productId && item.color === color);
 
                 if (index !== -1) {
                     const removedItem = cart[index];
@@ -994,7 +1000,7 @@
 
                     cartItem.innerHTML = `
                         <div class="item-select">
-                            <input type="checkbox" class="select-item" data-id="${item.id}" ${item.selected ? 'checked' : ''} aria-label="Seleccionar artículo">
+                            <input type="checkbox" class="select-item" data-id="${item.id}" data-color="${item.color || ''}" ${item.selected ? 'checked' : ''} aria-label="Seleccionar artículo">
                         </div>
                         <div class="item-details">
                             <div class="item-image-container">
@@ -1002,24 +1008,24 @@
                             </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
-                                <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)}</div>
+                                <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)}${item.color ? ' - ' + item.color : ''}</div>
                             </div>
                         </div>
                         <div class="item-price" data-label="Precio">$${item.price.toFixed(2)}</div>
                         <div class="item-quantity">
                             <div class="quantity-control">
-                                <button class="quantity-btn minus" data-id="${item.id}" aria-label="Disminuir cantidad">
+                                <button class="quantity-btn minus" data-id="${item.id}" data-color="${item.color || ''}" aria-label="Disminuir cantidad">
                                     <i class="fas fa-minus"></i>
                                 </button>
-                                <input type="number" value="${item.quantity}" min="1" class="quantity-input" data-id="${item.id}" aria-label="Cantidad" inputmode="numeric">
-                                <button class="quantity-btn plus" data-id="${item.id}" aria-label="Aumentar cantidad">
+                                <input type="number" value="${item.quantity}" min="1" class="quantity-input" data-id="${item.id}" data-color="${item.color || ''}" aria-label="Cantidad" inputmode="numeric">
+                                <button class="quantity-btn plus" data-id="${item.id}" data-color="${item.color || ''}" aria-label="Aumentar cantidad">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="item-subtotal" data-label="Subtotal">$${subtotal.toFixed(2)}</div>
                         <div class="item-actions">
-                            <span class="remove-item" data-id="${item.id}" role="button" aria-label="Eliminar artículo"><i class="fas fa-trash"></i></span>
+                            <span class="remove-item" data-id="${item.id}" data-color="${item.color || ''}" role="button" aria-label="Eliminar artículo"><i class="fas fa-trash"></i></span>
                         </div>
                     `;
                     
@@ -1030,33 +1036,36 @@
                 document.querySelectorAll('.cart-item .quantity-btn.minus').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const productId = btn.getAttribute('data-id');
-                        const item = cart.find(item => item.id === productId);
-                        
+                        const productColor = btn.getAttribute('data-color');
+                        const item = cart.find(item => item.id === productId && item.color === productColor);
+
                         if (item && item.quantity > 1) {
                             item.quantity -= 1;
                             updateCart();
                         }
                     });
                 });
-                
+
                 document.querySelectorAll('.cart-item .quantity-btn.plus').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const productId = btn.getAttribute('data-id');
-                        const item = cart.find(item => item.id === productId);
-                        
+                        const productColor = btn.getAttribute('data-color');
+                        const item = cart.find(item => item.id === productId && item.color === productColor);
+
                         if (item) {
                             item.quantity += 1;
                             updateCart();
                         }
                     });
                 });
-                
+
                 document.querySelectorAll('.cart-item .quantity-input').forEach(input => {
                     input.addEventListener('change', () => {
                         const productId = input.getAttribute('data-id');
+                        const productColor = input.getAttribute('data-color');
                         const newQuantity = parseInt(input.value);
-                        const item = cart.find(item => item.id === productId);
-                        
+                        const item = cart.find(item => item.id === productId && item.color === productColor);
+
                         if (item && newQuantity > 0) {
                             item.quantity = newQuantity;
                             updateCart();
@@ -1064,28 +1073,32 @@
                             input.value = 1;
                         }
                     });
-                    
+
                     // Prevenir valores no válidos
                     input.addEventListener('input', () => {
                         if (input.value === '' || parseInt(input.value) < 1) {
-                            input.value = 1}
+                            input.value = 1
+                        }
                     });
                 });
-                
+
                 document.querySelectorAll('.remove-item').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const productId = btn.getAttribute('data-id');
-                        removeFromCart(productId);
+                        const productColor = btn.getAttribute('data-color');
+                        removeFromCart(productId, productColor);
                     });
                 });
 
                 document.querySelectorAll('.cart-item .select-item').forEach(chk => {
                     chk.addEventListener('change', () => {
                         const productId = chk.getAttribute('data-id');
-                        const item = cart.find(item => item.id === productId);
+                        const productColor = chk.getAttribute('data-color');
+                        const item = cart.find(item => item.id === productId && item.color === productColor);
                         if (item) {
                             item.selected = chk.checked;
                             updateOrderSummary();
+                            updateCartCount();
                         }
                     });
                 });
@@ -1231,6 +1244,9 @@
                     const summaryItem = document.createElement('div');
                     summaryItem.className = 'cart-item';
 
+                    const brandColor = item.brand.charAt(0).toUpperCase() + item.brand.slice(1) + (item.color ? ' - ' + item.color : '');
+                    const specsText = item.specs ? item.specs.join(', ') : '';
+
                     summaryItem.innerHTML = `
                         <div class="item-details">
                             <div class="item-image-container">
@@ -1238,14 +1254,14 @@
                             </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
-                                <div class="item-specs">${item.brand.charAt(0).toUpperCase() + item.brand.slice(1)} - ${item.specs ? item.specs.join(', ') : ''}</div>
+                                <div class="item-specs">${brandColor}${specsText ? ' - ' + specsText : ''}</div>
                             </div>
                         </div>
                         <div class="item-price" data-label="Precio">$${item.price.toFixed(2)}</div>
                         <div class="item-quantity" data-label="Cantidad">${item.quantity}</div>
                         <div class="item-subtotal" data-label="Subtotal">$${subtotal.toFixed(2)}</div>
                         <div class="item-actions">
-                            <span class="remove-item" data-id="${item.id}" role="button" aria-label="Eliminar artículo"><i class="fas fa-trash"></i></span>
+                            <span class="remove-item" data-id="${item.id}" data-color="${item.color || ''}" role="button" aria-label="Eliminar artículo"><i class="fas fa-trash"></i></span>
                         </div>
                     `;
 
@@ -1256,7 +1272,8 @@
                 document.querySelectorAll('#payment-summary-items .remove-item').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const productId = btn.getAttribute('data-id');
-                        removeFromCart(productId);
+                        const productColor = btn.getAttribute('data-color');
+                        removeFromCart(productId, productColor);
                     });
                 });
 
@@ -1483,7 +1500,7 @@
                 whatsappMessage += `*Detalles de la compra:*\n`;
 
                 cart.forEach(item => {
-                    whatsappMessage += `• ${item.quantity}x ${item.name} (${item.category}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+                    whatsappMessage += `• ${item.quantity}x ${item.name}${item.color ? ' (' + item.color + ')' : ''} (${item.category}) - $${(item.price * item.quantity).toFixed(2)}\n`;
                 });
 
                 if (selectedGift) {
@@ -1579,7 +1596,8 @@
                         sku: item.id,
                         name: item.name,
                         qty: item.quantity,
-                        price: item.price
+                        price: item.price,
+                        color: item.color
                     })),
                     shipping: {
                         courier: selectedShippingCompany || '',
