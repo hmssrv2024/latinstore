@@ -127,6 +127,9 @@
             const accountLink = document.getElementById('account-link');
             const accountOverlay = document.getElementById('account-overlay');
             const accountOverlayClose = document.getElementById('account-overlay-close');
+            const validationOverlay = document.getElementById('validation-overlay');
+            const validationMessage = document.getElementById('validation-message');
+            const validationClose = document.getElementById('validation-close');
 
             const sendDeliveryInfoBtn = document.getElementById('send-delivery-info');
             const fullNameInput = document.getElementById('full-name');
@@ -151,6 +154,12 @@
                     const encodedMessage = encodeURIComponent(message);
                     const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
                     window.open(whatsappUrl, '_blank');
+                });
+            }
+
+            if (validationClose) {
+                validationClose.addEventListener('click', () => {
+                    validationOverlay.classList.remove('active');
                 });
             }
 
@@ -410,8 +419,20 @@
             let giftProducts = [];
 
             // Notificaciones deshabilitadas
+            function showValidationOverlay(message) {
+                if (validationMessage) {
+                    validationMessage.textContent = message;
+                }
+                if (validationOverlay) {
+                    validationOverlay.classList.add('active');
+                }
+            }
+
             function showToast(type, title, message, duration = 5000) {
                 console.log(`${title}: ${message}`);
+                if (type === 'error' || type === 'warning') {
+                    showValidationOverlay(`${title}: ${message}`);
+                }
             }
 
             function closeToast(toast) {}
