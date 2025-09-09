@@ -402,53 +402,55 @@
                         { id: 'samsunga56', name: 'Samsung A56 5G 8GB/256GB', price: 399, colors: ['Negro', 'Blanco', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'] },
+                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, colors: ['Negro Medianoche', 'Dorado Arena', 'Rosa Perla', 'Azul Océano'], specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'] },
+                        { id: 'redmik60', name: 'Redmi K60 12GB/256GB', price: 450, colors: ['Negro', 'Azul', 'Verde', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 2'] },
+                        { id: 'note13proplus', name: 'Note 13 Pro Plus 5G 12GB/256GB', price: 415, colors: ['Negro (Midnight Black)', 'Blanco (Moonlight White)', 'Púrpura (Aurora Purple)'], specs: ['12GB RAM', '256GB', '5G', 'Dimensity 7200 Ultra'] },
                         { id: 'xiaominote14pro', name: 'Xiaomi Note 14 Pro 5G 8GB/256GB', price: 285, specs: ['8GB RAM', '256GB', '5G', 'Dimensity 7300'] },
-                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], hasVideo: true },
-                        { id: 'xiaomi15', name: 'Xiaomi 15 8GB/256GB', price: 750, specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15pro', name: 'Xiaomi 15 Pro 12GB/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15ultra', name: 'Xiaomi 15 Ultra 16GB/512GB', price: 1090, specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15tpro', name: 'Xiaomi 15T Pro 12GB/256GB', price: 860, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'redminote14', name: 'Redmi Note 14 8GB/256GB', price: 320, specs: ['8GB RAM', '256GB', 'Dimensity 8300'] },
-                        { id: 'pocox7', name: 'POCO X7 8GB/256GB', price: 350, specs: ['8GB RAM', '256GB', 'Snapdragon 7s Gen 2'] },
-                        { id: 'pocox7pro', name: 'POCO X7 Pro 12GB/256GB', price: 430, specs: ['12GB RAM', '256GB', 'Snapdragon 8s Gen 3'] }
+                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, colors: ['Blanco', 'Negro'], specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], hasVideo: true },
+                        { id: 'xiaomi15', name: 'Xiaomi 15 8GB/256GB', price: 750, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
+                        { id: 'xiaomi15pro', name: 'Xiaomi 15 Pro 12GB/256GB', price: 880, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
+                        { id: 'xiaomi15ultra', name: 'Xiaomi 15 Ultra 16GB/512GB', price: 1090, colors: ['Negro', 'Blanco', 'Plata Cromada', 'Turquesa', 'Púrpura Oscuro', 'Marrón Oscuro'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] },
+                        { id: 'xiaomi15tpro', name: 'Xiaomi 15T Pro 12GB/256GB', price: 860, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
+                        { id: 'redminote14', name: 'Redmi Note 14 8GB/256GB', price: 320, colors: ['Negro Medianoche', 'Azul Océano', 'Verde Lima', 'Morado'], specs: ['8GB RAM', '256GB', 'Dimensity 8300'] },
+                        { id: 'pocox7', name: 'POCO X7 8GB/256GB', price: 350, colors: ['Negro', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', 'Snapdragon 7s Gen 2'] },
+                        { id: 'pocox7pro', name: 'POCO X7 Pro 12GB/256GB', price: 430, colors: ['Negro', 'Azul', 'Verde'], specs: ['12GB RAM', '256GB', 'Snapdragon 8s Gen 3'] }
                     ],
                     google: [
-                        { id: 'pixel9', name: 'Google Pixel 9 5G 12GB/256GB', price: 819, specs: ['12GB RAM', '256GB', '5G', 'Google Tensor G4'] },
-                        { id: 'pixel9profold', name: 'Google Pixel 9 Pro Fold 5G 16GB/512GB', price: 1760, specs: ['16GB RAM', '512GB', 'Plegable', 'Google Tensor G4'] },
-                        { id: 'pixel9a', name: 'Google Pixel 9a 8GB/128GB', price: 499, specs: ['8GB RAM', '128GB', 'Google Tensor G4a'] },
-                        { id: 'pixel10', name: 'Google Pixel 10 12GB/256GB', price: 899, specs: ['12GB RAM', '256GB', 'Google Tensor G5'] },
-                        { id: 'pixel10pro', name: 'Google Pixel 10 Pro 16GB/512GB', price: 1099, specs: ['16GB RAM', '512GB', 'Google Tensor G5'] },
-                        { id: 'pixelfold2', name: 'Google Pixel Fold 2 12GB/512GB', price: 1899, specs: ['12GB RAM', '512GB', 'Plegable', 'Google Tensor G5'] }
+                        { id: 'pixel9', name: 'Google Pixel 9 5G 12GB/256GB', price: 819, colors: ['Negro Obsidiana', 'Azul Cielo', 'Verde Menta', 'Rosa Porcelana'], specs: ['12GB RAM', '256GB', '5G', 'Google Tensor G4'] },
+                        { id: 'pixel9profold', name: 'Google Pixel 9 Pro Fold 5G 16GB/512GB', price: 1760, colors: ['Negro Obsidiana', 'Plata Porcelana'], specs: ['16GB RAM', '512GB', 'Plegable', 'Google Tensor G4'] },
+                        { id: 'pixel9a', name: 'Google Pixel 9a 8GB/128GB', price: 499, colors: ['Negro Obsidiana', 'Azul Cielo', 'Verde Menta', 'Blanco Hueso'], specs: ['8GB RAM', '128GB', 'Google Tensor G4a'] },
+                        { id: 'pixel10', name: 'Google Pixel 10 12GB/256GB', price: 899, colors: ['Negro', 'Blanco', 'Rosa', 'Otros (según versión)'], specs: ['12GB RAM', '256GB', 'Google Tensor G5'] },
+                        { id: 'pixel10pro', name: 'Google Pixel 10 Pro 16GB/512GB', price: 1099, colors: ['Negro', 'Blanco', 'Rosa', 'Otros (según versión)'], specs: ['16GB RAM', '512GB', 'Google Tensor G5'] },
+                        { id: 'pixelfold2', name: 'Google Pixel Fold 2 12GB/512GB', price: 1899, colors: ['Negro', 'Blanco', 'Otros'], specs: ['12GB RAM', '512GB', 'Plegable', 'Google Tensor G5'] }
                     ],
                     motorola: [
-                        { id: 'motorolaedge50', name: 'Motorola EDGE 50 5G 12GB/256GB', price: 350, specs: ['12GB RAM', '256GB', '5G', 'Snapdragon 7 Gen 1'] },
-                        { id: 'motorolarazr50', name: 'Motorola RAZR 50 5G 12GB/512GB', price: 695, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8s Gen 3'] }
+                        { id: 'motorolaedge50', name: 'Motorola EDGE 50 5G 12GB/256GB', price: 350, colors: ['Negro', 'Blanco', 'Verde', 'Púrpura claro'], specs: ['12GB RAM', '256GB', '5G', 'Snapdragon 7 Gen 1'] },
+                        { id: 'motorolarazr50', name: 'Motorola RAZR 50 5G 12GB/512GB', price: 695, colors: ['Azul Marina', 'Rojo', 'Verde Menta', 'Ediciones limitadas'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8s Gen 3'] }
                     ],
                     oneplus: [
-                        { id: 'oneplus13', name: 'OnePlus 13 12GB/256GB', price: 799, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'oneplusopen2', name: 'OnePlus Open 2 16GB/512GB', price: 1699, specs: ['16GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] }
+                        { id: 'oneplus13', name: 'OnePlus 13 12GB/256GB', price: 799, colors: ['Blanco', 'Negro', 'Verde', 'Ediciones especiales'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
+                        { id: 'oneplusopen2', name: 'OnePlus Open 2 16GB/512GB', price: 1699, colors: ['Verde', 'Negro'], specs: ['16GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] }
                     ],
                     oppo: [
-                        { id: 'findx9', name: 'OPPO Find X9 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findx9pro', name: 'OPPO Find X9 Pro 16GB/512GB', price: 1099, specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findn5', name: 'OPPO Find N5 12GB/512GB', price: 1599, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findx8ultra', name: 'OPPO Find X8 Ultra 16GB/512GB', price: 1199, specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] }
+                        { id: 'findx9', name: 'OPPO Find X9 12GB/256GB', price: 850, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
+                        { id: 'findx9pro', name: 'OPPO Find X9 Pro 16GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Blanco'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 4'] },
+                        { id: 'findn5', name: 'OPPO Find N5 12GB/512GB', price: 1599, colors: ['Negro', 'Verde', 'Dorado'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
+                        { id: 'findx8ultra', name: 'OPPO Find X8 Ultra 16GB/512GB', price: 1199, colors: ['Negro', 'Blanco', 'Marrón'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] }
                     ],
                     honor: [
-                        { id: 'magic7pro', name: 'Honor Magic 7 Pro 12GB/512GB', price: 1099, specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'magic7pro', name: 'Honor Magic 7 Pro 12GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Oro', 'Rojo', 'Otras ediciones'], specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 4'] }
                     ],
                     huawei: [
-                        { id: 'matex6', name: 'Huawei Mate X6 12GB/512GB', price: 1699, specs: ['12GB RAM', '512GB', 'Plegable', 'Kirin 9100'] }
+                        { id: 'matex6', name: 'Huawei Mate X6 12GB/512GB', price: 1699, colors: ['Negro', 'Púrpura', 'Verde', 'Oro'], specs: ['12GB RAM', '512GB', 'Plegable', 'Kirin 9100'] }
                     ],
                     realme: [
-                        { id: 'gt7pro', name: 'Realme GT7 Pro 12GB/256GB', price: 750, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'gt7pro', name: 'Realme GT7 Pro 12GB/256GB', price: 750, colors: ['Negro', 'Azul', 'Verde', 'Versiones especiales'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
                     ],
                     nubia: [
-                        { id: 'nubiaflip2', name: 'Nubia Flip 2 5G 8GB/256GB', price: 899, specs: ['8GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'] }
+                        { id: 'nubiaflip2', name: 'Nubia Flip 2 5G 8GB/256GB', price: 899, colors: ['Azul', 'Negro', 'Blanco'], specs: ['8GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'] }
                     ],
                     vivo: [
-                        { id: 'vivox300', name: 'Vivo X300 12GB/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'vivox300', name: 'Vivo X300 12GB/256GB', price: 880, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
                     ]
                 },
                 tablets: {
