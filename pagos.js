@@ -1247,11 +1247,11 @@
                 whatsappMessage += `*Detalles de la compra:*\n`;
 
                 cart.forEach(item => {
-                    whatsappMessage += `• ${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}\n`;
+                    whatsappMessage += `• ${item.quantity}x ${item.name} (${item.category}) - $${(item.price * item.quantity).toFixed(2)}\n`;
                 });
 
                 if (selectedGift) {
-                    whatsappMessage += `• 1x ${selectedGift.name} (Regalo GRATIS)\n`;
+                    whatsappMessage += `• 1x ${selectedGift.name} (${selectedGift.category}) (Regalo GRATIS)\n`;
                 }
 
                 whatsappMessage += `\n*Resumen:*\n`;
@@ -1266,13 +1266,14 @@
                 whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
 
                 whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
-                whatsappMessage += `*Datos de entrega:*\n`;
+                whatsappMessage += `*Datos para la factura:*\n`;
                 whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
                 whatsappMessage += `Cédula: ${idNumberInput.value}\n`;
                 whatsappMessage += `Teléfono: ${phoneInput.value}\n`;
                 whatsappMessage += `Dirección: ${addressInput.value}\n`;
                 whatsappMessage += `Estado: ${stateInput.value}\n`;
                 whatsappMessage += `Ciudad: ${cityInput.value}\n`;
+                whatsappMessage += `País: ${selectedCountry ? selectedCountry.toUpperCase() : ''}\n`;
                 whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n\n`;
 
                 whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
