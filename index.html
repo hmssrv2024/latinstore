@@ -835,6 +835,33 @@
                 font-size: 0.65rem;
             }
         }
+
+        /* Cart modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: #fff;
+            color: #000;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+            z-index: 2000;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .cart-modal.show { display: block; }
+        .cart-modal .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+        .cart-item { margin-bottom: 0.5rem; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -851,7 +878,7 @@
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><a href="#" id="account-link" class="disabled" aria-disabled="true" style="display:none;">Mi cuenta</a></li>
-                <li><a href="carrito.html" class="cart-link"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
+                <li><a href="#" class="cart-link" id="cart-link"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
             </ul>
             <button class="mobile-nav-toggle" id="mobile-nav-toggle">
                 <i class="fas fa-bars"></i>
@@ -2305,17 +2332,54 @@
             });
         });
     </script>
+
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <button class="close-cart" id="close-cart">&times;</button>
+            <h3>Tu carrito</h3>
+            <ul id="cart-items-list"></ul>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const cartCountEl = document.querySelector('.cart-count');
-            if (cartCountEl) {
+            const cartLink = document.getElementById('cart-link');
+            const cartModal = document.getElementById('cart-modal');
+            const closeCartBtn = document.getElementById('close-cart');
+            const cartItemsList = document.getElementById('cart-items-list');
+
+            function loadCart() {
+                let cart = [];
                 try {
-                    const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
-                    const count = storedCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                    cartCountEl.textContent = count;
+                    cart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
                 } catch (err) {
-                    console.error('Error al cargar el carrito', err);
+                    cart = [];
                 }
+                const count = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                if (cartCountEl) cartCountEl.textContent = count;
+                if (cartItemsList) {
+                    cartItemsList.innerHTML = '';
+                    cart.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'cart-item';
+                        li.textContent = `${item.name} x${item.quantity}`;
+                        cartItemsList.appendChild(li);
+                    });
+                }
+            }
+
+            loadCart();
+
+            if (cartLink) {
+                cartLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    loadCart();
+                    cartModal.classList.add('show');
+                });
+            }
+
+            if (closeCartBtn) {
+                closeCartBtn.addEventListener('click', () => cartModal.classList.remove('show'));
             }
         });
     </script>
