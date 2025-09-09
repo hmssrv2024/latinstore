@@ -18,7 +18,7 @@
       link.classList && link.classList.remove('disabled');
       link.removeAttribute('aria-disabled');
       const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
-      const hasInfo = user.name && user.email && user.phone;
+      const hasInfo = user.name && user.doc && user.phone;
       link.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
     }
   });
