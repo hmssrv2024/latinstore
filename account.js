@@ -15,7 +15,9 @@
       link.style.display = 'inline-block';
       link.classList && link.classList.remove('disabled');
       link.removeAttribute('aria-disabled');
-      link.setAttribute('href','micuenta.html');
+      const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
+      const hasInfo = user.name && user.email && user.phone;
+      link.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
     }
   });
 })();
