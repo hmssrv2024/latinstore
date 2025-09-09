@@ -1320,6 +1320,7 @@
                     const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
                     const hasInfo = storedUser.name && storedUser.email && storedUser.phone;
                     accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
+                    accountLink.style.display = 'inline-block';
                 }
 
                 setTimeout(() => {
@@ -1396,7 +1397,8 @@
                 };
                 localStorage.setItem('lpUser', JSON.stringify(user));
 
-                localStorage.setItem('lpInvoices', JSON.stringify([]));
+                const invoices = [{ id: 'INV-' + orderNumber, orderId: orderNumber, amount: total, date: today, paid: true }];
+                localStorage.setItem('lpInvoices', JSON.stringify(invoices));
                 localStorage.setItem('lpClaims', JSON.stringify([]));
 
                 const payments = [{ id: 'PM-1', brand: selectedPaymentMethod, last4: '', holder: user.name, exp: '', default: true }];

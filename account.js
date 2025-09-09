@@ -1,7 +1,9 @@
 (function(){
   document.addEventListener('DOMContentLoaded', function(){
     const orders = JSON.parse(localStorage.getItem('lpOrders') || '[]');
-    if(!orders.length) return;
+    const addresses = JSON.parse(localStorage.getItem('lpAddresses') || '[]');
+    const invoices = JSON.parse(localStorage.getItem('lpInvoices') || '[]');
+    if(!orders.length || !addresses.length || !invoices.length) return;
     const lastOrder = orders[orders.length - 1];
     const eta = lastOrder.shipping && lastOrder.shipping.eta;
     const today = new Date().toISOString().slice(0,10);
