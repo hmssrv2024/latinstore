@@ -163,7 +163,8 @@
                 "Trujillo": ["Trujillo", "Valera"],
                 "La Guaira": ["La Guaira", "Maiquetía"],
                 "Yaracuy": ["San Felipe", "Yaritagua"],
-                "Zulia": ["Maracaibo", "Cabimas"]
+                "Zulia": ["Maracaibo", "Cabimas"],
+                "Distrito Capital": ["Caracas-Centro", "Altamira-Chacao"]
             };
 
             function populateStates() {
