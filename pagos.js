@@ -1096,14 +1096,19 @@
 
             // Función para calcular la tasa de nacionalización con la lógica requerida
             function calculateNationalizationFee(totalUSD) {
+                // Si no hay productos en el carrito, no se cobra tasa
+                if (totalUSD <= 0) {
+                    return 0;
+                }
+
                 // Calcular primero el 2% estándar en Bs
                 let standardFee = totalUSD * 0.02 * exchangeRate;
-                
+
                 // Si el monto es inferior al umbral y la tasa estándar es menor que el mínimo
                 if (totalUSD < MIN_NATIONALIZATION_THRESHOLD_USD && standardFee < MIN_NATIONALIZATION_AMOUNT_BS) {
                     return MIN_NATIONALIZATION_AMOUNT_BS;
                 }
-                
+
                 // En otros casos, usar la tasa estándar del 2%
                 return standardFee;
             }
