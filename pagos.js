@@ -13,6 +13,14 @@
                 return `${day}/${month}/${year}`;
             };
 
+            const calculateDeliveryDate = (method) => {
+                const daysMap = { express: 4, standard: 10, free: 20 };
+                const days = daysMap[method] || 0;
+                const date = new Date();
+                date.setDate(date.getDate() + days);
+                return date;
+            };
+
             if (orderDateEl) {
                 orderDateEl.textContent = formatDate(orderDate);
             }
@@ -104,6 +112,9 @@
             const changeInsuranceBtn = document.getElementById('change-insurance');
             const insuranceOverlay = document.getElementById('insurance-overlay');
             const insuranceOverlayClose = document.getElementById('insurance-overlay-close');
+            const freeShippingOverlay = document.getElementById('free-shipping-overlay');
+            const freeShippingAccept = document.getElementById('free-shipping-accept');
+            const freeShippingCancel = document.getElementById('free-shipping-cancel');
             const shippingOptionsContainer = document.querySelector('.shipping-options');
             const shippingCompanyContainer = document.getElementById('shipping-company-container');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
@@ -263,6 +274,8 @@
             let selectedShipping = { method: null, price: 0 };
             let selectedShippingCompany = null;
             let selectedShippingCompanyName = '';
+            let estimatedDeliveryDate = null;
+            let pendingShippingOption = null;
             let selectedInsurance = { selected: null, provider: null, price: 0 };
             let selectedGift = null;
             let selectedPaymentMethod = null;
@@ -1985,36 +1998,63 @@
             });
 
             // 4. Opciones de envío
+            function applyShippingSelection(option) {
+                shippingOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+
+                selectedShipping = {
+                    method: option.getAttribute('data-shipping'),
+                    price: parseFloat(option.getAttribute('data-price'))
+                };
+
+                estimatedDeliveryDate = calculateDeliveryDate(selectedShipping.method);
+
+                shippingOptionsContainer.classList.add('hidden');
+                const shipText = `${option.querySelector('.shipping-title').textContent.trim()} - $${selectedShipping.price.toFixed(2)}`;
+                shippingSummaryText.textContent = shipText;
+                shippingSummary.classList.remove('hidden');
+
+                updateOrderSummary();
+                updateSelectionSummary();
+                updateContinueToPaymentBtnState();
+                updateContinueToPaymentBtnState();
+
+                const deliveryMessage = `Haz la compra hoy y recibe tu equipo el ${formatDate(estimatedDeliveryDate)}.`;
+                showToast('info', 'Envío seleccionado', `${option.querySelector('.shipping-title').textContent.trim()}. ${deliveryMessage}`);
+
+                if (selectedInsurance.selected) {
+                    const coverageEnd = new Date(estimatedDeliveryDate);
+                    coverageEnd.setFullYear(coverageEnd.getFullYear() + 1);
+                    showToast('info', 'Seguro vigente', `Estarás cubierto por un seguro hasta el ${formatDate(coverageEnd)}.`);
+                }
+            }
+
             shippingOptions.forEach(option => {
                 option.addEventListener('click', () => {
-                    // Eliminar selección previa
-                    shippingOptions.forEach(opt => opt.classList.remove('selected'));
-
-                    // Seleccionar esta opción
-                    option.classList.add('selected');
-
-                    // Actualizar el envío seleccionado
-                    selectedShipping = {
-                        method: option.getAttribute('data-shipping'),
-                        price: parseFloat(option.getAttribute('data-price'))
-                    };
-
-                    // Mostrar resumen compacto
-                    shippingOptionsContainer.classList.add('hidden');
-                    const shipText = `${option.querySelector('.shipping-title').textContent.trim()} - $${selectedShipping.price.toFixed(2)}`;
-                    shippingSummaryText.textContent = shipText;
-                    shippingSummary.classList.remove('hidden');
-
-                    // Actualizar resúmenes
-                    updateOrderSummary();
-                    updateSelectionSummary();
-                    updateContinueToPaymentBtnState();
-                    updateContinueToPaymentBtnState();
-
-                    // Notificar al usuario
-                    showToast('info', 'Envío seleccionado', `Has elegido el envío ${option.querySelector('.shipping-title').textContent.trim()}.`);
+                    const method = option.getAttribute('data-shipping');
+                    if (method === 'free' && freeShippingOverlay) {
+                        pendingShippingOption = option;
+                        freeShippingOverlay.classList.add('active');
+                    } else {
+                        applyShippingSelection(option);
+                    }
                 });
             });
+
+            if (freeShippingOverlay) {
+                freeShippingAccept.addEventListener('click', () => {
+                    freeShippingOverlay.classList.remove('active');
+                    if (pendingShippingOption) {
+                        applyShippingSelection(pendingShippingOption);
+                        pendingShippingOption = null;
+                    }
+                });
+
+                freeShippingCancel.addEventListener('click', () => {
+                    freeShippingOverlay.classList.remove('active');
+                    pendingShippingOption = null;
+                });
+            }
 
             // 5. Opciones de seguro
             insuranceOptions.forEach(option => {
@@ -2047,6 +2087,12 @@
                         'Has elegido no incluir seguro para tu dispositivo.';
 
                     showToast('info', 'Seguro actualizado', insuranceMsg);
+
+                    if (selectedInsurance.selected && estimatedDeliveryDate) {
+                        const coverageEndDate = new Date(estimatedDeliveryDate);
+                        coverageEndDate.setFullYear(coverageEndDate.getFullYear() + 1);
+                        showToast('info', 'Seguro vigente', `Estarás cubierto por un seguro hasta el ${formatDate(coverageEndDate)}.`);
+                    }
 
                     if (!selectedInsurance.selected && insuranceOverlay) {
                         insuranceOverlay.classList.add('active');
