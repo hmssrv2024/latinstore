@@ -429,7 +429,8 @@
                 },
                 tablets: {
                     apple: [
-                        { id: 'ipadair', name: 'iPad Air 11" M2 128GB', price: 650, specs: ['Chip M2', '128GB', 'Pantalla 11"'] },
+                        { id: 'ipad11', name: 'iPad 11 128GB', price: 450, specs: ['Chip A16', '128GB', 'Pantalla 11"'], image: 'https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202503/05/00115217012853____9__1200x1200.jpg?impolicy=Resize&width=900' },
+                        { id: 'ipadair', name: 'iPad Air 11" M2 128GB', price: 650, specs: ['Chip M2', '128GB', 'Pantalla 11"'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/ipad-air-11-inch-m2.png' },
                         { id: 'ipadpro', name: 'iPad Pro 11" M4 256GB', price: 1030, specs: ['Chip M4', '256GB', 'Pantalla 11"'] },
                     ],
                     samsung: [
@@ -442,8 +443,9 @@
                 },
                 smartwatches: {
                     apple: [
-                        { id: 'applewatchs10', name: 'Watch Serie 10 46MM', price: 435, specs: ['Pantalla 46mm', 'Chip S10', 'Always-on'] },
-                        { id: 'applewatchultra', name: 'Watch Ultra 2 49MM', price: 825, specs: ['Pantalla 49mm', 'Titanio', 'GPS + Celular'] }
+                        { id: 'applewatchs10', name: 'Watch Serie 10 46MM', price: 435, specs: ['Pantalla 46mm', 'Chip S10', 'Always-on'], image: 'https://www.apple.com/v/apple-watch-series-11/a/images/overview/contrast/contrast_s11__dkui1dgfuwcy_medium.png' },
+                        { id: 'applewatchultra', name: 'Watch Ultra 3 49MM', price: 825, specs: ['Pantalla 49mm', 'Titanio', 'GPS + Celular'], image: 'https://www.apple.com/v/apple-watch-series-11/a/images/overview/contrast/contrast_s11__dkui1dgfuwcy_medium.png' },
+                        { id: 'applewatchse3', name: 'Watch SE 3', price: 280, specs: ['Pantalla 44mm', 'GPS', 'Detección de caídas'], image: 'https://www.apple.com/v/apple-watch-series-11/a/images/overview/contrast/contrast_se3__b7o04qifck2q_medium.png' }
                     ],
                     samsung: [
                         { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
@@ -455,9 +457,9 @@
                 },
                 accesorios: {
                     apple: [
-                        { id: 'airpods4', name: 'Airpods 4', price: 150, specs: ['Audio Adaptativo', 'USB-C', 'Resistencia al agua'] },
-                        { id: 'airpodsmax', name: 'Airpods Max', price: 455, specs: ['Audio espacial', 'Cancelación de ruido', 'H1 chip'] },
-                        { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'] }
+                        { id: 'airpods4', name: 'Airpods 4', price: 150, specs: ['Audio Adaptativo', 'USB-C', 'Resistencia al agua'], image: 'https://ssr.col.movistar.es/api/v3/get-pic/content/dam/movistar/estaticos/imagenes/dispositivos/apple/airpods/airpods-4-generacion-01.png?oe=png&hash=mc35tkiv' },
+                        { id: 'airpodsmax', name: 'Airpods Max', price: 455, specs: ['Audio espacial', 'Cancelación de ruido', 'H1 chip'], image: 'https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111858_sp835_airpods_max.png' },
+                        { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'], image: 'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/airtag-4pack-select-202104?wid=940&hei=1112&fmt=png-alpha&.v=QVI2eUgvdU1qT1VRdEZUOXVUVHgrZGRuSU1iZUhmQXgzaVlYalNFUEhFVmZhS1VCT1k0VG5wendIdURyT0d4ZVlPV2JwRFRsaGFkTWtXWUxZemFmbFNleDhnU2svblVGV2pwSXQ4RWM2bTA' }
                     ],
                     samsung: [
                         { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'] }
