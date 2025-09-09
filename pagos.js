@@ -165,6 +165,7 @@
             let selectedGift = null;
             let selectedPaymentMethod = null;
             let orderNumber = '';
+            let orderSaved = false;
             let preselectedProductName = localStorage.getItem('selectedProduct');
             const exchangeRate = 225; // 1 USD = 225 Bs
             const taxRate = 0.16; // 16% IVA
@@ -1282,6 +1283,9 @@
                 whatsappBtn.href = whatsappUrl;
                 whatsappSupport.href = whatsappUrl;
 
+                // Guardar datos de la compra inmediatamente
+                saveOrderData();
+
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
                     nationalizationOverlay.classList.add('active');
@@ -1289,6 +1293,8 @@
             }
 
             function saveOrderData() {
+                if(orderSaved) return;
+                orderSaved = true;
                 const today = new Date().toISOString().slice(0,10);
                 const eta = (() => {
                     const end = new Date();
