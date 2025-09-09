@@ -1569,7 +1569,7 @@
                     accountLink.classList.remove('disabled');
                     accountLink.removeAttribute('aria-disabled');
                     const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
-                    const hasInfo = storedUser.name && storedUser.email && storedUser.phone;
+                    const hasInfo = storedUser.name && storedUser.doc && storedUser.phone;
                     accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
                     accountLink.style.display = 'inline-block';
                 }

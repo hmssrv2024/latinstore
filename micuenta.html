@@ -1079,7 +1079,7 @@
     /** Init **/
     function hasUserInfo(){
       const u = getLS('lpUser',{});
-      return u.name && u.email && u.phone;
+      return u.name && u.doc && u.phone;
     }
     function init(){
       if(!hasUserInfo()){
@@ -1097,7 +1097,20 @@
       attachGlobalEvents();
       render();
     }
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', () => {
+      const u = getLS('lpUser',{});
+      if(!u.doc){
+        window.location.href = './informacion.html';
+        return;
+      }
+      const ced = prompt('Ingresa tu número de cédula para acceder:');
+      if(ced !== u.doc){
+        alert('Número de cédula incorrecto');
+        window.location.href = './index.html';
+        return;
+      }
+      init();
+    });
   </script>
 </body>
 </html>
