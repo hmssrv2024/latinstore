@@ -1383,8 +1383,9 @@
                 updateCartCount();
                 if (accountLink) {
                     accountLink.classList.remove('disabled');
-                    accountLink.setAttribute('href', 'micuenta.html');
                     accountLink.removeAttribute('aria-disabled');
+                    const hasInfo = user.name && user.email && user.phone;
+                    accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
                 }
 
                 // Pago exitoso, avanzar a la confirmación

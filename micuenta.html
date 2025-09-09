@@ -2,7 +2,7 @@
 <html lang="es" class="h-full">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Mi Cuenta — Panel de Usuario</title>
   <meta name="description" content="Panel de control del cliente: pedidos, reclamos, seguimiento, seguros, facturas y más." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
       --shadow-soft:0 6px 20px rgba(17,24,39,.06);
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{min-height:100%;overflow-x:hidden}
     body{
       margin:0;
       font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
@@ -1059,7 +1059,15 @@
     }
 
     /** Init **/
+    function hasUserInfo(){
+      const u = getLS('lpUser',{});
+      return u.name && u.email && u.phone;
+    }
     function init(){
+      if(!hasUserInfo()){
+        window.location.href = './informacion.html';
+        return;
+      }
       seedIfEmpty();
       const natLink = document.getElementById('linkNacionalizacion');
       const pendingNat = localStorage.getItem('lpPendingNationalization');
