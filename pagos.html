@@ -470,17 +470,17 @@
                             <div class="payment-option-icon"><i class="fas fa-university"></i></div>
                             <div class="payment-option-text">Zelle</div>
                         </div>
-                        <div class="payment-option" data-payment="bitcoin" id="bitcoin-option">
+                        <div class="payment-option disabled" data-payment="bitcoin" id="bitcoin-option">
                             <div class="payment-option-icon"><i class="fab fa-bitcoin"></i></div>
                             <div class="payment-option-text">Bitcoin</div>
                         </div>
-                        <div class="payment-option" data-payment="pago-movil" id="pago-movil-option">
+                        <div class="payment-option disabled" data-payment="pago-movil" id="pago-movil-option">
                             <div class="payment-option-icon"><i class="fas fa-mobile-alt"></i></div>
                             <div class="payment-option-text">Pago Móvil</div>
                         </div>
                     </div>
 
-                    <div class="credit-card-form">
+                    <div class="credit-card-form" style="display: none;">
                         <h3><i class="fas fa-lock"></i> Información de la tarjeta</h3>
                         
                         <div class="form-group">
@@ -509,6 +509,16 @@
                             <label for="card-pin" class="form-label required">Código PIN (4 dígitos)</label>
                             <input type="password" id="card-pin" class="form-input" placeholder="••••" maxlength="4" required inputmode="numeric">
                         </div>
+                    </div>
+
+                    <div id="zelle-info" class="payment-info" style="display: none;">
+                        <p>Envía tu pago vía Zelle a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
+                        <input type="file" id="zelle-receipt" accept="image/*,application/pdf">
+                    </div>
+
+                    <div id="paypal-info" class="payment-info" style="display: none;">
+                        <p>Envía tu pago vía PayPal a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
+                        <input type="file" id="paypal-receipt" accept="image/*,application/pdf">
                     </div>
                 </div>
 

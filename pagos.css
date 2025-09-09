@@ -1864,8 +1864,27 @@
             color: var(--secondary-color);
         }
 
+        .payment-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         /* Credit Card Form mejorado */
         .credit-card-form {
+            background: var(--background-gradient);
+            padding: 3.5rem;
+            border-radius: var(--radius-lg);
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(210, 210, 215, 0.5);
+            width: 100%;
+            max-width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .payment-info {
             background: var(--background-gradient);
             padding: 3.5rem;
             border-radius: var(--radius-lg);
