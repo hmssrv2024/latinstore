@@ -349,20 +349,20 @@
             const inventory = {
                 smartphones: {
                     apple: [
-                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'] },
-                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'] },
-                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'] },
-                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], hasVideo: true },
-                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'] },
-                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'] },
-                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], hasVideo: true },
-                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'] },
-                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'] },
-                        { id: 'iphone17', name: 'iPhone 17 128GB', price: 990, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'A19'] },
-                        { id: 'iphone17pro', name: 'iPhone 17 Pro 256GB', price: 1290, specs: ['256GB', 'Pantalla 6.1"', 'iOS 19', 'A19 Pro'] },
-                        { id: 'iphone17promax', name: 'iPhone 17 Pro Max 256GB', price: 1440, specs: ['256GB', 'Pantalla 6.7"', 'iOS 19', 'A19 Pro'] },
-                        { id: 'iphone17air', name: 'iPhone 17 Air 128GB', price: 900, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'Diseño ligero'] },
-                        { id: 'iphonese4', name: 'iPhone SE 4 128GB', price: 590, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19'] }
+                        { id: 'iphone11', name: 'iPhone 11 64GB', price: 355, specs: ['64GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/identify-iphone-11-colors.jpg' },
+                        { id: 'iphone13', name: 'iPhone 13 128GB', price: 560, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/2022-spring-iphone13-colors.png' },
+                        { id: 'iphone14', name: 'iPhone 14 128GB', price: 650, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-14-colors-spring-2023.png' },
+                        { id: 'iphone15', name: 'iPhone 15 128GB', price: 740, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15.png' },
+                        { id: 'iphone15plus', name: 'iPhone 15 Plus 128GB', price: 830, specs: ['128GB', 'Pantalla 6.7"', 'iOS 18'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-plus.png' },
+                        { id: 'iphone15promax', name: 'iPhone 15 Pro Max 1TB', price: 1580, specs: ['1TB', 'Pantalla 6.7"', 'iOS 18', 'A17 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/fall-2023-iphone-colors-iphone-15-pro-max.png' },
+                        { id: 'iphone16', name: 'iPhone 16 128GB', price: 870, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18'], hasVideo: true, image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-colors.png' },
+                        { id: 'iphone16pro', name: 'iPhone 16 Pro 128GB', price: 1170, specs: ['128GB', 'Pantalla 6.1"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-colors.png' },
+                        { id: 'iphone16promax', name: 'iPhone 16 Pro Max 256GB', price: 1340, specs: ['256GB', 'Pantalla 6.7"', 'iOS 18', 'A18 Pro'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-16-pro-max-colors.png' },
+                        { id: 'iphone17', name: 'iPhone 17 128GB', price: 990, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'A19'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17__ffxyxejeezqm_large.png' },
+                        { id: 'iphone17pro', name: 'iPhone 17 Pro 256GB', price: 1290, specs: ['256GB', 'Pantalla 6.1"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
+                        { id: 'iphone17promax', name: 'iPhone 17 Pro Max 256GB', price: 1440, specs: ['256GB', 'Pantalla 6.7"', 'iOS 19', 'A19 Pro'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_17pro__d60uog2c064i_large.png' },
+                        { id: 'iphone17air', name: 'iPhone 17 Air 128GB', price: 900, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19', 'Diseño ligero'], image: 'https://www.apple.com/v/iphone/home/ce/images/overview/chapternav/nav_iphone_air__bbj6j2c39efm_large.png' },
+                        { id: 'iphonese4', name: 'iPhone SE 4 128GB', price: 590, specs: ['128GB', 'Pantalla 6.1"', 'iOS 19'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-se-3rd-gen-colors.png' }
                     ],
                     samsung: [
                         { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], hasVideo: true },
@@ -798,9 +798,13 @@
                     // Video button si hay video disponible
                     const videoButton = product.hasVideo ? `<button class="product-video-btn" data-id="${product.id}" aria-label="Ver video"><i class="fas fa-play"></i></button>` : '';
                     
+                    const media = product.image
+                        ? `<img src="${product.image}" alt="${product.name}" class="product-image">`
+                        : `<i class="${defaultIcons[category]}"></i>`;
+
                     productCard.innerHTML = `
                         <div class="product-media-container">
-                            <div class="product-icon"><i class="${defaultIcons[category]}"></i></div>
+                            <div class="product-icon">${media}</div>
                             ${videoButton}
                         </div>
                         <div class="product-info">
@@ -951,11 +955,14 @@
                     
                     const subtotal = item.price * item.quantity;
                     const icon = defaultIcons[item.category] || 'fas fa-box';
-                    
+                    const media = item.image
+                        ? `<img src="${item.image}" alt="${item.name}" class="item-image">`
+                        : `<i class="${icon} item-icon"></i>`;
+
                     cartItem.innerHTML = `
                         <div class="item-details">
                             <div class="item-image-container">
-                                <i class="${icon} item-icon"></i>
+                                ${media}
                             </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
@@ -1161,14 +1168,17 @@
                 cart.forEach(item => {
                     const subtotal = item.price * item.quantity;
                     const icon = defaultIcons[item.category] || 'fas fa-box';
-                    
+                    const media = item.image
+                        ? `<img src="${item.image}" alt="${item.name}" class="item-image">`
+                        : `<i class="${icon} item-icon"></i>`;
+
                     const summaryItem = document.createElement('div');
                     summaryItem.className = 'cart-item';
-                    
+
                     summaryItem.innerHTML = `
                         <div class="item-details">
                             <div class="item-image-container">
-                                <i class="${icon} item-icon"></i>
+                                ${media}
                             </div>
                             <div class="item-info">
                                 <h4>${item.name}</h4>
