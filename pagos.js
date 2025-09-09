@@ -1282,6 +1282,22 @@
                 const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
                 whatsappBtn.href = whatsappUrl;
                 whatsappSupport.href = whatsappUrl;
+                // Guardar inmediatamente los datos de la orden para
+                // que la información persista aunque el usuario
+                // recargue o cierre la página durante el proceso.
+                saveOrderData();
+                // Limpiar carritos temporales utilizados en otras páginas
+                localStorage.removeItem('latinphone_cart');
+                localStorage.removeItem('latinphone_cart_totals');
+                // Activar enlace a la cuenta para acceder a la información
+                // de compra almacenada.
+                if (accountLink) {
+                    accountLink.classList.remove('disabled');
+                    accountLink.removeAttribute('aria-disabled');
+                    const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
+                    const hasInfo = storedUser.name && storedUser.email && storedUser.phone;
+                    accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
+                }
 
                 setTimeout(() => {
                     loadingOverlay.classList.remove('active');
@@ -1378,16 +1394,8 @@
             function continueAfterNationalization() {
                 nationalizationOverlay.classList.remove('active');
 
-                saveOrderData();
-
                 cart.length = 0;
                 updateCartCount();
-                if (accountLink) {
-                    accountLink.classList.remove('disabled');
-                    accountLink.removeAttribute('aria-disabled');
-                    const hasInfo = user.name && user.email && user.phone;
-                    accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
-                }
 
                 // Pago exitoso, avanzar a la confirmación
                 goToStep(4);
