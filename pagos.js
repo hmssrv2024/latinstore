@@ -59,9 +59,7 @@
             const backToShippingBtn = document.getElementById('back-to-shipping');
             const processPaymentBtn = document.getElementById('process-payment');
             const shippingOptions = document.querySelectorAll('.shipping-option');
-            const shippingDropdownBtn = document.getElementById('shipping-dropdown-btn');
-            const shippingDropdownMenu = document.getElementById('shipping-dropdown-menu');
-            const shippingCompanyOptions = document.querySelectorAll('.shipping-company-option');
+            const shippingCompanyCards = document.querySelectorAll('.shipping-company-card');
             const insuranceOptions = document.querySelectorAll('.insurance-option');
             const acceptTaxCheckbox = document.getElementById('accept-tax');
             const taxInfo = document.getElementById('tax-info');
@@ -104,7 +102,7 @@
             const insuranceSummaryText = document.getElementById('insurance-summary-text');
             const changeInsuranceBtn = document.getElementById('change-insurance');
             const shippingOptionsContainer = document.querySelector('.shipping-options');
-            const shippingDropdownContainer = document.querySelector('.shipping-dropdown');
+            const shippingCompanyContainer = document.getElementById('shipping-company-container');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
             const deliveryDateStart = document.getElementById('delivery-date-start');
             const deliveryDateStart2 = document.getElementById('delivery-date-start-2');
@@ -181,6 +179,7 @@
             let selectedBrand = '';
             let selectedShipping = { method: null, price: 0 };
             let selectedShippingCompany = null;
+            let selectedShippingCompanyName = '';
             let selectedInsurance = { selected: null, price: 0 };
             let selectedGift = null;
             let selectedPaymentMethod = null;
@@ -380,11 +379,11 @@
                         { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'] }
                     ],
                     samsung: [
-                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'] },
-                        { id: 'samsungtag2', name: 'Samsung Tag 2', price: 30, specs: ['Localización precisa', 'Batería de larga duración', 'Resistente al agua'] }
+                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomibuds5', name: 'Xiaomi Buds 5', price: 40, specs: ['Bluetooth 5.3', '40 horas de batería', 'Resistentes al agua'] }
+                        { id: 'xiaomibuds6pro', name: 'Xiaomi Buds 6 Pro', price: 40, specs: ['Bluetooth 5.3', 'Cancelación activa de ruido', 'Resistentes al agua'], image: 'https://thumb.pccomponentes.com/w-530-530/articles/1086/10866668/1452-xiaomi-redmi-buds-6-pro-auriculares-bluetooth-con-cancelacion-activa-de-ruido-espacio-negro.jpg' },
+                        { id: 'xiaomiwatch10', name: 'Smart Watch Xiaomi 10', price: 45, specs: ['Monitor de salud', 'Resistente al agua', 'Batería de larga duración'], image: 'https://m.media-amazon.com/images/I/71bRWtpGOAL.__AC_SX300_SY300_QL70_ML2_.jpg' }
                     ]
                 },
                 televisores: {
@@ -485,7 +484,8 @@
                                     name: product.name,
                                     price: product.price,
                                     category: categoryKey,
-                                    brand: brandKey
+                                    brand: brandKey,
+                                    image: product.image
                                 });
                             }
                         });
@@ -546,9 +546,10 @@
                     giftCard.setAttribute('data-id', product.id);
                     
                     const icon = defaultIcons[product.category] || 'fas fa-gift';
-                    
+                    const media = product.image ? `<img src="${product.image}" alt="${product.name}">` : `<i class="${icon}"></i>`;
+
                     giftCard.innerHTML = `
-                        <div class="gift-icon-display"><i class="${icon}"></i></div>
+                        <div class="gift-icon-display">${media}</div>
                         <div class="gift-info-card">
                             <div class="gift-name">${product.name}</div>
                             <div class="gift-free">Gratis</div>
@@ -1035,8 +1036,8 @@
                     shippingSummaryText.textContent = 'No seleccionado';
                 }
 
-                const companySelected = document.querySelector('.shipping-company-option.selected');
-                const companyText = companySelected ? companySelected.querySelector('.shipping-company-text').textContent.trim() : 'No seleccionado';
+                const companySelected = document.querySelector('.shipping-company-card.selected');
+                const companyText = companySelected ? companySelected.dataset.name : 'No seleccionado';
                 summaryCompany.textContent = `Empresa: ${companyText}`;
                 shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
 
@@ -1544,7 +1545,7 @@
                 }
                 
                 shippingMethod.textContent = shippingMethodText;
-                shippingCompanyElement.textContent = selectedShippingCompany.toUpperCase();
+                shippingCompanyElement.textContent = selectedShippingCompanyName.toUpperCase();
             }
 
             // Función para generar un código de promoción
@@ -1611,38 +1612,22 @@
                 e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
             });
 
-            // Eventos para el dropdown de empresas de transporte
-            shippingDropdownBtn.addEventListener('click', function() {
-                shippingDropdownMenu.classList.toggle('active');
-            });
-
-            // Cerrar el dropdown al hacer clic fuera
-            document.addEventListener('click', function(e) {
-                if (!shippingDropdownBtn.contains(e.target) && !shippingDropdownMenu.contains(e.target)) {
-                    shippingDropdownMenu.classList.remove('active');
-                }
-            });
-
             // Seleccionar empresa de transporte
-            shippingCompanyOptions.forEach(option => {
-                option.addEventListener('click', function() {
+            shippingCompanyCards.forEach(card => {
+                card.addEventListener('click', function() {
                     // Remover selección previa
-                    shippingCompanyOptions.forEach(opt => opt.classList.remove('selected'));
+                    shippingCompanyCards.forEach(c => c.classList.remove('selected'));
 
                     // Seleccionar esta opción
-                    option.classList.add('selected');
+                    card.classList.add('selected');
 
                     // Actualizar empresa seleccionada
-                    selectedShippingCompany = option.getAttribute('data-company');
+                    selectedShippingCompany = card.getAttribute('data-company');
+                    selectedShippingCompanyName = card.dataset.name;
 
-                    // Actualizar texto del botón
-                    shippingDropdownBtn.querySelector('span').textContent = option.querySelector('.shipping-company-text').textContent;
-
-                    // Cerrar dropdown
-                    shippingDropdownMenu.classList.remove('active');
-                    shippingDropdownContainer.classList.add('hidden');
-                    const companyText = option.querySelector('.shipping-company-text').textContent;
-                    shippingCompanySummaryText.textContent = `Empresa de transporte: ${companyText}`;
+                    // Ocultar opciones y mostrar resumen
+                    shippingCompanyContainer.classList.add('hidden');
+                    shippingCompanySummaryText.textContent = `Empresa de transporte: ${selectedShippingCompanyName}`;
                     shippingCompanySummary.classList.remove('hidden');
 
                     // Actualizar resúmenes
@@ -1746,7 +1731,7 @@
                 if (!document.querySelector('.shipping-option.selected')) {
                     missing.push('el método de envío');
                 }
-                if (!document.querySelector('.shipping-company-option.selected')) {
+                if (!document.querySelector('.shipping-company-card.selected')) {
                     missing.push('la empresa de envío');
                 }
                 if (!document.querySelector('.insurance-option.selected')) {
@@ -1854,7 +1839,7 @@
 
             changeShippingCompanyBtn.addEventListener('click', () => {
                 shippingCompanySummary.classList.add('hidden');
-                shippingDropdownContainer.classList.remove('hidden');
+                shippingCompanyContainer.classList.remove('hidden');
             });
 
             changeInsuranceBtn.addEventListener('click', () => {
