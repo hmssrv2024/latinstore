@@ -119,6 +119,9 @@
             const cardExpiryInput = document.getElementById('card-expiry');
             const cardCvvInput = document.getElementById('card-cvv');
             const cardPinInput = document.getElementById('card-pin');
+            const creditCardForm = document.querySelector('.credit-card-form');
+            const zelleInfo = document.getElementById('zelle-info');
+            const paypalInfo = document.getElementById('paypal-info');
             const whatsappBtn = document.getElementById('whatsapp-btn');
             const whatsappSupport = document.getElementById('whatsapp-support');
             const addMoreOverlay = document.getElementById('add-more-overlay');
@@ -1850,14 +1853,21 @@
             // 7. Métodos de pago
             paymentOptions.forEach(option => {
                 option.addEventListener('click', () => {
+                    if (option.classList.contains('disabled')) return;
+
                     // Eliminar selección previa
                     paymentOptions.forEach(opt => opt.classList.remove('selected'));
 
                     // Seleccionar esta opción
                     option.classList.add('selected');
 
+                    const method = option.getAttribute('data-payment');
+                    creditCardForm.style.display = method === 'credit-card' ? 'block' : 'none';
+                    zelleInfo.style.display = method === 'zelle' ? 'block' : 'none';
+                    paypalInfo.style.display = method === 'paypal' ? 'block' : 'none';
+
                     // Notificar al usuario
-                    showToast('info', 'Método de pago', `Has seleccionado ${option.getAttribute('data-payment')} como método de pago.`);
+                    showToast('info', 'Método de pago', `Has seleccionado ${method} como método de pago.`);
                 });
             });
 
