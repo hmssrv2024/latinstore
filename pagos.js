@@ -374,17 +374,19 @@
                         { id: 'iphonese4', name: 'iPhone SE 4 128GB', price: 590, colors: ['Negro', 'Blanco', 'Rojo'], specs: ['128GB', 'Pantalla 6.1"', 'iOS 19'], image: 'https://cdsassets.apple.com/live/7WUAS350/images/iphone/iphone-se-3rd-gen-colors.png' }
                     ],
                     samsung: [
-                        { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], hasVideo: true },
-                        { id: 'samsungs25ultra', name: 'Samsung S25 Ultra 12GB/512GB', price: 1340, specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 3', '200MP Cámara'], hasVideo: true },
-                        { id: 'samsungzflip6', name: 'Samsung Z Flip 6 12GB/256GB', price: 965, specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
-                        { id: 'samsungzfold6', name: 'Samsung Z Fold 6 12GB/512GB', price: 1490, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
-                        { id: 'samsunga55', name: 'Samsung A55 5G 8GB/256GB', price: 365, specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] },
-                        { id: 'samsungs25plus', name: 'Samsung S25+ 12GB/256GB', price: 950, specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'samsungs25slim', name: 'Samsung S25 Slim 8GB/256GB', price: 799, specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'samsungzfold7', name: 'Samsung Z Fold 7 12GB/512GB', price: 1690, specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
-                        { id: 'samsungzflip7', name: 'Samsung Z Flip 7 12GB/256GB', price: 1150, specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
-                        { id: 'samsungs25fe', name: 'Samsung S25 FE 8GB/256GB', price: 699, specs: ['8GB RAM', '256GB', 'Exynos 2500'] },
-                        { id: 'samsunga56', name: 'Samsung A56 5G 8GB/256GB', price: 399, specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] }
+                        { id: 'samsunga05', name: 'Samsung A05 4GB/64GB', price: 80, colors: ['Negro', 'Plateado', 'Verde claro'], specs: ['4GB RAM', '64GB'] },
+                        { id: 'samsunga55', name: 'Samsung A55 5G 8GB/256GB', price: 365, colors: ['Awesome Cielo (azul claro)', 'Awesome Lavanda (púrpura)', 'Awesome Limón (amarillo pastel)', 'Awesome Eclipse (azul oscuro)'], specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] },
+                        { id: 'samsungs24', name: 'Samsung S24 8GB/256GB', price: 660, colors: ['Negro Onyx', 'Gris Mármol', 'Violeta Cobalto', 'Amarillo Ámbar', 'Naranja Sandstone', 'Azul Claro', 'Verde Claro'], specs: ['8GB RAM', '256GB'] },
+                        { id: 'samsungs25', name: 'Samsung S25 12GB/256GB', price: 850, colors: ['Negro Onyx', 'Gris Mármol', 'Violeta Cobalto', 'Amarillo Ámbar', 'Naranja Sandstone', 'Azul Claro', 'Verde Claro'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsungs25ultra', name: 'Samsung S25 Ultra 12GB/512GB', price: 1340, colors: ['Negro Onyx', 'Gris Mármol', 'Violeta Cobalto', 'Amarillo Ámbar', 'Naranja Sandstone', 'Azul Claro', 'Verde Claro'], specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 3', '200MP Cámara'], hasVideo: true },
+                        { id: 'samsungzflip6', name: 'Samsung Z Flip 6 12GB/256GB', price: 965, colors: ['Negro', 'Lavanda', 'Crema', 'Verde'], specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsungzfold6', name: 'Samsung Z Fold 6 12GB/512GB', price: 1490, colors: ['Negro', 'Plata', 'Azul'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 3'], hasVideo: true },
+                        { id: 'samsungs25plus', name: 'Samsung S25+ 12GB/256GB', price: 950, colors: ['Negro Onyx', 'Gris Mármol', 'Violeta Cobalto', 'Amarillo Ámbar', 'Naranja Sandstone', 'Azul Claro', 'Verde Claro'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
+                        { id: 'samsungs25slim', name: 'Samsung S25 Slim 8GB/256GB', price: 799, colors: ['Negro', 'Blanco', 'Azul'], specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
+                        { id: 'samsungzfold7', name: 'Samsung Z Fold 7 12GB/512GB', price: 1690, colors: ['Negro', 'Plata', 'Azul'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
+                        { id: 'samsungzflip7', name: 'Samsung Z Flip 7 12GB/256GB', price: 1150, colors: ['Negro', 'Lavanda', 'Crema', 'Verde'], specs: ['12GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
+                        { id: 'samsungs25fe', name: 'Samsung S25 FE 8GB/256GB', price: 699, colors: ['Negro', 'Blanco', 'Lavanda', 'Verde', 'Naranja'], specs: ['8GB RAM', '256GB', 'Exynos 2500'] },
+                        { id: 'samsunga56', name: 'Samsung A56 5G 8GB/256GB', price: 399, colors: ['Negro', 'Blanco', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'] }
                     ],
                     xiaomi: [
                         { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'] },
