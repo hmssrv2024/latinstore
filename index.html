@@ -183,6 +183,23 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
+        .cart-link {
+            position: relative;
+            color: #fff;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -0.5rem;
+            right: -0.7rem;
+            background-color: var(--accent-color);
+            color: #fff;
+            border-radius: 50%;
+            padding: 0 0.4rem;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
         .video-collage {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -807,6 +824,7 @@
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><a id="account-link" href="micuenta.html" style="display:none;">Mi cuenta</a></li>
+                <li><a href="carrito.html" class="cart-link"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a></li>
             </ul>
             <button class="mobile-nav-toggle" id="mobile-nav-toggle">
                 <i class="fas fa-bars"></i>
@@ -2258,6 +2276,20 @@
                     });
                 }
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cartCountEl = document.querySelector('.cart-count');
+            if (cartCountEl) {
+                try {
+                    const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
+                    const count = storedCart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+                    cartCountEl.textContent = count;
+                } catch (err) {
+                    console.error('Error al cargar el carrito', err);
+                }
+            }
         });
     </script>
 </body>

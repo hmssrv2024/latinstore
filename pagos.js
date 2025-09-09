@@ -155,7 +155,15 @@
             }
 
             // Variables para almacenar el estado del pedido
-            const cart = [];
+            let cart = [];
+            try {
+                const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
+                if (Array.isArray(storedCart)) {
+                    cart = storedCart;
+                }
+            } catch (err) {
+                console.error('Error al cargar el carrito desde localStorage', err);
+            }
             let selectedCountry = '';
             let selectedCategory = '';
             let selectedBrand = '';
@@ -972,6 +980,21 @@
                 
                 // Actualizar precio en la página de confirmación
                 orderTotal.textContent = `$${total.toFixed(2)}`;
+
+                // Guardar carrito y totales en localStorage
+                try {
+                    const totals = {
+                        subtotal,
+                        tax,
+                        shipping: shippingPrice,
+                        insurance: insurancePrice,
+                        total
+                    };
+                    localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                    localStorage.setItem('latinphone_cart_totals', JSON.stringify(totals));
+                } catch (err) {
+                    console.error('Error al guardar el carrito', err);
+                }
             }
 
             function updateSelectionSummary() {
