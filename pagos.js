@@ -263,7 +263,10 @@
                 realme: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg/609px-Realme-realme-_logo_box-RGB-01_with_out_back_ground.svg.png',
                 nubia: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nubia_logo.svg/512px-Nubia_logo.svg.png',
                 vivo: 'https://www.logo.wine/a/logo/Vivo_(technology_company)/Vivo_(technology_company)-Logo.wine.svg',
-                hp: 'https://1000logos.net/wp-content/uploads/2017/03/HP-Logo-500x281.png'
+                hp: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/100px-HP_logo_2012.svg.png',
+                tcl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Logo_of_the_TCL_Corporation.svg/960px-Logo_of_the_TCL_Corporation.svg.png',
+                nintendo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Nintendo_Logo_2017.png/960px-Nintendo_Logo_2017.png',
+                microsoft: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/512px-Microsoft_logo_%282012%29.svg.png'
             };
 
             // Base de datos de productos del inventario proporcionado
