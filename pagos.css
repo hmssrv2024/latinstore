@@ -3250,6 +3250,20 @@
             display: none;
         }
 
+        .trust-seals {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-seals img {
+            height: 50px;
+            object-fit: contain;
+        }
+
         /* Mejoras de accesibilidad y usabilidad */
         @media (hover: none) {
             .btn:hover,
