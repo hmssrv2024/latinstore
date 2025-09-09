@@ -134,6 +134,82 @@
             const validationMessage = document.getElementById('validation-message');
             const validationClose = document.getElementById('validation-close');
 
+            const locationOverlay = document.getElementById('location-overlay');
+            const locationStateSelect = document.getElementById('location-state');
+            const locationCitySelect = document.getElementById('location-city');
+            const locationConfirm = document.getElementById('location-confirm');
+
+            const estadosCiudades = {
+                "Amazonas": ["Puerto Ayacucho", "San Fernando de Atabapo"],
+                "Anzoátegui": ["Barcelona", "Puerto La Cruz"],
+                "Apure": ["San Fernando de Apure", "Guasdualito"],
+                "Aragua": ["Maracay", "Turmero"],
+                "Barinas": ["Barinas", "Socopó"],
+                "Bolívar": ["Ciudad Bolívar", "Ciudad Guayana"],
+                "Carabobo": ["Valencia", "Puerto Cabello"],
+                "Cojedes": ["San Carlos", "Tinaquillo"],
+                "Delta Amacuro": ["Tucupita", "San José de Amacuro"],
+                "Falcón": ["Coro", "Punto Fijo"],
+                "Guárico": ["San Juan de los Morros", "Calabozo"],
+                "Lara": ["Barquisimeto", "Carora"],
+                "Mérida": ["Mérida", "El Vigía"],
+                "Miranda": ["Los Teques", "Guatire"],
+                "Monagas": ["Maturín", "Punta de Mata"],
+                "Nueva Esparta": ["La Asunción", "Porlamar"],
+                "Portuguesa": ["Guanare", "Acarigua"],
+                "Sucre": ["Cumaná", "Carúpano"],
+                "Táchira": ["San Cristóbal", "Táriba"],
+                "Trujillo": ["Trujillo", "Valera"],
+                "La Guaira": ["La Guaira", "Maiquetía"],
+                "Yaracuy": ["San Felipe", "Yaritagua"],
+                "Zulia": ["Maracaibo", "Cabimas"]
+            };
+
+            function populateStates() {
+                if (!locationStateSelect) return;
+                locationStateSelect.innerHTML = '<option value="">--Selecciona un estado--</option>';
+                Object.keys(estadosCiudades).forEach(estado => {
+                    const option = document.createElement('option');
+                    option.value = estado;
+                    option.textContent = estado;
+                    locationStateSelect.appendChild(option);
+                });
+                locationCitySelect.innerHTML = '<option value="">--Selecciona una ciudad--</option>';
+            }
+
+            function populateCities() {
+                const estado = locationStateSelect.value;
+                locationCitySelect.innerHTML = '<option value="">--Selecciona una ciudad--</option>';
+                if (estado && estadosCiudades[estado]) {
+                    estadosCiudades[estado].forEach(ciudad => {
+                        const option = document.createElement('option');
+                        option.value = ciudad;
+                        option.textContent = ciudad;
+                        locationCitySelect.appendChild(option);
+                    });
+                }
+            }
+
+            if (locationStateSelect) {
+                locationStateSelect.addEventListener('change', populateCities);
+            }
+
+            if (locationConfirm) {
+                locationConfirm.addEventListener('click', () => {
+                    stateInput.value = locationStateSelect.value;
+                    cityInput.value = locationCitySelect.value;
+                    locationOverlay.classList.remove('active');
+                });
+            }
+
+            if (locationOverlay) {
+                locationOverlay.addEventListener('click', (e) => {
+                    if (e.target === locationOverlay) {
+                        locationOverlay.classList.remove('active');
+                    }
+                });
+            }
+
             const sendDeliveryInfoBtn = document.getElementById('send-delivery-info');
             const fullNameInput = document.getElementById('full-name');
             const idNumberInput = document.getElementById('id-number');
@@ -1666,6 +1742,10 @@
 
                     // Notificar al usuario
                     showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
+
+                    // Mostrar overlay para selección de estado y ciudad
+                    populateStates();
+                    locationOverlay.classList.add('active');
                 });
             });
 
