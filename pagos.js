@@ -435,7 +435,9 @@
                     ],
                     samsung: [
                         { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'] },
-                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'] }
+                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'] },
+                        { id: 'samsungtabs11', name: 'Samsung Tab S11 X910 12/256GB', price: 1000, specs: ['12GB RAM', '256GB', 'Pantalla 11"'] },
+                        { id: 'samsungtabs11ultra', name: 'Samsung Tab S11 Ultra X916 16/512GB', price: 1200, specs: ['16GB RAM', '512GB', 'Pantalla 14.6"'] }
                     ],
                     xiaomi: [
                         { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'] }
@@ -449,7 +451,9 @@
                     ],
                     samsung: [
                         { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
-                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'] }
+                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'] },
+                        { id: 'samsungwatch8', name: 'Samsung Watch 8 44MM', price: 260, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
+                        { id: 'samsungwatch8classic', name: 'Samsung Watch 8 Classic 47MM', price: 310, specs: ['Pantalla 47mm', 'Acero inoxidable', 'GPS + LTE'] }
                     ],
                     xiaomi: [
                         { id: 'xiaomiwatch4', name: 'Xiaomi Watch 4', price: 99, specs: ['Pantalla AMOLED', 'Wear OS', '30 días batería'] }
