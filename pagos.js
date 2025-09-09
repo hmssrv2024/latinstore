@@ -247,7 +247,10 @@
             try {
                 const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
                 if (Array.isArray(storedCart)) {
-                    cart = storedCart;
+                    cart = storedCart.map(item => ({
+                        ...item,
+                        selected: item.selected !== false
+                    }));
                 }
             } catch (err) {
                 console.error('Error al cargar el carrito desde localStorage', err);
@@ -290,6 +293,10 @@
                 if (!cartCountEl) return;
                 const count = cart.reduce((sum, item) => sum + item.quantity, 0);
                 cartCountEl.textContent = count;
+            }
+
+            function getSelectedItems() {
+                return cart.filter(item => item.selected);
             }
 
             // Generar número de orden aleatorio
@@ -887,12 +894,13 @@
             function addToCart(product) {
                 // Comprobar si el producto ya está en el carrito
                 const existingProduct = cart.find(item => item.id === product.id);
-                
+
                 if (existingProduct) {
                     // Actualizar cantidad
                     existingProduct.quantity += product.quantity;
                 } else {
                     // Añadir nuevo producto
+                    product.selected = true;
                     cart.push(product);
                 }
                 
@@ -945,7 +953,8 @@
                 
                 // Carrito con productos
                 cartItems.innerHTML = `
-                    <div class="cart-header">
+                    <div class="cart-header selectable">
+                        <div>Seleccionar</div>
                         <div>Producto</div>
                         <div>Precio</div>
                         <div>Cantidad</div>
@@ -957,7 +966,7 @@
                 // Añadir cada producto al carrito
                 cart.forEach(item => {
                     const cartItem = document.createElement('div');
-                    cartItem.className = 'cart-item';
+                    cartItem.className = 'cart-item selectable';
                     
                     const subtotal = item.price * item.quantity;
                     const icon = defaultIcons[item.category] || 'fas fa-box';
@@ -966,6 +975,9 @@
                         : `<i class="${icon} item-icon"></i>`;
 
                     cartItem.innerHTML = `
+                        <div class="item-select">
+                            <input type="checkbox" class="select-item" data-id="${item.id}" ${item.selected ? 'checked' : ''} aria-label="Seleccionar artículo">
+                        </div>
                         <div class="item-details">
                             <div class="item-image-container">
                                 ${media}
@@ -1048,7 +1060,18 @@
                         removeFromCart(productId);
                     });
                 });
-                
+
+                document.querySelectorAll('.cart-item .select-item').forEach(chk => {
+                    chk.addEventListener('change', () => {
+                        const productId = chk.getAttribute('data-id');
+                        const item = cart.find(item => item.id === productId);
+                        if (item) {
+                            item.selected = chk.checked;
+                            updateOrderSummary();
+                        }
+                    });
+                });
+
                 // Actualizar resumen
                 updateOrderSummary();
             }
@@ -1069,20 +1092,21 @@
 
             // Función para actualizar el resumen del pedido
             function updateOrderSummary() {
+                const selectedItems = getSelectedItems();
                 // Calcular subtotal
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                
+                const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
                 // Calcular impuesto (16%)
                 const tax = subtotal * taxRate;
-                
-                const hasItems = cart.length > 0;
+
+                const hasItems = selectedItems.length > 0;
 
                 // Obtener precio de envío
                 const shippingPrice = hasItems ? selectedShipping.price : 0;
 
                 // Obtener precio de seguro
                 const insurancePrice = hasItems ? selectedInsurance.price : 0;
-                
+
                 // Calcular total
                 const total = subtotal + tax + shippingPrice + insurancePrice;
                 
@@ -1170,8 +1194,8 @@
             // Función para actualizar el resumen de productos en la sección de pago
             function updatePaymentSummary() {
                 paymentSummaryItems.innerHTML = '';
-                
-                cart.forEach(item => {
+                const itemsToPay = getSelectedItems();
+                itemsToPay.forEach(item => {
                     const subtotal = item.price * item.quantity;
                     const icon = defaultIcons[item.category] || 'fas fa-box';
                     const media = item.image
@@ -1389,7 +1413,7 @@
                     return;
                 }
 
-                if (cart.length === 0) {
+                if (getSelectedItems().length === 0) {
                     showToast('error', 'Carrito vacío', 'No hay productos en tu carrito para procesar el pago.');
                     return;
                 }
@@ -1400,7 +1424,8 @@
                     return;
                 }
 
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const selectedItems = getSelectedItems();
+                const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const tax = subtotal * taxRate;
                 const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
 
@@ -1508,7 +1533,8 @@
                     return end.toISOString().slice(0,10);
                 })();
 
-                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const selectedItems = getSelectedItems();
+                const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const tax = subtotal * taxRate;
                 const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
 
@@ -1520,7 +1546,7 @@
                     total: total,
                     nationalizationFeeBs: nationalizationFeeValue,
                     status: 'En preparación',
-                    items: cart.map(item => ({
+                    items: selectedItems.map(item => ({
                         sku: item.id,
                         name: item.name,
                         qty: item.quantity,
@@ -1578,8 +1604,9 @@
             function continueAfterNationalization() {
                 nationalizationOverlay.classList.remove('active');
 
-                cart.length = 0;
+                cart = cart.filter(item => !item.selected);
                 updateCartCount();
+                updateOrderSummary();
 
                 // Pago exitoso, avanzar a la confirmación
                 goToStep(4);
@@ -1801,7 +1828,7 @@
 
             // 3. Botones de navegación entre pasos
             continueToShippingBtn.addEventListener('click', () => {
-                if (cart.length === 0) {
+                if (getSelectedItems().length === 0) {
                     showToast('warning', 'Carrito vacío', 'Por favor, añade al menos un producto al carrito.');
                     return;
                 }
