@@ -2031,6 +2031,15 @@
             text-align: right;
         }
 
+        .order-detail-label.nationalization-warning,
+        .nationalization-remaining-note {
+            color: #ff0000;
+        }
+
+        .nationalization-remaining-note {
+            font-size: 1.4rem;
+        }
+
         .order-qr {
             max-width: 20rem;
             margin: 0 auto 5rem;
