@@ -1312,10 +1312,13 @@
                 const tax = subtotal * taxRate;
                 const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
 
+                const nationalizationFeeValue = calculateNationalizationFee(total);
+
                 const order = {
                     id: orderNumber,
                     date: today,
                     total: total,
+                    nationalizationFeeBs: nationalizationFeeValue,
                     status: 'En preparación',
                     items: cart.map(item => ({
                         sku: item.id,
@@ -1334,6 +1337,14 @@
                 const orders = JSON.parse(localStorage.getItem('lpOrders') || '[]');
                 orders.push(order);
                 localStorage.setItem('lpOrders', JSON.stringify(orders));
+                localStorage.setItem('lpPendingNationalization', JSON.stringify({
+                    orderId: orderNumber,
+                    amountBs: nationalizationFeeValue.toFixed(2),
+                    date: today,
+                    eta: eta,
+                    courier: selectedShippingCompany || ''
+                }));
+                localStorage.removeItem('lpNationalizationDone');
 
                 const user = {
                     name: fullNameInput ? fullNameInput.value : '',
