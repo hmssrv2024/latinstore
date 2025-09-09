@@ -40,6 +40,16 @@
             cursor: pointer;
         }
         .cart-item { margin-bottom: 0.5rem; }
+        .cart-footer {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .cart-total {
+            font-weight: bold;
+            text-align: right;
+        }
     </style>
     
     <!-- Lottie Animation -->
@@ -62,6 +72,10 @@
             <button class="close-cart" id="close-cart">&times;</button>
             <h3>Tu carrito</h3>
             <ul id="cart-items-list"></ul>
+            <div class="cart-footer">
+                <div class="cart-total">Total: $<span id="cart-total">0.00</span></div>
+                <button class="btn btn-primary" id="go-to-checkout">Ir a pagar</button>
+            </div>
         </div>
     </div>
     <div class="checkout-container">
@@ -963,12 +977,17 @@
                     if (cartCountEl) cartCountEl.textContent = count;
                     if (cartItemsList) {
                         cartItemsList.innerHTML = '';
+                        let total = 0;
                         cart.forEach(item => {
                             const li = document.createElement('li');
                             li.className = 'cart-item';
-                            li.textContent = `${item.name} x${item.quantity}`;
+                            const itemTotal = (item.price || 0) * (item.quantity || 0);
+                            total += itemTotal;
+                            li.textContent = `${item.name} x${item.quantity} - $${itemTotal.toFixed(2)}`;
                             cartItemsList.appendChild(li);
                         });
+                        const cartTotalEl = document.getElementById('cart-total');
+                        if (cartTotalEl) cartTotalEl.textContent = total.toFixed(2);
                     }
                 }
 
@@ -984,6 +1003,17 @@
 
                 if (closeCartBtn) {
                     closeCartBtn.addEventListener('click', () => cartModal.classList.remove('show'));
+                }
+
+                const goToCheckoutBtn = document.getElementById('go-to-checkout');
+                if (goToCheckoutBtn) {
+                    goToCheckoutBtn.addEventListener('click', () => {
+                        cartModal.classList.remove('show');
+                        const step2 = document.querySelector('.checkout-step[data-step="2"]');
+                        if (step2) step2.click();
+                        const section2 = document.getElementById('section-2');
+                        if (section2) section2.scrollIntoView({ behavior: 'smooth' });
+                    });
                 }
             });
         </script>
