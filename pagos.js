@@ -1094,6 +1094,9 @@
                 updateOrderSummary();
             }
 
+            // Permitir que otras partes de la página actualicen el carrito
+            window.addEventListener('cart-updated', updateCart);
+
             // Función para calcular la tasa de nacionalización con la lógica requerida
             function calculateNationalizationFee(totalUSD) {
                 // Si no hay productos en el carrito, no se cobra tasa
