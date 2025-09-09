@@ -812,15 +812,26 @@
             // Función para eliminar del carrito
             function removeFromCart(productId) {
                 const index = cart.findIndex(item => item.id === productId);
-                
+
                 if (index !== -1) {
                     const removedItem = cart[index];
                     cart.splice(index, 1);
                     updateCart();
-                    
+
                     // Notificar al usuario
                     showToast('info', 'Producto eliminado', `Has eliminado ${removedItem.name} de tu carrito.`);
                 }
+            }
+
+            function removeGift() {
+                selectedGift = null;
+                giftSummary.classList.add('hidden');
+                giftSectionHeader.classList.remove('hidden');
+                giftGrid.classList.remove('hidden');
+                document.querySelectorAll('.gift-card.selected').forEach(card => card.classList.remove('selected'));
+                updateSelectionSummary();
+                updateOrderSummary();
+                showToast('info', 'Regalo eliminado', 'Has eliminado el regalo de tu compra.');
             }
 
             // Función para actualizar la interfaz del carrito
@@ -970,11 +981,13 @@
                 // Calcular impuesto (16%)
                 const tax = subtotal * taxRate;
                 
+                const hasItems = cart.length > 0;
+
                 // Obtener precio de envío
-                const shippingPrice = selectedShipping.price;
-                
+                const shippingPrice = hasItems ? selectedShipping.price : 0;
+
                 // Obtener precio de seguro
-                const insurancePrice = selectedInsurance.price;
+                const insurancePrice = hasItems ? selectedInsurance.price : 0;
                 
                 // Calcular total
                 const total = subtotal + tax + shippingPrice + insurancePrice;
@@ -994,6 +1007,13 @@
                 paymentInsurance.textContent = `$${insurancePrice.toFixed(2)}`;
                 paymentTotal.textContent = `$${total.toFixed(2)}`;
                 paymentTotalBs.textContent = `${(total * exchangeRate).toFixed(2)} Bs`;
+
+                // Mostrar u ocultar filas de envío y seguro según haya productos
+                const displayStyle = hasItems ? 'flex' : 'none';
+                shippingElement.parentElement.style.display = displayStyle;
+                insuranceElement.parentElement.style.display = displayStyle;
+                paymentShipping.parentElement.style.display = displayStyle;
+                paymentInsurance.parentElement.style.display = displayStyle;
                 
                 // Calcular tasa de nacionalización con la lógica especial
                 const nationalizationFeeValue = calculateNationalizationFee(total);
@@ -1113,9 +1133,14 @@
                         <div class="item-price" data-label="Precio">$0.00</div>
                         <div class="item-quantity" data-label="Cantidad">1</div>
                         <div class="item-subtotal" data-label="Subtotal">$0.00</div>
+                        <div class="item-actions">
+                            <span class="remove-gift" role="button" aria-label="Eliminar regalo"><i class="fas fa-trash"></i></span>
+                        </div>
                     `;
 
                     paymentSummaryItems.appendChild(giftItem);
+
+                    giftItem.querySelector('.remove-gift').addEventListener('click', removeGift);
                 }
             }
 

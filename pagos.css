@@ -1844,6 +1844,8 @@
             font-size: 1.4rem;
             font-weight: 600;
             color: var(--secondary-color);
+            text-align: center;
+            width: 100%;
         }
 
         .payment-option.disabled {
