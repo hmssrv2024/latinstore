@@ -451,8 +451,8 @@
         </div>
       </div>
       <div class="meta">
-        <b>N° de Orden: LP-X9D8NVWE</b>
-        <span>Fecha: 07/09/2025</span>
+        <b>N° de Orden: <span id="orderId"></span></b>
+        <span>Fecha: <span id="orderDate"></span></span>
       </div>
     </header>
 
@@ -481,12 +481,12 @@
     <section class="section grid" aria-label="Datos de cliente y entrega">
       <div class="card">
         <h3>Facturación (Cliente)</h3>
-        <div class="kv"><b>Nombre</b><span>Winder Manuel Fernández Avellaneda</span></div>
-        <div class="kv"><b>Documento</b><span>V-30.966.019</span></div>
-        <div class="kv"><b>Teléfono</b><span>+58 0412-6783725</span></div>
-        <div class="kv"><b>Dirección</b><span>Av. Circunvalación Sur, Barrio Simón Bolívar, Casa N° 350</span></div>
-        <div class="kv"><b>Estado</b><span>Portuguesa</span></div>
-        <div class="kv"><b>Ciudad</b><span>Acarigua</span></div>
+        <div class="kv"><b>Nombre</b><span id="custName"></span></div>
+        <div class="kv"><b>Documento</b><span id="custDoc"></span></div>
+        <div class="kv"><b>Teléfono</b><span id="custPhone"></span></div>
+        <div class="kv"><b>Dirección</b><span id="custAddress"></span></div>
+        <div class="kv"><b>Estado</b><span id="custState"></span></div>
+        <div class="kv"><b>Ciudad</b><span id="custCity"></span></div>
 
         <div class="idbox">
             <span class="pill">Documento de identidad adjunto</span>
@@ -496,12 +496,10 @@
       <div class="card">
         <h3>Entrega / Transporte</h3>
         <div class="carrier">
-          <b>Empresa:</b> <img src="https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg" alt="Liberty Express">
+          <b>Empresa:</b> <img id="courierLogo" alt="" style="height:24px;"> <span id="courierName"></span>
         </div>
-        <div class="kv"><b>Modalidad</b><span>Retiro en sucursal</span></div>
-        <div class="kv"><b>Sucursal</b>
-          <span>Liberty Express – C.C. Rupica, Local N° 03, PB, Acarigua, Venezuela</span>
-        </div>
+        <div class="kv"><b>Estado</b><span id="shipState"></span></div>
+        <div class="kv"><b>Ciudad</b><span id="shipCity"></span></div>
         
         <div class="timeline" aria-label="Línea de tiempo de entrega">
           <div class="step done">
@@ -541,47 +539,22 @@
               <th class="right">Importe (USD)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>iPhone 13 128GB — <i>Blanco estelar</i><br><span class="muted-text">IMEI 1: 356789104582631</span></td>
-              <td class="right">1</td>
-              <td class="right">$560.00</td>
-              <td class="right">$560.00</td>
-            </tr>
-            <tr>
-              <td>iPhone 14 128GB — <i>Blanco estelar</i><br><span class="muted-text">IMEI 2: 490154203237518</span></td>
-              <td class="right">1</td>
-              <td class="right">$650.00</td>
-              <td class="right">$650.00</td>
-            </tr>
-            <tr>
-              <td>Samsung Tag 2 <span class="gift">— Regalo GRATIS</span></td>
-              <td class="right">1</td>
-              <td class="right">$0.00</td>
-              <td class="right">$0.00</td>
-            </tr>
-            <tr>
-              <td>Xiaomi Buds 5 <span class="gift">— Regalo EXTRA</span></td>
-              <td class="right">1</td>
-              <td class="right">$0.00</td>
-              <td class="right">$0.00</td>
-            </tr>
-          </tbody>
+          <tbody id="productsBody"></tbody>
           </table>
         </div>
 
         <div class="total-summary" aria-label="Resumen de totales">
-          <div class="row"><span>Subtotal</span><b>$1,210.00</b></div>
-          <div class="row"><span>IVA (16%)</span><b>$193.60</b></div>
-          <div class="row"><span>Envío — Express (1–4 días)</span><b>$35.00</b></div>
-          <div class="row grand"><span>Total USD</span><span>$1,438.60</span></div>
+          <div class="row"><span>Subtotal</span><b id="subtotalUSD"></b></div>
+          <div class="row"><span>IVA (16%)</span><b id="taxUSD"></b></div>
+          <div class="row"><span>Envío</span><b id="shippingUSD"></b></div>
+          <div class="row grand"><span>Total USD</span><span id="totalUSD"></span></div>
           <div class="row"><span class="badge success">Tasa de nacionalización</span><b class="badge success">Pagada</b></div>
         </div>
         
         <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
             <div class="pill">Pago: Tarjeta</div>
-            <div class="pill">Transporte: LIBERTY</div>
-            <div class="pill">Estado: <span class="badge success">En preparación</span></div>
+            <div class="pill">Transporte: <span id="courierPill"></span></div>
+            <div class="pill">Estado: <span id="statusPill" class="badge success"></span></div>
         </div>
 
       </div>
@@ -608,7 +581,7 @@
 
     <footer>
       <div>LatinPhone © 2025 — Comprobante válido con número de orden.</div>
-      <div>Generado: 07/09/2025 • Orden: LP-X9D8NVWE</div>
+      <div>Generado: <span id="orderDateFooter"></span> • Orden: <span id="orderIdFooter"></span></div>
     </footer>
   </article>
 
@@ -626,7 +599,54 @@
   (function(){
     const overlay = document.getElementById('alertOverlay');
     const closeBtn = document.getElementById('alertClose');
-    closeBtn.addEventListener('click', ()=> overlay.style.display='none');
+    if(closeBtn) closeBtn.addEventListener('click', ()=> overlay.style.display='none');
+
+    const courierInfo = {
+      dhl:{name:'DHL',logo:'https://www.logo.wine/a/logo/DHL/DHL-Logo.wine.svg'},
+      fedex:{name:'FedEx',logo:'https://www.logo.wine/a/logo/FedEx_Express/FedEx_Express-Logo.wine.svg'},
+      zoom:{name:'ZOOM',logo:'https://upload.wikimedia.org/wikipedia/commons/7/71/Grupo_ZOOM_logo.png?20211116211646'},
+      tealca:{name:'TEALCA',logo:'https://www.tealca.es/wp-content/uploads/logo.png'},
+      mrw:{name:'MRW',logo:'https://upload.wikimedia.org/wikipedia/commons/2/26/MRW_logo.svg'},
+      liberty:{name:'Liberty Express',logo:'https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg'}
+    };
+
+    const orders = JSON.parse(localStorage.getItem('lpOrders')||'[]');
+    if(!orders.length) return;
+    const order = orders[orders.length-1];
+    const user = JSON.parse(localStorage.getItem('lpUser')||'{}');
+    const address = (JSON.parse(localStorage.getItem('lpAddresses')||'[]'))[0]||{};
+    const totals = JSON.parse(localStorage.getItem('latinphone_cart_totals')||'{}');
+    const courier = courierInfo[order.shipping?.courier] || {name: order.shipping?.courier || '', logo:''};
+
+    document.getElementById('orderId').textContent = order.id;
+    document.getElementById('orderDate').textContent = order.date;
+    document.getElementById('orderIdFooter').textContent = order.id;
+    document.getElementById('orderDateFooter').textContent = order.date;
+    document.getElementById('custName').textContent = user.name || '';
+    document.getElementById('custDoc').textContent = user.doc || '';
+    document.getElementById('custPhone').textContent = user.phone || '';
+    document.getElementById('custAddress').textContent = address.line1 || '';
+    document.getElementById('custState').textContent = address.region || '';
+    document.getElementById('custCity').textContent = address.city || '';
+    document.getElementById('shipState').textContent = address.region || '';
+    document.getElementById('shipCity').textContent = address.city || '';
+    document.getElementById('courierLogo').src = courier.logo;
+    document.getElementById('courierLogo').alt = courier.name;
+    document.getElementById('courierName').textContent = courier.name;
+    document.getElementById('courierPill').textContent = courier.name.toUpperCase();
+    document.getElementById('statusPill').textContent = order.status;
+
+    const tbody = document.getElementById('productsBody');
+    order.items.forEach(it=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${it.name} — <i>${it.color||''}</i></td><td class="right">${it.qty}</td><td class="right">$${it.price.toFixed(2)}</td><td class="right">$${(it.price*it.qty).toFixed(2)}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('subtotalUSD').textContent = `$${(totals.subtotal||0).toFixed(2)}`;
+    document.getElementById('taxUSD').textContent = `$${(totals.tax||0).toFixed(2)}`;
+    document.getElementById('shippingUSD').textContent = `$${(totals.shipping||0).toFixed(2)}`;
+    document.getElementById('totalUSD').textContent = `$${(totals.total||0).toFixed(2)}`;
   })();
   </script>
 </body>
