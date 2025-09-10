@@ -834,18 +834,33 @@
     <!-- Overlay de resumen antes de pago -->
     <div class="summary-overlay" id="summary-overlay">
         <div class="summary-modal">
-            <h3>Confirma tu información</h3>
+            <div class="summary-header">
+                <img src="https://latinphone.net/logo.png" alt="LatinPhone" class="summary-logo" />
+                <h3>Confirma tu información</h3>
+            </div>
             <div class="summary-details">
-                <p id="summary-overlay-gift"></p>
-                <p id="summary-overlay-shipping"></p>
-                <p id="summary-overlay-company"></p>
-                <p id="summary-overlay-insurance"></p>
-                <p id="summary-overlay-delivery"></p>
-                <p id="summary-overlay-tax"></p>
+                <div class="summary-item">
+                    <i class="fas fa-gift"></i><span id="summary-overlay-gift"></span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-shipping-fast"></i><span id="summary-overlay-shipping"></span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-building"></i><span id="summary-overlay-company"></span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-shield-alt"></i><span id="summary-overlay-insurance"></span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-calendar-check"></i><span id="summary-overlay-delivery"></span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-coins"></i><span id="summary-overlay-tax"></span>
+                </div>
             </div>
             <div class="summary-actions">
                 <button class="btn btn-secondary" id="summary-edit">Editar</button>
-                <button class="btn btn-primary" id="summary-accept">Aceptar</button>
+                <button class="btn btn-primary" id="summary-accept">Confirmar</button>
             </div>
         </div>
     </div>
@@ -885,12 +900,8 @@
                 
                 <div class="nationalization-actions">
                     <button class="close-nationalization" id="close-nationalization">
-                        <i class="fas fa-check-circle"></i> Continuar con la compra
+                        <i class="fas fa-check-circle"></i> Aceptar
                     </button>
-                    <a href="#" class="whatsapp-btn" id="whatsapp-btn" target="_blank">
-                        <i class="fab fa-whatsapp"></i>
-                        Consultar por WhatsApp
-                    </a>
                 </div>
             </div>
         </div>
