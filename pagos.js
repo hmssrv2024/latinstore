@@ -563,11 +563,27 @@
                 });
             }
 
+            const hideValidationOverlay = () => {
+                validationOverlay.classList.remove('active');
+                if (validationMessage) {
+                    validationMessage.style.display = 'none';
+                }
+            };
+
             if (validationClose) {
-                validationClose.addEventListener('click', () => {
-                    validationOverlay.classList.remove('active');
-                    if (validationMessage) {
-                        validationMessage.style.display = 'none';
+                validationClose.addEventListener('click', hideValidationOverlay);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && validationOverlay.classList.contains('active')) {
+                    hideValidationOverlay();
+                }
+            });
+
+            if (validationOverlay) {
+                validationOverlay.addEventListener('click', (e) => {
+                    if (e.target === validationOverlay) {
+                        hideValidationOverlay();
                     }
                 });
             }
