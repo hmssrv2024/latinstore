@@ -183,6 +183,7 @@
             const validationOverlay = document.getElementById('validation-overlay');
             const validationMessage = document.getElementById('validation-message');
             const validationClose = document.getElementById('validation-close');
+            const infoSavedOverlay = document.getElementById('info-saved-overlay');
             let zelleTimer;
 
             const locationOverlay = document.getElementById('location-overlay');
@@ -555,6 +556,14 @@
             const shippingCompanyInput = document.getElementById('shipping-company-input');
             let userInfoSaved = false;
 
+            function showInfoSavedOverlay() {
+                if (!infoSavedOverlay) return;
+                infoSavedOverlay.classList.add('active');
+                setTimeout(() => {
+                    infoSavedOverlay.classList.remove('active');
+                }, 2000);
+            }
+
             function saveUserInfo() {
                 const today = new Date().toISOString().slice(0,10);
                 const user = {
@@ -588,6 +597,7 @@
                     }
                     saveUserInfo();
                     showToast('success', 'Información guardada', 'Los datos se han almacenado correctamente.');
+                    showInfoSavedOverlay();
                 });
             }
 
