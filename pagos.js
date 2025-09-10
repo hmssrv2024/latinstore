@@ -131,6 +131,13 @@
             const shippingCompanyContainer = document.getElementById('shipping-company-container');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
             const summaryOverlay = document.getElementById('summary-overlay');
+            const summaryFullName = document.getElementById('summary-full-name');
+            const summaryIdNumber = document.getElementById('summary-id-number');
+            const summaryPhone = document.getElementById('summary-phone');
+            const summaryEmail = document.getElementById('summary-email');
+            const summaryAddress = document.getElementById('summary-address');
+            const summaryState = document.getElementById('summary-state');
+            const summaryCity = document.getElementById('summary-city');
             const summaryOverlayGift = document.getElementById('summary-overlay-gift');
             const summaryOverlayShipping = document.getElementById('summary-overlay-shipping');
             const summaryOverlayCompany = document.getElementById('summary-overlay-company');
@@ -537,31 +544,61 @@
                 });
             }
 
-            const sendDeliveryInfoBtn = document.getElementById('send-delivery-info');
+            const saveInfoBtn = document.getElementById('save-user-info');
             const fullNameInput = document.getElementById('full-name');
             const idNumberInput = document.getElementById('id-number');
             const phoneInput = document.getElementById('phone');
+            const emailInput = document.getElementById('email');
             const addressInput = document.getElementById('address');
             const stateInput = document.getElementById('state');
             const cityInput = document.getElementById('city');
             const shippingCompanyInput = document.getElementById('shipping-company-input');
+            let userInfoSaved = false;
 
-            if (sendDeliveryInfoBtn) {
-                sendDeliveryInfoBtn.addEventListener('click', (e) => {
+            function saveUserInfo() {
+                const today = new Date().toISOString().slice(0,10);
+                const user = {
+                    name: fullNameInput ? fullNameInput.value : '',
+                    doc: idNumberInput ? idNumberInput.value : '',
+                    phone: phoneInput ? phoneInput.value : '',
+                    email: emailInput ? emailInput.value : '',
+                    level: 'Miembro',
+                    createdAt: today
+                };
+                localStorage.setItem('lpUser', JSON.stringify(user));
+                const delivery = {
+                    state: stateInput ? stateInput.value : '',
+                    city: cityInput ? cityInput.value : '',
+                    address: addressInput ? addressInput.value : '',
+                    company: shippingCompanyInput ? shippingCompanyInput.value : ''
+                };
+                localStorage.setItem('lpDeliveryInfo', JSON.stringify(delivery));
+                userInfoSaved = true;
+            }
+
+            if (saveInfoBtn) {
+                saveInfoBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const message = `Hola, estos son mis datos de entrega para generar mi factura:\n` +
-                        `Nombre completo: ${fullNameInput.value}\n` +
-                        `Cédula: ${idNumberInput.value}\n` +
-                        `Teléfono: ${phoneInput.value}\n` +
-                        `Dirección: ${addressInput.value}\n` +
-                        `Estado: ${stateInput.value}\n` +
-                        `Ciudad: ${cityInput.value}\n` +
-                        `Empresa de envío: ${shippingCompanyInput.value}`;
-                    const encodedMessage = encodeURIComponent(message);
-                    const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
-                    window.open(whatsappUrl, '_blank');
+                    const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                    const emptyInput = requiredInputs.find(field => !field.value.trim());
+                    if (emptyInput) {
+                        showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
+                        emptyInput.focus();
+                        return;
+                    }
+                    saveUserInfo();
+                    showToast('success', 'Información guardada', 'Los datos se han almacenado correctamente.');
                 });
             }
+
+            const deliveryInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+            deliveryInputs.forEach(input => {
+                input.addEventListener('input', () => {
+                    if (deliveryInputs.every(field => field.value.trim())) {
+                        saveUserInfo();
+                    }
+                });
+            });
 
             const hideValidationOverlay = () => {
                 validationOverlay.classList.remove('active');
@@ -1969,7 +2006,7 @@
                     return;
                 }
 
-                const requiredFields = [fullNameInput, idNumberInput, phoneInput, addressInput, stateInput, cityInput].filter(Boolean);
+                const requiredFields = [fullNameInput, idNumberInput, phoneInput, emailInput, addressInput, stateInput, cityInput].filter(Boolean);
                 if (shippingCompanyInput) {
                     if (!shippingCompanyInput.value.trim()) {
                         showToast('error', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
@@ -2037,6 +2074,7 @@
                 whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
                 whatsappMessage += `Cédula: ${idNumberInput.value}\n`;
                 whatsappMessage += `Teléfono: ${phoneInput.value}\n`;
+                whatsappMessage += `Email: ${emailInput.value}\n`;
                 whatsappMessage += `Dirección: ${addressInput.value}\n`;
                 whatsappMessage += `Estado: ${stateInput.value}\n`;
                 whatsappMessage += `Ciudad: ${cityInput.value}\n`;
@@ -2150,7 +2188,7 @@
                 const user = {
                     name: fullNameInput ? fullNameInput.value : '',
                     level: 'Miembro',
-                    email: '',
+                    email: emailInput ? emailInput.value : '',
                     phone: phoneInput ? phoneInput.value : '',
                     doc: idNumberInput ? idNumberInput.value : '',
                     createdAt: today
@@ -2180,10 +2218,6 @@
                 refreshCartFromStorage();
                 nationalizationOverlay.classList.remove('active');
 
-                if (generatedWhatsappUrl) {
-                    window.open(generatedWhatsappUrl, '_blank');
-                }
-
                 cart = cart.filter(item => !item.selected);
                 updateCartCount();
                 updateOrderSummary();
@@ -2208,6 +2242,12 @@
 
                 // Notificar al usuario
                 showToast('success', '¡Compra exitosa!', 'Tu pago ha sido procesado correctamente.', 8000);
+
+                if (generatedWhatsappUrl) {
+                    setTimeout(() => {
+                        window.open(generatedWhatsappUrl, '_blank');
+                    }, 500);
+                }
             }
 
             // Función para actualizar las fechas de entrega
@@ -2500,36 +2540,9 @@
                     return;
                 }
 
-                // const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
-                // const emptyInput = requiredInputs.find(field => !field.value.trim());
-                // if (emptyInput) {
-                //     showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
-                //     emptyInput.focus();
-                //     return;
-                // }
-
-                if (summaryOverlayGift) {
-                    summaryOverlayGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
-                }
-                if (summaryOverlayShipping) {
-                    summaryOverlayShipping.textContent = `Envío: ${shippingMethod.textContent} ($${selectedShipping.price.toFixed(2)})`;
-                }
-                if (summaryOverlayCompany) {
-                    summaryOverlayCompany.textContent = `Empresa de transporte: ${shippingCompanyInput.value}`;
-                }
-                if (summaryOverlayInsurance) {
-                    summaryOverlayInsurance.textContent = selectedInsurance.selected ? `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})` : 'Seguro: sin seguro';
-                }
-                if (summaryOverlayDelivery) {
-                    summaryOverlayDelivery.textContent = `Fecha estimada de llegada: ${deliveryDateEnd.textContent}`;
-                }
-                if (summaryOverlayTax) {
-                    summaryOverlayTax.textContent = `Tasa de nacionalización: ${taxAmountBs.textContent} Bs`;
-                }
-
-                if (summaryOverlay) {
-                    summaryOverlay.classList.add('active');
-                }
+                saveDeliveryInfo();
+                goToStep(3);
+                updatePaymentSummary();
             });
 
             backToShippingBtn.addEventListener('click', () => {
@@ -2537,14 +2550,37 @@
             });
 
             processPaymentBtn.addEventListener('click', () => {
-                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
                 const emptyInput = requiredInputs.find(field => !field.value.trim());
                 if (emptyInput) {
                     showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
                     emptyInput.focus();
                     return;
                 }
-                processPayment();
+
+                if (!userInfoSaved) {
+                    saveUserInfo();
+                }
+
+                saveDeliveryInfo();
+
+                if (summaryFullName) summaryFullName.textContent = `Nombre: ${fullNameInput.value}`;
+                if (summaryIdNumber) summaryIdNumber.textContent = `Cédula: ${idNumberInput.value}`;
+                if (summaryPhone) summaryPhone.textContent = `Teléfono: ${phoneInput.value}`;
+                if (summaryEmail) summaryEmail.textContent = `Email: ${emailInput.value}`;
+                if (summaryAddress) summaryAddress.textContent = `Dirección: ${addressInput.value}`;
+                if (summaryState) summaryState.textContent = `Estado: ${stateInput.value}`;
+                if (summaryCity) summaryCity.textContent = `Ciudad: ${cityInput.value}`;
+                if (summaryOverlayCompany) summaryOverlayCompany.textContent = `Empresa de transporte: ${shippingCompanyInput.value}`;
+                if (summaryOverlayGift) summaryOverlayGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
+                if (summaryOverlayShipping) summaryOverlayShipping.textContent = `Envío: ${shippingMethod.textContent} ($${selectedShipping.price.toFixed(2)})`;
+                if (summaryOverlayInsurance) summaryOverlayInsurance.textContent = selectedInsurance.selected ? `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})` : 'Seguro: sin seguro';
+                if (summaryOverlayDelivery) summaryOverlayDelivery.textContent = `Fecha estimada de llegada: ${deliveryDateEnd.textContent}`;
+                if (summaryOverlayTax) summaryOverlayTax.textContent = `Tasa de nacionalización: ${taxAmountBs.textContent} Bs`;
+
+                if (summaryOverlay) {
+                    summaryOverlay.classList.add('active');
+                }
             });
 
             if (summaryEditBtn) {
@@ -2556,9 +2592,7 @@
             if (summaryAcceptBtn) {
                 summaryAcceptBtn.addEventListener('click', () => {
                     summaryOverlay.classList.remove('active');
-                    saveDeliveryInfo();
-                    goToStep(3);
-                    updatePaymentSummary();
+                    processPayment();
                 });
             }
 
