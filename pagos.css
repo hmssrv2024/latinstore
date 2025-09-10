@@ -69,10 +69,10 @@
             --radius-full: 999.9rem;
             --header-height: 7rem;
             --z-header: 1000;
-            --z-overlay: 1001;
-            --z-dropdown: 1002;
-            --z-modal: 1003;
-            --z-toast: 1004;
+            --z-overlay: 3000;
+            --z-dropdown: 3001;
+            --z-modal: 3002;
+            --z-toast: 3003;
             --max-width: 128rem;
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             --space-xs: 0.5rem;
@@ -292,7 +292,9 @@
             justify-content: center;
             margin-bottom: 5rem;
             position: relative;
-            overflow: visible;
+            overflow-x: auto;
+            overflow-y: visible;
+            flex-wrap: nowrap;
             padding: 0 var(--space-sm);
             gap: 2rem;
         }
@@ -3718,17 +3720,22 @@
     }
 
     .checkout-steps {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
         gap: var(--space-sm);
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
     }
 
     .checkout-steps::before {
-        display: none;
+        display: block;
+        width: 80%;
+        left: 10%;
     }
 
     .checkout-step {
-        width: 100%;
+        flex: 0 0 auto;
     }
 
     .form-section,
