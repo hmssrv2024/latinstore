@@ -1495,7 +1495,16 @@
                     return;
                 }
 
-                const requiredFields = [fullNameInput, idNumberInput, phoneInput, addressInput, stateInput, cityInput, shippingCompanyInput].filter(Boolean);
+                const requiredFields = [fullNameInput, idNumberInput, phoneInput, addressInput, stateInput, cityInput].filter(Boolean);
+                if (shippingCompanyInput) {
+                    if (!shippingCompanyInput.value.trim()) {
+                        showToast('error', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
+                        shippingCompanyInput.focus();
+                        return;
+                    }
+                    requiredFields.push(shippingCompanyInput);
+                }
+
                 if (requiredFields.some(field => !field.value.trim())) {
                     showToast('error', 'Datos incompletos', 'Por favor, completa la información de entrega.');
                     return;
@@ -1851,6 +1860,12 @@
                     // Actualizar empresa seleccionada
                     selectedShippingCompany = card.getAttribute('data-company');
                     selectedShippingCompanyName = card.dataset.name;
+
+                    // Precargar y mostrar el campo de empresa de envío para revisión
+                    if (shippingCompanyInput) {
+                        shippingCompanyInput.value = selectedShippingCompanyName;
+                        shippingCompanyInput.style.display = '';
+                    }
 
                     // Ocultar opciones y mostrar resumen
                     shippingCompanyContainer.classList.add('hidden');
