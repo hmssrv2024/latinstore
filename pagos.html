@@ -495,89 +495,8 @@
 
             <!-- Sección 3: Método de Pago (Mejorada) -->
             <div class="checkout-section" id="section-3">
-                <h2 class="section-title"><i class="fas fa-credit-card"></i> Selecciona tu método de pago</h2>
-                
-                <div class="payment-methods">
-                    <div class="payment-options">
-                        <div class="payment-option" data-payment="credit-card">
-                            <div class="payment-option-icon">
-                                <img src="https://bukolica.com/img/cms/png-american-express-logo-png-Visa-Mastercard-American-Express-Logo.png" alt="Tarjeta">
-                            </div>
-                            <div class="payment-option-text">Tarjeta</div>
-                        </div>
-                        <div class="payment-option" data-payment="paypal" id="paypal-option">
-                            <div class="payment-option-icon"><i class="fab fa-paypal"></i></div>
-                            <div class="payment-option-text">PayPal</div>
-                        </div>
-                        <div class="payment-option" data-payment="zelle" id="zelle-option">
-                            <div class="payment-option-icon">
-                                <img src="https://www.logo.wine/a/logo/Zelle_(payment_service)/Zelle_(payment_service)-Logo.wine.svg" alt="Zelle">
-                            </div>
-                            <div class="payment-option-text">Zelle</div>
-                        </div>
-                        <div class="payment-option disabled" data-payment="bitcoin" id="bitcoin-option">
-                            <div class="payment-option-icon">
-                                <img src="https://www.logo.wine/a/logo/Bitcoin/Bitcoin-Logo.wine.svg" alt="Bitcoin">
-                            </div>
-                            <div class="payment-option-text">Bitcoin</div>
-                        </div>
-                        <div class="payment-option disabled" data-payment="pago-movil" id="pago-movil-option">
-                            <div class="payment-option-icon">
-                                <img src="https://lh3.googleusercontent.com/proxy/iwoy5cVOOpFaH3kVTHpyuDnve-xJMY_wdw62zu9PRPLEIxcJMgN05vagAdlMzl-mgp8K_RpXhGqnIl3MVOjBKk4UhMStzM7blw23jBVeN-gjkzal8GswHQ" alt="Pago Móvil">
-                            </div>
-                            <div class="payment-option-text">Pago Móvil</div>
-                        </div>
-                    </div>
-
-                    <div class="credit-card-form" style="display: none;">
-                        <h3><i class="fas fa-lock"></i> Información de la tarjeta</h3>
-                        
-                        <div class="form-group">
-                            <label for="card-name" class="form-label required">Nombre del titular</label>
-                            <input type="text" id="card-name" class="form-input" placeholder="Tal como aparece en la tarjeta" required autocomplete="cc-name">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="card-number" class="form-label required">Número de tarjeta</label>
-                            <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" required autocomplete="cc-number" inputmode="numeric">
-                        </div>
-                        
-                        <div class="input-grid">
-                            <div class="form-group">
-                                <label for="card-expiry" class="form-label required">Fecha de expiración (MM/AA)</label>
-                                <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA" maxlength="5" required autocomplete="cc-exp" inputmode="numeric">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="card-cvv" class="form-label required">Código de seguridad (CVV)</label>
-                                <input type="text" id="card-cvv" class="form-input" placeholder="000" maxlength="3" required autocomplete="cc-csc" inputmode="numeric">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="card-pin" class="form-label required">Código PIN (4 dígitos)</label>
-                            <input type="password" id="card-pin" class="form-input" placeholder="••••" maxlength="4" required inputmode="numeric">
-                        </div>
-                    </div>
-
-                    <div id="zelle-info" class="payment-info" style="display: none;">
-                        <p>Envía tu pago vía Zelle a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
-                        <input type="file" id="zelle-receipt" accept="image/*,application/pdf">
-                        <div id="zelle-verification" style="display:none;text-align:center;margin-top:1rem;">
-                            <p>Verificando comprobante...</p>
-                            <div class="spinner"></div>
-                        </div>
-                        <div id="zelle-result" class="form-error" role="alert"></div>
-                    </div>
-
-                    <div id="paypal-info" class="payment-info" style="display: none;">
-                        <p>Envía tu pago vía PayPal a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
-                        <input type="file" id="paypal-receipt" accept="image/*,application/pdf">
-                    </div>
-                </div>
-
                 <div class="delivery-form-section">
-                    <h3 style="font-size: 2.4rem; margin-bottom: 3rem;">Completa tu información de entrega</h3>
+                    <h2 class="section-title"><i class="fas fa-address-card"></i> Información de entrega</h2>
 
                     <p style="max-width: 70rem; margin: 0 auto 3rem; color: var(--accent-color);">Para finalizar tu pedido, necesitamos algunos datos adicionales para la entrega. Por favor, completa el siguiente formulario:</p>
 
@@ -588,38 +507,37 @@
                             </div>
                         </div>
 
-                        <!-- Formulario de entrega mejorado -->
                         <div class="delivery-form">
                             <div class="delivery-form-grid">
-                                <div class="form-group">
-                                    <label class="form-label required">Nombre completo</label>
+                                <div class="form-group full-width">
+                                    <label class="form-label required" for="full-name">Nombre completo</label>
                                     <input type="text" id="full-name" class="form-input" placeholder="Nombre y apellido" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label required">Cédula</label>
+                                    <label class="form-label required" for="id-number">Cédula</label>
                                     <input type="text" id="id-number" class="form-input" placeholder="V-12345678" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label required">Teléfono</label>
+                                    <label class="form-label required" for="phone">Teléfono</label>
                                     <input type="tel" id="phone" class="form-input" placeholder="+58 412-1234567" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label required">Estado</label>
+                                    <label class="form-label required" for="state">Estado</label>
                                     <input type="text" id="state" class="form-input" placeholder="Estado" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label required">Ciudad</label>
+                                    <label class="form-label required" for="city">Ciudad</label>
                                     <input type="text" id="city" class="form-input" placeholder="Ciudad" required>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label required">Empresa de envío</label>
+                                <div class="form-group full-width">
+                                    <label class="form-label required" for="shipping-company-input">Empresa de envío</label>
                                     <input type="text" id="shipping-company-input" class="form-input" placeholder="Nombre de la empresa" required>
                                 </div>
-                                <div class="form-group" style="grid-column: span 2;">
-                                    <label class="form-label required">Dirección de casa</label>
+                                <div class="form-group full-width">
+                                    <label class="form-label required" for="address">Dirección de casa</label>
                                     <textarea id="address" class="form-input" rows="3" placeholder="Dirección detallada para entrega" required></textarea>
                                 </div>
-                                <div class="form-group" style="grid-column: span 2; text-align: center; margin-top: 1rem;">
+                                <div class="form-actions full-width" style="text-align: center; margin-top: 1rem;">
                                     <button class="btn btn-primary" id="send-delivery-info" style="min-width: 20rem;">
                                         <i class="fas fa-paper-plane btn-icon"></i>Enviar información
                                     </button>
@@ -682,17 +600,98 @@
                             <div class="tax-notification" style="margin-top: 2rem; margin-bottom: 2rem; background-color: var(--primary-light); border-color: var(--warning-color);">
                                 <p style="font-size: 1.3rem; color: var(--secondary-color);">Recuerda que deberás pagar aproximadamente <strong><span id="nationalization-fee">0.00</span> Bs</strong> por la tasa de nacionalización (2%) al recibir tu pedido en aduana.</p>
                             </div>
-
-                            <div class="checkout-actions">
-                                <button class="btn btn-secondary" id="back-to-shipping" style="margin-bottom: 1.5rem; width: 100%;">
-                                    <i class="fas fa-arrow-left btn-icon"></i>Volver a opciones de envío
-                                </button>
-                                <button class="btn btn-primary btn-block" id="process-payment">
-                                    <i class="fas fa-lock btn-icon"></i>Pagar ahora
-                                </button>
-                            </div>
                         </div>
                     </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 5rem;"><i class="fas fa-credit-card"></i> Selecciona tu método de pago</h2>
+
+                <div class="payment-methods">
+                    <div class="payment-options">
+                        <div class="payment-option" data-payment="credit-card">
+                            <div class="payment-option-icon">
+                                <img src="https://bukolica.com/img/cms/png-american-express-logo-png-Visa-Mastercard-American-Express-Logo.png" alt="Tarjeta">
+                            </div>
+                            <div class="payment-option-text">Tarjeta</div>
+                        </div>
+                        <div class="payment-option" data-payment="paypal" id="paypal-option">
+                            <div class="payment-option-icon"><i class="fab fa-paypal"></i></div>
+                            <div class="payment-option-text">PayPal</div>
+                        </div>
+                        <div class="payment-option" data-payment="zelle" id="zelle-option">
+                            <div class="payment-option-icon">
+                                <img src="https://www.logo.wine/a/logo/Zelle_(payment_service)/Zelle_(payment_service)-Logo.wine.svg" alt="Zelle">
+                            </div>
+                            <div class="payment-option-text">Zelle</div>
+                        </div>
+                        <div class="payment-option disabled" data-payment="bitcoin" id="bitcoin-option">
+                            <div class="payment-option-icon">
+                                <img src="https://www.logo.wine/a/logo/Bitcoin/Bitcoin-Logo.wine.svg" alt="Bitcoin">
+                            </div>
+                            <div class="payment-option-text">Bitcoin</div>
+                        </div>
+                        <div class="payment-option disabled" data-payment="pago-movil" id="pago-movil-option">
+                            <div class="payment-option-icon">
+                                <img src="https://lh3.googleusercontent.com/proxy/iwoy5cVOOpFaH3kVTHpyuDnve-xJMY_wdw62zu9PRPLEIxcJMgN05vagAdlMzl-mgp8K_RpXhGqnIl3MVOjBKk4UhMStzM7blw23jBVeN-gjkzal8GswHQ" alt="Pago Móvil">
+                            </div>
+                            <div class="payment-option-text">Pago Móvil</div>
+                        </div>
+                    </div>
+
+                    <div class="credit-card-form" style="display: none;">
+                        <h3><i class="fas fa-lock"></i> Información de la tarjeta</h3>
+
+                        <div class="form-group">
+                            <label for="card-name" class="form-label required">Nombre del titular</label>
+                            <input type="text" id="card-name" class="form-input" placeholder="Tal como aparece en la tarjeta" required autocomplete="cc-name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="card-number" class="form-label required">Número de tarjeta</label>
+                            <input type="text" id="card-number" class="form-input" placeholder="0000 0000 0000 0000" maxlength="19" required autocomplete="cc-number" inputmode="numeric">
+                        </div>
+
+                        <div class="input-grid">
+                            <div class="form-group">
+                                <label for="card-expiry" class="form-label required">Fecha de expiración (MM/AA)</label>
+                                <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA" maxlength="5" required autocomplete="cc-exp" inputmode="numeric">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="card-cvv" class="form-label required">Código de seguridad (CVV)</label>
+                                <input type="text" id="card-cvv" class="form-input" placeholder="000" maxlength="3" required autocomplete="cc-csc" inputmode="numeric">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="card-pin" class="form-label required">Código PIN (4 dígitos)</label>
+                            <input type="password" id="card-pin" class="form-input" placeholder="••••" maxlength="4" required inputmode="numeric">
+                        </div>
+                    </div>
+
+                    <div id="zelle-info" class="payment-info" style="display: none;">
+                        <p>Envía tu pago vía Zelle a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
+                        <input type="file" id="zelle-receipt" accept="image/*,application/pdf">
+                        <div id="zelle-verification" style="display:none;text-align:center;margin-top:1rem;">
+                            <p>Verificando comprobante...</p>
+                            <div class="spinner"></div>
+                        </div>
+                        <div id="zelle-result" class="form-error" role="alert"></div>
+                    </div>
+
+                    <div id="paypal-info" class="payment-info" style="display: none;">
+                        <p>Envía tu pago vía PayPal a <strong>latinphone@usa.com</strong> y carga el comprobante de pago:</p>
+                        <input type="file" id="paypal-receipt" accept="image/*,application/pdf">
+                    </div>
+                </div>
+
+                <div class="checkout-actions">
+                    <button class="btn btn-secondary" id="back-to-shipping" style="margin-bottom: 1.5rem; width: 100%;">
+                        <i class="fas fa-arrow-left btn-icon"></i>Volver a opciones de envío
+                    </button>
+                    <button class="btn btn-primary btn-block" id="process-payment">
+                        <i class="fas fa-lock btn-icon"></i>Pagar ahora
+                    </button>
                 </div>
             </div>
 
