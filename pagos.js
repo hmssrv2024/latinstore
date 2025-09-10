@@ -986,7 +986,7 @@
                 }
 
                 // Actualizar la interfaz del carrito
-                updateCart();
+                window.dispatchEvent(new Event('cart-updated'));
             }
 
             // Función para eliminar del carrito
@@ -1002,7 +1002,7 @@
                     } catch (err) {
                         console.error('Error al guardar el carrito', err);
                     }
-                    updateCart();
+                    window.dispatchEvent(new Event('cart-updated'));
 
                     // Notificar al usuario
                     showToast('info', 'Producto eliminado', `Has eliminado ${removedItem.name} de tu carrito.`);
@@ -1110,7 +1110,7 @@
                             } catch (err) {
                                 console.error('Error al guardar el carrito', err);
                             }
-                            updateCart();
+                            window.dispatchEvent(new Event('cart-updated'));
                         }
                     });
                 });
@@ -1128,7 +1128,7 @@
                             } catch (err) {
                                 console.error('Error al guardar el carrito', err);
                             }
-                            updateCart();
+                            window.dispatchEvent(new Event('cart-updated'));
                         }
                     });
                 });
@@ -1147,7 +1147,7 @@
                             } catch (err) {
                                 console.error('Error al guardar el carrito', err);
                             }
-                            updateCart();
+                            window.dispatchEvent(new Event('cart-updated'));
                         } else {
                             input.value = 1;
                         }
