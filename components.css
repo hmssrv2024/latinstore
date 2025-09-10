@@ -320,7 +320,10 @@
     border: none;
     border-radius: 20px;
     font-size: 1.4rem;
-    outline: none;
+}
+
+.whatsapp-widget-footer input:focus {
+    box-shadow: 0 0 0 3px rgba(0,113,227,.4);
 }
 
 .send-button {
@@ -564,7 +567,6 @@
 .contact-form input:focus,
 .contact-form textarea:focus,
 .contact-form select:focus {
-    outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(121, 40, 202, 0.1);
 }
@@ -694,7 +696,6 @@
 }
 
 .tracking-form input:focus {
-    outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(121, 40, 202, 0.1);
 }

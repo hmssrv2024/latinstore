@@ -36,7 +36,7 @@
 }
 
 .search-bar input:focus {
-    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,113,227,.4);
 }
 
 .search-bar button {
@@ -353,8 +353,8 @@
 }
 
 .filter-sort select:focus {
-    outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0,113,227,.4);
 }
 
 /* Productos Grid */
