@@ -873,25 +873,25 @@
                         { id: 'oneplusopen2', name: 'OnePlus Open 2 16GB/512GB', price: 1699, colors: ['Verde', 'Negro'], specs: ['16GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] }
                     ],
                     oppo: [
-                        { id: 'findx9', name: 'OPPO Find X9 12GB/256GB', price: 850, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findx9pro', name: 'OPPO Find X9 Pro 16GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Blanco'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findn5', name: 'OPPO Find N5 12GB/512GB', price: 1599, colors: ['Negro', 'Verde', 'Dorado'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'] },
-                        { id: 'findx8ultra', name: 'OPPO Find X8 Ultra 16GB/512GB', price: 1199, colors: ['Negro', 'Blanco', 'Marrón'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] }
+                        { id: 'findx9', name: 'OPPO Find X9 12GB/256GB', price: 850, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'], image: 'https://www.oppo.com/content/dam/oppo/product-asset-library/find/find-x8-series/en/oppo-find-x8-pro/white-apac/assets/images-kv-bg-k-pad.png' },
+                        { id: 'findx9pro', name: 'OPPO Find X9 Pro 16GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Blanco'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 4'], image: 'https://www.oppo.com/content/dam/oppo/product-asset-library/find/find-x8-series/en/oppo-find-x8-pro/white-apac/assets/images-kv-bg-k-pad.png' },
+                        { id: 'findn5', name: 'OPPO Find N5 12GB/512GB', price: 1599, colors: ['Negro', 'Verde', 'Dorado'], specs: ['12GB RAM', '512GB', 'Plegable', 'Snapdragon 8 Gen 4'], image: 'https://thumb.pccomponentes.com/w-530-530/articles/1093/10936714/2813-smartphone-oppo-find-n5-16gb-512gb-snapdragon-8-elite-pantalla-plegable-amoled-81-5600mah-negro-comprar.jpg' },
+                        { id: 'findx8ultra', name: 'OPPO Find X8 Ultra 16GB/512GB', price: 1199, colors: ['Negro', 'Blanco', 'Marrón'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'], image: 'https://bludiode.com/58470-large_default/oppo-find-x8-ultra-16-gb-512-gb-negro.jpg' }
                     ],
                     honor: [
-                        { id: 'magic7pro', name: 'Honor Magic 7 Pro 12GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Oro', 'Rojo', 'Otras ediciones'], specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'magic7pro', name: 'Honor Magic 7 Pro 12GB/512GB', price: 1099, colors: ['Negro', 'Azul', 'Oro', 'Rojo', 'Otras ediciones'], specs: ['12GB RAM', '512GB', 'Snapdragon 8 Gen 4'], image: 'https://media.ldlc.com/r705/ld/products/00/06/20/00/LD0006200035.jpg' }
                     ],
                     huawei: [
-                        { id: 'matex6', name: 'Huawei Mate X6 12GB/512GB', price: 1699, colors: ['Negro', 'Púrpura', 'Verde', 'Oro'], specs: ['12GB RAM', '512GB', 'Plegable', 'Kirin 9100'] }
+                        { id: 'matex6', name: 'Huawei Mate X6 12GB/512GB', price: 1699, colors: ['Negro', 'Púrpura', 'Verde', 'Oro'], specs: ['12GB RAM', '512GB', 'Plegable', 'Kirin 9100'], image: 'https://img01.huaweifile.com/eu/es/huawei/pms/uomcdn/ESHW/pms/202501/gbom/6942103145360/800_800_52610B27A3941FBAA46A55C8432D185Bmp.png' }
                     ],
                     realme: [
-                        { id: 'gt7pro', name: 'Realme GT7 Pro 12GB/256GB', price: 750, colors: ['Negro', 'Azul', 'Verde', 'Versiones especiales'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'gt7pro', name: 'Realme GT7 Pro 12GB/256GB', price: 750, colors: ['Negro', 'Azul', 'Verde', 'Versiones especiales'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'], image: 'https://es.etoren.com/upload/images/0.89409400_1730773211_realme-gt7-pro-5g-rmx5010-dual-sim-256gb-white-12gb-ram-china-version.jpg' }
                     ],
                     nubia: [
-                        { id: 'nubiaflip2', name: 'Nubia Flip 2 5G 8GB/256GB', price: 899, colors: ['Azul', 'Negro', 'Blanco'], specs: ['8GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'] }
+                        { id: 'nubiaflip2', name: 'Nubia Flip 2 5G 8GB/256GB', price: 899, colors: ['Azul', 'Negro', 'Blanco'], specs: ['8GB RAM', '256GB', 'Plegable', 'Snapdragon 8 Gen 3'], image: 'https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202503/31/00157063611644009_7__1200x1200.jpg?impolicy=Resize&width=900' }
                     ],
                     vivo: [
-                        { id: 'vivox300', name: 'Vivo X300 12GB/256GB', price: 880, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'] }
+                        { id: 'vivox300', name: 'Vivo X300 12GB/256GB', price: 880, colors: ['Negro', 'Azul', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 4'], image: 'https://mobileinto.com/images/Vivo-X300-Pro.jpg' }
                     ]
                 },
                 tablets: {
