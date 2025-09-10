@@ -548,7 +548,8 @@
           <div class="row"><span>IVA (16%)</span><b id="taxUSD"></b></div>
           <div class="row"><span>Envío</span><b id="shippingUSD"></b></div>
           <div class="row grand"><span>Total USD</span><span id="totalUSD"></span></div>
-          <div class="row"><span class="badge success">Tasa de nacionalización</span><b class="badge success">Pagada</b></div>
+          <div class="row"><span class="badge" id="natLabel">Tasa de nacionalización</span><b id="natStatus" class="badge"></b></div>
+          <div class="row" id="natPendingMsg" style="display:none;color:var(--danger);font-size:12px">Pendiente por pago. La compra podría ser anulada.</div>
         </div>
         
         <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
@@ -615,7 +616,7 @@
     const order = orders[orders.length-1];
     const user = JSON.parse(localStorage.getItem('lpUser')||'{}');
     const address = (JSON.parse(localStorage.getItem('lpAddresses')||'[]'))[0]||{};
-    const totals = JSON.parse(localStorage.getItem('latinphone_cart_totals')||'{}');
+    const totals = order.totals || JSON.parse(localStorage.getItem('latinphone_cart_totals')||'{}');
     const courier = courierInfo[order.shipping?.courier] || {name: order.shipping?.courier || '', logo:''};
 
     document.getElementById('orderId').textContent = order.id;
@@ -646,7 +647,21 @@
     document.getElementById('subtotalUSD').textContent = `$${(totals.subtotal||0).toFixed(2)}`;
     document.getElementById('taxUSD').textContent = `$${(totals.tax||0).toFixed(2)}`;
     document.getElementById('shippingUSD').textContent = `$${(totals.shipping||0).toFixed(2)}`;
-    document.getElementById('totalUSD').textContent = `$${(totals.total||0).toFixed(2)}`;
+    document.getElementById('totalUSD').textContent = `$${((totals.total!==undefined?totals.total:order.total)||0).toFixed(2)}`;
+
+    const natStatus = document.getElementById('natStatus');
+    const natPendingMsg = document.getElementById('natPendingMsg');
+    const proof = localStorage.getItem(`lp_nacionalizacion_${order.id}`);
+    const natDone = proof || localStorage.getItem('lpNationalizationDone') === 'true';
+    overlay.style.display = natDone ? 'flex' : 'none';
+    if(natDone){
+      natStatus.textContent = 'Pagada';
+      natStatus.classList.add('success');
+    }else{
+      natStatus.textContent = 'Pendiente';
+      natStatus.classList.add('danger');
+      natPendingMsg.style.display = 'block';
+    }
   })();
   </script>
 </body>
