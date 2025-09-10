@@ -1192,6 +1192,11 @@
         window.location.href = './informacion.html';
         return;
       }
+      if(localStorage.getItem('lpAccountBypass') === 'true'){
+        localStorage.removeItem('lpAccountBypass');
+        init();
+        return;
+      }
       const form = document.getElementById('loginForm');
       const input = document.getElementById('cedInput');
       const error = document.getElementById('loginError');
