@@ -2429,7 +2429,10 @@
                 if (!document.querySelector('.shipping-option.selected')) {
                     missing.push('el método de envío');
                 }
-                if (!document.querySelector('.shipping-company-card.selected')) {
+                if (
+                    !document.querySelector('.shipping-company-card.selected') &&
+                    (!shippingCompanyInput || !shippingCompanyInput.value.trim())
+                ) {
                     missing.push('la empresa de envío');
                 }
                 if (!document.querySelector('.insurance-option.selected')) {
