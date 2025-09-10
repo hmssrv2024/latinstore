@@ -1062,6 +1062,10 @@
                     cartLink.addEventListener('click', (e) => {
                         e.preventDefault();
                         loadCart();
+                        if (!cartModal) {
+                            console.error('Cart modal element not found');
+                            return;
+                        }
                         cartModal.classList.add('show');
                     });
                 }
