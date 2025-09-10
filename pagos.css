@@ -1276,7 +1276,9 @@
         }
 
         .btn:focus {
-            box-shadow: 0 0 0 3px rgba(0,113,227,.4);
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.4);
         }
 
         .btn::before {
@@ -1330,6 +1332,18 @@
         .btn-secondary:active {
             transform: translateY(0);
             box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:focus {
+            outline: 2px solid var(--white);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.6);
+        }
+
+        .btn-secondary:focus {
+            outline: 2px solid var(--secondary-color);
+            outline-offset: 2px;
+            box-shadow: 0 0 0 3px rgba(29, 29, 31, 0.4);
         }
 
         .btn-block {
