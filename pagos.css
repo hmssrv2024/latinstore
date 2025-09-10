@@ -1506,6 +1506,12 @@
             width: 22rem;
         }
 
+        .shipping-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .recommended-badge {
             position: absolute;
             top: 0.8rem;
@@ -1690,10 +1696,6 @@
             transition: var(--transition);
         }
 
-        .insurance-option.premium::before {
-            background: linear-gradient(to bottom, #4cd964, #34c759);
-        }
-
         .insurance-option:hover {
             transform: translateY(-0.5rem);
             box-shadow: var(--shadow);
@@ -1706,12 +1708,8 @@
         .insurance-option.selected {
             border-color: var(--primary-color);
             box-shadow: var(--shadow);
-            padding-left: 2.5rem;
-        }
-
-        .insurance-option.premium.selected {
-            border-color: #4cd964;
-            background-color: rgba(76, 217, 100, 0.1);
+            padding-left: var(--space-md);
+            background-color: var(--primary-light);
         }
 
         .insurance-option.selected::before {
@@ -1745,6 +1743,11 @@
             object-fit: contain;
         }
 
+        .insurance-title .insurance-logo {
+            font-size: 2.4rem;
+            color: var(--accent-color);
+        }
+
         .insurance-description {
             font-size: 1.4rem;
             color: var(--accent-color);
@@ -1758,10 +1761,6 @@
             flex-shrink: 0;
             color: var(--primary-color);
             white-space: nowrap;
-        }
-
-        .insurance-option.premium .insurance-price {
-            color: #4cd964;
         }
 
         /* Notificación de tasas mejorada */

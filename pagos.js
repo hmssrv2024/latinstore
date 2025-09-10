@@ -2539,6 +2539,7 @@
             }
 
             shippingOptions.forEach(option => {
+                if (option.classList.contains('disabled')) return;
                 option.addEventListener('click', () => {
                     const method = option.getAttribute('data-shipping');
                     if (method === 'free' && freeShippingOverlay) {
