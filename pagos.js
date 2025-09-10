@@ -2232,7 +2232,14 @@
 
                 cart = cart.filter(item => !item.selected);
                 updateCartCount();
-                updateOrderSummary();
+
+                // Recuperar montos de la última orden para mantener los detalles en la confirmación
+                const orders = JSON.parse(localStorage.getItem('lpOrders') || '[]');
+                const currentOrder = orders.find(o => o.id === orderNumber) || orders[orders.length - 1];
+                if (currentOrder) {
+                    orderTotal.textContent = `$${Number(currentOrder.total).toFixed(2)}`;
+                    orderNationalization.textContent = `${Number(currentOrder.nationalizationFeeBs).toFixed(2)} Bs`;
+                }
 
                 // Pago exitoso, avanzar a la confirmación
                 goToStep(4);
