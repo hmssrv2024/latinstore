@@ -566,6 +566,9 @@
             if (validationClose) {
                 validationClose.addEventListener('click', () => {
                     validationOverlay.classList.remove('active');
+                    if (validationMessage) {
+                        validationMessage.style.display = 'none';
+                    }
                 });
             }
 
@@ -911,6 +914,7 @@
                 if (validationMessage) {
                     validationMessage.textContent = message;
                     validationMessage.className = type === 'success' ? 'form-success' : 'form-error';
+                    validationMessage.style.display = 'block';
                 }
                 if (validationOverlay) {
                     validationOverlay.classList.add('active');
