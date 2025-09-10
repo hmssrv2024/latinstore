@@ -4,6 +4,15 @@
     const addresses = JSON.parse(localStorage.getItem('lpAddresses') || '[]');
     const invoices = JSON.parse(localStorage.getItem('lpInvoices') || '[]');
     if(!orders.length || !addresses.length || !invoices.length) return;
+
+    const pendingNat = localStorage.getItem('lpPendingNationalization');
+    const natDone = localStorage.getItem('lpNationalizationDone') === 'true';
+    if(pendingNat && !natDone &&
+       !location.pathname.endsWith('na.html') &&
+       !location.pathname.endsWith('micuenta.html')){
+      window.location.href = 'na.html';
+      return;
+    }
     const lastOrder = orders[orders.length - 1];
     const eta = lastOrder.shipping && lastOrder.shipping.eta;
     const today = new Date().toISOString().slice(0,10);

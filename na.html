@@ -4,6 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pago de Nacionalización</title>
+<script>
+  var pending = JSON.parse(localStorage.getItem('lpPendingNationalization') || 'null');
+  var natDone = localStorage.getItem('lpNationalizationDone') === 'true';
+  if(!pending || natDone){
+    localStorage.setItem('lpAccountBypass', 'true');
+    window.location.href = 'micuenta.html';
+  }
+</script>
 <style>
   :root{
     --primary:#0b5fff; --ink:#1a1f36; --muted:#6b7280;
@@ -243,7 +251,6 @@
   </div>
 
 <script>
-  const pending = JSON.parse(localStorage.getItem('lpPendingNationalization') || 'null');
   const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
   const fmtBs = new Intl.NumberFormat('es-VE',{style:'currency',currency:'VES'});
   let orderId = pending ? pending.orderId : '';
