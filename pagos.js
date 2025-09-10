@@ -831,8 +831,13 @@
                     productCard.className = 'product-card';
 
                     const specsHTML = product.specs.map(spec => `<span>${spec}</span>`).join('');
-                    const colorOptions = product.colors ? product.colors.map(color => `<option value="${color}">${color}</option>`).join('') : '';
-                    const colorSelectHTML = product.colors ? `<div class="color-selection"><select class="color-select" data-id="${product.id}">${colorOptions}</select></div>` : '';
+                    const colorOptions = product.colors
+                        ? `<option value="" disabled selected>Selecciona un color</option>` +
+                          product.colors.map(color => `<option value="${color}">${color}</option>`).join('')
+                        : '';
+                    const colorSelectHTML = product.colors
+                        ? `<div class="color-selection"><select class="color-select" data-id="${product.id}">${colorOptions}</select></div>`
+                        : '';
                     
                     // Video button si hay video disponible
                     const videoButton = product.hasVideo ? `<button class="product-video-btn" data-id="${product.id}" aria-label="Ver video"><i class="fas fa-play"></i></button>` : '';
@@ -896,6 +901,11 @@
                         const quantity = parseInt(productCard.querySelector('.quantity-input').value);
                         const colorSelect = productCard.querySelector('.color-select');
                         const selectedColor = colorSelect ? colorSelect.value : null;
+
+                        if (colorSelect && (!selectedColor || selectedColor === '')) {
+                            showValidationOverlay('Por favor, selecciona un color antes de añadir este producto al carrito.');
+                            return;
+                        }
 
                         addToCart({
                             id: addBtn.getAttribute('data-id'),
