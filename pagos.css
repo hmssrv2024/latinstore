@@ -2908,15 +2908,17 @@
 
         .delivery-form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
             gap: 2rem;
         }
 
-        .delivery-form-grid .form-group:nth-child(1),
-        .delivery-form-grid .form-group:nth-child(2),
-        .delivery-form-grid .form-group:nth-child(7),
-        .delivery-form-grid .form-group:nth-child(8) {
-            grid-column: span 2;
+        .delivery-form-grid .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 1rem;
         }
 
         .support-link {
@@ -3097,8 +3099,8 @@
                 grid-template-columns: 1fr;
             }
 
-            .delivery-form-grid .form-group:nth-child(n) {
-                grid-column: span 1;
+            .delivery-form-grid .full-width {
+                grid-column: 1 / -1;
             }
 
             .category-grid,
