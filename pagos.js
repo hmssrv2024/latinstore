@@ -157,6 +157,13 @@
             const zelleReceipt = document.getElementById('zelle-receipt');
             const zelleVerification = document.getElementById('zelle-verification');
             const zelleResult = document.getElementById('zelle-result');
+
+            const showZelleResult = (message, type = 'error') => {
+                if (!zelleResult) return;
+                zelleResult.className = type === 'success' ? 'form-success' : 'form-error';
+                zelleResult.textContent = message;
+                zelleResult.style.display = 'block';
+            };
             const paypalInfo = document.getElementById('paypal-info');
             const whatsappBtn = document.getElementById('whatsapp-btn');
             const whatsappSupport = document.getElementById('whatsapp-support');
@@ -900,9 +907,10 @@
             let giftProducts = [];
 
             // Notificaciones deshabilitadas
-            function showValidationOverlay(message) {
+            function showValidationOverlay(message, type = 'error') {
                 if (validationMessage) {
                     validationMessage.textContent = message;
+                    validationMessage.className = type === 'success' ? 'form-success' : 'form-error';
                 }
                 if (validationOverlay) {
                     validationOverlay.classList.add('active');
@@ -2671,6 +2679,7 @@
                         if (zelleTimer) clearTimeout(zelleTimer);
                         zelleVerification.style.display = 'none';
                         zelleResult.style.display = 'none';
+                        zelleResult.textContent = '';
                     }
 
                     // Notificar al usuario
@@ -2682,10 +2691,10 @@
                 if (zelleTimer) clearTimeout(zelleTimer);
                 zelleVerification.style.display = 'block';
                 zelleResult.style.display = 'none';
+                zelleResult.textContent = '';
                 zelleTimer = setTimeout(() => {
                     zelleVerification.style.display = 'none';
-                    zelleResult.style.display = 'block';
-                    zelleResult.textContent = 'No pudimos verificar tu pago con Zelle. Por favor, comunícate con tu banco.';
+                    showZelleResult('No pudimos verificar tu pago con Zelle. Por favor, comunícate con tu banco.', 'error');
                     showToast('error', 'Pago rechazado', 'No pudimos verificar tu pago con Zelle. Comunícate con tu banco.');
                 }, 180000);
             });

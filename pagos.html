@@ -567,7 +567,7 @@
                             <p>Verificando comprobante...</p>
                             <div class="spinner"></div>
                         </div>
-                        <div id="zelle-result" style="display:none;text-align:center;margin-top:1rem;color:var(--error-color);"></div>
+                        <div id="zelle-result" class="form-error" role="alert"></div>
                     </div>
 
                     <div id="paypal-info" class="payment-info" style="display: none;">
@@ -929,7 +929,7 @@
     <!-- Overlay de validación -->
     <div class="validation-overlay" id="validation-overlay">
         <div class="validation-modal">
-            <p id="validation-message"></p>
+            <p id="validation-message" class="form-error" role="alert"></p>
             <button class="btn btn-primary" id="validation-close">Entendido</button>
         </div>
     </div>

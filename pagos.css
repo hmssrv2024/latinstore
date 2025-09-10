@@ -191,6 +191,24 @@
             margin-bottom: var(--space-md);
         }
 
+        .form-error,
+        .form-success {
+            font-family: var(--font-main);
+            font-size: 1.4rem;
+            line-height: 1.5;
+            margin-top: var(--space-sm);
+            text-align: center;
+            display: none;
+        }
+
+        .form-error {
+            color: var(--error-color);
+        }
+
+        .form-success {
+            color: var(--success-color);
+        }
+
         /* Estilos para la cabecera de la página de pago */
         .checkout-header {
             text-align: center;
