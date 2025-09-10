@@ -39,19 +39,19 @@
         :root {
             --primary-color: #0071e3;
             --primary-hover: #0062c3;
-            --primary-light: #e9f3ff;
+            --primary-light: #f8fcff;
             --primary-gradient: linear-gradient(135deg, #0071e3, #4e9fff);
             --secondary-color: #1d1d1f;
-            --accent-color: #86868b;
-            --success-color: #4cd964;
-            --success-gradient: linear-gradient(135deg, #4cd964, #34c759);
-            --error-color: #ff3b30;
-            --warning-color: #ffcc00;
+            --accent-color: #6e6e6e;
+            --success-color: #2d823c;
+            --success-gradient: linear-gradient(135deg, #2d823c, #1f7735);
+            --error-color: #cc2f26;
+            --warning-color: #7f6600;
             --background-color: #ffffff;
             --background-alt: #f5f7fa;
             --background-gradient: linear-gradient(135deg, #f5f7fa, #ffffff);
-            --light-gray: #f5f5f7;
-            --medium-gray: #d2d2d7;
+            --light-gray: #fbfbfd;
+            --medium-gray: #717171;
             --border-color: #d2d2d7;
             --white: #ffffff;
             --black: #000000;
@@ -79,6 +79,21 @@
             --space-sm: 1rem;
             --space-md: 2rem;
         }
+
+        /*
+         Contrast ratios (WCAG AA >=4.5:1)
+         --primary-color (#0071e3) on --white (#ffffff): 4.70:1
+         --primary-color (#0071e3) on --light-gray (#fbfbfd): 4.54:1
+         --primary-color (#0071e3) on --primary-light (#f8fcff): 4.55:1
+         --accent-color (#6e6e6e) on --white (#ffffff): 5.10:1
+         --accent-color (#6e6e6e) on --light-gray (#fbfbfd): 4.93:1
+         --accent-color (#6e6e6e) on --primary-light (#f8fcff): 4.94:1
+         --white (#ffffff) on --primary-color (#0071e3): 4.70:1
+         --white (#ffffff) on --primary-hover (#0062c3): 5.94:1
+         --white (#ffffff) on --error-color (#cc2f26): 5.25:1
+         --white (#ffffff) on --success-color (#2d823c): 4.81:1
+         --warning-color (#7f6600) on --white (#ffffff): 5.52:1
+        */
 
         html {
             scroll-behavior: smooth;
@@ -879,7 +894,7 @@
 
         .quantity-btn:hover {
             background-color: var(--medium-gray);
-            color: var(--secondary-color);
+            color: var(--white);
         }
 
         .quantity-input {
@@ -1325,6 +1340,7 @@
 
         .btn-secondary:hover {
             background-color: var(--medium-gray);
+            color: var(--white);
             transform: translateY(-0.3rem);
             box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
         }
@@ -2805,6 +2821,7 @@
 
         .whatsapp-btn:hover {
             background-color: var(--medium-gray);
+            color: var(--white);
             transform: translateY(-0.3rem);
         }
 
@@ -2998,7 +3015,7 @@
 
         .toast-close:hover {
             background-color: var(--medium-gray);
-            color: var(--secondary-color);
+            color: var(--white);
         }
 
         /* Media Queries para Responsive */
