@@ -925,6 +925,7 @@
                             name: addBtn.getAttribute('data-name'),
                             price: parseFloat(addBtn.getAttribute('data-price')),
                             brand: addBtn.getAttribute('data-brand'),
+                            image: product.image,
                             quantity: quantity,
                             category: category,
                             specs: product.specs || [],
@@ -951,10 +952,13 @@
                 if (existingProduct) {
                     // Actualizar cantidad
                     existingProduct.quantity += product.quantity;
+                    if (!existingProduct.image && product.image) {
+                        existingProduct.image = product.image;
+                    }
                 } else {
                     // Añadir nuevo producto
                     product.selected = true;
-                    cart.push(product);
+                    cart.push({ ...product });
                 }
                 
                 // Actualizar la interfaz del carrito
