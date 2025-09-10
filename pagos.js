@@ -4,6 +4,9 @@
             const paymentDateEl = document.getElementById('payment-date');
             const preparingDateRangeEl = document.getElementById('preparing-date-range');
             const shippingStartDateEl = document.getElementById('shipping-start-date');
+            const expressDateEl = document.getElementById('express-date');
+            const standardDateEl = document.getElementById('standard-date');
+            const freeDateEl = document.getElementById('free-date');
             const orderDate = new Date();
 
             const formatDate = (date) => {
@@ -36,6 +39,16 @@
                 const shipStart = new Date(orderDate);
                 shipStart.setDate(orderDate.getDate() + 1);
                 shippingStartDateEl.textContent = formatDate(shipStart);
+            }
+
+            if (expressDateEl) {
+                expressDateEl.textContent = formatDate(calculateDeliveryDate('express'));
+            }
+            if (standardDateEl) {
+                standardDateEl.textContent = formatDate(calculateDeliveryDate('standard'));
+            }
+            if (freeDateEl) {
+                freeDateEl.textContent = formatDate(calculateDeliveryDate('free'));
             }
 
             // Elementos de la interfaz
