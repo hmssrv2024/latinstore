@@ -3652,3 +3652,51 @@
     font-weight: bold;
     text-align: right;
 }
+
+@media (max-width: 600px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: var(--space-sm);
+    }
+
+    .top-right {
+        flex-direction: column;
+        width: 100%;
+        margin-top: var(--space-sm);
+        gap: var(--space-sm);
+    }
+
+    .top-bar .top-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .checkout-steps {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-sm);
+    }
+
+    .checkout-step {
+        width: 100%;
+    }
+
+    .form-section,
+    .delivery-form-section,
+    .checkout-section {
+        width: 100%;
+        margin-bottom: var(--space-md);
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: var(--space-sm);
+        display: flex;
+    }
+
+    .delivery-form {
+        padding: var(--space-sm);
+    }
+}
