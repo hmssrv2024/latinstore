@@ -28,6 +28,8 @@
       --shadow-soft:0 6px 20px rgba(17,24,39,.06);
     }
     *{box-sizing:border-box}
+    html{font-size:80%}
+    @media(min-width:768px){html{font-size:100%}}
     html,body{min-height:100%;overflow-x:hidden}
     body{
       margin:0;
@@ -97,6 +99,10 @@
     .content-head{
       display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);
       padding:14px 16px
+    }
+    @media(max-width:480px){
+      .appbar-inner{flex-wrap:wrap}
+      .toolbar{width:100%;justify-content:space-between}
     }
     .content-head h1{font-size:18px;margin:0}
     .content-body{padding:16px}
@@ -218,6 +224,7 @@
         <h1 id="viewTitle">Inicio</h1>
         <div class="toolbar">
           <button class="btn ghost" id="refreshBtn">Actualizar</button>
+          <button class="btn ghost" id="exportBtn">Exportar datos</button>
         </div>
       </div>
       <div class="content-body" id="viewContent">
@@ -303,6 +310,29 @@
       try{ return JSON.parse(localStorage.getItem(key)) ?? fallback; }catch(e){ return fallback; }
     }
 
+    function loadAllData(){
+      return {
+        user: getLS('lpUser',{}),
+        orders: getLS('lpOrders',[]),
+        invoices: getLS('lpInvoices',[]),
+        claims: getLS('lpClaims',[]),
+        policies: getLS('lpPolicies',[]),
+        payments: getLS('lpPayments',[]),
+        addresses: getLS('lpAddresses',[])
+      };
+    }
+
+    function exportData(){
+      const dataStr = JSON.stringify(state.data, null, 2);
+      const blob = new Blob([dataStr], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mi-cuenta-datos.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
     /** Seed de ejemplo (solo la primera vez) **/
     function seedIfEmpty(){
       if(!localStorage.getItem('lpUser')) saveLS('lpUser', {});
@@ -318,6 +348,7 @@
     const state = {
       currentView: 'dashboard',
       searchQuery: '',
+      data: loadAllData(),
     };
 
     /** Render raíz **/
@@ -344,6 +375,7 @@
     }
 
     function render(){
+      state.data = loadAllData();
       const root = $('#viewContent');
       root.innerHTML = '';
       const q = state.searchQuery.toLowerCase().trim();
@@ -1086,6 +1118,7 @@
         render();
       });
       $('#refreshBtn').addEventListener('click', ()=> render());
+      $('#exportBtn').addEventListener('click', exportData);
       $('#logoutBtn').addEventListener('click', ()=> {
         alert('Sesión cerrada (demo).');
         // Limpieza mínima manteniendo datos: simular logout redirigiendo
