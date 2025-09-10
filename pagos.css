@@ -1444,17 +1444,21 @@
         /* Opciones de envío mejoradas */
         .shipping-options {
             margin-bottom: 4rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
         }
 
         .shipping-option {
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 2rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 1rem;
+            margin-bottom: 0;
             cursor: pointer;
             transition: var(--transition);
             background-color: var(--white);
@@ -1462,6 +1466,7 @@
             position: relative;
             overflow: hidden;
             text-align: center;
+            width: 22rem;
         }
 
         .recommended-badge {
@@ -1609,15 +1614,23 @@
         }
 
         /* Seguro del equipo mejorado */
+        .insurance-options {
+            margin-bottom: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
         .insurance-option {
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2rem;
+            gap: 1rem;
             cursor: pointer;
             transition: var(--transition);
             background-color: var(--white);
@@ -1625,6 +1638,7 @@
             position: relative;
             overflow: hidden;
             text-align: center;
+            width: 22rem;
         }
 
         .insurance-option::before {
