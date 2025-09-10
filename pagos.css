@@ -155,6 +155,7 @@
         .top-link.disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         .cart-indicator {
@@ -3703,21 +3704,21 @@
     }
 
     .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
         height: auto;
         padding: var(--space-sm);
     }
 
     .top-right {
-        flex-direction: column;
-        width: 100%;
-        margin-top: var(--space-sm);
+        flex-direction: row;
+        width: auto;
+        margin-top: 0;
         gap: var(--space-sm);
     }
 
     .top-bar .top-link {
-        width: 100%;
+        width: auto;
         justify-content: center;
     }
 
