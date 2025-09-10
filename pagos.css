@@ -1492,7 +1492,7 @@
             position: absolute;
             top: 0.8rem;
             right: 0.8rem;
-            background: var(--secondary-color);
+            background: var(--success-color);
             color: var(--white);
             padding: 0.2rem 0.6rem;
             border-radius: var(--radius-sm);
