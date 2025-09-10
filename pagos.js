@@ -282,17 +282,25 @@
 
             // Variables para almacenar el estado del pedido
             let cart = [];
-            try {
-                const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
-                if (Array.isArray(storedCart)) {
-                    cart = storedCart.map(item => ({
-                        ...item,
-                        selected: item.selected !== false
-                    }));
+
+            function refreshCartFromStorage() {
+                try {
+                    const storedCart = JSON.parse(localStorage.getItem('latinphone_cart')) || [];
+                    if (Array.isArray(storedCart)) {
+                        cart = storedCart.map(item => ({
+                            ...item,
+                            selected: item.selected !== false
+                        }));
+                    } else {
+                        cart = [];
+                    }
+                } catch (err) {
+                    console.error('Error al cargar el carrito desde localStorage', err);
+                    cart = [];
                 }
-            } catch (err) {
-                console.error('Error al cargar el carrito desde localStorage', err);
             }
+
+            refreshCartFromStorage();
             let selectedCountry = '';
             let selectedCategory = '';
             let selectedBrand = '';
@@ -955,6 +963,7 @@
 
             // Función para añadir al carrito
             function addToCart(product) {
+                refreshCartFromStorage();
                 // Comprobar si el producto ya está en el carrito
                 const existingProduct = cart.find(item => item.id === product.id && item.color === product.color);
 
@@ -969,18 +978,30 @@
                     product.selected = true;
                     cart.push({ ...product });
                 }
-                
+
+                try {
+                    localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                } catch (err) {
+                    console.error('Error al guardar el carrito', err);
+                }
+
                 // Actualizar la interfaz del carrito
                 updateCart();
             }
 
             // Función para eliminar del carrito
             function removeFromCart(productId, color) {
+                refreshCartFromStorage();
                 const index = cart.findIndex(item => item.id === productId && item.color === color);
 
                 if (index !== -1) {
                     const removedItem = cart[index];
                     cart.splice(index, 1);
+                    try {
+                        localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                    } catch (err) {
+                        console.error('Error al guardar el carrito', err);
+                    }
                     updateCart();
 
                     // Notificar al usuario
@@ -1001,6 +1022,7 @@
 
             // Función para actualizar la interfaz del carrito
             function updateCart() {
+                refreshCartFromStorage();
                 updateCartCount();
                 if (cart.length === 0) {
                     // Carrito vacío
@@ -1083,6 +1105,11 @@
 
                         if (item && item.quantity > 1) {
                             item.quantity -= 1;
+                            try {
+                                localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                            } catch (err) {
+                                console.error('Error al guardar el carrito', err);
+                            }
                             updateCart();
                         }
                     });
@@ -1096,6 +1123,11 @@
 
                         if (item) {
                             item.quantity += 1;
+                            try {
+                                localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                            } catch (err) {
+                                console.error('Error al guardar el carrito', err);
+                            }
                             updateCart();
                         }
                     });
@@ -1110,6 +1142,11 @@
 
                         if (item && newQuantity > 0) {
                             item.quantity = newQuantity;
+                            try {
+                                localStorage.setItem('latinphone_cart', JSON.stringify(cart));
+                            } catch (err) {
+                                console.error('Error al guardar el carrito', err);
+                            }
                             updateCart();
                         } else {
                             input.value = 1;
@@ -1698,6 +1735,7 @@
 
             // Función para continuar después del overlay de nacionalización
             function continueAfterNationalization() {
+                refreshCartFromStorage();
                 nationalizationOverlay.classList.remove('active');
 
                 cart = cart.filter(item => !item.selected);
