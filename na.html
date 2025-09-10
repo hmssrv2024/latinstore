@@ -105,9 +105,12 @@
             <div class="badge" id="orderBadge"></div>
           </div>
         </div>
-        <div class="carrier">
-          <span class="help">Transporte</span>
-          <span id="carrierName"></span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="carrier">
+            <span class="help">Transporte</span>
+            <span id="carrierName"></span>
+          </div>
+          <button id="backBtn" class="btn muted">Volver</button>
         </div>
       </header>
 
@@ -358,6 +361,15 @@
       s.style.animationDelay = (Math.random()*0.6)+'s';
       confettiBox.appendChild(s);
     }
+  }
+
+  // Botón Volver a Mi Cuenta
+  const backBtn = document.getElementById('backBtn');
+  if(backBtn){
+    backBtn.addEventListener('click', () => {
+      localStorage.setItem('lpAccountBypass', 'true');
+      window.location.href = 'micuenta.html';
+    });
   }
 
   // Aviso de nacionalización con conteo regresivo
