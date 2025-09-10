@@ -907,7 +907,7 @@
                         { id: 'samsungtabs11ultra', name: 'Samsung Tab S11 Ultra X916 16/512GB', price: 1200, specs: ['16GB RAM', '512GB', 'Pantalla 14.6"'] }
                     ],
                     xiaomi: [
-                        { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'] }
+                        { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'], image: 'https://i02.appmifile.com/253_operator_sg/28/06/2023/ce7011d9e5c3e12a3818a2d911c0fb16.png?f=webp' }
                     ]
                 },
                 smartwatches: {
@@ -917,13 +917,13 @@
                         { id: 'applewatchse3', name: 'Watch SE 3', price: 280, specs: ['Pantalla 44mm', 'GPS', 'Detección de caídas'], image: 'https://www.apple.com/v/apple-watch-series-11/a/images/overview/contrast/contrast_se3__b7o04qifck2q_medium.png' }
                     ],
                     samsung: [
-                        { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
-                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'] },
-                        { id: 'samsungwatch8', name: 'Samsung Watch 8 44MM', price: 260, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'] },
-                        { id: 'samsungwatch8classic', name: 'Samsung Watch 8 Classic 47MM', price: 310, specs: ['Pantalla 47mm', 'Acero inoxidable', 'GPS + LTE'] }
+                        { id: 'samsungwatch7', name: 'Samsung Watch 7 44MM', price: 230, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'], image: 'https://media.ldlc.com/r705/ld/products/00/06/15/17/LD0006151746.jpg' },
+                        { id: 'samsungwatchultra', name: 'Samsung Watch Ultra 47MM', price: 390, specs: ['Pantalla 47mm', 'Titanio', 'GPS + LTE'], image: 'https://media.ldlc.com/r705/ld/products/00/06/15/17/LD0006151767.jpg' },
+                        { id: 'samsungwatch8', name: 'Samsung Watch 8 44MM', price: 260, specs: ['Pantalla 44mm', 'Wear OS', 'BioActive Sensor'], image: 'https://images.samsung.com/es/galaxy-watch8/feature/galaxy-watch8-design-colors-silver-perspective.jpg?imbypass=true' },
+                        { id: 'samsungwatch8classic', name: 'Samsung Watch 8 Classic 47MM', price: 310, specs: ['Pantalla 47mm', 'Acero inoxidable', 'GPS + LTE'], image: 'https://images.samsung.com/es/galaxy-watch8/feature/galaxy-watch8-design-colors-silver-perspective.jpg?imbypass=true' }
                     ],
                     xiaomi: [
-                        { id: 'xiaomiwatch4', name: 'Xiaomi Watch 4', price: 99, specs: ['Pantalla AMOLED', 'Wear OS', '30 días batería'] }
+                        { id: 'xiaomiwatch4', name: 'Xiaomi Watch 4', price: 99, specs: ['Pantalla AMOLED', 'Wear OS', '30 días batería'], image: 'https://www.powerplanetonline.com/cdnassets/xiaomi_redmi_watch_4_plata_001_l.jpg' }
                     ]
                 },
                 accesorios: {
@@ -933,7 +933,7 @@
                         { id: 'airtag4pack', name: 'Airtag 4 Pack', price: 99, specs: ['Localización precisa', 'Batería reemplazable', 'Resistente al agua'], image: 'https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/airtag-4pack-select-202104?wid=940&hei=1112&fmt=png-alpha&.v=QVI2eUgvdU1qT1VRdEZUOXVUVHgrZGRuSU1iZUhmQXgzaVlYalNFUEhFVmZhS1VCT1k0VG5wendIdURyT0d4ZVlPV2JwRFRsaGFkTWtXWUxZemFmbFNleDhnU2svblVGV2pwSXQ4RWM2bTA' }
                     ],
                     samsung: [
-                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'] }
+                        { id: 'samsungbuds3', name: 'Samsung Buds 3', price: 130, specs: ['Cancelación de ruido', 'Audio 360', 'Resistentes al agua'], image: 'https://media.ldlc.com/r705/ld/products/00/06/15/16/LD0006151687.jpg' }
                     ],
                     xiaomi: [
                         { id: 'xiaomibuds6pro', name: 'Xiaomi Buds 6 Pro', price: 40, specs: ['Bluetooth 5.3', 'Cancelación activa de ruido', 'Resistentes al agua'], image: 'https://thumb.pccomponentes.com/w-530-530/articles/1086/10866668/1452-xiaomi-redmi-buds-6-pro-auriculares-bluetooth-con-cancelacion-activa-de-ruido-espacio-negro.jpg' },
