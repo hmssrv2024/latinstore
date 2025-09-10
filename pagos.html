@@ -13,65 +13,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="pagos.css">
-
-    <style>
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 100%;
-            background: #fff;
-            color: #000;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.3);
-            z-index: 2000;
-            padding: 1rem;
-            overflow-y: auto;
-        }
-        .cart-modal.show { display: block; }
-        .cart-modal .close-cart {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-        }
-        .cart-item {
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-        .cart-item .item-name { flex: 1; }
-        .quantity-control {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .quantity-control button {
-            padding: 0 0.4rem;
-        }
-        .cart-controls {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        .cart-footer {
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .cart-total {
-            font-weight: bold;
-            text-align: right;
-        }
-    </style>
     
     <!-- Lottie Animation -->
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
@@ -92,19 +33,20 @@
         </div>
     </nav>
     <div id="cart-modal" class="cart-modal">
-        <div class="cart-modal-content">
+        <div class="cart-overlay"></div>
+        <aside class="cart-sidebar">
             <button class="close-cart" id="close-cart">&times;</button>
-            <h3>Tu carrito</h3>
+            <h3 class="cart-title">Tu carrito</h3>
             <div class="cart-controls">
                 <input type="checkbox" id="select-all-cart">
                 <label for="select-all-cart">Seleccionar todo</label>
             </div>
-            <ul id="cart-items-list"></ul>
+            <ul id="cart-items-list" class="cart-items"></ul>
             <div class="cart-footer">
                 <div class="cart-total">Total: $<span id="cart-total">0.00</span></div>
                 <button class="btn btn-primary" id="go-to-checkout">Ir a pagar</button>
             </div>
-        </div>
+        </aside>
     </div>
     <div class="checkout-container">
         <!-- Cabecera de la pasarela de pago -->
@@ -1115,6 +1057,7 @@
                 }
 
                 loadCart();
+                window.addEventListener('cart-updated', loadCart);
 
                 if (cartLink) {
                     cartLink.addEventListener('click', (e) => {
@@ -1126,6 +1069,11 @@
 
                 if (closeCartBtn) {
                     closeCartBtn.addEventListener('click', () => cartModal.classList.remove('show'));
+                }
+
+                const cartOverlay = document.querySelector('#cart-modal .cart-overlay');
+                if (cartOverlay) {
+                    cartOverlay.addEventListener('click', () => cartModal.classList.remove('show'));
                 }
 
                 const goToCheckoutBtn = document.getElementById('go-to-checkout');
