@@ -165,8 +165,8 @@
                 zelleResult.style.display = 'block';
             };
             const paypalInfo = document.getElementById('paypal-info');
-            const whatsappBtn = document.getElementById('whatsapp-btn');
             const whatsappSupport = document.getElementById('whatsapp-support');
+            let generatedWhatsappUrl = '';
             const addMoreOverlay = document.getElementById('add-more-overlay');
             const addMoreBtn = document.getElementById('add-more-btn');
             const continueCheckoutBtn = document.getElementById('continue-checkout-btn');
@@ -2021,14 +2021,17 @@
                 whatsappMessage += `Estado: ${stateInput.value}\n`;
                 whatsappMessage += `Ciudad: ${cityInput.value}\n`;
                 whatsappMessage += `País: ${selectedCountry ? selectedCountry.toUpperCase() : ''}\n`;
-                whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n\n`;
+                whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n`;
+                whatsappMessage += `Fecha estimada de entrega: ${deliveryDateEnd.textContent}\n\n`;
 
                 whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
 
                 const encodedMessage = encodeURIComponent(whatsappMessage);
                 const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
-                whatsappBtn.href = whatsappUrl;
-                whatsappSupport.href = whatsappUrl;
+                generatedWhatsappUrl = whatsappUrl;
+                if (whatsappSupport) {
+                    whatsappSupport.href = whatsappUrl;
+                }
                 // Guardar inmediatamente los datos de la orden para
                 // que la información persista aunque el usuario
                 // recargue o cierre la página durante el proceso.
@@ -2047,14 +2050,26 @@
                     accountLink.style.display = 'inline-block';
                 }
 
-                setTimeout(() => {
-                    loadingOverlay.classList.remove('active');
-                    nationalizationOverlay.classList.add('active');
-                }, 3000);
-            }
+            setTimeout(() => {
+                loadingOverlay.classList.remove('active');
+                nationalizationOverlay.classList.add('active');
+            }, 3000);
+        }
 
-            function saveOrderData() {
-                const today = new Date().toISOString().slice(0,10);
+        function saveDeliveryInfo() {
+            const info = {
+                gift: selectedGift ? selectedGift.name : null,
+                shipping: selectedShipping ? selectedShipping.method : null,
+                company: shippingCompanyInput ? shippingCompanyInput.value : '',
+                insurance: selectedInsurance.selected ? selectedInsurance.provider : 'sin seguro',
+                arrival: deliveryDateEnd.textContent,
+                tax: taxAmountBs.textContent
+            };
+            localStorage.setItem('lpDeliveryInfo', JSON.stringify(info));
+        }
+
+        function saveOrderData() {
+            const today = new Date().toISOString().slice(0,10);
                 const eta = (() => {
                     const end = new Date();
                     switch (selectedShipping.method) {
@@ -2145,6 +2160,10 @@
             function continueAfterNationalization() {
                 refreshCartFromStorage();
                 nationalizationOverlay.classList.remove('active');
+
+                if (generatedWhatsappUrl) {
+                    window.open(generatedWhatsappUrl, '_blank');
+                }
 
                 cart = cart.filter(item => !item.selected);
                 updateCartCount();
@@ -2483,7 +2502,7 @@
                     summaryOverlayInsurance.textContent = selectedInsurance.selected ? `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})` : 'Seguro: sin seguro';
                 }
                 if (summaryOverlayDelivery) {
-                    summaryOverlayDelivery.textContent = `Tiempo de entrega: ${deliveryDateStart2.textContent} - ${deliveryDateEnd.textContent}`;
+                    summaryOverlayDelivery.textContent = `Fecha estimada de llegada: ${deliveryDateEnd.textContent}`;
                 }
                 if (summaryOverlayTax) {
                     summaryOverlayTax.textContent = `Tasa de nacionalización: ${taxAmountBs.textContent} Bs`;
@@ -2518,6 +2537,7 @@
             if (summaryAcceptBtn) {
                 summaryAcceptBtn.addEventListener('click', () => {
                     summaryOverlay.classList.remove('active');
+                    saveDeliveryInfo();
                     goToStep(3);
                     updatePaymentSummary();
                 });
