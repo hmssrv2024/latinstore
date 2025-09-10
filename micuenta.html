@@ -28,8 +28,8 @@
       --shadow-soft:0 6px 20px rgba(17,24,39,.06);
     }
     *{box-sizing:border-box}
-    html{font-size:80%}
-    @media(min-width:768px){html{font-size:100%}}
+    html{font-size:68%}
+    @media(min-width:768px){html{font-size:85%}}
     html,body{min-height:100%;overflow-x:hidden}
     body{
       margin:0;
@@ -278,6 +278,21 @@
         <button class="close-x" data-close-modal="modalTicket" aria-label="Cerrar">×</button>
       </div>
       <div class="panel-body" id="modalTicketBody"></div>
+    </div>
+  </section>
+
+  <section class="modal" id="modalMsg" aria-modal="true" role="alertdialog">
+    <div class="panel" style="max-width:320px">
+      <div class="panel-head">
+        <strong>Mensaje</strong>
+        <button class="close-x" data-close-modal="modalMsg" aria-label="Cerrar">×</button>
+      </div>
+      <div class="panel-body">
+        <p id="modalMsgText"></p>
+        <div style="display:flex;justify-content:flex-end;margin-top:14px">
+          <button class="btn" id="modalMsgOk">Aceptar</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -650,7 +665,7 @@
           ]
         };
         const all = getLS('lpClaims', []); all.unshift(n); saveLS('lpClaims', all);
-        alert('Ticket creado: ' + n.id);
+        showMessage('Ticket creado: ' + n.id);
         render();
       });
     }
@@ -730,7 +745,7 @@
         let list = getLS('lpPayments', []);
         if(pm.default) list = list.map(x=>({...x, default:false}));
         list.unshift(pm); saveLS('lpPayments', list);
-        alert('Método guardado.');
+        showMessage('Método guardado.');
         render();
       });
     }
@@ -792,7 +807,7 @@
         let list = getLS('lpAddresses', []);
         if(n.default) list = list.map(x=>({...x, default:false}));
         list.unshift(n); saveLS('lpAddresses', list);
-        alert('Dirección guardada.');
+        showMessage('Dirección guardada.');
         render();
       });
     }
@@ -834,7 +849,7 @@
         };
         saveLS('lpUser', n);
         $('#userName').textContent = n.name || 'Cliente';
-        alert('Perfil actualizado.');
+        showMessage('Perfil actualizado.');
       });
     }
 
@@ -857,15 +872,15 @@
             <h3>Sesiones y dispositivos</h3>
             <div>Último acceso: <strong>${new Date().toLocaleString()}</strong></div>
             <div class="hr"></div>
-            <button class="btn warn" onclick="alert('Se cerrarán las demás sesiones (demo).')">Cerrar sesiones en otros dispositivos</button>
+            <button class="btn warn" onclick="showMessage('Se cerrarán las demás sesiones (demo).')">Cerrar sesiones en otros dispositivos</button>
           </div>
         </div>
       `);
       $('#pwdForm').addEventListener('submit', e=>{
         e.preventDefault();
         const fd = new FormData(e.target);
-        if(fd.get('new')!==fd.get('new2')) return alert('Las contraseñas no coinciden.');
-        alert('Contraseña actualizada (demo).');
+        if(fd.get('new')!==fd.get('new2')) return showMessage('Las contraseñas no coinciden.');
+        showMessage('Contraseña actualizada (demo).');
         e.target.reset();
       });
     }
@@ -906,7 +921,7 @@
 
     function copyToClipboard(text){
       if(!text) return;
-      navigator.clipboard.writeText(text).then(()=> alert('Copiado: ' + text));
+      navigator.clipboard.writeText(text).then(()=> showMessage('Copiado: ' + text));
     }
 
     /** Acciones (Pedidos, Facturas, Tickets, etc.) **/
@@ -1004,7 +1019,7 @@
     function openInvoiceByOrder(orderId){
       const inv = getLS('lpInvoices', []).find(i=>i.orderId===orderId);
       if(inv) openInvoice(inv.id);
-      else alert('No se encontró factura para este pedido.');
+      else showMessage('No se encontró factura para este pedido.');
     }
 
     function downloadInvoice(id){
@@ -1073,7 +1088,7 @@
     function closeTicket(id){
       const all = getLS('lpClaims', []).map(c=> c.id===id? {...c, status:'Cerrado'} : c);
       saveLS('lpClaims', all);
-      alert('Ticket marcado como resuelto.');
+      showMessage('Ticket marcado como resuelto.');
       openTicket(id);
     }
 
@@ -1095,12 +1110,23 @@
       saveLS('lpAddresses', list); render();
     }
     function savePrefs(){
-      alert('Preferencias guardadas (demo).');
+      showMessage('Preferencias guardadas (demo).');
     }
 
     /** Modales **/
     function openModal(id){ const m = document.getElementById(id); if(m) m.classList.add('open'); }
     function closeModal(id){ const m = document.getElementById(id); if(m) m.classList.remove('open'); }
+    function showMessage(text, onClose){
+      $('#modalMsgText').textContent = text;
+      openModal('modalMsg');
+      const ok = $('#modalMsgOk');
+      const handler = () => {
+        closeModal('modalMsg');
+        ok.removeEventListener('click', handler);
+        if(onClose) onClose();
+      };
+      ok.addEventListener('click', handler);
+    }
     $$('.modal').forEach(m=>{
       m.addEventListener('click',e=>{ if(e.target===m && m.id!=='modalLogin') m.classList.remove('open'); });
     });
@@ -1120,9 +1146,10 @@
       $('#refreshBtn').addEventListener('click', ()=> render());
       $('#exportBtn').addEventListener('click', exportData);
       $('#logoutBtn').addEventListener('click', ()=> {
-        alert('Sesión cerrada (demo).');
+        showMessage('Sesión cerrada (demo).', ()=>{
         // Limpieza mínima manteniendo datos: simular logout redirigiendo
         window.location.href = './index.html';
+        });
       });
     }
 
