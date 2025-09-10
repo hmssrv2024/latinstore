@@ -130,6 +130,15 @@
             const shippingOptionsContainer = document.querySelector('.shipping-options');
             const shippingCompanyContainer = document.getElementById('shipping-company-container');
             const downloadInvoiceBtn = document.getElementById('download-invoice');
+            const summaryOverlay = document.getElementById('summary-overlay');
+            const summaryOverlayGift = document.getElementById('summary-overlay-gift');
+            const summaryOverlayShipping = document.getElementById('summary-overlay-shipping');
+            const summaryOverlayCompany = document.getElementById('summary-overlay-company');
+            const summaryOverlayInsurance = document.getElementById('summary-overlay-insurance');
+            const summaryOverlayDelivery = document.getElementById('summary-overlay-delivery');
+            const summaryOverlayTax = document.getElementById('summary-overlay-tax');
+            const summaryEditBtn = document.getElementById('summary-edit');
+            const summaryAcceptBtn = document.getElementById('summary-accept');
             const deliveryDateStart = document.getElementById('delivery-date-start');
             const deliveryDateStart2 = document.getElementById('delivery-date-start-2');
             const deliveryDateEnd = document.getElementById('delivery-date-end');
@@ -2004,8 +2013,36 @@
                     return;
                 }
 
-                goToStep(3);
-                updatePaymentSummary();
+                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                const emptyInput = requiredInputs.find(field => !field.value.trim());
+                if (emptyInput) {
+                    showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
+                    emptyInput.focus();
+                    return;
+                }
+
+                if (summaryOverlayGift) {
+                    summaryOverlayGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
+                }
+                if (summaryOverlayShipping) {
+                    summaryOverlayShipping.textContent = `Envío: ${shippingMethod.textContent} ($${selectedShipping.price.toFixed(2)})`;
+                }
+                if (summaryOverlayCompany) {
+                    summaryOverlayCompany.textContent = `Empresa de transporte: ${shippingCompanyInput.value}`;
+                }
+                if (summaryOverlayInsurance) {
+                    summaryOverlayInsurance.textContent = selectedInsurance.selected ? `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})` : 'Seguro: sin seguro';
+                }
+                if (summaryOverlayDelivery) {
+                    summaryOverlayDelivery.textContent = `Tiempo de entrega: ${deliveryDateStart2.textContent} - ${deliveryDateEnd.textContent}`;
+                }
+                if (summaryOverlayTax) {
+                    summaryOverlayTax.textContent = `Tasa de nacionalización: ${taxAmountBs.textContent} Bs`;
+                }
+
+                if (summaryOverlay) {
+                    summaryOverlay.classList.add('active');
+                }
             });
 
             backToShippingBtn.addEventListener('click', () => {
@@ -2015,6 +2052,28 @@
             processPaymentBtn.addEventListener('click', () => {
                 processPayment();
             });
+
+            if (summaryEditBtn) {
+                summaryEditBtn.addEventListener('click', () => {
+                    summaryOverlay.classList.remove('active');
+                });
+            }
+
+            if (summaryAcceptBtn) {
+                summaryAcceptBtn.addEventListener('click', () => {
+                    summaryOverlay.classList.remove('active');
+                    goToStep(3);
+                    updatePaymentSummary();
+                });
+            }
+
+            if (summaryOverlay) {
+                summaryOverlay.addEventListener('click', (e) => {
+                    if (e.target === summaryOverlay) {
+                        summaryOverlay.classList.remove('active');
+                    }
+                });
+            }
 
             // 4. Opciones de envío
             function applyShippingSelection(option) {
