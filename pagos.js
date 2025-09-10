@@ -184,6 +184,8 @@
             const validationMessage = document.getElementById('validation-message');
             const validationClose = document.getElementById('validation-close');
             const infoSavedOverlay = document.getElementById('info-saved-overlay');
+            const sendInfoOverlay = document.getElementById('send-info-overlay');
+            const sendInfoAccept = document.getElementById('send-info-accept');
             let zelleTimer;
 
             const locationOverlay = document.getElementById('location-overlay');
@@ -2253,10 +2255,10 @@
                 // Notificar al usuario
                 showToast('success', '¡Compra exitosa!', 'Tu pago ha sido procesado correctamente.', 8000);
 
-                if (generatedWhatsappUrl) {
+                if (generatedWhatsappUrl && sendInfoOverlay) {
                     setTimeout(() => {
-                        window.open(generatedWhatsappUrl, '_blank');
-                    }, 500);
+                        sendInfoOverlay.classList.add('active');
+                    }, 30000);
                 }
             }
 
@@ -2671,6 +2673,15 @@
                 freeShippingCancel.addEventListener('click', () => {
                     freeShippingOverlay.classList.remove('active');
                     pendingShippingOption = null;
+                });
+            }
+
+            if (sendInfoOverlay && sendInfoAccept) {
+                sendInfoAccept.addEventListener('click', () => {
+                    sendInfoOverlay.classList.remove('active');
+                    if (generatedWhatsappUrl) {
+                        window.open(generatedWhatsappUrl, '_blank');
+                    }
                 });
             }
 
