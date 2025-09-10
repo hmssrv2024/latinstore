@@ -509,6 +509,13 @@
 
             if (locationConfirm) {
                 locationConfirm.addEventListener('click', () => {
+                    // Evitar que se borren los campos cuando no se ha
+                    // seleccionado una ubicación válida
+                    if (!locationStateSelect.value || !locationCitySelect.value) {
+                        showValidationOverlay('Por favor, selecciona un estado y una ciudad.');
+                        return;
+                    }
+
                     stateInput.value = locationStateSelect.value;
                     cityInput.value = locationCitySelect.value;
                     locationOverlay.classList.remove('active');
