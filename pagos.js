@@ -2454,13 +2454,13 @@
                     return;
                 }
 
-                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
-                const emptyInput = requiredInputs.find(field => !field.value.trim());
-                if (emptyInput) {
-                    showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
-                    emptyInput.focus();
-                    return;
-                }
+                // const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                // const emptyInput = requiredInputs.find(field => !field.value.trim());
+                // if (emptyInput) {
+                //     showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
+                //     emptyInput.focus();
+                //     return;
+                // }
 
                 if (summaryOverlayGift) {
                     summaryOverlayGift.textContent = selectedGift ? `Regalo: ${selectedGift.name}` : 'Regalo: ninguno';
@@ -2491,6 +2491,13 @@
             });
 
             processPaymentBtn.addEventListener('click', () => {
+                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                const emptyInput = requiredInputs.find(field => !field.value.trim());
+                if (emptyInput) {
+                    showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
+                    emptyInput.focus();
+                    return;
+                }
                 processPayment();
             });
 
