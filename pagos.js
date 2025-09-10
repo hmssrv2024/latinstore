@@ -2179,9 +2179,17 @@
                     })),
                     shipping: {
                         courier: selectedShippingCompany || '',
+                        price: shippingPrice,
                         tracking: '',
                         steps: [{ when: today + ' 00:00', text: 'Pedido confirmado' }],
                         eta: eta
+                    },
+                    totals: {
+                        subtotal,
+                        tax,
+                        shipping: shippingPrice,
+                        insurance: insurancePrice,
+                        total
                     }
                 };
 
