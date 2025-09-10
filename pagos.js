@@ -2067,7 +2067,6 @@
                     const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
                     const hasInfo = storedUser.name && storedUser.doc && storedUser.phone;
                     accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
-                    accountLink.style.display = 'inline-block';
                 }
 
             setTimeout(() => {
