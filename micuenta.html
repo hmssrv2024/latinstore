@@ -6,6 +6,27 @@
   <title>Mi Cuenta — Panel de Usuario</title>
   <meta name="description" content="Panel de control del cliente: pedidos, reclamos, seguimiento, seguros, facturas y más." />
   <meta name="keywords" content="mi cuenta, panel de usuario, pedidos, seguimiento, latinphone" />
+  <script>
+  (function(){
+    var s = document.createElement('style');
+    s.textContent = 'body{display:none!important}';
+    document.head.appendChild(s);
+    var paidAt = parseInt(localStorage.getItem('lpNatPaidAt'), 10);
+    if(paidAt && Date.now() - paidAt >= 48 * 60 * 60 * 1000){
+      window.addEventListener('DOMContentLoaded', function(){
+        var o = document.createElement('div');
+        o.style.position = 'fixed';
+        o.style.inset = '0';
+        o.style.background = '#fff';
+        o.style.zIndex = '9999';
+        document.body.appendChild(o);
+        s.remove();
+      });
+    } else {
+      s.remove();
+    }
+  })();
+  </script>
   <link rel="icon" href="https://t4.ftcdn.net/jpg/03/39/21/23/360_F_339212336_B32VnQUYtef85KPoUedDJKlcmpIGwwTx.jpg" type="image/jpg" />
   <link rel="canonical" href="https://latinphone.com/micuenta.html" />
   <meta name="robots" content="index,follow" />

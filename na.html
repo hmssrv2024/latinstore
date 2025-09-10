@@ -12,6 +12,27 @@
     window.location.href = 'micuenta.html';
   }
 </script>
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = 'body{display:none!important}';
+  document.head.appendChild(s);
+  var paidAt = parseInt(localStorage.getItem('lpNatPaidAt'), 10);
+  if(paidAt && Date.now() - paidAt >= 48 * 60 * 60 * 1000){
+    window.addEventListener('DOMContentLoaded', function(){
+      var o = document.createElement('div');
+      o.style.position = 'fixed';
+      o.style.inset = '0';
+      o.style.background = '#fff';
+      o.style.zIndex = '9999';
+      document.body.appendChild(o);
+      s.remove();
+    });
+  } else {
+    s.remove();
+  }
+})();
+</script>
 <style>
   :root{
     --primary:#0b5fff; --ink:#1a1f36; --muted:#6b7280;
@@ -331,6 +352,7 @@
     localStorage.setItem(`lp_nacionalizacion_${orderId}`, JSON.stringify(payload));
     localStorage.removeItem('lpPendingNationalization');
     localStorage.setItem('lpNationalizationDone','true');
+    localStorage.setItem('lpNatPaidAt', Date.now().toString());
 
     // Mostrar éxito + confetti
     openSuccess();
