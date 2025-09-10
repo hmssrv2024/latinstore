@@ -317,27 +317,29 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Render each product
         cart.forEach(item => {
-            // Get product details
-            const product = getProductDetails(item.id);
-            
+            const details = getProductDetails(item.id);
+            const imageSrc = item.image || details.image || 'img/product-placeholder.png';
+            const name = item.name || details.name;
+            const price = typeof item.price === 'number' && !isNaN(item.price) ? item.price : details.price;
+
             const productElement = document.createElement('div');
             productElement.className = 'product-preview';
-            
+
             productElement.innerHTML = `
-                <img src="${product.image || 'img/product-placeholder.png'}" alt="${product.name}" class="product-preview-image">
+                <img src="${imageSrc}" alt="${name}" class="product-preview-image">
                 <div class="product-preview-info">
-                    <h3 class="product-preview-name">${product.name}</h3>
-                    <div class="product-preview-price">${formatCurrency(product.price)} <span class="bolivar-conversion">${formatBolivar(product.price)}</span></div>
+                    <h3 class="product-preview-name">${name}</h3>
+                    <div class="product-preview-price">${formatCurrency(price)} <span class="bolivar-conversion">${formatBolivar(price)}</span></div>
                     <div class="product-preview-meta">
                         <span>Cantidad: ${item.quantity}</span>
                         <span>Garantía: 1 año</span>
                     </div>
                 </div>
-                ${product.video ? `<button class="btn btn-sm btn-outline product-video-btn" data-video="${product.video}" data-name="${product.name}">
+                ${details.video ? `<button class="btn btn-sm btn-outline product-video-btn" data-video="${details.video}" data-name="${name}">
                     <i class="fas fa-play-circle"></i> Ver video
                 </button>` : ''}
             `;
-            
+
             productPreviewContainer.appendChild(productElement);
         });
         
@@ -358,19 +360,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Render each product
         cart.forEach(item => {
-            const product = getProductDetails(item.id);
+            const details = getProductDetails(item.id);
+            const imageSrc = item.image || details.image || 'img/product-placeholder.png';
+            const name = item.name || details.name;
+            const price = typeof item.price === 'number' && !isNaN(item.price) ? item.price : details.price;
             const productElement = document.createElement('div');
             productElement.className = 'product-list-item';
-            
+
             productElement.innerHTML = `
-                <img src="${product.image || 'img/product-placeholder.png'}" alt="${product.name}" class="product-list-image">
+                <img src="${imageSrc}" alt="${name}" class="product-list-image">
                 <div class="product-list-info">
-                    <div class="product-list-name">${product.name}</div>
-                    <div class="product-list-price">${formatCurrency(product.price)}</div>
+                    <div class="product-list-name">${name}</div>
+                    <div class="product-list-price">${formatCurrency(price)}</div>
                     <div class="product-list-quantity">Cantidad: ${item.quantity}</div>
                 </div>
             `;
-            
+
             summaryProducts.appendChild(productElement);
         });
         
@@ -389,12 +394,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show first product in persistent summary if cart has items
         if (cart.length > 0) {
-            const firstProduct = getProductDetails(cart[0].id);
-            
-            if (persistentProductImage) persistentProductImage.src = firstProduct.image || 'img/product-placeholder.png';
-            if (persistentProductName) persistentProductName.textContent = firstProduct.name;
-            if (persistentProductPrice) persistentProductPrice.textContent = formatCurrency(firstProduct.price);
-            
+            const firstItem = cart[0];
+            const details = getProductDetails(firstItem.id);
+            const imageSrc = firstItem.image || details.image || 'img/product-placeholder.png';
+            const name = firstItem.name || details.name;
+            const price = typeof firstItem.price === 'number' && !isNaN(firstItem.price) ? firstItem.price : details.price;
+
+            if (persistentProductImage) persistentProductImage.src = imageSrc;
+            if (persistentProductName) persistentProductName.textContent = name;
+            if (persistentProductPrice) persistentProductPrice.textContent = formatCurrency(price);
+
             // Show persistent summary
             if (persistentSummary) persistentSummary.classList.add('active');
         } else {
