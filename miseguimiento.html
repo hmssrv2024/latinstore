@@ -4,6 +4,14 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <title>Tracking en Vivo — LatinPhone • LP-X9D8NVWE</title>
+<script>
+  const pendingNat = localStorage.getItem('lpPendingNationalization');
+  const natDone = localStorage.getItem('lpNationalizationDone') === 'true';
+  if(pendingNat && !natDone){
+    localStorage.setItem('lpAccountBypass','true');
+    window.location.href = 'na.html';
+  }
+</script>
 <meta name="color-scheme" content="light">
 <style>
   :root {
