@@ -227,6 +227,23 @@
   </div>
 
   <!-- Modales -->
+  <section class="modal" id="modalLogin" aria-modal="true" role="dialog">
+    <div class="panel" style="max-width:400px">
+      <div class="panel-head">
+        <strong>Verificación</strong>
+      </div>
+      <div class="panel-body">
+        <form id="loginForm">
+          <label for="cedInput">Ingresa tu número de cédula</label>
+          <input id="cedInput" class="input" required />
+          <div id="loginError" class="helper" style="display:none;color:var(--danger)"></div>
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button class="btn" type="submit">Acceder</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
   <section class="modal" id="modalOrder">
     <div class="panel">
       <div class="panel-head">
@@ -1053,7 +1070,7 @@
     function openModal(id){ const m = document.getElementById(id); if(m) m.classList.add('open'); }
     function closeModal(id){ const m = document.getElementById(id); if(m) m.classList.remove('open'); }
     $$('.modal').forEach(m=>{
-      m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('open'); });
+      m.addEventListener('click',e=>{ if(e.target===m && m.id!=='modalLogin') m.classList.remove('open'); });
     });
     $$('[data-close-modal]').forEach(btn=>{
       btn.addEventListener('click', e=> closeModal(e.currentTarget.getAttribute('data-close-modal')));
@@ -1103,13 +1120,20 @@
         window.location.href = './informacion.html';
         return;
       }
-      const ced = prompt('Ingresa tu número de cédula para acceder:');
-      if(ced !== u.doc){
-        alert('Número de cédula incorrecto');
-        window.location.href = './index.html';
-        return;
-      }
-      init();
+      const form = document.getElementById('loginForm');
+      const input = document.getElementById('cedInput');
+      const error = document.getElementById('loginError');
+      openModal('modalLogin');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        if(input.value === u.doc){
+          closeModal('modalLogin');
+          init();
+        }else{
+          error.textContent = 'Número de cédula incorrecto';
+          error.style.display = 'block';
+        }
+      });
     });
   </script>
 </body>
