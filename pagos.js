@@ -46,7 +46,6 @@
             const categoryCards = document.querySelectorAll('.category-card');
             const brandSelection = document.querySelector('.brand-selection');
             const brandGrid = document.querySelector('#brand-grid');
-            const brandLogoStrip = document.getElementById('brand-logo-strip');
             const productGrid = document.querySelector('#product-grid');
             const cartSection = document.querySelector('.cart-section');
             const stepCountry = document.getElementById('step-country');
@@ -740,10 +739,6 @@
 
             // Función para seleccionar una categoría
             function selectCategory(category) {
-                if (brandLogoStrip) {
-                    brandLogoStrip.style.display = 'none';
-                    brandLogoStrip.innerHTML = '';
-                }
                 // Eliminar la selección actual
                 categoryCards.forEach(card => {
                     card.classList.remove('selected');
@@ -801,17 +796,6 @@
                         brandCard.classList.add('selected');
                         selectedBrand = brand;
 
-                        // Mostrar logo de la marca seleccionada
-                        if (brandLogoStrip) {
-                            const logoSrc = brandLogos[brand];
-                            if (logoSrc) {
-                                brandLogoStrip.innerHTML = `<img src="${logoSrc}" alt="${brand}">`;
-                                brandLogoStrip.style.display = 'flex';
-                            } else {
-                                brandLogoStrip.style.display = 'none';
-                                brandLogoStrip.innerHTML = '';
-                            }
-                        }
 
                         // Renderizar los productos de esta marca
                         renderProducts(category, brand);
@@ -1880,29 +1864,17 @@
                 stepCountry.style.display = 'block';
                 productSelection.style.display = 'none';
                 backToCountryBtn.style.display = 'none';
-                if (brandLogoStrip) {
-                    brandLogoStrip.style.display = 'none';
-                    brandLogoStrip.innerHTML = '';
-                }
             });
 
             backToCategoryBtn.addEventListener('click', () => {
                 brandSelection.style.display = 'none';
                 stepCategory.style.display = 'block';
                 stepProduct.style.display = 'none';
-                if (brandLogoStrip) {
-                    brandLogoStrip.style.display = 'none';
-                    brandLogoStrip.innerHTML = '';
-                }
             });
 
             backToBrandBtn.addEventListener('click', () => {
                 stepProduct.style.display = 'none';
                 brandSelection.style.display = 'block';
-                if (brandLogoStrip) {
-                    brandLogoStrip.style.display = 'none';
-                    brandLogoStrip.innerHTML = '';
-                }
             });
 
             // 3. Botones de navegación entre pasos
