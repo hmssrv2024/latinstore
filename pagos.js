@@ -2621,56 +2621,64 @@
             }
 
             // Formatear entrada de número de tarjeta
-            cardNumberInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                let formattedValue = '';
-                
-                for (let i = 0; i < value.length; i++) {
-                    if (i > 0 && i % 4 === 0) {
-                        formattedValue += ' ';
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    let formattedValue = '';
+
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formattedValue += ' ';
+                        }
+                        formattedValue += value[i];
                     }
-                    formattedValue += value[i];
-                }
-                
-                e.target.value = formattedValue.substring(0, 19); // Limitar a 19 caracteres (16 dígitos + 3 espacios)
-            });
+
+                    e.target.value = formattedValue.substring(0, 19); // Limitar a 19 caracteres (16 dígitos + 3 espacios)
+                });
+            }
 
             // Formatear entrada de fecha de expiración
-            cardExpiryInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                let formattedValue = '';
-                
-                if (value.length > 0) {
-                    // Limitar el mes a valores válidos (01-12)
-                    if (value.length >= 2) {
-                        const month = parseInt(value.substring(0, 2));
-                        if (month > 12) {
-                            value = '12' + value.substring(2);
-                        } else if (month === 0) {
-                            value = '01' + value.substring(2);
+            if (cardExpiryInput) {
+                cardExpiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    let formattedValue = '';
+
+                    if (value.length > 0) {
+                        // Limitar el mes a valores válidos (01-12)
+                        if (value.length >= 2) {
+                            const month = parseInt(value.substring(0, 2));
+                            if (month > 12) {
+                                value = '12' + value.substring(2);
+                            } else if (month === 0) {
+                                value = '01' + value.substring(2);
+                            }
+                        }
+
+                        formattedValue = value.substring(0, 2);
+                        if (value.length > 2) {
+                            formattedValue += '/' + value.substring(2, 4);
                         }
                     }
-                    
-                    formattedValue = value.substring(0, 2);
-                    if (value.length > 2) {
-                        formattedValue += '/' + value.substring(2, 4);
-                    }
-                }
-                
-                e.target.value = formattedValue;
-            });
+
+                    e.target.value = formattedValue;
+                });
+            }
 
             // Limitar entrada de CVV a solo números
-            cardCvvInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
-            });
+            if (cardCvvInput) {
+                cardCvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
+                });
+            }
 
             // Limitar entrada de PIN a solo números
-            cardPinInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
-            });
+            if (cardPinInput) {
+                cardPinInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    e.target.value = value.substring(0, 4); // Limitar a 4 dígitos
+                });
+            }
 
             // Seleccionar empresa de transporte
             // Agregar eventos a los botones
