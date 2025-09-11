@@ -568,8 +568,8 @@
             <tr>
               <th>Descripción</th>
               <th class="right">Cant.</th>
-              <th class="right">Precio (USD)</th>
-              <th class="right">Importe (USD)</th>
+              <th class="right" id="priceHeader">Precio (USD)</th>
+              <th class="right" id="amountHeader">Importe (USD)</th>
             </tr>
           </thead>
           <tbody id="productsBody"></tbody>
@@ -578,9 +578,9 @@
 
         <div class="total-summary" aria-label="Resumen de totales">
           <div class="row"><span>Subtotal</span><b id="subtotalUSD"></b></div>
-          <div class="row"><span>IVA (16%)</span><b id="taxUSD"></b></div>
+          <div class="row"><span id="taxLabel">IVA (16%)</span><b id="taxUSD"></b></div>
           <div class="row"><span>Envío</span><b id="shippingUSD"></b></div>
-          <div class="row grand"><span>Total USD</span><span id="totalUSD"></span></div>
+          <div class="row grand"><span id="totalLabel">Total USD</span><span id="totalUSD"></span></div>
           <div class="row"><span class="badge" id="natLabel">Tasa de nacionalización</span><b id="natStatus" class="badge"></b></div>
           <div class="row" id="natPendingMsg" style="display:none;color:var(--danger);font-size:12px">Pendiente por pago. La compra podría ser anulada.</div>
         </div>
@@ -623,7 +623,7 @@
   <div id="alertOverlay" class="alert-overlay">
     <div class="alert-box">
       <div class="plane" aria-hidden="true">✈️</div>
-      <p>¡El equipo ya va vía Venezuela!</p>
+      <p>¡El equipo ya va en camino!</p>
       <p>La nacionalización fue pagada con éxito.</p>
       <button id="alertClose" class="alert-close">Cerrar</button>
     </div>
@@ -643,6 +643,12 @@
       mrw:{name:'MRW',logo:'https://upload.wikimedia.org/wikipedia/commons/2/26/MRW_logo.svg'},
       liberty:{name:'Liberty Express',logo:'https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg'}
     };
+
+    const country = localStorage.getItem('lpCountry');
+    const currency = country === 'colombia' ? 'COP' : 'USD';
+    const locale = country === 'colombia' ? 'es-CO' : 'es-ES';
+    const rate = country === 'colombia' ? 4000 : 1;
+    const fmt = (val) => new Intl.NumberFormat(locale,{style:'currency',currency}).format(val * rate);
 
     const orders = JSON.parse(localStorage.getItem('lpOrders')||'[]');
     if(!orders.length) return;
@@ -673,14 +679,19 @@
     const tbody = document.getElementById('productsBody');
     order.items.forEach(it=>{
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${it.name} — <i>${it.color||''}</i></td><td class="right">${it.qty}</td><td class="right">$${it.price.toFixed(2)}</td><td class="right">$${(it.price*it.qty).toFixed(2)}</td>`;
+      tr.innerHTML = `<td>${it.name} — <i>${it.color||''}</i></td><td class="right">${it.qty}</td><td class="right">${fmt(it.price)}</td><td class="right">${fmt(it.price*it.qty)}</td>`;
       tbody.appendChild(tr);
     });
 
-    document.getElementById('subtotalUSD').textContent = `$${(totals.subtotal||0).toFixed(2)}`;
-    document.getElementById('taxUSD').textContent = `$${(totals.tax||0).toFixed(2)}`;
-    document.getElementById('shippingUSD').textContent = `$${(totals.shipping||0).toFixed(2)}`;
-    document.getElementById('totalUSD').textContent = `$${((totals.total!==undefined?totals.total:order.total)||0).toFixed(2)}`;
+    document.getElementById('subtotalUSD').textContent = fmt(totals.subtotal||0);
+    document.getElementById('taxUSD').textContent = fmt(totals.tax||0);
+    document.getElementById('shippingUSD').textContent = fmt(totals.shipping||0);
+    document.getElementById('totalUSD').textContent = fmt((totals.total!==undefined?totals.total:order.total)||0);
+
+    document.getElementById('priceHeader').textContent = `Precio (${currency})`;
+    document.getElementById('amountHeader').textContent = `Importe (${currency})`;
+    document.getElementById('totalLabel').textContent = `Total ${currency}`;
+    document.getElementById('taxLabel').textContent = country === 'colombia' ? 'IVA (19%)' : 'IVA (16%)';
 
     const natStatus = document.getElementById('natStatus');
     const natPendingMsg = document.getElementById('natPendingMsg');

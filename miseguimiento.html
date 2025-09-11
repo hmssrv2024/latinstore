@@ -412,8 +412,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ====== 3. UTILIDADES (Formateo de fechas) ======
-  const fmt = (iso) => new Intl.DateTimeFormat('es-VE', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(iso));
-  const fmtDate = (iso) => new Intl.DateTimeFormat('es-VE', { dateStyle: 'long' }).format(new Date(iso));
+  const country = localStorage.getItem('lpCountry');
+  const locale = country === 'colombia' ? 'es-CO' : 'es-VE';
+  const fmt = (iso) => new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(iso));
+  const fmtDate = (iso) => new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(new Date(iso));
   
   const timeAgo = (date) => {
     const seconds = Math.floor((new Date() - date) / 1000);

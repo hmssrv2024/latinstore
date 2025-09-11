@@ -352,7 +352,11 @@
     /** Utils **/
     const $ = (sel, root=document) => root.querySelector(sel);
     const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
-    const fmt = new Intl.NumberFormat('es-ES',{style:'currency',currency:'USD'});
+    const country = localStorage.getItem('lpCountry');
+    const currency = country === 'colombia' ? 'COP' : 'USD';
+    const locale = country === 'colombia' ? 'es-CO' : 'es-ES';
+    const rate = country === 'colombia' ? 4000 : 1;
+    const fmt = (val) => new Intl.NumberFormat(locale,{style:'currency',currency}).format(val * rate);
     const todayISO = () => new Date().toISOString().slice(0,10);
     const uid = (p='ID') => p + Math.random().toString(36).slice(2,9).toUpperCase();
 
@@ -506,7 +510,7 @@
                   <tr>
                     <td>${o.id}</td>
                     <td>${o.date}</td>
-                    <td>${fmt.format(o.total)}</td>
+                    <td>${fmt(o.total)}</td>
                     <td>${badgeStatus(o.status)}</td>
                     <td><button class="btn ghost" onclick="openOrder('${o.id}')">Detalles</button></td>
                   </tr>
@@ -548,7 +552,7 @@
                 <td>${o.id}</td>
                 <td>${o.date}</td>
                 <td>${o.items.reduce((a,b)=>a+b.qty,0)}</td>
-                <td>${fmt.format(o.total)}</td>
+                <td>${fmt(o.total)}</td>
                 <td>${badgeStatus(o.status)}</td>
                 <td>${o.shipping?.tracking||'-'}</td>
                 <td>
@@ -638,7 +642,7 @@
                 <td>${i.id}</td>
                 <td>${i.orderId}</td>
                 <td>${i.date}</td>
-                <td>${fmt.format(i.total)}</td>
+                <td>${fmt(i.total)}</td>
                 <td>${i.paid===false?'<span class="badge warn">Pendiente</span>':'<span class="badge success">Pagada</span>'}</td>
                 <td>
                   <div class="toolbar">
@@ -663,7 +667,7 @@
             <h3>Abrir un reclamo</h3>
             <form id="claimForm" class="grid">
               <select class="input" name="orderId" required>
-                ${getLS('lpOrders', []).map(o=> `<option value="${o.id}">${o.id} — ${o.date} (${fmt.format(o.total)})</option>`).join('')}
+                ${getLS('lpOrders', []).map(o=> `<option value="${o.id}">${o.id} — ${o.date} (${fmt(o.total)})</option>`).join('')}
               </select>
               <input class="input" name="subject" placeholder="Asunto del reclamo" required>
               <textarea class="input" name="message" placeholder="Describe el problema" rows="4" required></textarea>
@@ -991,8 +995,8 @@
                 <td>${it.name} <span class="muted">(${it.sku})</span></td>
                 <td>${it.color || '-'}</td>
                 <td>${it.qty}</td>
-                <td>${fmt.format(it.price)}</td>
-                <td>${fmt.format(it.price*it.qty)}</td>
+                <td>${fmt(it.price)}</td>
+                <td>${fmt(it.price*it.qty)}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -1041,7 +1045,7 @@
           <div>
             <h4>Referencia</h4>
             <div>Pedido: <strong>${inv.orderId}</strong></div>
-            <div>Total: <strong>${fmt.format(inv.total)}</strong></div>
+            <div>Total: <strong>${fmt(inv.total)}</strong></div>
           </div>
         </div>
         <div class="hr"></div>
@@ -1049,8 +1053,8 @@
         <table class="table">
           <thead><tr><th>Concepto</th><th>Importe</th></tr></thead>
           <tbody>
-            ${order? order.items.map(it=>`<tr><td>${it.name}</td><td>${fmt.format(it.price*it.qty)}</td></tr>`).join('') : ''}
-            <tr><td><strong>Total</strong></td><td><strong>${fmt.format(inv.total)}</strong></td></tr>
+            ${order? order.items.map(it=>`<tr><td>${it.name}</td><td>${fmt(it.price*it.qty)}</td></tr>`).join('') : ''}
+            <tr><td><strong>Total</strong></td><td><strong>${fmt(inv.total)}</strong></td></tr>
           </tbody>
         </table>
         <div class="hr"></div>

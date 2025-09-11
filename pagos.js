@@ -1341,6 +1341,7 @@
                 // Seleccionar el nuevo país
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
+                localStorage.setItem('lpCountry', country);
                 populateShippingCompanies(country);
                 applyCountrySettings();
                 updateOrderSummary();
@@ -2445,7 +2446,8 @@
                 localStorage.setItem('lpOrders', JSON.stringify(orders));
                 localStorage.setItem('lpPendingNationalization', JSON.stringify({
                     orderId: orderNumber,
-                    amountBs: nationalizationFeeValue.toFixed(2),
+                    amount: nationalizationFeeValue.toFixed(2),
+                    currency: currencyLabel,
                     date: today,
                     eta: eta,
                     courier: selectedShippingCompany || '',
