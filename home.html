@@ -544,15 +544,15 @@
                             <div class="delivery-form-grid">
                                 <div class="form-group full-width">
                                     <label class="form-label required" for="full-name">Nombre completo</label>
-                                    <input type="text" id="full-name" class="form-input" placeholder="Nombre y apellido" required>
+                                    <input type="text" id="full-name" class="form-input" placeholder="Nombre y apellido" required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" title="Solo letras">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required" for="id-number">Cédula</label>
-                                    <input type="text" id="id-number" class="form-input" placeholder="V-12345678" required>
+                                    <input type="text" id="id-number" class="form-input" placeholder="12345678" required pattern="\d+" inputmode="numeric" title="Solo números">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required" for="phone">Teléfono</label>
-                                    <input type="tel" id="phone" class="form-input" placeholder="+58 412-1234567" required>
+                                    <input type="tel" id="phone" class="form-input" placeholder="04144272486" required pattern="\d{11}" inputmode="numeric" title="Ingresa 11 números">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required" for="email">Correo electrónico</label>
