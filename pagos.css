@@ -3764,10 +3764,6 @@
 }
 
 @media (max-width: 600px) {
-    :root {
-        --header-height: 9rem;
-    }
-
     nav {
         flex-direction: column;
     }
@@ -3777,48 +3773,41 @@
     }
 
     .top-bar {
-        flex-wrap: wrap;
-        justify-content: space-between;
+        flex-direction: row;
         align-items: center;
         height: auto;
         padding: var(--space-sm);
     }
 
     .top-right {
-        width: 100%;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: row;
+        width: auto;
+        margin-top: 0;
         gap: var(--space-sm);
-        margin-top: var(--space-xs);
     }
 
     .top-bar .top-link {
-        flex: 1 1 45%;
+        width: auto;
         justify-content: center;
     }
 
     .checkout-steps {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-sm);
-        overflow-x: visible;
-        flex-wrap: wrap;
-    }
-
-    .checkout-steps::before {
-        display: none;
-    }
-
-    .checkout-step {
-        width: 100%;
         flex-direction: row;
         align-items: center;
         gap: var(--space-sm);
-        flex: 1 1 auto;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
     }
 
-    .step-text {
-        text-align: left;
+    .checkout-steps::before {
+        display: block;
+        width: 80%;
+        left: 10%;
+    }
+
+    .checkout-step {
+        flex: 0 0 auto;
     }
 
     .form-section,
