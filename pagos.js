@@ -2204,10 +2204,12 @@
                 })();
 
                 const selectedItems = getSelectedItems();
+                const shippingPrice = selectedShipping.price;
+                const insurancePrice = selectedInsurance.price;
                 const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const tax = subtotal * taxRate;
-                const total = subtotal + tax + selectedShipping.price + selectedInsurance.price;
-
+                const total = subtotal + tax + shippingPrice + insurancePrice;
+                
                 const nationalizationFeeValue = calculateNationalizationFee(total);
 
                 const order = {
