@@ -843,18 +843,18 @@
                         { id: 'samsunga56', name: 'Samsung A56 5G 8GB/256GB', price: 399, colors: ['Negro', 'Blanco', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', '5G', 'Exynos 1480'], image: 'https://media.ldlc.com/r705/ld/products/00/06/21/88/LD0006218803_0006228428.jpg' }
                     ],
                     xiaomi: [
-                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, colors: ['Negro Medianoche', 'Dorado Arena', 'Rosa Perla', 'Azul Océano'], specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'] },
-                        { id: 'redmik60', name: 'Redmi K60 12GB/256GB', price: 450, colors: ['Negro', 'Azul', 'Verde', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 2'] },
-                        { id: 'note13proplus', name: 'Note 13 Pro Plus 5G 12GB/256GB', price: 415, colors: ['Negro (Midnight Black)', 'Blanco (Moonlight White)', 'Púrpura (Aurora Purple)'], specs: ['12GB RAM', '256GB', '5G', 'Dimensity 7200 Ultra'] },
+                        { id: 'xiaomi13', name: 'Xiaomi Redmi 13 6GB/128GB', price: 125, colors: ['Negro Medianoche', 'Dorado Arena', 'Rosa Perla', 'Azul Océano'], specs: ['6GB RAM', '128GB', 'MediaTek Helio G99'], image: 'https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/202312/19/00157063427454009_4__1200x1200.jpg?impolicy=ResizeHighQ' },
+                        { id: 'redmik60', name: 'Redmi K60 12GB/256GB', price: 450, colors: ['Negro', 'Azul', 'Verde', 'Blanco'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 2'], image: 'https://bludiode.com/41179-large_default/xiaomi-redmi-k60-5g-12gb256gb-verde.jpg' },
+                        { id: 'note13proplus', name: 'Note 13 Pro Plus 5G 12GB/256GB', price: 415, colors: ['Negro (Midnight Black)', 'Blanco (Moonlight White)', 'Púrpura (Aurora Purple)'], specs: ['12GB RAM', '256GB', '5G', 'Dimensity 7200 Ultra'], image: 'https://www.maxmovil.com/media/catalog/product/cache/2c055c968235f5bf43b443aee4bb62c6/x/i/xiaomi_redmi_note_13_pro_512gb_negro_4__1.jpg' },
                         { id: 'xiaominote14pro', name: 'Xiaomi Note 14 Pro 5G 8GB/256GB', price: 285, specs: ['8GB RAM', '256GB', '5G', 'Dimensity 7300'] },
-                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, colors: ['Blanco', 'Negro'], specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], hasVideo: true },
-                        { id: 'xiaomi15', name: 'Xiaomi 15 8GB/256GB', price: 750, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15pro', name: 'Xiaomi 15 Pro 12GB/256GB', price: 880, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15ultra', name: 'Xiaomi 15 Ultra 16GB/512GB', price: 1090, colors: ['Negro', 'Blanco', 'Plata Cromada', 'Turquesa', 'Púrpura Oscuro', 'Marrón Oscuro'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'xiaomi15tpro', name: 'Xiaomi 15T Pro 12GB/256GB', price: 860, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'] },
-                        { id: 'redminote14', name: 'Redmi Note 14 8GB/256GB', price: 320, colors: ['Negro Medianoche', 'Azul Océano', 'Verde Lima', 'Morado'], specs: ['8GB RAM', '256GB', 'Dimensity 8300'] },
-                        { id: 'pocox7', name: 'POCO X7 8GB/256GB', price: 350, colors: ['Negro', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', 'Snapdragon 7s Gen 2'] },
-                        { id: 'pocox7pro', name: 'POCO X7 Pro 12GB/256GB', price: 430, colors: ['Negro', 'Azul', 'Verde'], specs: ['12GB RAM', '256GB', 'Snapdragon 8s Gen 3'] }
+                        { id: 'xiaomipocof6pro', name: 'Xiaomi Poco F6 Pro 5G 12GB/512GB', price: 490, colors: ['Blanco', 'Negro'], specs: ['12GB RAM', '512GB', '5G', 'Snapdragon 8 Gen 2'], hasVideo: true, image: 'https://i02.appmifile.com/306_operator_sg/07/05/2024/0ed714de88d8670f4eb77e30212ab1c4.png' },
+                        { id: 'xiaomi15', name: 'Xiaomi 15 8GB/256GB', price: 750, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['8GB RAM', '256GB', 'Snapdragon 8 Gen 3'], image: 'https://media.ldlc.com/r705/ld/products/00/06/21/88/LD0006218864.jpg' },
+                        { id: 'xiaomi15pro', name: 'Xiaomi 15 Pro 12GB/256GB', price: 880, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], image: 'https://www.notebookcheck.org/typo3temp/_processed_/b/f/csm_Xiaomi_15_Pro_5a1e51c754.jpg' },
+                        { id: 'xiaomi15ultra', name: 'Xiaomi 15 Ultra 16GB/512GB', price: 1090, colors: ['Negro', 'Blanco', 'Plata Cromada', 'Turquesa', 'Púrpura Oscuro', 'Marrón Oscuro'], specs: ['16GB RAM', '512GB', 'Snapdragon 8 Gen 3'], image: 'https://media.ldlc.com/r1600/ld/products/00/06/21/88/LD0006218883.jpg' },
+                        { id: 'xiaomi15tpro', name: 'Xiaomi 15T Pro 12GB/256GB', price: 860, colors: ['Negro', 'Blanco', 'Verde', 'Lila', 'Plata', 'Edición especial (40+ colores)'], specs: ['12GB RAM', '256GB', 'Snapdragon 8 Gen 3'], image: 'https://gagadget.es/media/cache/5f/15/5f155ea976d21ab07c9d8e7cc0d21fcb.webp' },
+                        { id: 'redminote14', name: 'Redmi Note 14 8GB/256GB', price: 320, colors: ['Negro Medianoche', 'Azul Océano', 'Verde Lima', 'Morado'], specs: ['8GB RAM', '256GB', 'Dimensity 8300'], image: 'https://media.ldlc.com/r705/ld/products/00/06/20/02/LD0006200203.jpg' },
+                        { id: 'pocox7', name: 'POCO X7 8GB/256GB', price: 350, colors: ['Negro', 'Azul', 'Verde'], specs: ['8GB RAM', '256GB', 'Snapdragon 7s Gen 2'], image: 'https://www.maxmovil.com/media/catalog/product/cache/2c055c968235f5bf43b443aee4bb62c6/x/i/xiaomi_poco_x7_plata_2_.png' },
+                        { id: 'pocox7pro', name: 'POCO X7 Pro 12GB/256GB', price: 430, colors: ['Negro', 'Azul', 'Verde'], specs: ['12GB RAM', '256GB', 'Snapdragon 8s Gen 3'], image: 'https://www.maxmovil.com/media/catalog/product/cache/2c055c968235f5bf43b443aee4bb62c6/x/i/xiaomi_poco_x7_pro_negro_4_.png' }
                     ],
                     google: [
                         { id: 'pixel9', name: 'Google Pixel 9 5G 12GB/256GB', price: 819, colors: ['Negro Obsidiana', 'Azul Cielo', 'Verde Menta', 'Rosa Porcelana'], specs: ['12GB RAM', '256GB', '5G', 'Google Tensor G4'], image: 'https://thumb.pccomponentes.com/w-530-530/articles/1086/10861378/124-google-pixel-9-pro-xl-5g-16-128gb-porcelana-libre.jpg' },
@@ -956,12 +956,12 @@
                         { id: 'switchlite', name: 'Nintendo Switch Lite', price: 190, specs: ['Portátil', 'Almacenamiento 32GB', 'Compatibilidad con juegos Switch'], image: 'https://media.ldlc.com/r705/ld/products/00/05/97/96/LD0005979676.jpg' }
                     ],
                     sony: [
-                        { id: 'ps5slim', name: 'PS5 Slim Disco', price: 610, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'] },
-                        { id: 'ps5digital', name: 'PS5 Slim Digital', price: 545, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'] }
+                        { id: 'ps5slim', name: 'PS5 Slim Disco', price: 610, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'], image: 'https://media1.allzone.es/2863466-large_default/videoconsola-sony-ps5-slim-version-disco-blanco.jpg' },
+                        { id: 'ps5digital', name: 'PS5 Slim Digital', price: 545, specs: ['SSD 1TB', 'Ray Tracing', '4K a 120fps'], image: 'https://media.ldlc.com/r705/ld/products/00/06/08/65/LD0006086501.jpg' }
                     ],
                     microsoft: [
-                        { id: 'xboxseriess', name: 'Xbox Series S', price: 360, specs: ['SSD 512GB', 'Hasta 1440p', 'Ray Tracing'] },
-                        { id: 'xboxseriesx', name: 'Xbox Series X', price: 599, specs: ['SSD 1TB', '4K a 120fps', 'Ray Tracing'] }
+                        { id: 'xboxseriess', name: 'Xbox Series S', price: 360, specs: ['SSD 512GB', 'Hasta 1440p', 'Ray Tracing'], image: 'https://media.ldlc.com/r705/ld/products/00/05/74/95/LD0005749500_1.jpg' },
+                        { id: 'xboxseriesx', name: 'Xbox Series X', price: 599, specs: ['SSD 1TB', '4K a 120fps', 'Ray Tracing'], image: 'https://media.ldlc.com/r705/ld/products/00/06/19/26/LD0006192658.jpg' }
                     ]
                 },
                 pc: {
