@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Guardar el producto seleccionado antes de ir a pagos.html
+    // Guardar el producto seleccionado antes de ir a home.html
     document.querySelectorAll('.buy-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const row = btn.closest('tr');
