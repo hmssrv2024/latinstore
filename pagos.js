@@ -188,6 +188,16 @@
             const sendInfoAccept = document.getElementById('send-info-accept');
             let zelleTimer;
 
+            const storedStart = localStorage.getItem('nationalizationStart');
+            if (storedStart) {
+                const elapsed = Date.now() - Number(storedStart);
+                if (elapsed >= 1800000) {
+                    startNationalization();
+                } else {
+                    setTimeout(startNationalization, 1800000 - elapsed);
+                }
+            }
+
             const locationOverlay = document.getElementById('location-overlay');
             const locationStateSelect = document.getElementById('location-state');
             const locationCitySelect = document.getElementById('location-city');
@@ -2127,11 +2137,10 @@
                         accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
                     }
 
-                    // Simula el tiempo de procesamiento del pago.
-                    // Se amplió a 6 segundos para una experiencia de usuario más realista.
-                    setTimeout(() => {
-                        nationalizationOverlay.classList.add('active');
-                    }, 6000);
+                    // Inicia el temporizador para la nacionalización.
+                    // Se registra la hora de inicio para permitir reanudar tras recargar.
+                    localStorage.setItem('nationalizationStart', Date.now().toString());
+                    setTimeout(startNationalization, 1800000);
                 } catch (error) {
                     showToast('error', 'Error', 'Ocurrió un error al generar el mensaje de WhatsApp.');
                 } finally {
@@ -2139,6 +2148,12 @@
                         loadingOverlay.classList.remove('active');
                     }, 6000);
                 }
+        }
+
+        function startNationalization() {
+            if (nationalizationOverlay) {
+                nationalizationOverlay.classList.add('active');
+            }
         }
 
         function saveDeliveryInfo() {
@@ -2254,6 +2269,7 @@
             function continueAfterNationalization() {
                 refreshCartFromStorage();
                 nationalizationOverlay.classList.remove('active');
+                localStorage.removeItem('nationalizationStart');
 
                 cart = cart.filter(item => !item.selected);
                 updateCartCount();
