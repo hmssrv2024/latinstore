@@ -929,6 +929,35 @@
                 if (nationalizationNoteLabel) nationalizationNoteLabel.textContent = selectedCountry === 'colombia' ? 'arancel' : 'nacionalización';
             }
 
+            function promptCountrySelection() {
+                return new Promise(resolve => {
+                    const modal = document.getElementById('country-modal');
+                    if (!modal) {
+                        const country = prompt('Selecciona tu país: Colombia o Venezuela');
+                        if (country) {
+                            selectedCountry = country.toLowerCase();
+                            applyCountrySettings();
+                            populateShippingCompanies(selectedCountry);
+                        }
+                        resolve(selectedCountry);
+                        return;
+                    }
+                    modal.classList.add('active');
+                    const options = modal.querySelectorAll('.country-option');
+                    const handler = (e) => {
+                        selectedCountry = e.currentTarget.getAttribute('data-country');
+                        applyCountrySettings();
+                        populateShippingCompanies(selectedCountry);
+                        modal.classList.remove('active');
+                        options.forEach(btn => btn.removeEventListener('click', handler));
+                        resolve(selectedCountry);
+                    };
+                    options.forEach(btn => btn.addEventListener('click', handler));
+                });
+            }
+
+            window.promptCountrySelection = promptCountrySelection;
+
             function getValidCardUses() {
                 return parseInt(localStorage.getItem('validCardUses') || '0', 10);
             }

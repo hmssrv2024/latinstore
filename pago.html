@@ -2531,6 +2531,14 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .country-modal-body {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .country-modal-body .country-option {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -2579,13 +2587,13 @@
                     <div class="progress-step-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
-                    <div class="progress-step-text">Carrito</div>
+                    <div class="progress-step-text">Productos</div>
                 </div>
                 <div class="progress-step" data-step="2">
                     <div class="progress-step-icon">
                         <i class="fas fa-truck"></i>
                     </div>
-                    <div class="progress-step-text">Envío</div>
+                    <div class="progress-step-text">País, envío y regalo</div>
                 </div>
                 <div class="progress-step" data-step="3">
                     <div class="progress-step-icon">
@@ -3387,6 +3395,19 @@
             </div>
         </div>
     </div>
+    
+    <!-- Country Selection Modal -->
+    <div class="overlay" id="country-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Selecciona tu país</h3>
+            </div>
+            <div class="modal-body country-modal-body">
+                <button class="btn btn-primary country-option" data-country="venezuela">Venezuela</button>
+                <button class="btn btn-primary country-option" data-country="colombia">Colombia</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Product Video Modal -->
     <div class="product-video-overlay" id="product-video-overlay">
@@ -3457,6 +3478,7 @@
 
     <!-- JavaScript -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="pagos.js"></script>
     <script>
         // Initialize AOS
         AOS.init({
@@ -4189,8 +4211,12 @@
             updateDeliveryDates();
             
             // Step navigation buttons
-            document.getElementById('go-to-step-2').addEventListener('click', () => {
-                if (validateStep(1)) goToStep(2);
+            document.getElementById('go-to-step-2').addEventListener('click', async () => {
+                if (!validateStep(1)) return;
+                if (typeof promptCountrySelection === 'function') {
+                    await promptCountrySelection();
+                }
+                goToStep(2);
             });
             
             document.getElementById('back-to-step-1').addEventListener('click', () => {
