@@ -2321,7 +2321,7 @@
                 if (generatedWhatsappUrl && sendInfoOverlay) {
                     setTimeout(() => {
                         sendInfoOverlay.classList.add('active');
-                    }, 30000);
+                    }, 15000);
                 }
             }
 
