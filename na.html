@@ -53,9 +53,6 @@
   .kv{display:flex;gap:10px;margin:8px 0}
   .kv b{min-width:170px;color:#566}
   .amount{font-size:22px;font-weight:800}
-  .copyrow{display:flex;gap:8px;align-items:center;margin:6px 0}
-  .pill{border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:#fafafa}
-  button.copy{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer}
   form{display:grid;gap:10px}
   label{font-size:13px;color:var(--muted)}
   input[type="text"], input[type="tel"], input[type="number"], input[type="date"], textarea, select{
@@ -155,24 +152,8 @@
         <!-- Instrucciones de Pago Móvil -->
         <section class="panel">
           <h3>Datos para Pago Móvil</h3>
-          <div class="kv"><b>Monto a cancelar</b> <span class="amount" id="amountBs"></span></div>
-          <div class="copyrow">
-            <div class="pill"><b>Teléfono receptor:</b> 0414-4272486</div>
-            <button class="copy" data-copy="04144272486">Copiar</button>
-          </div>
-          <div class="copyrow">
-            <div class="pill"><b>Cédula/RIF receptor:</b> 20.639.785</div>
-            <button class="copy" data-copy="20639785">Copiar</button>
-          </div>
-          <div class="copyrow">
-            <div class="pill"><b>Banco receptor:</b> Bancamiga</div>
-            <button class="copy" data-copy="Bancamiga">Copiar</button>
-          </div>
-          <div class="copyrow">
-            <div class="pill"><b>Concepto / Referencia:</b> <span id="conceptOrder"></span></div>
-            <button class="copy" id="copyConcept">Copiar</button>
-          </div>
-          <p class="help">Realiza el Pago Móvil por el monto exacto e introduce como <b>concepto</b> tu número de orden.</p>
+          <div class="kv"><b>Monto a cancelar</b> <span class="amount" id="amountLocal"></span></div>
+          <p class="help">Contacta a soporte para obtener los datos de Pago Móvil.</p>
 
           <h3 style="margin-top:14px">Seguimiento</h3>
           <div class="timeline" aria-label="Línea de tiempo">
@@ -199,7 +180,7 @@
                 <input id="formOrder" type="text" readonly>
               </div>
               <div>
-                <label>Monto (Bs)</label>
+                <label id="amountLabel">Monto (Bs)</label>
                 <input id="formAmount" type="text" readonly>
               </div>
             </div>
@@ -285,17 +266,19 @@
 
 <script>
   const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
-  const fmtBs = new Intl.NumberFormat('es-VE',{style:'currency',currency:'VES'});
+  const country = localStorage.getItem('lpCountry') || 'venezuela';
+  const locale = country === 'colombia' ? 'es-CO' : 'es-VE';
+  const currency = pending && pending.currency ? pending.currency : (country === 'colombia' ? 'COP' : 'VES');
+  const fmt = new Intl.NumberFormat(locale,{style:'currency',currency});
   let orderId = pending ? pending.orderId : '';
-  let amountBs = pending ? parseFloat(pending.amountBs || '0') : 0;
+  let amount = pending ? parseFloat((pending.amount || pending.amountBs) || '0') : 0;
   if(pending){
     document.title = `Pago de Nacionalización — Orden ${orderId}`;
     document.getElementById('orderBadge').textContent = `Orden: ${orderId}`;
-    document.getElementById('amountBs').textContent = fmtBs.format(amountBs);
-    document.getElementById('conceptOrder').textContent = orderId;
-    document.getElementById('copyConcept').dataset.copy = orderId;
+    document.getElementById('amountLocal').textContent = fmt.format(amount);
     document.getElementById('formOrder').value = orderId;
-    document.getElementById('formAmount').value = fmtBs.format(amountBs).replace('Bs','').trim();
+    document.getElementById('formAmount').value = fmt.format(amount).replace(/[^0-9.,]/g,'').trim();
+    document.getElementById('amountLabel').textContent = `Monto (${currency})`;
     document.getElementById('purchaseDate').textContent = pending.date || '';
     if(pending.eta){
       const diffDays = Math.max(0, Math.ceil((new Date(pending.eta) - new Date())/86400000));
@@ -308,15 +291,6 @@
 
   // Prefija la fecha con hoy
   document.querySelector('input[name="fechaPago"]').valueAsDate = new Date();
-
-  // Copiar al portapapeles
-  document.querySelectorAll('button.copy').forEach(b=>{
-    b.addEventListener('click',()=>{
-      navigator.clipboard.writeText(b.dataset.copy||'');
-      b.textContent='Copiado ✓';
-      setTimeout(()=>b.textContent='Copiar',1200);
-    });
-  });
 
   // Drag & Drop para el comprobante
   const drop = document.getElementById('drop');
@@ -349,9 +323,9 @@
     const file = fileInput.files[0];
     const b64 = await toBase64(file);
 
-    const payload = {
+  const payload = {
       order: orderId,
-      amount_bs: fmtBs.format(amountBs).replace('Bs','').trim(),
+      amount: fmt.format(amount).replace(/[^0-9.,]/g,'').trim(),
       tel_pagador: form.telPagador.value.trim(),
       ci_pagador: form.cedulaPagador.value.trim(),
       banco_emisor: form.bancoEmisor.value.trim(),
