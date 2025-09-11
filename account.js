@@ -5,9 +5,12 @@
     const invoices = JSON.parse(localStorage.getItem('lpInvoices') || '[]');
     if(!orders.length || !addresses.length || !invoices.length) return;
 
-    const pendingNat = localStorage.getItem('lpPendingNationalization');
+    const pendingNatRaw = localStorage.getItem('lpPendingNationalization');
+    const pendingNat = pendingNatRaw ? JSON.parse(pendingNatRaw) : null;
     const natDone = localStorage.getItem('lpNationalizationDone') === 'true';
-    if(pendingNat && !natDone &&
+    const startTs = pendingNat && pendingNat.createdAt ? parseInt(pendingNat.createdAt, 10) : 0;
+    const enforce = pendingNat && !natDone && (Date.now() - startTs >= 30 * 60 * 1000);
+    if(enforce &&
        !location.pathname.endsWith('na.html') &&
        !location.pathname.endsWith('micuenta.html')){
       window.location.href = 'na.html';
