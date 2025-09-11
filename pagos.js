@@ -568,6 +568,25 @@
             const shippingCompanyInput = document.getElementById('shipping-company-input');
             let userInfoSaved = false;
 
+            // Validación de entradas de formulario
+            if (fullNameInput) {
+                fullNameInput.addEventListener('input', () => {
+                    fullNameInput.value = fullNameInput.value.replace(/[^a-zA-ZÁÉÍÓÚáéíóúÑñ\s]/g, '');
+                });
+            }
+
+            if (idNumberInput) {
+                idNumberInput.addEventListener('input', () => {
+                    idNumberInput.value = idNumberInput.value.replace(/[^0-9]/g, '');
+                });
+            }
+
+            if (phoneInput) {
+                phoneInput.addEventListener('input', () => {
+                    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '').slice(0, 11);
+                });
+            }
+
             function showInfoSavedOverlay() {
                 if (!infoSavedOverlay) return;
                 infoSavedOverlay.classList.add('active');
