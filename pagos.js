@@ -203,7 +203,7 @@
             const locationCitySelect = document.getElementById('location-city');
             const locationConfirm = document.getElementById('location-confirm');
 
-            const estadosCiudades = {
+            const estadosCiudadesVenezuela = {
                 "Distrito Capital": [
                     "Caracas",
                     "Altamira",
@@ -504,6 +504,44 @@
                     "Tía Juana"
                 ]
             };
+
+            const estadosCiudadesColombia = {
+                "Bogotá D.C.": ["Bogotá"],
+                "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Sabaneta", "La Estrella", "Caldas", "Rionegro", "Apartadó", "Turbo"],
+                "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Galapa", "Sabanalarga", "Puerto Colombia"],
+                "Bolívar": ["Cartagena", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar"],
+                "Boyacá": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Paipa", "Villa de Leyva"],
+                "Caldas": ["Manizales", "Villamaría", "Chinchiná", "La Dorada", "Anserma"],
+                "Caquetá": ["Florencia", "San Vicente del Caguán", "Puerto Rico", "Doncello", "Belén de los Andaquíes"],
+                "Casanare": ["Yopal", "Aguazul", "Villanueva", "Monterrey", "Tauramena"],
+                "Cauca": ["Popayán", "Santander de Quilichao", "Puerto Tejada", "Guapi", "Patía (El Bordo)"],
+                "Cesar": ["Valledupar", "Aguachica", "Codazzi", "Curumaní", "Bosconia"],
+                "Chocó": ["Quibdó", "Istmina", "Tadó", "Bahía Solano", "Nuquí"],
+                "Córdoba": ["Montería", "Lorica", "Sahagún", "Planeta Rica", "Tierralta"],
+                "Cundinamarca": ["Soacha", "Chía", "Zipaquirá", "Fusagasugá", "Girardot", "Facatativá", "Mosquera", "Madrid", "Funza", "Cajicá"],
+                "Guainía": ["Inírida", "Puerto Colombia (Guainía)", "Barranco Minas"],
+                "Guaviare": ["San José del Guaviare", "Calamar", "Miraflores", "El Retorno"],
+                "Huila": ["Neiva", "Pitalito", "Garzón", "La Plata", "Campoalegre"],
+                "La Guajira": ["Riohacha", "Maicao", "Uribia", "Fonseca", "San Juan del Cesar"],
+                "Magdalena": ["Santa Marta", "Ciénaga", "Fundación", "Plato", "El Banco"],
+                "Meta": ["Villavicencio", "Acacías", "Granada", "Restrepo", "Puerto López"],
+                "Nariño": ["Pasto", "Tumaco", "Ipiales", "Túquerres", "Samaniego"],
+                "Norte de Santander": ["Cúcuta", "Villa del Rosario", "Ocaña", "Pamplona", "Los Patios"],
+                "Putumayo": ["Mocoa", "Puerto Asís", "Orito", "Villagarzón", "Sibundoy"],
+                "Quindío": ["Armenia", "Calarcá", "Montenegro", "La Tebaida", "Circasia"],
+                "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia", "Belén de Umbría"],
+                "San Andrés y Providencia": ["San Andrés", "Providencia"],
+                "Santander": ["Bucaramanga", "Floridablanca", "Giron", "Piedecuesta", "Barrancabermeja", "San Gil"],
+                "Sucre": ["Sincelejo", "Corozal", "Santiago de Tolú", "Coveñas", "San Marcos"],
+                "Tolima": ["Ibagué", "Espinal", "Melgar", "Honda", "Líbano"],
+                "Valle del Cauca": ["Cali", "Palmira", "Buenaventura", "Tuluá", "Buga", "Jamundí"],
+                "Vaupés": ["Mitú", "Carurú", "Taraira"],
+                "Vichada": ["Puerto Carreño", "La Primavera", "Santa Rosalía", "Cumaribo"],
+                "Arauca": ["Arauca", "Saravena", "Tame", "Arauquita", "Fortul"],
+                "Amazonas": ["Leticia", "Puerto Nariño", "Tarapacá"]
+            };
+
+            let estadosCiudades = estadosCiudadesVenezuela;
 
             function populateStates() {
                 if (!locationStateSelect) return;
@@ -1182,6 +1220,14 @@
                 // Seleccionar el nuevo país
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
+
+                if (country === 'colombia') {
+                    estadosCiudades = estadosCiudadesColombia;
+                } else if (country === 'venezuela') {
+                    estadosCiudades = estadosCiudadesVenezuela;
+                } else {
+                    estadosCiudades = {};
+                }
                 
                 // Mostrar la sección de selección de producto (categorías)
                 stepCountry.style.display = 'none';
