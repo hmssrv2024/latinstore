@@ -666,7 +666,6 @@
                 updateSelectionSummary();
             }
 
-            populateShippingCompanies();
             let userInfoSaved = false;
 
             // Validación de entradas de formulario
@@ -870,6 +869,9 @@
             };
             const MAX_CARD_USES = 1;
             const MAX_PURCHASE_AMOUNT = 5000;
+
+            // Inicializar lista de empresas de transporte después de declarar todas las variables
+            populateShippingCompanies();
 
             function applyCountrySettings() {
                 if (selectedCountry === 'colombia') {
