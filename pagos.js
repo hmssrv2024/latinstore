@@ -80,7 +80,6 @@
             const backToShippingBtn = document.getElementById('back-to-shipping');
             const processPaymentBtn = document.getElementById('process-payment');
             const shippingOptions = document.querySelectorAll('.shipping-option');
-            const shippingCompanyCards = document.querySelectorAll('.shipping-company-card');
             const insuranceOptions = document.querySelectorAll('.insurance-option');
             const acceptTaxCheckbox = document.getElementById('accept-tax');
             const taxInfo = document.getElementById('tax-info');
@@ -129,6 +128,7 @@
             const freeShippingCancel = document.getElementById('free-shipping-cancel');
             const shippingOptionsContainer = document.querySelector('.shipping-options');
             const shippingCompanyContainer = document.getElementById('shipping-company-container');
+            let shippingCompanyCards;
             const downloadInvoiceBtn = document.getElementById('download-invoice');
             const summaryOverlay = document.getElementById('summary-overlay');
             const summaryFullName = document.getElementById('summary-full-name');
@@ -604,6 +604,69 @@
             const stateInput = document.getElementById('state');
             const cityInput = document.getElementById('city');
             const shippingCompanyInput = document.getElementById('shipping-company-input');
+            let selectedShippingCompany = null;
+            let selectedShippingCompanyName = '';
+
+            const shippingCompaniesByCountry = {
+                default: [
+                    { id: 'dhl', name: 'DHL', logo: 'https://www.logo.wine/a/logo/DHL/DHL-Logo.wine.svg' },
+                    { id: 'fedex', name: 'FedEx', logo: 'https://www.logo.wine/a/logo/FedEx_Express/FedEx_Express-Logo.wine.svg' },
+                    { id: 'zoom', name: 'ZOOM', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/71/Grupo_ZOOM_logo.png?20211116211646' },
+                    { id: 'tealca', name: 'TEALCA', logo: 'https://www.tealca.es/wp-content/uploads/logo.png' },
+                    { id: 'mrw', name: 'MRW', logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/MRW_logo.svg/477px-MRW_logo.svg.png', recommended: true },
+                    { id: 'liberty', name: 'Liberty Express', logo: 'https://libertyexpress.com/wp-content/themes/kutis/assets/svg/logo_banner.svg' }
+                ],
+                colombia: [
+                    { id: 'servientrega', name: 'Servientrega', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Servientrega_logo.png' },
+                    { id: 'interrapidisimo', name: 'Inter Rapidísimo', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Inter_Rapid%C3%ADsimo_logo.png' },
+                    { id: 'deprisa', name: 'Deprisa (Avianca)', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d7/Deprisa_logo.png' },
+                    { id: 'envia', name: 'Envia Colvanes', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/07/Env%C3%ADa_logo.png' },
+                    { id: 'tcc', name: 'TCC', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/78/TCC_logo.png' },
+                    { id: '99minutos', name: '99Minutos', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/99minutos_logo.svg' },
+                    { id: 'rappi', name: 'Rappi Envía', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Rappi_logo.svg' },
+                    { id: 'dhl', name: 'DHL', logo: 'https://www.logo.wine/a/logo/DHL/DHL-Logo.wine.svg' },
+                    { id: 'fedex', name: 'FedEx', logo: 'https://www.logo.wine/a/logo/FedEx_Express/FedEx_Express-Logo.wine.svg' },
+                    { id: 'ups', name: 'UPS', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1f/UPS_Logo_Shield_2017.svg' }
+                ]
+            };
+
+            function populateShippingCompanies(country = 'default') {
+                selectedShippingCompany = null;
+                selectedShippingCompanyName = '';
+                const companies = shippingCompaniesByCountry[country] || shippingCompaniesByCountry.default;
+                shippingCompanyContainer.innerHTML = companies.map(c => `
+                    <div class="shipping-company-card" data-company="${c.id}" data-name="${c.name}">
+                        ${c.recommended ? '<div class="recommended-badge">Recomendado</div>' : ''}
+                        <img src="${c.logo}" alt="${c.name}">
+                    </div>
+                `).join('');
+                shippingCompanySummary.classList.add('hidden');
+                shippingCompanyContainer.classList.remove('hidden');
+                shippingCompanyCards = shippingCompanyContainer.querySelectorAll('.shipping-company-card');
+                shippingCompanyCards.forEach(card => {
+                    card.addEventListener('click', function() {
+                        shippingCompanyCards.forEach(c => c.classList.remove('selected'));
+                        card.classList.add('selected');
+                        selectedShippingCompany = card.getAttribute('data-company');
+                        selectedShippingCompanyName = card.dataset.name;
+                        if (shippingCompanyInput) {
+                            shippingCompanyInput.value = selectedShippingCompanyName;
+                            shippingCompanyInput.style.display = '';
+                        }
+                        shippingCompanyContainer.classList.add('hidden');
+                        shippingCompanySummaryText.textContent = `Empresa de transporte: ${selectedShippingCompanyName}`;
+                        shippingCompanySummary.classList.remove('hidden');
+                        updateSelectionSummary();
+                        updateContinueToPaymentBtnState();
+                        showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
+                        populateStates();
+                        locationOverlay.classList.add('active');
+                    });
+                });
+                updateSelectionSummary();
+            }
+
+            populateShippingCompanies();
             let userInfoSaved = false;
 
             // Validación de entradas de formulario
@@ -785,8 +848,6 @@
             let selectedCategory = '';
             let selectedBrand = '';
             let selectedShipping = { method: null, price: 0 };
-            let selectedShippingCompany = null;
-            let selectedShippingCompanyName = '';
             let estimatedDeliveryDate = null;
             let pendingShippingOption = null;
             let selectedInsurance = { selected: null, provider: null, price: 0 };
@@ -1220,6 +1281,7 @@
                 // Seleccionar el nuevo país
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
+                populateShippingCompanies(country);
 
                 if (country === 'colombia') {
                     estadosCiudades = estadosCiudadesColombia;
@@ -2525,42 +2587,6 @@
             });
 
             // Seleccionar empresa de transporte
-            shippingCompanyCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Remover selección previa
-                    shippingCompanyCards.forEach(c => c.classList.remove('selected'));
-
-                    // Seleccionar esta opción
-                    card.classList.add('selected');
-
-                    // Actualizar empresa seleccionada
-                    selectedShippingCompany = card.getAttribute('data-company');
-                    selectedShippingCompanyName = card.dataset.name;
-
-                    // Precargar y mostrar el campo de empresa de envío para revisión
-                    if (shippingCompanyInput) {
-                        shippingCompanyInput.value = selectedShippingCompanyName;
-                        shippingCompanyInput.style.display = '';
-                    }
-
-                    // Ocultar opciones y mostrar resumen
-                    shippingCompanyContainer.classList.add('hidden');
-                    shippingCompanySummaryText.textContent = `Empresa de transporte: ${selectedShippingCompanyName}`;
-                    shippingCompanySummary.classList.remove('hidden');
-
-                    // Actualizar resúmenes
-                    updateSelectionSummary();
-                    updateContinueToPaymentBtnState();
-
-                    // Notificar al usuario
-                    showToast('info', 'Transportista seleccionado', `Has elegido ${selectedShippingCompany.toUpperCase()} como empresa de transporte.`);
-
-                    // Mostrar overlay para selección de estado y ciudad
-                    populateStates();
-                    locationOverlay.classList.add('active');
-                });
-            });
-
             // Agregar eventos a los botones
             // 1. Selección de país
             countryCards.forEach(card => {
