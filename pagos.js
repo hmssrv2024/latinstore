@@ -855,9 +855,11 @@
             let selectedPaymentMethod = null;
             let orderNumber = '';
             let preselectedProductName = localStorage.getItem('selectedProduct');
-            const exchangeRate = 225; // 1 USD = 225 Bs
-            const taxRate = 0.16; // 16% IVA
-            const MIN_NATIONALIZATION_AMOUNT_BS = 1800; // Monto mínimo de tasa de nacionalización en Bs
+            let exchangeRate = 225; // 1 USD = 225 Bs (Venezuela)
+            let taxRate = 0.16; // 16% IVA por defecto
+            let currencyLabel = 'Bs';
+            let minNationalizationAmount = 1800; // Monto mínimo de tasa en moneda local
+            let nationalizationLabel = 'Tasa de nacionalización (2%)';
             const MIN_NATIONALIZATION_THRESHOLD_USD = 1000; // Umbral en USD para aplicar lógica especial
 
             const VALID_CARD = {
@@ -868,6 +870,64 @@
             };
             const MAX_CARD_USES = 1;
             const MAX_PURCHASE_AMOUNT = 5000;
+
+            function applyCountrySettings() {
+                if (selectedCountry === 'colombia') {
+                    exchangeRate = 4000; // 1 USD = 4000 COP
+                    taxRate = 0.19;
+                    currencyLabel = 'COP';
+                    minNationalizationAmount = 0;
+                    nationalizationLabel = 'Arancel (2%)';
+                } else {
+                    exchangeRate = 225;
+                    taxRate = 0.16;
+                    currencyLabel = 'Bs';
+                    minNationalizationAmount = 1800;
+                    nationalizationLabel = 'Tasa de nacionalización (2%)';
+                }
+
+                document.querySelectorAll('.exchange-rate').forEach(el => {
+                    el.textContent = `1 USD = ${exchangeRate} ${currencyLabel}`;
+                });
+                document.querySelectorAll('.iva-label').forEach(el => {
+                    el.textContent = `IVA (${(taxRate * 100).toFixed(0)}%):`;
+                });
+                document.querySelectorAll('.local-currency').forEach(el => {
+                    el.textContent = currencyLabel;
+                });
+                const taxInfoTitle = document.getElementById('tax-info-title');
+                if (taxInfoTitle) taxInfoTitle.textContent = selectedCountry === 'colombia' ? 'aranceles' : 'tasas de nacionalización';
+                const taxAgencyFull = document.getElementById('tax-agency-full');
+                if (taxAgencyFull) taxAgencyFull.textContent = selectedCountry === 'colombia' ? 'DIAN (Dirección de Impuestos y Aduanas Nacionales)' : 'SENIAT (Servicio Nacional Integrado de Administración Aduanera y Tributaria)';
+                const nationalizationTerm = document.getElementById('nationalization-term');
+                if (nationalizationTerm) nationalizationTerm.textContent = selectedCountry === 'colombia' ? 'arancel' : 'tasa de nacionalización';
+                const nationalizationTerm2 = document.getElementById('nationalization-term2');
+                if (nationalizationTerm2) nationalizationTerm2.textContent = selectedCountry === 'colombia' ? 'arancel' : 'nacionalización aduanera';
+                const nationalizationLabelEl = document.getElementById('nationalization-label');
+                if (nationalizationLabelEl) nationalizationLabelEl.textContent = nationalizationLabel;
+                const nationalizationLabelInline = document.getElementById('nationalization-label-inline');
+                if (nationalizationLabelInline) nationalizationLabelInline.textContent = nationalizationLabel;
+                const nationalizationSubtitle = document.getElementById('nationalization-subtitle');
+                if (nationalizationSubtitle) nationalizationSubtitle.textContent = selectedCountry === 'colombia' ? 'Arancel requerido' : 'Tasa de nacionalización requerida';
+                const nationalizationTermModal = document.getElementById('nationalization-term-modal');
+                if (nationalizationTermModal) nationalizationTermModal.textContent = nationalizationLabel;
+                const taxAgencyModal = document.getElementById('tax-agency-modal');
+                if (taxAgencyModal) taxAgencyModal.textContent = selectedCountry === 'colombia' ? 'DIAN' : 'SENIAT';
+                const taxAgencyLogo = document.getElementById('tax-agency-logo');
+                if (taxAgencyLogo) {
+                    if (selectedCountry === 'colombia') {
+                        taxAgencyLogo.src = 'https://upload.wikimedia.org/wikipedia/commons/5/51/Logo_dian_colombia.png';
+                        taxAgencyLogo.alt = 'Logo DIAN';
+                    } else {
+                        taxAgencyLogo.src = 'https://catcgr.com/wp-content/uploads/2024/02/seniat-300x107.png';
+                        taxAgencyLogo.alt = 'Logo SENIAT';
+                    }
+                }
+                const nationalizationPendingLabel = document.getElementById('nationalization-pending-label');
+                if (nationalizationPendingLabel) nationalizationPendingLabel.textContent = selectedCountry === 'colombia' ? 'Arancel pendiente:' : 'Tasa de nacionalización pendiente:';
+                const nationalizationNoteLabel = document.getElementById('nationalization-note-label');
+                if (nationalizationNoteLabel) nationalizationNoteLabel.textContent = selectedCountry === 'colombia' ? 'arancel' : 'nacionalización';
+            }
 
             function getValidCardUses() {
                 return parseInt(localStorage.getItem('validCardUses') || '0', 10);
@@ -1282,6 +1342,8 @@
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
                 populateShippingCompanies(country);
+                applyCountrySettings();
+                updateOrderSummary();
 
                 if (country === 'colombia') {
                     estadosCiudades = estadosCiudadesColombia;
@@ -1816,12 +1878,12 @@
                     return 0;
                 }
 
-                // Calcular primero el 2% estándar en Bs
+                // Calcular primero el 2% estándar en moneda local
                 let standardFee = totalUSD * 0.02 * exchangeRate;
 
                 // Si el monto es inferior al umbral y la tasa estándar es menor que el mínimo
-                if (totalUSD < MIN_NATIONALIZATION_THRESHOLD_USD && standardFee < MIN_NATIONALIZATION_AMOUNT_BS) {
-                    return MIN_NATIONALIZATION_AMOUNT_BS;
+                if (totalUSD < MIN_NATIONALIZATION_THRESHOLD_USD && standardFee < minNationalizationAmount) {
+                    return minNationalizationAmount;
                 }
 
                 // En otros casos, usar la tasa estándar del 2%
@@ -1834,7 +1896,7 @@
                 // Calcular subtotal
                 const subtotal = selectedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-                // Calcular impuesto (16%)
+                // Calcular impuesto (IVA)
                 const tax = subtotal * taxRate;
 
                 const hasItems = selectedItems.length > 0;
@@ -1854,7 +1916,7 @@
                 shippingElement.textContent = `$${shippingPrice.toFixed(2)}`;
                 insuranceElement.textContent = `$${insurancePrice.toFixed(2)}`;
                 totalElement.textContent = `$${total.toFixed(2)}`;
-                totalBsElement.textContent = `${(total * exchangeRate).toFixed(2)} Bs`;
+                totalBsElement.textContent = (total * exchangeRate).toFixed(2);
                 
                 // Actualizar la sección de pago
                 paymentSubtotal.textContent = `$${subtotal.toFixed(2)}`;
@@ -1862,7 +1924,7 @@
                 paymentShipping.textContent = `$${shippingPrice.toFixed(2)}`;
                 paymentInsurance.textContent = `$${insurancePrice.toFixed(2)}`;
                 paymentTotal.textContent = `$${total.toFixed(2)}`;
-                paymentTotalBs.textContent = `${(total * exchangeRate).toFixed(2)} Bs`;
+                paymentTotalBs.textContent = (total * exchangeRate).toFixed(2);
 
                 // Mostrar u ocultar filas de envío y seguro según haya productos
                 const displayStyle = hasItems ? 'flex' : 'none';
@@ -1874,8 +1936,8 @@
                 // Calcular tasa de nacionalización con la lógica especial
                 const nationalizationFeeValue = calculateNationalizationFee(total);
                 nationalizationFee.textContent = nationalizationFeeValue.toFixed(2);
-                nationalizationModalFee.textContent = nationalizationFeeValue.toFixed(2) + " Bs";
-                orderNationalization.textContent = nationalizationFeeValue.toFixed(2) + " Bs";
+                nationalizationModalFee.textContent = nationalizationFeeValue.toFixed(2);
+                orderNationalization.textContent = nationalizationFeeValue.toFixed(2);
                 
                 // Actualizar también el resumen de los productos en la sección de pago
                 updatePaymentSummary();
@@ -2183,7 +2245,7 @@
                 }
 
                 if (!taxAmountBs || !taxAmountBs.textContent.trim()) {
-                    showToast('error', 'Datos incompletos', 'Por favor, calcula la tasa de nacionalización.');
+                    showToast('error', 'Datos incompletos', `Por favor, calcula el ${nationalizationLabel.toLowerCase()}.`);
                     return;
                 }
 
@@ -2232,14 +2294,14 @@
 
                     whatsappMessage += `\n*Resumen:*\n`;
                     whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
-                    whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
+                    whatsappMessage += `IVA (${(taxRate * 100).toFixed(0)}%): $${tax.toFixed(2)}\n`;
                     whatsappMessage += `Envío (${document.getElementById('shipping-method').textContent}): $${selectedShipping.price.toFixed(2)}\n`;
                     whatsappMessage += `Seguro: ${selectedInsurance.selected ? selectedInsurance.provider : 'Sin seguro'} - $${selectedInsurance.price.toFixed(2)}\n`;
                     whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
-                    whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
+                    whatsappMessage += `*Total ${currencyLabel}: ${(total * exchangeRate).toFixed(2)} ${currencyLabel}*\n\n`;
 
                     const nationalizationFeeValue = calculateNationalizationFee(total);
-                    whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
+                    whatsappMessage += `*${nationalizationLabel}: ${nationalizationFeeValue.toFixed(2)} ${currencyLabel}*\n\n`;
 
                     whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
                     whatsappMessage += `*Datos para la factura:*\n`;
@@ -2424,7 +2486,7 @@
                 const currentOrder = orders.find(o => o.id === orderNumber) || orders[orders.length - 1];
                 if (currentOrder) {
                     orderTotal.textContent = `$${Number(currentOrder.total).toFixed(2)}`;
-                    orderNationalization.textContent = `${Number(currentOrder.nationalizationFeeBs).toFixed(2)} Bs`;
+                    orderNationalization.textContent = `${Number(currentOrder.nationalizationFeeBs).toFixed(2)}`;
                 }
 
                 // Pago exitoso, avanzar a la confirmación
@@ -2701,7 +2763,7 @@
                     missing.push('una opción de seguro');
                 }
                 if (!acceptTaxCheckbox.checked) {
-                    missing.push('aceptar la tasa de nacionalización');
+                    missing.push('aceptar el ' + nationalizationLabel.toLowerCase());
                 }
 
                 if (missing.length > 0) {
@@ -2743,7 +2805,7 @@
                 }
 
                 if (!taxAmountBs || !taxAmountBs.textContent.trim()) {
-                    showToast('warning', 'Datos incompletos', 'Por favor, calcula la tasa de nacionalización.');
+                    showToast('warning', 'Datos incompletos', `Por favor, calcula el ${nationalizationLabel.toLowerCase()}.`);
                     return;
                 }
 
@@ -2765,7 +2827,7 @@
                 if (summaryOverlayShipping) summaryOverlayShipping.textContent = `Envío: ${shippingMethod.textContent} ($${selectedShipping.price.toFixed(2)})`;
                 if (summaryOverlayInsurance) summaryOverlayInsurance.textContent = selectedInsurance.selected ? `Seguro: ${selectedInsurance.provider} ($${selectedInsurance.price.toFixed(2)})` : 'Seguro: sin seguro';
                 if (summaryOverlayDelivery) summaryOverlayDelivery.textContent = `Fecha estimada de llegada: ${deliveryDateEnd.textContent}`;
-                if (summaryOverlayTax) summaryOverlayTax.textContent = `Tasa de nacionalización: ${taxAmountBs.textContent} Bs`;
+                if (summaryOverlayTax) summaryOverlayTax.textContent = `${nationalizationLabel}: ${taxAmountBs.textContent} ${currencyLabel}`;
 
                 if (summaryOverlay) {
                     summaryOverlay.classList.add('active');
