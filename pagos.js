@@ -1352,6 +1352,15 @@
                 } else {
                     estadosCiudades = {};
                 }
+
+                // Actualizar listas de estados y ciudades según el país
+                populateStates();
+                if (locationStateSelect) {
+                    locationStateSelect.value = '';
+                }
+                if (locationCitySelect) {
+                    locationCitySelect.innerHTML = '<option value="">--Selecciona una ciudad--</option>';
+                }
                 
                 // Mostrar la sección de selección de producto (categorías)
                 stepCountry.style.display = 'none';
