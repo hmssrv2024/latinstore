@@ -2018,6 +2018,9 @@
 
             // Función para procesar el pago
             function processPayment() {
+                if (!deliveryDateEnd || !deliveryDateEnd.textContent.trim()) {
+                    updateDeliveryDates();
+                }
                 const selectedPaymentOption = document.querySelector('.payment-option.selected');
                 if (!selectedPaymentOption) {
                     showToast('error', 'Método de pago', 'Por favor, selecciona un método de pago.');
@@ -2622,6 +2625,9 @@
             });
 
             processPaymentBtn.addEventListener('click', () => {
+                if (!deliveryDateEnd || !deliveryDateEnd.textContent.trim()) {
+                    updateDeliveryDates();
+                }
                 const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, addressInput].filter(Boolean);
 
                 if (!shippingCompanyInput || !shippingCompanyInput.value.trim()) {
@@ -2702,6 +2708,8 @@
                     method: option.getAttribute('data-shipping'),
                     price: parseFloat(option.getAttribute('data-price'))
                 };
+
+                updateDeliveryDates();
 
                 estimatedDeliveryDate = calculateDeliveryDate(selectedShipping.method);
 
