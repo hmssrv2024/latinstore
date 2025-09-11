@@ -2019,13 +2019,20 @@
                 }
 
                 const requiredFields = [fullNameInput, idNumberInput, phoneInput, emailInput, addressInput, stateInput, cityInput].filter(Boolean);
-                if (shippingCompanyInput) {
-                    if (!shippingCompanyInput.value.trim()) {
-                        showToast('error', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
-                        shippingCompanyInput.focus();
-                        return;
-                    }
-                    requiredFields.push(shippingCompanyInput);
+                if (!shippingCompanyInput || !shippingCompanyInput.value.trim()) {
+                    showToast('error', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
+                    shippingCompanyInput?.focus();
+                    return;
+                }
+
+                if (!deliveryDateEnd || !deliveryDateEnd.textContent.trim()) {
+                    showToast('error', 'Datos incompletos', 'Por favor, confirma la fecha estimada de entrega.');
+                    return;
+                }
+
+                if (!taxAmountBs || !taxAmountBs.textContent.trim()) {
+                    showToast('error', 'Datos incompletos', 'Por favor, calcula la tasa de nacionalización.');
+                    return;
                 }
 
                 if (requiredFields.some(field => !field.value.trim())) {
@@ -2054,77 +2061,84 @@
 
                 loadingOverlay.classList.add('active');
 
-                orderNumber = generateOrderNumber();
-                document.getElementById('order-number').textContent = orderNumber;
+                try {
+                    orderNumber = generateOrderNumber();
+                    document.getElementById('order-number').textContent = orderNumber;
 
-                let whatsappMessage = `Hola, acabo de realizar una compra en LatinPhone.\n\n`;
-                whatsappMessage += `Número de orden: ${orderNumber}\n`;
-                whatsappMessage += `Fecha: ${document.getElementById('order-date').textContent}\n\n`;
-                whatsappMessage += `*Detalles de la compra:*\n`;
+                    let whatsappMessage = `Hola, acabo de realizar una compra en LatinPhone.\n\n`;
+                    whatsappMessage += `Número de orden: ${orderNumber}\n`;
+                    whatsappMessage += `Fecha: ${document.getElementById('order-date').textContent}\n\n`;
+                    whatsappMessage += `*Detalles de la compra:*\n`;
 
-                cart.forEach(item => {
-                    whatsappMessage += `• ${item.quantity}x ${item.name}${item.color ? ' (' + item.color + ')' : ''} (${item.category}) - $${(item.price * item.quantity).toFixed(2)}\n`;
-                });
+                    cart.forEach(item => {
+                        whatsappMessage += `• ${item.quantity}x ${item.name}${item.color ? ' (' + item.color + ')' : ''} (${item.category}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+                    });
 
-                if (selectedGift) {
-                    whatsappMessage += `• 1x ${selectedGift.name} (${selectedGift.category}) (Regalo GRATIS)\n`;
+                    if (selectedGift) {
+                        whatsappMessage += `• 1x ${selectedGift.name} (${selectedGift.category}) (Regalo GRATIS)\n`;
+                    }
+
+                    whatsappMessage += `\n*Resumen:*\n`;
+                    whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
+                    whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
+                    whatsappMessage += `Envío (${document.getElementById('shipping-method').textContent}): $${selectedShipping.price.toFixed(2)}\n`;
+                    whatsappMessage += `Seguro: ${selectedInsurance.selected ? selectedInsurance.provider : 'Sin seguro'} - $${selectedInsurance.price.toFixed(2)}\n`;
+                    whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
+                    whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
+
+                    const nationalizationFeeValue = calculateNationalizationFee(total);
+                    whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
+
+                    whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
+                    whatsappMessage += `*Datos para la factura:*\n`;
+                    whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
+                    whatsappMessage += `Cédula: ${idNumberInput.value}\n`;
+                    whatsappMessage += `Teléfono: ${phoneInput.value}\n`;
+                    whatsappMessage += `Email: ${emailInput.value}\n`;
+                    whatsappMessage += `Dirección: ${addressInput.value}\n`;
+                    whatsappMessage += `Estado: ${stateInput.value}\n`;
+                    whatsappMessage += `Ciudad: ${cityInput.value}\n`;
+                    whatsappMessage += `País: ${selectedCountry ? selectedCountry.toUpperCase() : ''}\n`;
+                    whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n`;
+                    whatsappMessage += `Fecha estimada de entrega: ${deliveryDateEnd.textContent}\n\n`;
+
+                    whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
+
+                    const encodedMessage = encodeURIComponent(whatsappMessage);
+                    const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
+                    generatedWhatsappUrl = whatsappUrl;
+                    if (whatsappSupport) {
+                        whatsappSupport.href = whatsappUrl;
+                    }
+                    // Guardar inmediatamente los datos de la orden para
+                    // que la información persista aunque el usuario
+                    // recargue o cierre la página durante el proceso.
+                    saveOrderData();
+                    // Limpiar carritos temporales utilizados en otras páginas
+                    localStorage.removeItem('latinphone_cart');
+                    localStorage.removeItem('latinphone_cart_totals');
+                    // Activar enlace a la cuenta para acceder a la información
+                    // de compra almacenada.
+                    if (accountLink) {
+                        accountLink.classList.remove('disabled');
+                        accountLink.removeAttribute('aria-disabled');
+                        const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
+                        const hasInfo = storedUser.name && storedUser.doc && storedUser.phone;
+                        accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
+                    }
+
+                    // Simula el tiempo de procesamiento del pago.
+                    // Se amplió a 6 segundos para una experiencia de usuario más realista.
+                    setTimeout(() => {
+                        nationalizationOverlay.classList.add('active');
+                    }, 6000);
+                } catch (error) {
+                    showToast('error', 'Error', 'Ocurrió un error al generar el mensaje de WhatsApp.');
+                } finally {
+                    setTimeout(() => {
+                        loadingOverlay.classList.remove('active');
+                    }, 6000);
                 }
-
-                whatsappMessage += `\n*Resumen:*\n`;
-                whatsappMessage += `Subtotal: $${subtotal.toFixed(2)}\n`;
-                whatsappMessage += `IVA (16%): $${tax.toFixed(2)}\n`;
-                whatsappMessage += `Envío (${document.getElementById('shipping-method').textContent}): $${selectedShipping.price.toFixed(2)}\n`;
-                whatsappMessage += `Seguro: ${selectedInsurance.selected ? selectedInsurance.provider : 'Sin seguro'} - $${selectedInsurance.price.toFixed(2)}\n`;
-                whatsappMessage += `*Total USD: $${total.toFixed(2)}*\n`;
-                whatsappMessage += `*Total Bs: ${(total * exchangeRate).toFixed(2)} Bs*\n\n`;
-
-                const nationalizationFeeValue = calculateNationalizationFee(total);
-                whatsappMessage += `*Tasa de nacionalización: ${nationalizationFeeValue.toFixed(2)} Bs*\n\n`;
-
-                whatsappMessage += `Método de pago: ${document.querySelector('.payment-option.selected').querySelector('.payment-option-text').textContent}\n\n`;
-                whatsappMessage += `*Datos para la factura:*\n`;
-                whatsappMessage += `Nombre completo: ${fullNameInput.value}\n`;
-                whatsappMessage += `Cédula: ${idNumberInput.value}\n`;
-                whatsappMessage += `Teléfono: ${phoneInput.value}\n`;
-                whatsappMessage += `Email: ${emailInput.value}\n`;
-                whatsappMessage += `Dirección: ${addressInput.value}\n`;
-                whatsappMessage += `Estado: ${stateInput.value}\n`;
-                whatsappMessage += `Ciudad: ${cityInput.value}\n`;
-                whatsappMessage += `País: ${selectedCountry ? selectedCountry.toUpperCase() : ''}\n`;
-                whatsappMessage += `Empresa de envío: ${shippingCompanyInput.value}\n`;
-                whatsappMessage += `Fecha estimada de entrega: ${deliveryDateEnd.textContent}\n\n`;
-
-                whatsappMessage += `Por favor, necesito finalizar el proceso de compra y confirmar los detalles de envío.`;
-
-                const encodedMessage = encodeURIComponent(whatsappMessage);
-                const whatsappUrl = `https://wa.me/+18133584564?text=${encodedMessage}`;
-                generatedWhatsappUrl = whatsappUrl;
-                if (whatsappSupport) {
-                    whatsappSupport.href = whatsappUrl;
-                }
-                // Guardar inmediatamente los datos de la orden para
-                // que la información persista aunque el usuario
-                // recargue o cierre la página durante el proceso.
-                saveOrderData();
-                // Limpiar carritos temporales utilizados en otras páginas
-                localStorage.removeItem('latinphone_cart');
-                localStorage.removeItem('latinphone_cart_totals');
-                // Activar enlace a la cuenta para acceder a la información
-                // de compra almacenada.
-                if (accountLink) {
-                    accountLink.classList.remove('disabled');
-                    accountLink.removeAttribute('aria-disabled');
-                    const storedUser = JSON.parse(localStorage.getItem('lpUser') || '{}');
-                    const hasInfo = storedUser.name && storedUser.doc && storedUser.phone;
-                    accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
-                }
-
-            // Simula el tiempo de procesamiento del pago.
-            // Se amplió a 6 segundos para una experiencia de usuario más realista.
-            setTimeout(() => {
-                loadingOverlay.classList.remove('active');
-                nationalizationOverlay.classList.add('active');
-            }, 6000);
         }
 
         function saveDeliveryInfo() {
@@ -2133,8 +2147,8 @@
                 shipping: selectedShipping ? selectedShipping.method : null,
                 company: shippingCompanyInput ? shippingCompanyInput.value : '',
                 insurance: selectedInsurance.selected ? selectedInsurance.provider : 'sin seguro',
-                arrival: deliveryDateEnd.textContent,
-                tax: taxAmountBs.textContent
+                arrival: deliveryDateEnd ? deliveryDateEnd.textContent : '',
+                tax: taxAmountBs ? taxAmountBs.textContent : ''
             };
             localStorage.setItem('lpDeliveryInfo', JSON.stringify(info));
         }
@@ -2580,11 +2594,28 @@
             });
 
             processPaymentBtn.addEventListener('click', () => {
-                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
+                const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, addressInput].filter(Boolean);
+
+                if (!shippingCompanyInput || !shippingCompanyInput.value.trim()) {
+                    showToast('warning', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
+                    shippingCompanyInput?.focus();
+                    return;
+                }
+
                 const emptyInput = requiredInputs.find(field => !field.value.trim());
                 if (emptyInput) {
                     showToast('warning', 'Datos incompletos', 'Por favor, completa la información de entrega.');
                     emptyInput.focus();
+                    return;
+                }
+
+                if (!deliveryDateEnd || !deliveryDateEnd.textContent.trim()) {
+                    showToast('warning', 'Datos incompletos', 'Por favor, verifica la fecha estimada de llegada.');
+                    return;
+                }
+
+                if (!taxAmountBs || !taxAmountBs.textContent.trim()) {
+                    showToast('warning', 'Datos incompletos', 'Por favor, calcula la tasa de nacionalización.');
                     return;
                 }
 
