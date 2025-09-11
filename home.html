@@ -302,14 +302,14 @@
                                     </div>
                                     <div class="summary-content">
                                         <div class="exchange-rate-info">
-                                            Tasa actual: 1 USD = 225 Bs
+                                            Tasa actual: 1 USD = <span class="exchange-rate">225 Bs</span>
                                         </div>
                                         <div class="summary-row">
                                             <span>Subtotal:</span>
                                             <span id="subtotal">$0.00</span>
                                         </div>
                                         <div class="summary-row">
-                                            <span>IVA (16%):</span>
+                                            <span class="iva-label">IVA (16%):</span>
                                             <span id="tax">$0.00</span>
                                         </div>
                                         <div class="summary-row">
@@ -324,7 +324,7 @@
                                             <span>Total:</span>
                                             <div>
                                                 <div id="total">$0.00</div>
-                                                <div class="bs-price" id="total-bs">0.00 Bs</div>
+                                                <div class="bs-price"><span id="total-bs">0.00</span> <span class="local-currency">Bs</span></div>
                                             </div>
                                         </div>
 
@@ -483,16 +483,16 @@
                 </div>
 
                 <div class="tax-notification">
-                    <h4><i class="fas fa-exclamation-triangle"></i> Información importante sobre tasas de nacionalización</h4>
-                    <p>Al ser una importación, el SENIAT (Servicio Nacional Integrado de Administración Aduanera y Tributaria) cobra una tasa de nacionalización del 2% sobre el valor total de la compra. Este monto debe pagarse en moneda local (Bolívares) en las 4 horas posteriores a la compra de su pedido.</p>
-                    <p>Este cobro no está incluido en el precio y debe ser pagado directamente a la empresa de nacionalización aduanera en moneda local.</p>
+                    <h4><i class="fas fa-exclamation-triangle"></i> Información importante sobre <span id="tax-info-title">tasas de nacionalización</span></h4>
+                    <p>Al ser una importación, el <span id="tax-agency-full">SENIAT (Servicio Nacional Integrado de Administración Aduanera y Tributaria)</span> cobra una <span id="nationalization-term">tasa de nacionalización</span> del 2% sobre el valor total de la compra. Este monto debe pagarse en moneda local (<span class="local-currency">Bolívares</span>) en las 4 horas posteriores a la compra de su pedido.</p>
+                    <p>Este cobro no está incluido en el precio y debe ser pagado directamente a la empresa de <span id="nationalization-term2">nacionalización aduanera</span> en moneda local.</p>
                     <div class="tax-checkbox">
                         <input type="checkbox" id="accept-tax" required>
-                        <label for="accept-tax">Entiendo y acepto que debo pagar la tasa de nacionalización (2%) en moneda local.</label>
+                        <label for="accept-tax">Entiendo y acepto que debo pagar la <span id="nationalization-label">tasa de nacionalización (2%)</span> en moneda local.</label>
                     </div>
                     <div id="tax-info" style="display: none; text-align: justify;">
-                        <p>El monto aproximado a pagar es <strong><span id="tax-amount-bs"></span> Bs</strong>.</p>
-                        <img src="https://catcgr.com/wp-content/uploads/2024/02/seniat-300x107.png" alt="Logo SENIAT" class="seniat-logo">
+                        <p>El monto aproximado a pagar es <strong><span id="tax-amount-bs"></span> <span class="local-currency">Bs</span></strong>.</p>
+                        <img id="tax-agency-logo" src="https://catcgr.com/wp-content/uploads/2024/02/seniat-300x107.png" alt="Logo SENIAT" class="seniat-logo">
                     </div>
                 </div>
 
@@ -588,14 +588,14 @@
                         </div>
                         <div class="summary-content">
                             <div class="exchange-rate-info">
-                                Tasa actual: 1 USD = 225 Bs
+                                Tasa actual: 1 USD = <span class="exchange-rate">225 Bs</span>
                             </div>
                             <div class="summary-row">
                                 <span>Subtotal:</span>
                                 <span id="payment-subtotal">$0.00</span>
                             </div>
                             <div class="summary-row">
-                                <span>IVA (16%):</span>
+                                <span class="iva-label">IVA (16%):</span>
                                 <span id="payment-tax">$0.00</span>
                             </div>
                             <div class="summary-row">
@@ -610,12 +610,12 @@
                                 <span>Total:</span>
                                 <div>
                                     <div id="payment-total">$0.00</div>
-                                    <div class="bs-price" id="payment-total-bs">0.00 Bs</div>
+                                    <div class="bs-price"><span id="payment-total-bs">0.00</span> <span class="local-currency">Bs</span></div>
                                 </div>
                             </div>
 
                             <div class="tax-notification" style="margin-top: 2rem; margin-bottom: 2rem; background-color: var(--primary-light); border-color: var(--warning-color);">
-                                <p style="font-size: 1.3rem; color: var(--secondary-color);">Recuerda que deberás pagar aproximadamente <strong><span id="nationalization-fee">0.00</span> Bs</strong> por la tasa de nacionalización (2%) al recibir tu pedido en aduana.</p>
+                                <p style="font-size: 1.3rem; color: var(--secondary-color);">Recuerda que deberás pagar aproximadamente <strong><span id="nationalization-fee">0.00</span> <span class="local-currency">Bs</span></strong> por el <span id="nationalization-label-inline">tasa de nacionalización (2%)</span> al recibir tu pedido en aduana.</p>
                             </div>
                         </div>
                     </div>
@@ -750,13 +750,13 @@
                         </div>
                         <div class="order-detail-row">
                             <div class="order-detail-label">Tasa de cambio aplicada:</div>
-                            <div class="order-detail-value">1 USD = 225 Bs</div>
+                            <div class="order-detail-value exchange-rate">1 USD = 225 Bs</div>
                         </div>
                         <div class="order-detail-row">
-                            <div class="order-detail-label nationalization-warning">Tasa de nacionalización pendiente:</div>
-                            <div class="order-detail-value"><span id="order-nationalization">0.00 Bs</span></div>
+                            <div class="order-detail-label nationalization-warning" id="nationalization-pending-label">Tasa de nacionalización pendiente:</div>
+                            <div class="order-detail-value"><span id="order-nationalization">0.00</span> <span class="local-currency">Bs</span></div>
                         </div>
-                        <p class="nationalization-remaining-note">Podrás pagarlo accediendo a la sección <strong>Mi cuenta</strong> y luego en la opción <strong>Pago de nacionalización</strong>.</p>
+                        <p class="nationalization-remaining-note">Podrás pagarlo accediendo a la sección <strong>Mi cuenta</strong> y luego en la opción <strong>Pago de <span id="nationalization-note-label">nacionalización</span></strong>.</p>
                     </div>
 
                     <div class="order-qr">
@@ -919,16 +919,16 @@
                     <i class="fas fa-exclamation-triangle"></i>
                     Información importante
                 </h3>
-                <p class="nationalization-subtitle">Tasa de nacionalización requerida</p>
+                <p class="nationalization-subtitle" id="nationalization-subtitle">Tasa de nacionalización requerida</p>
             </div>
             <div class="nationalization-content">
                 <p class="nationalization-message">
-                    Para completar la entrega de tu pedido, debes realizar el pago de la tasa de nacionalización (2%) exigida por el SENIAT. Este pago <strong>NO está incluido</strong> en el monto que acabas de abonar y debe ser cancelado en moneda local (Bolívares) en un plazo máximo de 4 horas después de la compra de tu producto .
+                    Para completar la entrega de tu pedido, debes realizar el pago del <span id="nationalization-term-modal">tasa de nacionalización (2%)</span> exigido por la <span id="tax-agency-modal">SENIAT</span>. Este pago <strong>NO está incluido</strong> en el monto que acabas de abonar y debe ser cancelado en moneda local (<span class="local-currency">Bolívares</span>) en un plazo máximo de 4 horas después de la compra de tu producto.
                 </p>
                 
                 <div class="nationalization-price">
                     <div class="nationalization-price-label">Monto aproximado a pagar:</div>
-                    <div class="nationalization-price-value" id="nationalization-modal-fee">0.00 Bs</div>
+                    <div class="nationalization-price-value"><span id="nationalization-modal-fee">0.00</span> <span class="local-currency">Bs</span></div>
                 </div>
                 
                 <p class="nationalization-note">
