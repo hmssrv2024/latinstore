@@ -600,6 +600,12 @@
             if (saveInfoBtn) {
                 saveInfoBtn.addEventListener('click', (e) => {
                     e.preventDefault();
+
+                    // Asegurar que la empresa de envío se rellene si se seleccionó previamente
+                    if (shippingCompanyInput && !shippingCompanyInput.value.trim() && selectedShippingCompanyName) {
+                        shippingCompanyInput.value = selectedShippingCompanyName;
+                    }
+
                     const requiredInputs = [fullNameInput, idNumberInput, phoneInput, emailInput, stateInput, cityInput, shippingCompanyInput, addressInput].filter(Boolean);
                     const emptyInput = requiredInputs.find(field => !field.value.trim());
                     if (emptyInput) {
@@ -2029,6 +2035,12 @@
                 }
 
                 const requiredFields = [fullNameInput, idNumberInput, phoneInput, emailInput, addressInput, stateInput, cityInput].filter(Boolean);
+
+                // Completar la empresa de envío con la selección previa si es necesario
+                if (shippingCompanyInput && !shippingCompanyInput.value.trim() && selectedShippingCompanyName) {
+                    shippingCompanyInput.value = selectedShippingCompanyName;
+                }
+
                 if (!shippingCompanyInput || !shippingCompanyInput.value.trim()) {
                     showToast('error', 'Datos incompletos', 'Por favor, completa la empresa de envío.');
                     shippingCompanyInput?.focus();
