@@ -1333,6 +1333,10 @@
 
             // Función para seleccionar un país
             function selectCountry(country) {
+                if (country !== 'colombia' && country !== 'venezuela') {
+                    return;
+                }
+
                 // Eliminar la selección actual
                 countryCards.forEach(card => {
                     card.classList.remove('selected');
@@ -2663,9 +2667,12 @@
             // Agregar eventos a los botones
             // 1. Selección de país
             countryCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    selectCountry(card.getAttribute('data-country'));
-                });
+                const country = card.getAttribute('data-country');
+                if (country === 'colombia' || country === 'venezuela') {
+                    card.addEventListener('click', () => {
+                        selectCountry(country);
+                    });
+                }
             });
 
             // 2. Selección de categoría

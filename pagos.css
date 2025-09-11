@@ -542,6 +542,11 @@
             justify-content: center;
         }
 
+        .country-card:not([data-country="colombia"]):not([data-country="venezuela"]) {
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
         .country-card::before {
             content: '';
             position: absolute;
