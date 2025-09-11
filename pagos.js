@@ -901,10 +901,10 @@
                         { id: 'ipadpro', name: 'iPad Pro 11" M4 256GB', price: 1030, specs: ['Chip M4', '256GB', 'Pantalla 11"'] },
                     ],
                     samsung: [
-                        { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'] },
-                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'] },
-                        { id: 'samsungtabs11', name: 'Samsung Tab S11 X910 12/256GB', price: 1000, specs: ['12GB RAM', '256GB', 'Pantalla 11"'] },
-                        { id: 'samsungtabs11ultra', name: 'Samsung Tab S11 Ultra X916 16/512GB', price: 1200, specs: ['16GB RAM', '512GB', 'Pantalla 14.6"'] }
+                        { id: 'samsungtaba9', name: 'Samsung Tab A9 X110 4/64GB', price: 125, specs: ['4GB RAM', '64GB', 'Pantalla 8.7"'], image: 'https://media.ldlc.com/r705/ld/products/00/06/10/31/LD0006103138.jpg' },
+                        { id: 'samsungtabs10', name: 'Samsung Tab S10 Plus X820 12/256GB', price: 880, specs: ['12GB RAM', '256GB', 'Pantalla 12.4"'], image: 'https://media.ldlc.com/r705/ld/products/00/06/17/44/LD0006174463_0006174582.jpg' },
+                        { id: 'samsungtabs11', name: 'Samsung Tab S11 X910 12/256GB', price: 1000, specs: ['12GB RAM', '256GB', 'Pantalla 11"'], image: 'https://media.ldlc.com/r705/ld/products/00/06/27/24/LD0006272462_0006272467.jpg' },
+                        { id: 'samsungtabs11ultra', name: 'Samsung Tab S11 Ultra X916 16/512GB', price: 1200, specs: ['16GB RAM', '512GB', 'Pantalla 14.6"'], image: 'https://media.ldlc.com/r705/ld/products/00/06/27/24/LD0006272422_0006272442.jpg' }
                     ],
                     xiaomi: [
                         { id: 'xiaomipad6', name: 'Xiaomi Pad 6 6GB/128GB', price: 310, specs: ['6GB RAM', '128GB', 'Snapdragon 870'], image: 'https://i02.appmifile.com/253_operator_sg/28/06/2023/ce7011d9e5c3e12a3818a2d911c0fb16.png?f=webp' }
