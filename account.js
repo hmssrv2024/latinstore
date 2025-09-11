@@ -24,14 +24,22 @@
         .forEach(k => localStorage.removeItem(k));
       return;
     }
+    const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
+    const hasInfo = user.name && user.doc && user.phone;
+
     const link = document.getElementById('account-link');
     if(link){
       link.style.display = 'inline-block';
       link.classList && link.classList.remove('disabled');
       link.removeAttribute('aria-disabled');
-      const user = JSON.parse(localStorage.getItem('lpUser') || '{}');
-      const hasInfo = user.name && user.doc && user.phone;
       link.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
+    }
+
+    const btn = document.getElementById('account-btn');
+    if(btn){
+      btn.style.display = 'inline-block';
+      btn.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
+      btn.removeAttribute('aria-disabled');
     }
   });
 })();
