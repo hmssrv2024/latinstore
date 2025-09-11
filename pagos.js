@@ -1,5 +1,3 @@
-        // Inicializar el script cuando el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', function() {
             const orderDateEl = document.getElementById('order-date');
             const paymentDateEl = document.getElementById('payment-date');
             const preparingDateRangeEl = document.getElementById('preparing-date-range');
@@ -3118,4 +3116,3 @@
 
             updateSelectionSummary();
             updateContinueToPaymentBtnState();
-        });
