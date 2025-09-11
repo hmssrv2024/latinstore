@@ -2119,10 +2119,12 @@
                     accountLink.setAttribute('href', hasInfo ? 'micuenta.html' : 'informacion.html');
                 }
 
+            // Simula el tiempo de procesamiento del pago.
+            // Se amplió a 6 segundos para una experiencia de usuario más realista.
             setTimeout(() => {
                 loadingOverlay.classList.remove('active');
                 nationalizationOverlay.classList.add('active');
-            }, 3000);
+            }, 6000);
         }
 
         function saveDeliveryInfo() {
