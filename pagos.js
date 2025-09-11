@@ -2161,6 +2161,7 @@
                 } finally {
                     setTimeout(() => {
                         loadingOverlay.classList.remove('active');
+                        continueAfterNationalization();
                     }, 6000);
                 }
         }
