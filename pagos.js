@@ -1333,7 +1333,16 @@
 
             // Función para seleccionar un país
             function selectCountry(country) {
-                if (country !== 'colombia' && country !== 'venezuela') {
+                const supportedCountries = ['colombia', 'venezuela'];
+                if (!supportedCountries.includes(country)) {
+                    showToast('warning', 'País no disponible', 'Actualmente no ofrecemos envíos a este país.');
+                    const card = document.querySelector(`.country-card[data-country="${country}"]`);
+                    if (card) {
+                        card.classList.add('disabled');
+                        card.style.pointerEvents = 'none';
+                        card.style.cursor = 'not-allowed';
+                        card.style.opacity = '0.6';
+                    }
                     return;
                 }
 
@@ -1341,7 +1350,7 @@
                 countryCards.forEach(card => {
                     card.classList.remove('selected');
                 });
-                
+
                 // Seleccionar el nuevo país
                 document.querySelector(`.country-card[data-country="${country}"]`).classList.add('selected');
                 selectedCountry = country;
@@ -2668,11 +2677,11 @@
             // 1. Selección de país
             countryCards.forEach(card => {
                 const country = card.getAttribute('data-country');
-                if (country === 'colombia' || country === 'venezuela') {
-                    card.addEventListener('click', () => {
-                        selectCountry(country);
-                    });
-                }
+                card.style.pointerEvents = 'auto';
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', () => {
+                    selectCountry(country);
+                });
             });
 
             // 2. Selección de categoría
