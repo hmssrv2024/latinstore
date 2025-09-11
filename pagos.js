@@ -2721,7 +2721,6 @@
                 updateOrderSummary();
                 updateSelectionSummary();
                 updateContinueToPaymentBtnState();
-                updateContinueToPaymentBtnState();
 
                 const deliveryMessage = `Haz la compra hoy y recibe tu equipo el ${formatDate(estimatedDeliveryDate)}.`;
                 showToast('info', 'Envío seleccionado', `${option.querySelector('.shipping-title').textContent.trim()}. ${deliveryMessage}`);
