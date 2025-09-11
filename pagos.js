@@ -1403,6 +1403,7 @@
 
                 autoAddPreselectedProduct();
             }
+            window.selectCountry = selectCountry;
 
             // Función para seleccionar una categoría
             function selectCategory(category) {
