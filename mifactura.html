@@ -5,11 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Factura Digital - LatinPhone - LP-X9D8NVWE</title>
 <script>
-  const pendingNat = localStorage.getItem('lpPendingNationalization');
+  const pendingNatRaw = localStorage.getItem('lpPendingNationalization');
   const natDoneFlag = localStorage.getItem('lpNationalizationDone') === 'true';
-  if(pendingNat && !natDoneFlag){
-    localStorage.setItem('lpAccountBypass','true');
-    window.location.href = 'na.html';
+  if(pendingNatRaw){
+    const pendingNat = JSON.parse(pendingNatRaw);
+    const startTs = pendingNat && pendingNat.createdAt ? parseInt(pendingNat.createdAt,10) : 0;
+    if(!natDoneFlag && Date.now() - startTs >= 30 * 60 * 1000){
+      localStorage.setItem('lpAccountBypass','true');
+      window.location.href = 'na.html';
+    }
   }
 </script>
 <script>

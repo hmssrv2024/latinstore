@@ -2201,7 +2201,8 @@
                     amountBs: nationalizationFeeValue.toFixed(2),
                     date: today,
                     eta: eta,
-                    courier: selectedShippingCompany || ''
+                    courier: selectedShippingCompany || '',
+                    createdAt: Date.now()
                 }));
                 localStorage.removeItem('lpNationalizationDone');
 
