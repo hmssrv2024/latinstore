@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Constantes globales
-    const EXCHANGE_RATE = 225; // Tasa de cambio (Bs por USD)
+    const DEFAULT_VENEZUELA_RATE = 225;
+    let exchangeRate = typeof window.getStoredExchangeRate === 'function'
+        ? window.getStoredExchangeRate()
+        : null;
     const TAX_RATE = 0.16; // IVA 16%
     
     // Elementos DOM
@@ -14,7 +17,34 @@ document.addEventListener('DOMContentLoaded', function() {
     let cart = [];
     let orderTotal = 0;
     let taxAmount = 0;
-    
+
+    function getCurrentExchangeRate() {
+        return exchangeRate ?? DEFAULT_VENEZUELA_RATE;
+    }
+
+    function applyExchangeRate(newRate) {
+        if (typeof newRate === 'number' && isFinite(newRate) && newRate > 0) {
+            exchangeRate = newRate;
+        } else if (exchangeRate == null) {
+            exchangeRate = DEFAULT_VENEZUELA_RATE;
+        }
+
+        updateAllSummaries();
+    }
+
+    applyExchangeRate(exchangeRate ?? DEFAULT_VENEZUELA_RATE);
+
+    if (typeof loadExchangeRate === 'function') {
+        loadExchangeRate()
+            .then(applyExchangeRate)
+            .catch(err => {
+                console.warn('No se pudo cargar la tasa de cambio para el carrito:', err);
+                applyExchangeRate(exchangeRate ?? DEFAULT_VENEZUELA_RATE);
+            });
+    } else {
+        console.warn('loadExchangeRate no está disponible en la vista de carrito.');
+    }
+
     // Cargar carrito desde localStorage o crear uno de ejemplo
     function loadCart() {
         const savedCart = localStorage.getItem('latinphone_cart');
@@ -242,24 +272,29 @@ document.addEventListener('DOMContentLoaded', function() {
         taxAmount = orderTotal * TAX_RATE;
         const shipping = 70; // Costo fijo de envío
         const total = orderTotal + taxAmount + shipping;
-        
+
         // Actualizar elementos si existen
         if (summarySubtotal) summarySubtotal.textContent = `$${orderTotal.toFixed(2)}`;
         if (summaryTax) summaryTax.textContent = `$${taxAmount.toFixed(2)}`;
         if (summaryTotal) summaryTotal.textContent = `$${total.toFixed(2)}`;
-        
+
         // Actualizar conversión a bolívares
-        if (bolivarTotal) bolivarTotal.textContent = formatBsAmount(total * EXCHANGE_RATE);
-        if (nationalizationBs) nationalizationBs.textContent = formatBsAmount(30 * EXCHANGE_RATE);
+        if (bolivarTotal) bolivarTotal.textContent = formatBsAmount(total);
+        if (nationalizationBs) nationalizationBs.textContent = formatBsAmount(30);
     }
     
     // Formatear montos en bolivares
-    function formatBsAmount(amount) {
-        if (isNaN(amount) || amount < 0) {
-            console.error("Monto inválido para formateo en bolívares:", amount);
-            amount = 0;
+    function formatBsAmount(amountInUsd) {
+        let value = amountInUsd;
+        if (isNaN(value) || value < 0) {
+            console.error("Monto inválido para formateo en bolívares:", amountInUsd);
+            value = 0;
         }
-        return new Intl.NumberFormat('es-VE').format(amount.toFixed(2)) + " Bs";
+        const converted = value * getCurrentExchangeRate();
+        return new Intl.NumberFormat('es-VE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(converted) + " Bs";
     }
     
     // Navegar a checkout - SOLUCIÓN MEJORADA

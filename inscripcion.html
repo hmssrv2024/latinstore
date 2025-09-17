@@ -1894,6 +1894,7 @@
         </div>
     </div>
 
+    <script src="exchange-rate.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize variables
@@ -1905,9 +1906,38 @@
             let totalPrice = 120;
             let hasDiscount = false;
             let discountAmount = 0;
-            let exchangeRate = 110; // 110 bs por dólar
+            const DEFAULT_VENEZUELA_RATE = 225;
+            let exchangeRate = typeof window.getStoredExchangeRate === 'function'
+                ? window.getStoredExchangeRate()
+                : null;
+            if (exchangeRate == null || !isFinite(exchangeRate) || exchangeRate <= 0) {
+                exchangeRate = DEFAULT_VENEZUELA_RATE;
+            }
             let selectedPaymentMethod = null;
             let fileUploaded = false;
+
+            function applyExchangeRate(newRate) {
+                if (typeof newRate === 'number' && isFinite(newRate) && newRate > 0) {
+                    exchangeRate = newRate;
+                } else if (!exchangeRate || !isFinite(exchangeRate) || exchangeRate <= 0) {
+                    exchangeRate = DEFAULT_VENEZUELA_RATE;
+                }
+
+                updateOrderSummary();
+            }
+
+            applyExchangeRate(exchangeRate);
+
+            if (typeof loadExchangeRate === 'function') {
+                loadExchangeRate()
+                    .then(applyExchangeRate)
+                    .catch(err => {
+                        console.warn('No se pudo actualizar la tasa de cambio para inscripciones:', err);
+                        applyExchangeRate(exchangeRate ?? DEFAULT_VENEZUELA_RATE);
+                    });
+            } else {
+                console.warn('loadExchangeRate no está disponible en la página de inscripción.');
+            }
             
             // DOM Elements
             const form = document.getElementById('inscription-form');

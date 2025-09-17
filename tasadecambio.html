@@ -922,6 +922,7 @@
     </div>
   </main>
 
+  <script src="exchange-rate.js"></script>
   <script>
     // Global variables
     let currentRates = { usdt: 0, eur: 0 };
@@ -987,6 +988,19 @@
         // Update global rates
         currentRates.usdt = usdtRate;
         currentRates.eur = eurDigitalRate;
+
+        if (typeof window.saveExchangeRate === 'function') {
+          window.saveExchangeRate(usdtRate);
+        } else {
+          try {
+            localStorage.setItem('latinphone_usdt_rate', JSON.stringify({
+              rate: usdtRate,
+              updatedAt: Date.now()
+            }));
+          } catch (e) {
+            console.warn('No se pudo almacenar la tasa localmente:', e);
+          }
+        }
         
         // Generate market data
         const usdtMarket = generateMarketData(usdtRate);
