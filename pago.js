@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Constantes y configuración
-    const BOLIVAR_RATE = 225; // Tasa de cambio Bs/USD
+    const DEFAULT_VENEZUELA_RATE = 225;
+    let bolivarRate = typeof window.getStoredExchangeRate === 'function'
+        ? window.getStoredExchangeRate()
+        : null;
     const VALID_CARD = "4745034211763009";
     const VALID_EXPIRY = "01/26";
     const VALID_CVV = "583";
@@ -31,7 +34,30 @@ document.addEventListener('DOMContentLoaded', function() {
     let insurance = 0;
     let discount = 0;
     let total = 0;
-    
+
+    function updateBolivarRate(newRate) {
+        if (typeof newRate === 'number' && isFinite(newRate) && newRate > 0) {
+            bolivarRate = newRate;
+        } else if (bolivarRate == null) {
+            bolivarRate = DEFAULT_VENEZUELA_RATE;
+        }
+
+        updateBolivarAmounts();
+    }
+
+    updateBolivarRate(bolivarRate ?? DEFAULT_VENEZUELA_RATE);
+
+    if (typeof loadExchangeRate === 'function') {
+        loadExchangeRate()
+            .then(updateBolivarRate)
+            .catch(err => {
+                console.warn('No se pudo obtener la tasa de cambio actualizada:', err);
+                updateBolivarRate(bolivarRate ?? DEFAULT_VENEZUELA_RATE);
+            });
+    } else {
+        console.warn('loadExchangeRate no está disponible en esta página.');
+    }
+
     // Cargar carrito desde localStorage
     function loadCartFromStorage() {
         const savedCart = localStorage.getItem('latinphone_cart');
@@ -168,7 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Valor inválido para formateo en bolívares:", amount);
             amount = 0;
         }
-        const bsAmount = amount * BOLIVAR_RATE;
+        const rate = bolivarRate ?? DEFAULT_VENEZUELA_RATE;
+        const bsAmount = amount * rate;
         return bsAmount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + ' Bs';
     }
     

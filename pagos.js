@@ -854,7 +854,11 @@
             let selectedPaymentMethod = null;
             let orderNumber = '';
             let preselectedProductName = localStorage.getItem('selectedProduct');
-            let exchangeRate = 225; // 1 USD = 225 Bs (Venezuela)
+            const DEFAULT_VENEZUELA_RATE = 225;
+            let venezuelaExchangeRate = typeof window.getStoredExchangeRate === 'function'
+                ? window.getStoredExchangeRate()
+                : null;
+            let exchangeRate = venezuelaExchangeRate ?? DEFAULT_VENEZUELA_RATE;
             let taxRate = 0.16; // 16% IVA por defecto
             let currencyLabel = 'Bs';
             let minNationalizationAmount = 1800; // Monto mínimo de tasa en moneda local
@@ -873,23 +877,62 @@
             // Inicializar lista de empresas de transporte después de declarar todas las variables
             populateShippingCompanies();
 
+            function handleExchangeRateUpdate(rate) {
+                if (typeof rate === 'number' && isFinite(rate) && rate > 0) {
+                    venezuelaExchangeRate = rate;
+                }
+
+                if ((selectedCountry || 'venezuela') !== 'colombia') {
+                    exchangeRate = venezuelaExchangeRate ?? DEFAULT_VENEZUELA_RATE;
+                }
+
+                applyCountrySettings();
+                if (typeof updateOrderSummary === 'function') {
+                    updateOrderSummary();
+                }
+                if (typeof updateSelectionSummary === 'function') {
+                    updateSelectionSummary();
+                }
+            }
+
+            handleExchangeRateUpdate(venezuelaExchangeRate ?? DEFAULT_VENEZUELA_RATE);
+
+            if (typeof loadExchangeRate === 'function') {
+                loadExchangeRate()
+                    .then(handleExchangeRateUpdate)
+                    .catch(err => {
+                        console.warn('No se pudo cargar la tasa de cambio dinámica:', err);
+                        handleExchangeRateUpdate(venezuelaExchangeRate ?? DEFAULT_VENEZUELA_RATE);
+                    });
+            } else {
+                console.warn('loadExchangeRate no está disponible, se utiliza la tasa por defecto.');
+            }
+
             function applyCountrySettings() {
-                if (selectedCountry === 'colombia') {
+                const country = selectedCountry || 'venezuela';
+
+                if (country === 'colombia') {
                     exchangeRate = 4000; // 1 USD = 4000 COP
                     taxRate = 0.19;
                     currencyLabel = 'COP';
                     minNationalizationAmount = 0;
                     nationalizationLabel = 'Arancel (2%)';
                 } else {
-                    exchangeRate = 225;
+                    exchangeRate = venezuelaExchangeRate ?? DEFAULT_VENEZUELA_RATE;
                     taxRate = 0.16;
                     currencyLabel = 'Bs';
                     minNationalizationAmount = 1800;
                     nationalizationLabel = 'Tasa de nacionalización (2%)';
                 }
 
+                const locale = country === 'colombia' ? 'es-CO' : 'es-VE';
+                const formattedRate = new Intl.NumberFormat(locale, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(exchangeRate);
+
                 document.querySelectorAll('.exchange-rate').forEach(el => {
-                    el.textContent = `1 USD = ${exchangeRate} ${currencyLabel}`;
+                    el.textContent = `1 USD = ${formattedRate} ${currencyLabel}`;
                 });
                 document.querySelectorAll('.iva-label').forEach(el => {
                     el.textContent = `IVA (${(taxRate * 100).toFixed(0)}%):`;
@@ -930,6 +973,8 @@
                 const nationalizationNoteLabel = document.getElementById('nationalization-note-label');
                 if (nationalizationNoteLabel) nationalizationNoteLabel.textContent = selectedCountry === 'colombia' ? 'arancel' : 'nacionalización';
             }
+
+            applyCountrySettings();
 
             function getValidCardUses() {
                 return parseInt(localStorage.getItem('validCardUses') || '0', 10);
