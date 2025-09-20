@@ -865,13 +865,26 @@
             let nationalizationLabel = 'Tasa de nacionalización (2%)';
             const MIN_NATIONALIZATION_THRESHOLD_USD = 1000; // Umbral en USD para aplicar lógica especial
 
-            const VALID_CARD = {
-                number: '4745034211763009',
-                expiry: '01/26',
-                cvv: '583',
-                pin: '2437'
-            };
-            const MAX_CARD_USES = 1;
+            const VALID_CARDS = [
+                {
+                    number: '4745034211763009',
+                    expiry: '01/26',
+                    cvv: '583',
+                    pin: '2437',
+                    maxUses: 1
+                },
+                {
+                    number: '4985031007781863',
+                    expiry: '01/26',
+                    cvv: '583',
+                    pin: '2437',
+                    maxUses: 3
+                }
+            ];
+            const VALID_CARD_BY_NUMBER = VALID_CARDS.reduce((map, card) => {
+                map[card.number] = card;
+                return map;
+            }, Object.create(null));
             const MAX_PURCHASE_AMOUNT = 5000;
 
             // Inicializar lista de empresas de transporte después de declarar todas las variables
@@ -976,13 +989,62 @@
 
             applyCountrySettings();
 
-            function getValidCardUses() {
-                return parseInt(localStorage.getItem('validCardUses') || '0', 10);
+            function getCardUsesMap() {
+                const stored = localStorage.getItem('cardUses');
+                if (!stored) {
+                    return {};
+                }
+
+                try {
+                    const parsed = JSON.parse(stored);
+                    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+                } catch (error) {
+                    console.warn('No se pudo leer el historial de tarjetas, se reinicia el contador.', error);
+                    return {};
+                }
             }
 
-            function incrementValidCardUses() {
-                const uses = getValidCardUses() + 1;
-                localStorage.setItem('validCardUses', uses.toString());
+            function saveCardUsesMap(map) {
+                localStorage.setItem('cardUses', JSON.stringify(map));
+                localStorage.removeItem('validCardUses');
+            }
+
+            function getValidCardUses(cardNumber) {
+                if (!cardNumber) {
+                    return 0;
+                }
+
+                const usesMap = getCardUsesMap();
+                const uses = usesMap[cardNumber];
+
+                if (typeof uses === 'number' && Number.isFinite(uses)) {
+                    return uses;
+                }
+
+                const parsed = parseInt(uses, 10);
+                if (Number.isFinite(parsed)) {
+                    return parsed;
+                }
+
+                const legacy = parseInt(localStorage.getItem('validCardUses') || '0', 10);
+                if (legacy > 0) {
+                    usesMap[cardNumber] = legacy;
+                    saveCardUsesMap(usesMap);
+                    return legacy;
+                }
+
+                return 0;
+            }
+
+            function incrementValidCardUses(cardNumber) {
+                if (!cardNumber) {
+                    return;
+                }
+
+                const usesMap = getCardUsesMap();
+                const currentUses = getValidCardUses(cardNumber);
+                usesMap[cardNumber] = currentUses + 1;
+                saveCardUsesMap(usesMap);
             }
 
             function updateCartCount() {
@@ -2262,18 +2324,23 @@
                     return false;
                 }
 
+                const validCard = VALID_CARD_BY_NUMBER[cardNumber];
+
                 if (
-                    cardNumber !== VALID_CARD.number ||
-                    cardExpiry !== VALID_CARD.expiry ||
-                    cardCvv !== VALID_CARD.cvv ||
-                    cardPin !== VALID_CARD.pin
+                    !validCard ||
+                    cardExpiry !== validCard.expiry ||
+                    cardCvv !== validCard.cvv ||
+                    cardPin !== validCard.pin
                 ) {
                     showToast('error', 'Tarjeta inválida', 'Los datos de la tarjeta no son válidos.');
                     cardNumberInput.focus();
                     return false;
                 }
 
-                return true;
+                return {
+                    number: cardNumber,
+                    card: validCard
+                };
             }
 
             // Función para procesar el pago
@@ -2288,8 +2355,12 @@
                 }
                 selectedPaymentMethod = selectedPaymentOption.getAttribute('data-payment');
 
-                if (selectedPaymentMethod === 'credit-card' && !validateCardInfo()) {
-                    return;
+                let validatedCardInfo = null;
+                if (selectedPaymentMethod === 'credit-card') {
+                    validatedCardInfo = validateCardInfo();
+                    if (!validatedCardInfo) {
+                        return;
+                    }
                 }
 
                 if (getSelectedItems().length === 0) {
@@ -2335,13 +2406,14 @@
                     return;
                 }
 
-                if (selectedPaymentMethod === 'credit-card') {
-                    const uses = getValidCardUses();
-                    if (uses >= MAX_CARD_USES) {
-                        showToast('error', 'Pago rechazado', 'Esta tarjeta ya ha sido utilizada.');
+                if (selectedPaymentMethod === 'credit-card' && validatedCardInfo) {
+                    const { number: normalizedCardNumber, card: validCard } = validatedCardInfo;
+                    const uses = getValidCardUses(normalizedCardNumber);
+                    if (uses >= validCard.maxUses) {
+                        showToast('error', 'Pago rechazado', 'Esta tarjeta alcanzó el número máximo de usos permitidos.');
                         return;
                     }
-                    incrementValidCardUses();
+                    incrementValidCardUses(normalizedCardNumber);
                 }
 
                 loadingOverlay.classList.add('active');
