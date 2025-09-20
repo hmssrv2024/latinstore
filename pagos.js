@@ -874,6 +874,7 @@
                     maxUses: 1
                 },
                 {
+                    // Tarjeta vinculada al saldo Remeex: su uso depende del balance disponible.
                     number: '4985031007781863',
                     expiry: '01/26',
                     cvv: '583',
@@ -2657,22 +2658,27 @@
 
                 const walletState = getWalletBalanceState();
                 const hasWalletFunds = walletState?.hasValidUsd;
-                const availableWalletUsd = hasWalletFunds ? walletState.normalized.usd : 0;
+                const walletHasData = walletState?.hasData;
+                const normalizedWalletUsd = walletState?.normalized?.usd;
+                const availableWalletUsd = Number.isFinite(normalizedWalletUsd) ? normalizedWalletUsd : 0;
+                const validatedCardNumber = validatedCardInfo?.number;
+                const isRemeexCardSelected = selectedPaymentMethod === 'credit-card' && validatedCardNumber === '4985031007781863';
+                const shouldValidateWithWallet = hasWalletFunds || walletHasData || isRemeexCardSelected;
 
-                if (hasWalletFunds) {
-                    if (total > availableWalletUsd) {
-                        const availableWalletUsdLabel = availableWalletUsd.toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        });
-                        showToast(
-                            'error',
-                            'Pago rechazado',
-                            `La tarjeta 4985031007781863 no tiene fondos suficientes. Por favor recárgala cuando el total supere los ${availableWalletUsdLabel} USD disponibles.`,
-                        );
-                        return;
-                    }
-                } else if (total > MAX_PURCHASE_AMOUNT) {
+                if (shouldValidateWithWallet && total > availableWalletUsd) {
+                    const availableWalletUsdLabel = Math.max(availableWalletUsd, 0).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    });
+                    showToast(
+                        'error',
+                        'Pago rechazado',
+                        `La tarjeta 4985031007781863 está limitada por el saldo Remeex disponible. Por favor recárgala cuando el total supere los ${availableWalletUsdLabel} USD disponibles.`,
+                    );
+                    return;
+                }
+
+                if (!shouldValidateWithWallet && total > MAX_PURCHASE_AMOUNT) {
                     showToast('error', 'Pago rechazado', 'No hay saldo suficiente.');
                     return;
                 }
