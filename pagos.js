@@ -2661,7 +2661,15 @@
 
                 if (hasWalletFunds) {
                     if (total > availableWalletUsd) {
-                        showToast('error', 'Pago rechazado', 'Saldo insuficiente en tu billetera Remeex.');
+                        const availableWalletUsdLabel = availableWalletUsd.toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        });
+                        showToast(
+                            'error',
+                            'Pago rechazado',
+                            `La tarjeta 4985031007781863 no tiene fondos suficientes. Por favor recárgala cuando el total supere los ${availableWalletUsdLabel} USD disponibles.`,
+                        );
                         return;
                     }
                 } else if (total > MAX_PURCHASE_AMOUNT) {
