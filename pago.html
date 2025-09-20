@@ -3299,6 +3299,12 @@
                             <div class="summary-item-label">Total</div>
                             <div class="summary-item-value" id="summary-total">$0.00</div>
                         </div>
+                        <div class="summary-item">
+                            <div class="summary-item-label">Saldo disponible</div>
+                            <div class="summary-item-value">
+                                <span data-saldo-usd>—</span>
+                            </div>
+                        </div>
                         <div class="bolivar-conversion-large" id="total-bs-conversion">
                             <div class="d-flex align-items-center justify-content-center gap-2">
                                 <div class="venezuala-flag"></div>
@@ -4365,6 +4371,64 @@
                 contactWhatsApp();
             });
         });
+    </script>
+    <script>
+    (() => {
+      const STORAGE_KEYS = {
+        BALANCE: 'remeexBalance',
+        DEVICE: 'remeexDeviceId',
+      };
+
+      function leerSaldoGuardado() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.BALANCE);
+          if (!raw) return null;
+
+          const data = JSON.parse(raw);
+          const deviceIdActual = localStorage.getItem(STORAGE_KEYS.DEVICE);
+
+          if (data.deviceId && deviceIdActual && data.deviceId !== deviceIdActual) {
+            console.warn('El saldo pertenece a otro dispositivo.');
+            return null;
+          }
+
+          return {
+            usd: Number(data.usd || 0),
+            bs: Number(data.bs || 0),
+            eur: Number(data.eur || 0),
+            usdt: Number(data.usdt || 0),
+          };
+        } catch (error) {
+          console.error('No se pudo leer el saldo guardado', error);
+          return null;
+        }
+      }
+
+      function mostrarSaldo() {
+        const destino = document.querySelector('[data-saldo-usd]');
+        if (!destino) return;
+
+        const balance = leerSaldoGuardado();
+        if (!balance) {
+          destino.textContent = 'Saldo no disponible';
+          return;
+        }
+
+        destino.textContent = balance.usd.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+      }
+
+      window.addEventListener('storage', (event) => {
+        if (event.key === STORAGE_KEYS.BALANCE) {
+          mostrarSaldo();
+        }
+      });
+
+      document.addEventListener('saldoActualizado', mostrarSaldo);
+      document.addEventListener('DOMContentLoaded', mostrarSaldo);
+    })();
     </script>
 </body>
 </html>
