@@ -2766,7 +2766,8 @@
                     localStorage.setItem('nationalizationStart', Date.now().toString());
                     setTimeout(startNationalization, 1800000);
                 } catch (error) {
-                    showToast('error', 'Error', 'Ocurrió un error al generar el mensaje de WhatsApp.');
+                    console.error(error);
+                    showToast('error', 'Error', 'Ocurrió un error al procesar la orden.');
                 } finally {
                     setTimeout(() => {
                         loadingOverlay.classList.remove('active');
