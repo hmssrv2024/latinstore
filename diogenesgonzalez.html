@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago de Nacionalización - LatinPhone Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4ff 0%, #d4e2fc 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { margin: 0; font-size: 28px; }
+        .header p { margin: 8px 0 0; opacity: 0.95; }
+
+        .content {
+            padding: 40px;
+        }
+        .step {
+            margin-bottom: 35px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+        .btn {
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn:hover { background: #1d4ed8; }
+
+        .details-box {
+            background: #f8fafc;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            display: none;
+        }
+        .payment-info {
+            background: #ecfdf5;
+            border-left: 6px solid #10b981;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+        .copy-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-left: 10px;
+        }
+        .success {
+            text-align: center;
+            padding: 40px;
+            display: none;
+            color: #065f46;
+        }
+        .success i {
+            font-size: 80px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        .file-upload {
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 20px 0;
+        }
+        .file-upload:hover {
+            border-color: #3b82f6;
+            background: #f8faff;
+        }
+        .file-name {
+            margin-top: 15px;
+            font-weight: 600;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Pago de Nacionalización</h1>
+        <p>LatinPhone Store LLC • Orden LP-CWVSZA23</p>
+    </div>
+
+    <div class="content" id="formSection">
+
+        <!-- Paso 1: Ingresar cédula -->
+        <div class="step" id="cedulaStep">
+            <label for="cedula">Ingresa tu número de cédula (sin puntos ni guiones)</label>
+            <input type="text" id="cedula" placeholder="Ejemplo: 19804849" maxlength="10">
+            <br><br>
+            <button class="btn" onclick="verificarCedula()">Buscar mi pedido</button>
+        </div>
+
+        <!-- Paso 2: Detalles del pago (se muestra solo si la cédula es correcta) -->
+        <div id="pagoSection" style="display:none;">
+
+            <div class="details-box">
+                <h2 style="margin-top:0; color:#1e40af;">Tu pedido encontrado ✅</h2>
+                <p><strong>Cliente:</strong> Diógenes Dionicio González Ynfante</p>
+                <p><strong>Orden:</strong> LP-CWVSZA23</p>
+                <p><strong>Producto:</strong> iPhone 11 64GB Negro</p>
+                <h3 style="color:#dc2626;">Monto pendiente por nacionalización: <strong>7.955,27 Bs</strong></h3>
+            </div>
+
+            <div class="payment-info">
+                <h3>Realiza el Pago Móvil con estos datos:</h3>
+                <p><strong>Banco:</strong> Banca Amiga</p>
+                <p><strong>Teléfono:</strong> 0414-427-2486 <button class="copy-btn" onclick="copiar('04144272486')">Copiar</button></p>
+                <p><strong>Cédula:</strong> V-20.639.785 <button class="copy-btn" onclick="copiar('20639785')">Copiar</button></p>
+                <p><strong>Monto exacto:</strong> 7.955,27 <button class="copy-btn" onclick="copiar('7955.27')">Copiar monto</button></p>
+                <p><strong>Concepto (OBLIGATORIO):</strong> <span style="background:#fee2e2;padding:5px 10px;border-radius:6px;font-weight:700;">LP-CWVSZA23</span> 
+                <button class="copy-btn" onclick="copiar('LP-CWVSZA23')">Copiar concepto</button></p>
+            </div>
+
+            <h3>Adjunta el comprobante de pago</h3>
+            <div class="file-upload" onclick="document.getElementById('comprobante').click()">
+                <i class="fas fa-cloud-upload-alt fa-3x" style="color:#94a3b8;"></i>
+                <p>Haz clic aquí para subir captura o PDF del comprobante</p>
+                <input type="file" id="comprobante" accept="image/*,.pdf" style="display:none" onchange="mostrarArchivo(this)">
+                <div class="file-name" id="nombreArchivo"></div>
+            </div>
+
+            <button class="btn" id="enviarBtn" onclick="enviarComprobante()" disabled>
+                <i class="fas fa-paper-plane"></i> Enviar comprobante y activar entrega
+            </button>
+
+        </div>
+
+        <!-- Mensaje de éxito -->
+        <div class="success" id="exitoSection">
+            <i class="fas fa-check-circle"></i>
+            <h2>¡Comprobante recibido correctamente!</h2>
+            <p>Gracias <strong>Diógenes</strong>, hemos recibido tu pago de nacionalización.</p>
+            <p>En menos de 24 horas procesaremos el comprobante y tu iPhone 11 será liberado para entrega inmediata por TEALCA.</p>
+            <p>Te avisaremos por WhatsApp cuando salga hacia San Félix.</p>
+            <br>
+            <p style="font-size:18px;color:#1e40af;"><strong>¡Ya casi tienes tu teléfono nuevo!</strong> 🚚📱</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function verificarCedula() {
+    const cedula = document.getElementById('cedula').value.trim();
+    if (cedula === "19804849" || cedula === "V19804849" || cedula === "19804849") {
+        document.getElementById('cedulaStep').style.display = "none";
+        document.getElementById('pagoSection').style.display = "block";
+    } else {
+        alert("Cédula no encontrada. Verifica que hayas escrito correctamente tu número de cédula sin puntos ni guiones.");
+    }
+}
+
+function copiar(texto) {
+    navigator.clipboard.writeText(texto);
+    alert("¡Copiado al portapapeles: " + texto + "!");
+}
+
+let archivoSubido = false;
+
+function mostrarArchivo(input) {
+    if (input.files && input.files[0]) {
+        document.getElementById('nombreArchivo').innerHTML = "Archivo seleccionado: " + input.files[0].name;
+        document.getElementById('enviarBtn').disabled = false;
+        archivoSubido = true;
+    }
+}
+
+function enviarComprobante() {
+    if (!archivoSubido) {
+        alert("Por favor adjunta el comprobante");
+        return;
+    }
+
+    // Simulación de envío exitoso
+    document.getElementById('pagoSection').style.display = "none";
+    document.getElementById('exitoSection').style.display = "block";
+}
+</script>
+
+</body>
+</html>
