@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>LatinPhone • Global Live Tracking</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Three.js for 3D Globe -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- GSAP for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  
+  <style>
+    :root {
+      --bg-primary: #030712;
+      --bg-secondary: #0f172a;
+      --bg-card: rgba(15, 23, 42, 0.8);
+      --bg-glass: rgba(15, 23, 42, 0.6);
+      --primary: #06b6d4;
+      --primary-glow: rgba(6, 182, 212, 0.5);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.5);
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border: rgba(148, 163, 184, 0.1);
+      --gradient-primary: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
+      --gradient-accent: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      --shadow-glow: 0 0 60px rgba(6, 182, 212, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+
+    /* ===== SPLASH SCREEN ===== */
+    #splashScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #splashScreen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .splash-logo {
+      width: 120px;
+      height: 120px;
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .splash-ring {
+      position: absolute;
+      inset: 0;
+      border: 3px solid transparent;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spinRing 1.5s linear infinite;
+    }
+
+    .splash-ring:nth-child(2) {
+      inset: 10px;
+      border-top-color: var(--accent);
+      animation-duration: 2s;
+      animation-direction: reverse;
+    }
+
+    .splash-ring:nth-child(3) {
+      inset: 20px;
+      border-top-color: #8b5cf6;
+      animation-duration: 2.5s;
+    }
+
+    .splash-icon {
+      position: absolute;
+      inset: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .splash-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--primary);
+      filter: drop-shadow(0 0 20px var(--primary-glow));
+    }
+
+    .splash-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes spinRing {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* ===== LOGIN SCREEN ===== */
+    #loginScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #loginScreen.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #loginScreen.exit {
+      transform: scale(1.1);
+      opacity: 0;
+    }
+
+    .login-bg-globe {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .login-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .login-logo {
+      width: 100px;
+      height: 100px;
+      background: var(--gradient-primary);
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-glow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-logo::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .login-logo svg {
+      width: 50px;
+      height: 50px;
+      fill: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .login-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    .login-title {
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-align: center;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .login-subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 320px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .input-group {
+      width: 100%;
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 20px 20px 20px 56px;
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      outline: none;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+    }
+
+    .input-field:focus + .input-icon,
+    .input-field:not(:placeholder-shown) + .input-icon {
+      color: var(--primary);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 20px;
+      background: var(--gradient-primary);
+      border: none;
+      border-radius: var(--radius-lg);
+      color: white;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 10px 40px rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 50px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+
+    .btn-primary:hover::before {
+      transform: translateX(100%);
+    }
+
+    .login-footer {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .login-footer svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ===== MAIN APP ===== */
+    #app {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease 0.3s;
+    }
+
+    #app.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      padding: 16px 20px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 100;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-avatar {
+      width: 44px;
+      height: 44px;
+      background: var(--gradient-accent);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .header-info h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .header-info p {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: livePulse 2s infinite;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    @keyframes livePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===== 3D GLOBE CONTAINER ===== */
+    #globeContainer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    #globeCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ===== GLOBE OVERLAY CONTROLS ===== */
+    .globe-controls {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .globe-btn {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: var(--text-secondary);
+    }
+
+    .globe-btn:hover {
+      background: var(--bg-card);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .globe-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* ===== STATUS CARD (FLOATING) ===== */
+    .status-card {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 80px;
+      z-index: 50;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (min-width: 768px) {
+      .status-card {
+        max-width: 380px;
+        right: auto;
+      }
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .product-image {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .product-info h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .product-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .product-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: rgba(6, 182, 212, 0.15);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .status-progress {
+      margin-bottom: 16px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .progress-header span:first-child {
+      color: var(--text-secondary);
+    }
+
+    .progress-header span:last-child {
+      font-weight: 600;
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gradient-primary);
+      border-radius: 100px;
+      position: relative;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
+      animation: progressShine 2s infinite;
+    }
+
+    @keyframes progressShine {
+      0% { opacity: 0; transform: translateX(-30px); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(10px); }
+    }
+
+    .status-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 12px 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-md);
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 4px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ===== BOTTOM SHEET ===== */
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.5);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      max-height: 70vh;
+      overflow: hidden;
+    }
+
+    .bottom-sheet.collapsed {
+      transform: translateY(calc(100% - 140px));
+    }
+
+    .sheet-handle {
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .sheet-handle-bar {
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100px;
+    }
+
+    .sheet-header {
+      padding: 0 24px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sheet-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .sheet-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .view-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+    }
+
+    .view-btn {
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .view-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .sheet-content {
+      padding: 0 24px 24px;
+      overflow-y: auto;
+      max-height: calc(70vh - 100px);
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .timeline-progress {
+      position: absolute;
+      left: 15px;
+      top: 0;
+      width: 2px;
+      background: var(--gradient-accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: height 1s ease;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 32px;
+      opacity: 0.4;
+      transition: opacity 0.5s;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-item.completed,
+    .timeline-item.active {
+      opacity: 1;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: -40px;
+      width: 32px;
+      height: 32px;
+      background: var(--bg-secondary);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s;
+    }
+
+    .timeline-item.completed .timeline-marker {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .timeline-item.active .timeline-marker {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      animation: markerPulse 2s infinite;
+    }
+
+    @keyframes markerPulse {
+      0%, 100% { box-shadow: 0 0 20px var(--primary-glow); }
+      50% { box-shadow: 0 0 40px var(--primary-glow), 0 0 60px var(--primary-glow); }
+    }
+
+    .timeline-marker svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    .timeline-item.completed .timeline-marker svg,
+    .timeline-item.active .timeline-marker svg {
+      stroke: white;
+    }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      transition: all 0.3s;
+    }
+
+    .timeline-item.active .timeline-content {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    .timeline-location {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline-location .flag {
+      font-size: 18px;
+    }
+
+    .timeline-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .timeline-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 12px;
+    }
+
+    .timeline-time {
+      color: var(--primary);
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .timeline-duration {
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ===== COORDINATES VIEW ===== */
+    .coords-view {
+      display: none;
+    }
+
+    .coords-view.active {
+      display: block;
+    }
+
+    .coords-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .coords-title {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .coords-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 500;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .coords-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .coord-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .coord-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .coord-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* ===== MOBILE OPTIMIZATIONS ===== */
+    @media (max-width: 480px) {
+      .header {
+        padding: 12px 16px;
+      }
+
+      .header-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+      }
+
+      .header-info h1 {
+        font-size: 14px;
+      }
+
+      .live-indicator {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .status-card {
+        top: 12px;
+        left: 12px;
+        right: 60px;
+        padding: 16px;
+      }
+
+      .product-image {
+        width: 56px;
+        height: 56px;
+      }
+
+      .product-info h3 {
+        font-size: 13px;
+      }
+
+      .stat-item {
+        padding: 8px 4px;
+      }
+
+      .stat-value {
+        font-size: 14px;
+      }
+
+      .globe-controls {
+        top: 12px;
+        right: 12px;
+      }
+
+      .globe-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sheet-content {
+        padding: 0 16px 16px;
+      }
+
+      .timeline {
+        padding-left: 36px;
+      }
+
+      .timeline-marker {
+        left: -36px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-up {
+      animation: slideUp 0.5s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    /* ===== VEHICLE MARKER ===== */
+    .vehicle-info {
+      position: absolute;
+      bottom: 160px;
+      left: 20px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .vehicle-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vehicle-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: white;
+    }
+
+    .vehicle-details h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .vehicle-details p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .vehicle-speed {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ===== ERROR TOAST ===== */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--danger);
+      color: white;
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      font-weight: 500;
+      box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== SPLASH SCREEN ===== -->
+  <div id="splashScreen">
+    <div class="splash-logo">
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
+      <div class="splash-ring"></div>
+      <div class="splash-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </div>
+    </div>
+    <p class="splash-text">Cargando sistema</p>
+  </div>
+
+  <!-- ===== LOGIN SCREEN ===== -->
+  <div id="loginScreen">
+    <canvas id="loginGlobeCanvas" class="login-bg-globe"></canvas>
+    
+    <div class="login-content">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </div>
+      
+      <div class="login-badge">
+        <span class="login-badge-dot"></span>
+        Sistema de Rastreo Global
+      </div>
+      
+      <h1 class="login-title">LatinPhone Tracking</h1>
+      <p class="login-subtitle">Visualiza en tiempo real el recorrido de tu pedido alrededor del mundo con tecnología 3D</p>
+      
+      <div class="input-group">
+        <input type="tel" id="cedulaInput" class="input-field" placeholder="Ingresa tu cédula" maxlength="10" autocomplete="off">
+        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="4" width="18" height="16" rx="2"/>
+          <line x1="7" y1="9" x2="17" y2="9"/>
+          <line x1="7" y1="13" x2="13" y2="13"/>
+        </svg>
+      </div>
+      
+      <button class="btn-primary" onclick="attemptLogin()">
+        Rastrear mi Pedido
+      </button>
+      
+      <div class="login-footer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0110 0v4"/>
+        </svg>
+        <span>Conexión segura y encriptada</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN APP ===== -->
+  <div id="app">
+    <header class="header">
+      <div class="header-left">
+        <div class="header-avatar">JR</div>
+        <div class="header-info">
+          <h1>Hola, Juan Rondón</h1>
+          <p>#LP-MQ0WFTYR</p>
+        </div>
+      </div>
+      <div class="live-indicator">
+        <span class="live-dot"></span>
+        <span>EN VIVO</span>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <!-- 3D Globe -->
+      <div id="globeContainer">
+        <canvas id="globeCanvas"></canvas>
+      </div>
+
+      <!-- Globe Controls -->
+      <div class="globe-controls">
+        <button class="globe-btn" onclick="resetGlobeView()" title="Centrar vista">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v2m0 16v2M2 12h2m16 0h2"/>
+          </svg>
+        </button>
+        <button class="globe-btn" onclick="toggleAutoRotate()" id="rotateBtn" title="Auto-rotar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+          </svg>
+        </button>
+        <button class="globe-btn" onclick="focusOnPackage()" title="Enfocar paquete">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Floating Status Card -->
+      <div class="status-card fade-in">
+        <div class="status-header">
+          <div class="product-image">
+            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-titanium-white-select?wid=470&hei=556&fmt=png-alpha" alt="iPhone 16 Pro">
+          </div>
+          <div class="product-info">
+            <h3>iPhone 16 Pro 128GB</h3>
+            <p>Blanco Titanio • Nacionalizado</p>
+            <div class="product-status">
+              <span class="live-dot" style="width:6px;height:6px;"></span>
+              En Aduana
+            </div>
+          </div>
+        </div>
+        
+        <div class="status-progress">
+          <div class="progress-header">
+            <span>Progreso del envío</span>
+            <span id="progressPercent">56%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 56%"></div>
+          </div>
+        </div>
+        
+        <div class="status-stats">
+          <div class="stat-item">
+            <div class="stat-value" id="distanceTraveled">4,892</div>
+            <div class="stat-label">km recorridos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="eta">3d 6h</div>
+            <div class="stat-label">ETA</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="currentTemp">23°C</div>
+            <div class="stat-label">Temp. actual</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vehicle Info -->
+      <div class="vehicle-info">
+        <div class="vehicle-icon" id="vehicleIcon">
+          <svg viewBox="0 0 24 24" id="vehicleSvg">
+            <path d="M21 16v-4.5L17 7H6l-4 4.5V16a1 1 0 001 1h1a2 2 0 104 0h8a2 2 0 104 0h1a1 1 0 001-1zM6 9h10.5l2 2.5H6V9z"/>
+          </svg>
+        </div>
+        <div class="vehicle-details">
+          <h4 id="vehicleType">Boeing 777 Cargo</h4>
+          <p id="vehicleInfo">Vuelo LA-2847</p>
+          <span class="vehicle-speed" id="vehicleSpeed">892 km/h</span>
+        </div>
+      </div>
+
+      <!-- Bottom Sheet -->
+      <div class="bottom-sheet collapsed" id="bottomSheet">
+        <div class="sheet-handle" onclick="toggleSheet()">
+          <div class="sheet-handle-bar"></div>
+        </div>
+        
+        <div class="sheet-header">
+          <div>
+            <h2 class="sheet-title">Historial de Ruta</h2>
+            <p class="sheet-subtitle">5 puntos de control</p>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" onclick="switchView('timeline')">Timeline</button>
+            <button class="view-btn" onclick="switchView('coords')">Coords</button>
+          </div>
+        </div>
+        
+        <div class="sheet-content">
+          <!-- Timeline View -->
+          <div class="timeline-view active" id="timelineView">
+            <div class="timeline">
+              <div class="timeline-progress" id="timelineProgress" style="height: 45%"></div>
+              
+              <div class="timeline-item completed" data-index="0">
+                <div class="timeline-marker">
+                  <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-location">
+                    <span class="flag">🇺🇸</span>
+                    Doral, Florida
+                  </div>
+                  <div class="timeline-description">Paquete recogido del almacén central LatinPhone. Inspección de calidad completada.</div>
+                  <div class="timeline-meta">
+                    <span class="timeline-time">29 Nov • 14:00</span>
+                    <span class="timeline-duration">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      Completado
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item completed" data-index="1">
+                <div class="timeline-marker">
+                  <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-location">
+                    <span class="flag">🇨🇴</span>
+                    Bogotá, Colombia
+                  </div>
+                  <div class="timeline-description">Escala técnica obligatoria. Reabastecimiento de combustible y cambio de tripulación.</div>
+                  <div class="timeline-meta">
+                    <span class="timeline-time">30 Nov • 06:30</span>
+                    <span class="timeline-duration">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      2h 45min
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item active" data-index="2">
+                <div class="timeline-marker">
+                  <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-location">
+                    <span class="flag">🇻🇪</span>
+                    Maiquetía, Venezuela
+                  </div>
+                  <div class="timeline-description">En proceso de aduana y nacionalización. Documentos en revisión por SENIAT.</div>
+                  <div class="timeline-meta">
+                    <span class="timeline-time">01 Dic • 09:15</span>
+                    <span class="timeline-duration">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      En proceso
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item" data-index="3">
+                <div class="timeline-marker">
+                  <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-location">
+                    <span class="flag">🇻🇪</span>
+                    En Tránsito Nacional
+                  </div>
+                  <div class="timeline-description">Ruta terrestre hacia la región oriental del país vía autopista.</div>
+                  <div class="timeline-meta">
+                    <span class="timeline-time">02 Dic • Estimado</span>
+                    <span class="timeline-duration">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      ~8h
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timeline-item" data-index="4">
+                <div class="timeline-marker">
+                  <svg viewBox="0 0 24 24" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>
+                </div>
+                <div class="timeline-content">
+                  <div class="timeline-location">
+                    <span class="flag">🇻🇪</span>
+                    Barcelona, Anzoátegui
+                  </div>
+                  <div class="timeline-description">Oficina MRW Barcelona Centro. Listo para retiro con cédula.</div>
+                  <div class="timeline-meta">
+                    <span class="timeline-time">03 Dic • Estimado</span>
+                    <span class="timeline-duration">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                      Destino final
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coordinates View -->
+          <div class="coords-view" id="coordsView">
+            <div class="coords-card">
+              <div class="coords-title">Posición Actual</div>
+              <div class="coords-value" id="currentCoords">10.6038° N, 66.9789° W</div>
+            </div>
+            
+            <div class="coords-grid">
+              <div class="coord-item">
+                <div class="coord-label">Latitud</div>
+                <div class="coord-value" id="latValue">10.6038°</div>
+              </div>
+              <div class="coord-item">
+                <div class="coord-label">Longitud</div>
+                <div class="coord-value" id="lngValue">-66.9789°</div>
+              </div>
+              <div class="coord-item">
+                <div class="coord-label">Altitud</div>
+                <div class="coord-value" id="altValue">0 m</div>
+              </div>
+              <div class="coord-item">
+                <div class="coord-label">Velocidad</div>
+                <div class="coord-value" id="speedValue">0 km/h</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Cédula no encontrada en el sistema</div>
+
+  <script>
+    // ===== ROUTE DATA =====
+    const ROUTE_POINTS = [
+      { lat: 25.7617, lng: -80.1918, name: "Doral, Florida", country: "USA", alt: 0 },
+      { lat: 4.7110, lng: -74.0721, name: "Bogotá, Colombia", country: "COL", alt: 2640 },
+      { lat: 10.6038, lng: -66.9789, name: "Maiquetía, Venezuela", country: "VEN", alt: 0 },
+      { lat: 10.1417, lng: -64.6835, name: "Puerto La Cruz", country: "VEN", alt: 0 },
+      { lat: 10.1833, lng: -64.6333, name: "Barcelona, Anzoátegui", country: "VEN", alt: 0 }
+    ];
+
+    // Simulation times
+    const START_TIME = new Date('2025-11-29T14:00:00').getTime();
+    const END_TIME = new Date('2025-12-03T12:00:00').getTime();
+    let simulatedNow = new Date('2025-12-01T10:00:00').getTime(); // Simulated current time
+
+    // Three.js variables
+    let scene, camera, renderer, globe, clouds, markers = [], pathLine;
+    let packageMarker, currentPosition = { lat: 10.6038, lng: -66.9789 };
+    let autoRotate = false;
+    let isDragging = false;
+    let previousMousePosition = { x: 0, y: 0 };
+
+    // ===== SPLASH & LOGIN =====
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('splashScreen').classList.add('hidden');
+        setTimeout(() => {
+          document.getElementById('loginScreen').classList.add('visible');
+          initLoginGlobe();
+        }, 300);
+      }, 2000);
+    });
+
+    function initLoginGlobe() {
+      const canvas = document.getElementById('loginGlobeCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let rotation = 0;
+      
+      function drawLoginGlobe() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const radius = Math.min(canvas.width, canvas.height) * 0.35;
+
+        // Draw globe outline
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.2)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw latitude lines
+        for (let i = -60; i <= 60; i += 30) {
+          const y = cy + (radius * Math.sin(i * Math.PI / 180));
+          const r = radius * Math.cos(i * Math.PI / 180);
+          ctx.beginPath();
+          ctx.ellipse(cx, y, r, r * 0.3, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.1)';
+          ctx.stroke();
+        }
+
+        // Draw longitude lines
+        for (let i = 0; i < 12; i++) {
+          const angle = (i * 30 + rotation) * Math.PI / 180;
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, radius * Math.abs(Math.cos(angle)), radius, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.1)';
+          ctx.stroke();
+        }
+
+        rotation += 0.3;
+        requestAnimationFrame(drawLoginGlobe);
+      }
+
+      drawLoginGlobe();
+    }
+
+    function attemptLogin() {
+      const cedula = document.getElementById('cedulaInput').value.trim();
+      
+      if (cedula === '34471606') {
+        document.getElementById('loginScreen').classList.add('exit');
+        
+        setTimeout(() => {
+          document.getElementById('loginScreen').style.display = 'none';
+          document.getElementById('app').classList.add('visible');
+          initGlobe();
+          startTracking();
+        }, 600);
+      } else {
+        showToast('Cédula no encontrada en el sistema');
+      }
+    }
+
+    document.getElementById('cedulaInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') attemptLogin();
+    });
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ===== THREE.JS GLOBE =====
+    function initGlobe() {
+      const container = document.getElementById('globeContainer');
+      const canvas = document.getElementById('globeCanvas');
+
+      // Scene setup
+      scene = new THREE.Scene();
+      
+      // Camera
+      camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.z = 3;
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0x404040, 2);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+      directionalLight.position.set(5, 3, 5);
+      scene.add(directionalLight);
+
+      // Create Earth
+      createEarth();
+      createAtmosphere();
+      createStars();
+      createRouteMarkers();
+      createFlightPath();
+      createPackageMarker();
+
+      // Event listeners
+      addGlobeInteraction();
+      window.addEventListener('resize', onWindowResize);
+
+      // Start animation
+      animate();
+    }
+
+    function createEarth() {
+      const geometry = new THREE.SphereGeometry(1, 64, 64);
+      
+      // Create a procedural Earth texture
+      const canvas = document.createElement('canvas');
+      canvas.width = 2048;
+      canvas.height = 1024;
+      const ctx = canvas.getContext('2d');
+
+      // Ocean gradient
+      const oceanGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      oceanGradient.addColorStop(0, '#0a1628');
+      oceanGradient.addColorStop(0.5, '#0f2744');
+      oceanGradient.addColorStop(1, '#0a1628');
+      ctx.fillStyle = oceanGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw simplified continents
+      ctx.fillStyle = '#1e3a5f';
+      
+      // North America
+      drawContinent(ctx, [
+        [180, 100], [280, 80], [350, 120], [380, 200], [350, 280], 
+        [280, 320], [200, 350], [150, 300], [120, 200]
+      ]);
+      
+      // South America
+      drawContinent(ctx, [
+        [320, 400], [380, 380], [420, 450], [400, 600], [350, 700],
+        [280, 680], [260, 550], [280, 450]
+      ]);
+      
+      // Europe/Africa
+      drawContinent(ctx, [
+        [900, 120], [1000, 100], [1100, 140], [1080, 250], [1000, 200],
+        [920, 220], [880, 180]
+      ]);
+      drawContinent(ctx, [
+        [920, 280], [1020, 260], [1100, 350], [1050, 550], [950, 620],
+        [880, 500], [860, 350]
+      ]);
+
+      // Asia
+      drawContinent(ctx, [
+        [1100, 80], [1400, 60], [1600, 100], [1700, 200], [1650, 350],
+        [1500, 380], [1300, 350], [1150, 280], [1100, 180]
+      ]);
+
+      // Australia
+      drawContinent(ctx, [
+        [1500, 500], [1650, 480], [1700, 550], [1650, 650], [1550, 680],
+        [1450, 620], [1450, 540]
+      ]);
+
+      // Add grid lines
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+      ctx.lineWidth = 1;
+      
+      // Latitude lines
+      for (let i = 0; i <= 8; i++) {
+        ctx.beginPath();
+        ctx.moveTo(0, i * (canvas.height / 8));
+        ctx.lineTo(canvas.width, i * (canvas.height / 8));
+        ctx.stroke();
+      }
+      
+      // Longitude lines
+      for (let i = 0; i <= 16; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * (canvas.width / 16), 0);
+        ctx.lineTo(i * (canvas.width / 16), canvas.height);
+        ctx.stroke();
+      }
+
+      const texture = new THREE.CanvasTexture(canvas);
+      
+      const material = new THREE.MeshPhongMaterial({
+        map: texture,
+        bumpScale: 0.05,
+        specular: new THREE.Color(0x333333),
+        shininess: 5
+      });
+
+      globe = new THREE.Mesh(geometry, material);
+      scene.add(globe);
+
+      // Initial rotation to show Americas
+      globe.rotation.y = Math.PI * 0.8;
+    }
+
+    function drawContinent(ctx, points) {
+      if (points.length < 3) return;
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i][0], points[i][1]);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function createAtmosphere() {
+      const geometry = new THREE.SphereGeometry(1.02, 64, 64);
+      const material = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+            gl_FragColor = vec4(0.024, 0.714, 0.831, 1.0) * intensity;
+          }
+        `,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        transparent: true
+      });
+
+      const atmosphere = new THREE.Mesh(geometry, material);
+      scene.add(atmosphere);
+    }
+
+    function createStars() {
+      const starsGeometry = new THREE.BufferGeometry();
+      const starsMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.02,
+        transparent: true,
+        opacity: 0.8
+      });
+
+      const starsVertices = [];
+      for (let i = 0; i < 2000; i++) {
+        const x = (Math.random() - 0.5) * 100;
+        const y = (Math.random() - 0.5) * 100;
+        const z = (Math.random() - 0.5) * 100;
+        const dist = Math.sqrt(x*x + y*y + z*z);
+        if (dist > 5) {
+          starsVertices.push(x, y, z);
+        }
+      }
+
+      starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
+      const stars = new THREE.Points(starsGeometry, starsMaterial);
+      scene.add(stars);
+    }
+
+    function latLngToVector3(lat, lng, radius = 1) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lng + 180) * (Math.PI / 180);
+
+      return new THREE.Vector3(
+        -radius * Math.sin(phi) * Math.cos(theta),
+        radius * Math.cos(phi),
+        radius * Math.sin(phi) * Math.sin(theta)
+      );
+    }
+
+    function createRouteMarkers() {
+      ROUTE_POINTS.forEach((point, index) => {
+        const position = latLngToVector3(point.lat, point.lng, 1.02);
+        
+        // Create marker
+        const geometry = new THREE.SphereGeometry(0.02, 16, 16);
+        let color = 0x64748b; // Default gray
+        
+        if (index < 2) color = 0x10b981; // Completed - green
+        else if (index === 2) color = 0x06b6d4; // Active - cyan
+        
+        const material = new THREE.MeshBasicMaterial({ color });
+        const marker = new THREE.Mesh(geometry, material);
+        marker.position.copy(position);
+        
+        // Add glow ring for active marker
+        if (index === 2) {
+          const ringGeometry = new THREE.RingGeometry(0.03, 0.05, 32);
+          const ringMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0x06b6d4, 
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.5
+          });
+          const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+          ring.position.copy(position);
+          ring.lookAt(new THREE.Vector3(0, 0, 0));
+          scene.add(ring);
+          marker.ring = ring;
+        }
+
+        scene.add(marker);
+        markers.push(marker);
+      });
+    }
+
+    function createFlightPath() {
+      const points = ROUTE_POINTS.map(p => latLngToVector3(p.lat, p.lng, 1.01));
+      
+      // Create curve through points
+      const curve = new THREE.CatmullRomCurve3(points);
+      const curvePoints = curve.getPoints(100);
+      
+      const geometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
+      const material = new THREE.LineBasicMaterial({ 
+        color: 0x06b6d4,
+        transparent: true,
+        opacity: 0.6
+      });
+      
+      pathLine = new THREE.Line(geometry, material);
+      scene.add(pathLine);
+
+      // Create dashed path for remaining route
+      const dashGeometry = new THREE.BufferGeometry().setFromPoints(curvePoints.slice(56));
+      const dashMaterial = new THREE.LineDashedMaterial({
+        color: 0x64748b,
+        dashSize: 0.02,
+        gapSize: 0.01,
+        transparent: true,
+        opacity: 0.4
+      });
+      
+      const dashLine = new THREE.Line(dashGeometry, dashMaterial);
+      dashLine.computeLineDistances();
+      scene.add(dashLine);
+    }
+
+    function createPackageMarker() {
+      // Create package group
+      const packageGroup = new THREE.Group();
+      
+      // Main marker (box shape)
+      const boxGeometry = new THREE.BoxGeometry(0.04, 0.04, 0.04);
+      const boxMaterial = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+      const box = new THREE.Mesh(boxGeometry, boxMaterial);
+      packageGroup.add(box);
+      
+      // Glow sphere
+      const glowGeometry = new THREE.SphereGeometry(0.06, 16, 16);
+      const glowMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x06b6d4,
+        transparent: true,
+        opacity: 0.3
+      });
+      const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+      packageGroup.add(glow);
+
+      // Position at current location
+      const position = latLngToVector3(currentPosition.lat, currentPosition.lng, 1.05);
+      packageGroup.position.copy(position);
+      packageGroup.lookAt(new THREE.Vector3(0, 0, 0));
+
+      scene.add(packageGroup);
+      packageMarker = packageGroup;
+    }
+
+    function addGlobeInteraction() {
+      const canvas = document.getElementById('globeCanvas');
+      
+      // Mouse/touch events for rotation
+      canvas.addEventListener('mousedown', onPointerDown);
+      canvas.addEventListener('mousemove', onPointerMove);
+      canvas.addEventListener('mouseup', onPointerUp);
+      canvas.addEventListener('mouseleave', onPointerUp);
+      
+      canvas.addEventListener('touchstart', onTouchStart, { passive: false });
+      canvas.addEventListener('touchmove', onTouchMove, { passive: false });
+      canvas.addEventListener('touchend', onPointerUp);
+
+      // Zoom
+      canvas.addEventListener('wheel', onWheel, { passive: false });
+    }
+
+    function onPointerDown(e) {
+      isDragging = true;
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      
+      const deltaX = e.clientX - previousMousePosition.x;
+      const deltaY = e.clientY - previousMousePosition.y;
+      
+      globe.rotation.y += deltaX * 0.005;
+      globe.rotation.x += deltaY * 0.005;
+      globe.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, globe.rotation.x));
+      
+      previousMousePosition = { x: e.clientX, y: e.clientY };
+    }
+
+    function onPointerUp() {
+      isDragging = false;
+    }
+
+    function onTouchStart(e) {
+      if (e.touches.length === 1) {
+        e.preventDefault();
+        isDragging = true;
+        previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    }
+
+    function onTouchMove(e) {
+      if (!isDragging || e.touches.length !== 1) return;
+      e.preventDefault();
+      
+      const deltaX = e.touches[0].clientX - previousMousePosition.x;
+      const deltaY = e.touches[0].clientY - previousMousePosition.y;
+      
+      globe.rotation.y += deltaX * 0.005;
+      globe.rotation.x += deltaY * 0.005;
+      globe.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, globe.rotation.x));
+      
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+
+    function onWheel(e) {
+      e.preventDefault();
+      camera.position.z += e.deltaY * 0.001;
+      camera.position.z = Math.max(1.5, Math.min(5, camera.position.z));
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('globeContainer');
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Auto rotate
+      if (autoRotate && !isDragging) {
+        globe.rotation.y += 0.002;
+      }
+
+      // Animate package marker
+      if (packageMarker) {
+        packageMarker.children[1].scale.setScalar(1 + Math.sin(Date.now() * 0.003) * 0.2);
+      }
+
+      // Animate active marker ring
+      markers.forEach(marker => {
+        if (marker.ring) {
+          marker.ring.rotation.z += 0.02;
+          marker.ring.material.opacity = 0.3 + Math.sin(Date.now() * 0.003) * 0.2;
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    // ===== GLOBE CONTROLS =====
+    function resetGlobeView() {
+      gsap.to(globe.rotation, {
+        x: 0,
+        y: Math.PI * 0.8,
+        duration: 1,
+        ease: "power2.out"
+      });
+      gsap.to(camera.position, {
+        z: 3,
+        duration: 1,
+        ease: "power2.out"
+      });
+    }
+
+    function toggleAutoRotate() {
+      autoRotate = !autoRotate;
+      document.getElementById('rotateBtn').style.color = autoRotate ? 'var(--primary)' : 'var(--text-secondary)';
+      document.getElementById('rotateBtn').style.borderColor = autoRotate ? 'var(--primary)' : 'var(--border)';
+    }
+
+    function focusOnPackage() {
+      // Calculate rotation to center on current position
+      const targetRotationY = -currentPosition.lng * (Math.PI / 180) - Math.PI / 2;
+      
+      gsap.to(globe.rotation, {
+        y: targetRotationY,
+        x: 0,
+        duration: 1.5,
+        ease: "power2.out"
+      });
+      gsap.to(camera.position, {
+        z: 2,
+        duration: 1.5,
+        ease: "power2.out"
+      });
+    }
+
+    // ===== BOTTOM SHEET =====
+    function toggleSheet() {
+      document.getElementById('bottomSheet').classList.toggle('collapsed');
+    }
+
+    function switchView(view) {
+      document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      document.getElementById('timelineView').classList.toggle('active', view === 'timeline');
+      document.getElementById('coordsView').classList.toggle('active', view === 'coords');
+    }
+
+    // ===== TRACKING UPDATES =====
+    function startTracking() {
+      updateTracking();
+      setInterval(updateTracking, 2000);
+    }
+
+    function updateTracking() {
+      const totalDuration = END_TIME - START_TIME;
+      const elapsed = simulatedNow - START_TIME;
+      const progress = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
+
+      // Update progress bar
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
+
+      // Update timeline progress
+      document.getElementById('timelineProgress').style.height = (progress * 0.9) + '%';
+
+      // Calculate current position along route
+      const segmentProgress = progress / 25;
+      const currentSegment = Math.min(Math.floor(segmentProgress), ROUTE_POINTS.length - 2);
+      const segmentFraction = segmentProgress - currentSegment;
+
+      if (currentSegment < ROUTE_POINTS.length - 1) {
+        const p1 = ROUTE_POINTS[currentSegment];
+        const p2 = ROUTE_POINTS[currentSegment + 1];
+        
+        currentPosition.lat = p1.lat + (p2.lat - p1.lat) * segmentFraction;
+        currentPosition.lng = p1.lng + (p2.lng - p1.lng) * segmentFraction;
+
+        // Update package marker position
+        if (packageMarker) {
+          const newPosition = latLngToVector3(currentPosition.lat, currentPosition.lng, 1.05);
+          packageMarker.position.copy(newPosition);
+          packageMarker.lookAt(new THREE.Vector3(0, 0, 0));
+        }
+
+        // Update coordinates display
+        document.getElementById('currentCoords').textContent = 
+          `${Math.abs(currentPosition.lat).toFixed(4)}° ${currentPosition.lat >= 0 ? 'N' : 'S'}, ${Math.abs(currentPosition.lng).toFixed(4)}° ${currentPosition.lng >= 0 ? 'E' : 'W'}`;
+        document.getElementById('latValue').textContent = currentPosition.lat.toFixed(4) + '°';
+        document.getElementById('lngValue').textContent = currentPosition.lng.toFixed(4) + '°';
+      }
+
+      // Update vehicle info based on progress
+      if (progress < 40) {
+        updateVehicle('plane', 'Boeing 777 Cargo', 'Vuelo LA-2847', '892 km/h', 35000);
+      } else if (progress < 55) {
+        updateVehicle('plane', 'Boeing 737-800', 'Vuelo AV-2103', '785 km/h', 32000);
+      } else {
+        updateVehicle('truck', 'Camión MRW', 'Unidad T-847', '65 km/h', 0);
+      }
+
+      // Update stats
+      const distanceTraveled = Math.round(5600 * (progress / 100));
+      document.getElementById('distanceTraveled').textContent = distanceTraveled.toLocaleString();
+
+      const remainingHours = Math.round((100 - progress) * 0.8);
+      const days = Math.floor(remainingHours / 24);
+      const hours = remainingHours % 24;
+      document.getElementById('eta').textContent = days > 0 ? `${days}d ${hours}h` : `${hours}h`;
+
+      // Simulate time passing
+      simulatedNow += 60000 * 5; // 5 minutes per update
+    }
+
+    function updateVehicle(type, name, info, speed, altitude) {
+      const icon = document.getElementById('vehicleIcon');
+      const svg = document.getElementById('vehicleSvg');
+      
+      if (type === 'plane') {
+        icon.style.background = 'var(--gradient-primary)';
+        svg.innerHTML = '<path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>';
+      } else {
+        icon.style.background = 'var(--gradient-accent)';
+        svg.innerHTML = '<path d="M1 3h15v13H1V3zm15 13l3 3v-9l3 3V3h-6v13zm-5 3l-3-3H3l-3 3v2h12v-2z"/><circle cx="5" cy="19" r="2"/><circle cx="10" cy="19" r="2"/>';
+      }
+
+      document.getElementById('vehicleType').textContent = name;
+      document.getElementById('vehicleInfo').textContent = info;
+      document.getElementById('vehicleSpeed').textContent = speed;
+      document.getElementById('altValue').textContent = altitude > 0 ? altitude.toLocaleString() + ' m' : '0 m';
+      document.getElementById('speedValue').textContent = speed;
+    }
+  </script>
+</body>
+</html>
