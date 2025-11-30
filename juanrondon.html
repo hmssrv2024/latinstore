@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Seguimiento #LP-MQ0WFTYR | LatinPhone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0071e3; /* Azul Apple */
+            --primary-dark: #005bb5;
+            --success: #34C759;
+            --warning-bg: #FFF8E6;
+            --warning-text: #B25E09;
+            --bg-body: #F2F2F7;
+            --card-bg: #FFFFFF;
+            --text-main: #1D1D1F;
+            --text-secondary: #86868B;
+            --border-color: #E5E5EA;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.4;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* Header Minimalista */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .brand-logo {
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+        .brand-logo span { color: var(--primary); }
+        .order-pill {
+            display: inline-flex;
+            align-items: center;
+            background: #E8E8ED;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Tarjetas Generales */
+        .card {
+            background: var(--card-bg);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+
+        /* Timeline Mejorado */
+        .timeline-container {
+            position: relative;
+            margin: 10px 0 25px;
+        }
+        .progress-bar {
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: #F0F0F0;
+            z-index: 0;
+            border-radius: 4px;
+        }
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--primary); /* Lleno hasta el 60% */
+            width: 60%; 
+            border-radius: 4px;
+            z-index: 0;
+        }
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 25%;
+        }
+        .circle {
+            width: 34px;
+            height: 34px;
+            background: #fff;
+            border: 4px solid #F0F0F0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+        .step.completed .circle {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .step.active .circle {
+            border-color: var(--primary);
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0,113,227,0.15);
+        }
+        .step.pending .circle {
+            border-color: #E5E5EA;
+            color: #C7C7CC;
+        }
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.2;
+        }
+        .step.active .step-label { color: var(--primary); }
+
+        /* Alerta de Acción Requerida (Highlight) */
+        .action-card {
+            background: linear-gradient(135deg, #FFF8E6 0%, #FFF5D6 100%);
+            border: 2px solid #FFD60A;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            background: #FFD60A;
+            color: #333;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .action-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--warning-text);
+            margin-bottom: 8px;
+        }
+
+        .action-desc {
+            font-size: 14px;
+            color: #8A6D3B;
+            margin-bottom: 20px;
+        }
+
+        .amount-box {
+            background: rgba(255,255,255,0.6);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .amount-label { font-size: 12px; color: #8A6D3B; text-transform: uppercase; font-weight: 600; }
+        .amount-value { font-size: 28px; font-weight: 800; color: var(--text-main); margin-top: 4px; }
+
+        .btn-pay {
+            background: var(--text-main);
+            color: white;
+            width: 100%;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-pay:active { transform: scale(0.98); }
+
+        /* Detalles de Pago (Ocultos) */
+        .payment-details {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            background: white;
+            border-radius: 12px;
+            padding: 5px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .copy-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .copy-row:last-child { border-bottom: none; }
+        
+        .data-label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 2px;}
+        .data-val { font-size: 15px; font-weight: 600; font-family: 'Courier New', monospace; color: #333; }
+        
+        .btn-copy {
+            background: #F2F2F7;
+            border: none;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Producto */
+        .product-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .prod-thumb {
+            width: 70px;
+            height: 70px;
+            background: #F5F5F7;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .prod-thumb img { width: 40px; height: auto; } /* Placeholder */
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        .summary-row.total {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 16px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #999;
+            margin-top: 30px;
+            padding-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SVG Icons */
+        .icon { width: 20px; height: 20px; fill: currentColor; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="brand-header">
+            <div class="brand-logo">LatinPhone<span>.</span></div>
+            <div class="order-pill">Pedido #LP-MQ0WFTYR</div>
+        </div>
+
+        <div class="card">
+            <h3 style="font-size: 15px; margin-bottom: 15px;">Estado del envío</h3>
+            
+            <div class="timeline-container">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="steps">
+                    <div class="step completed">
+                        <div class="circle">✓</div>
+                        <div class="step-label">Orden<br>Pagada</div>
+                    </div>
+                    <div class="step completed">
+                        <div class="circle">✓</div>
+                        <div class="step-label">USA<br>Salida</div>
+                    </div>
+                    <div class="step active">
+                        <div class="circle">✈</div>
+                        <div class="step-label">Tránsito<br>Intl.</div>
+                    </div>
+                    <div class="step pending">
+                        <div class="circle" style="font-size:10px;">!</div>
+                        <div class="step-label">Aduana<br>Vzla</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="font-size: 13px; color: var(--text-secondary); background: #F5F5F7; padding: 10px; border-radius: 8px; margin-top: 15px;">
+                <span style="color: var(--primary);">●</span> Tu pedido está en vuelo hacia Venezuela. Fecha estimada de arribo: <strong>03 Dic</strong>.
+            </p>
+        </div>
+
+        <div class="card action-card">
+            <div class="status-badge">Acción Requerida</div>
+            <h2 class="action-title">Pre-despacho Aduanal</h2>
+            <p class="action-desc">
+                Para garantizar la entrada inmediata y evitar retenciones al aterrizar, es necesario abonar la <strong>Tasa de Nacionalización (2%)</strong>.
+            </p>
+
+            <div class="amount-box">
+                <div class="amount-label">Monto a pagar</div>
+                <div class="amount-value">Bs. 10.408,36</div>
+            </div>
+
+            <button class="btn-pay" onclick="togglePayment()">
+                <span>Ver Datos de Pago Móvil</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+
+            <div id="paymentDetails" class="payment-details">
+                <div class="copy-row">
+                    <div>
+                        <span class="data-label">Banco</span>
+                        <span class="data-val">Banca Amiga</span>
+                    </div>
+                </div>
+                <div class="copy-row">
+                    <div>
+                        <span class="data-label">Teléfono</span>
+                        <span class="data-val" id="phone">04144272486</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyText('phone')">Copiar</button>
+                </div>
+                <div class="copy-row">
+                    <div>
+                        <span class="data-label">Cédula</span>
+                        <span class="data-val" id="idcard">20639785</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyText('idcard')">Copiar</button>
+                </div>
+                <div class="copy-row">
+                    <div>
+                        <span class="data-label">Monto Exacto</span>
+                        <span class="data-val" id="amount">10408,36</span>
+                    </div>
+                    <button class="btn-copy" onclick="copyText('amount')">Copiar</button>
+                </div>
+                <p style="font-size: 12px; color: #666; padding: 12px; text-align: center; background: #fafafa; border-radius: 0 0 12px 12px;">
+                    Una vez realizado el pago, el sistema validará tu guía de despacho automáticamente en 10-20 minutos.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="product-row">
+                <div class="prod-thumb">
+                    <svg width="30" height="50" viewBox="0 0 24 40" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="36" rx="4"/><line x1="10" y1="6" x2="14" y2="6"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 16px; margin-bottom: 4px;">iPhone 16 Pro 128GB</h4>
+                    <p style="font-size: 13px; color: var(--text-secondary);">Titanium White • Sellado</p>
+                </div>
+            </div>
+
+            <div class="summary-row"><span>Valor Declarado</span><span>$1.170,00</span></div>
+            <div class="summary-row"><span>Seguro de Envío</span><span>Incluido</span></div>
+            <div class="summary-row total"><span>Total Pagado (USD)</span><span>$1.477,20</span></div>
+            <div style="margin-top: 15px; display: inline-block; background: #E8F5E9; color: #2E7D32; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px;">
+                PEDIDO PAGADO AL 100%
+            </div>
+        </div>
+
+        <div class="card">
+            <h4 style="font-size: 13px; text-transform: uppercase; color: var(--text-secondary); letter-spacing: 1px; margin-bottom: 12px;">Destinatario</h4>
+            <div style="font-size: 15px; font-weight: 500;">Juan Rondón</div>
+            <div style="font-size: 14px; color: #555; margin-top: 4px;">Las casitas, calle 11 casa número 03<br>Barcelona, Anzoátegui</div>
+        </div>
+
+        <div class="footer">
+            LatinPhone Logistics LLC • USA & VZLA<br>
+            <span style="opacity: 0.7;">Términos de servicio • Privacidad</span>
+        </div>
+
+    </div>
+
+    <script>
+        function togglePayment() {
+            const details = document.getElementById('paymentDetails');
+            const btn = document.querySelector('.btn-pay span');
+            
+            if (details.style.display === 'block') {
+                details.style.display = 'none';
+                btn.textContent = 'Ver Datos de Pago Móvil';
+            } else {
+                details.style.display = 'block';
+                btn.textContent = 'Ocultar Datos';
+                // Pequeño scroll suave hacia los datos
+                setTimeout(() => {
+                    details.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+
+        function copyText(elementId) {
+            // Lógica simple para copiar
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Dato copiado: ' + text);
+            }).catch(err => {
+                console.error('Error al copiar', err);
+            });
+        }
+    </script>
+</body>
+</html>
